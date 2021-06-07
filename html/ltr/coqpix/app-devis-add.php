@@ -18,10 +18,15 @@ require_once 'php/config.php';
     $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
     $pdoSt->execute(); 
-    $client = $pdoSt->fetchAll(); //Ventes
+    $client = $pdoSt->fetchAll();
 
-    // Auto incrementation
+	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+	$pdaSt->bindValue(':num', $_SESSION['id_session']);
+	$pdaSt->execute();
+	$cliet = $pdaSt->fetch();
 
+	$total = $cliet['cout']*$cliet['quantite'];
+   
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM devis');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
@@ -114,7 +119,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Ajouter un devis</title>
+    <title>Ajouter devis</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
@@ -140,7 +145,11 @@ require_once 'php/config.php';
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
-
+    <style>
+        #tkt{
+            display:none;
+        }
+    </style>
 </head>
 <!-- END: Head-->
 
@@ -214,8 +223,10 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
+	
     <!-- END: Main Menu-->
 
+    <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
@@ -239,7 +250,7 @@ require_once 'php/config.php';
 																		N°
 																	
 																	</h6>
-																	<input  type="text" name="numeroarticle" id="numeros"  value='<?= $max_num ?>' class="form-control pt-25 w-50" placeholder="DEV-0" attribut readonly="readonly">
+																	<input  type="text" name="numeroarticle" id="numeros"  value='<?= $max_num ?>' class="form-control pt-25 w-50" placeholder="FAC-0" attribut readonly="readonly">
 													</div>			
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 														<h6 class="invoice-number mr-75">
@@ -252,11 +263,11 @@ require_once 'php/config.php';
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 														<h6 class="invoice-number mr-75">
-															Devis N°
+															devis N°
 														</h6>
-														<input type="number" name="numerosdevis" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="0000">
+														<input type="number" name="numerosdevis" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
 														<p style='position: relative; top: 7px; display: <?php if($entreprise['incrementation'] == "no"){echo "none";} ?>;'>
-															&nbsp&nbsp&nbsp DEV-
+															&nbsp&nbsp&nbsp FAC-
 															<?= date('y') ?>
 															(année)
 															<?= substr($max_incrementation, 2) ?>
@@ -289,8 +300,8 @@ require_once 'php/config.php';
 												<div class="col-lg-12 col-md-12 mt-25">
 													<div class="row my-2 py-50">
 														<div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
-															<h4 class="text-primary">Devis</h4>
-															<input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom de la facture">
+															<h4 class="text-primary">devis</h4>
+															<input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du devis">
 															<ul class="list-group list-group-flush">
 																<div class="form-group">
 																	<label for="exampleFormControlTextarea1">Description</label>
@@ -308,7 +319,7 @@ require_once 'php/config.php';
 														<div class="col-lg-6 col-md-12 mt-25">
 															<div class="form-group">
 																<label>*Client</label>
-																<select name="devispour" id="facturepour" class="form-control invoice-item-select">
+																<select name="devispour" id="facturepour" class="form-control invoice-item-select"> <!--car js prend que facturepour-->
 																	<option value="Pas de clients">Sélectionnez un client</option>
 																	<?php foreach($client as $clientt): ?>
 																	<option value="<?= $clientt['name_client'] ?>"><?= $clientt['name_client'] ?></option>
@@ -1303,7 +1314,7 @@ require_once 'php/config.php';
 																	<tbody>
 																		<tr>
 																			<th>
-																				Facture
+																				devis
 																			</th>
 																			<th>
 																				Ref
@@ -1461,79 +1472,6 @@ require_once 'php/config.php';
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script><script  src="./script.js"></script>
 
 
-    <!-- BEGIN: Vendor JS-->
-    <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
-    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
-    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
-    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.js"></script>
-    <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
-    <script src="../../../app-assets/vendors/js/forms/repeater/jquery.repeater.min.js"></script>
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
-    <script src="../../../app-assets/js/core/app-menu.js"></script>
-    <script src="../../../app-assets/js/core/app.js"></script>
-    <script src="../../../app-assets/js/scripts/components.js"></script>
-    <script src="../../../app-assets/js/scripts/footer.js"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
-    <script src="script.js"></script>
-    <!-- END: Page JS-->
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script><script  src="./script.js"></script>
-<script>  $(function() {
-    $("#sortable tbody").sortable({
-      cursor: "move",
-      placeholder: "sortable-placeholder",
-      helper: function(e, tr)
-      {
-        var $originals = tr.children();
-        var $helper = tr.clone();
-        $helper.children().each(function(index)
-        {
-        // Set helper cell sizes to match the original sizes
-        $(this).width($originals.eq(index).width());
-        });
-        return $helper;
-      }
-    }).disableSelection();
-  });
-function getCp(btn){	
-				$('#ville').empty();
-				$('#ville').attr('disabled','disabled');		
-				$.getJSON("https://comparateurs.hyperassur.com/api/miscellaneous/cities/"+btn.val(), function (data) { 
-					var ville = "<option value=''>Selectionnez votre ville</option>";  
-					if(data.length>0){
-						$('#ville').removeAttr('disabled');
-						$.each(data, function (key, value) { 
-							ville+="<option value='"+value.name+"' data-insee_code='"+value.insee_code+"'>"+value.name+"</option>";  
-						}); 
-						$('#ville').html(ville);  
-					}else{
-						$('#ville').empty();
-						$('#ville').attr('disabled','disabled');	
-					}
-				}); 
-			};
-
-			$('#ville').change(function(event) { 
-				$('#insee_code').val($('option:selected', this).attr('data-insee_code'));
-			});
-</script>
-    <!-- TIMEOUT -->
-    <?php include('timeout.php'); ?>
 </body>
 <!-- END: Body-->
 
