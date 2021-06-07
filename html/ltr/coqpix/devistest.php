@@ -21,12 +21,6 @@ require_once 'php/config.php';
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
-    
-    $pdoStatr = $bdd->prepare('SELECT refdevis,numerosdevis FROM devis WHERE id_session = :num');
-    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
-    $pdoStatr->execute();
-    $fu = $pdoStatr->fetch();
-    $nom = $fu['refdevis'];
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -152,7 +146,7 @@ require_once 'php/config.php';
                         ?>
                         <div class="col">
                             <div class="invoice-create-btn mb-1">
-                                <a href="app-devis-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un devis</a>
+                                <a href="app-devis-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "Rt82u";}else{echo "y44vJ";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un devis</a>
                             </div>
                         </div>
                         
@@ -176,7 +170,7 @@ require_once 'php/config.php';
                                     <th></th>
                                     <th></th>
                                     <th>
-                                       Numéro Devis
+                                       Numéro Facture
                                     </th>
                                     <th>
                                         <span class="align-middle">Référence</span>
@@ -210,13 +204,13 @@ require_once 'php/config.php';
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
                                 
-                            ?> 
+                            ?>
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td>DEV-<?= $deviss['id'] ?></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numdevis=<?= $deviss['id'] ?>"><?= $deviss['refdevis'],$ref ?></a>
+                                        <a href="app-invoice-view.php?numfacture=<?= $deviss['id'] ?>"><?= $deviss['refdevis'],$ref ?></a>
                                     </td>
                                     <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $deviss['monnaie'] ?></span></td>
                                     <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($deviss['dte'])); ?></small></td>
@@ -228,17 +222,17 @@ require_once 'php/config.php';
                                     <td><span class="<?= $deviss['status_color'] ?>"><?= $deviss['status_devis'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-invoice-view.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-invoice-view.php?numfacture=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-invoice-edit.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <a href="app-invoice-edit.php?numfacture=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
                                             <a href="php/inv-dev.php?id=<?= $deviss['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_dev.php?numdevis=<?= $deviss['numerosdevis'] ?>&id=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="php/delete_facture.php?numfacture=<?= $deviss['numerosdevis'] ?>&id=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>

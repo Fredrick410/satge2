@@ -7,12 +7,12 @@ ini_set('display_startup_errors', TRUE);
 
     // vide
 
-    if($_POST['numerosfacture'] == ""){
+    if($_POST['numerosdevis'] == ""){
         $numerosfacture = "000d";
     }else{
-        $numerosfacture = $_POST['numerosfacture'];
+        $numerosfacture = $_POST['numerosdevis'];
     }
-
+    $numeroarticle = $_POST['numeroarticle'];
     if($_POST['dte'] == ""){
         $dte = "00-00-00";
     }else{
@@ -26,7 +26,7 @@ ini_set('display_startup_errors', TRUE);
     }
 
     if($_POST['facturepour'] == ""){
-        $facturepour = "Facture pour";
+        $facturepour = "Devis pour";
     }else{
         $facturepour = $_POST['facturepour'];
     }
@@ -60,32 +60,40 @@ ini_set('display_startup_errors', TRUE);
     }else{
         $note = $_POST['note'];
     }
+    if($_POST['accompte'] == ""){
+        $accompte = "O";
+    }else{
+        $accompte = $_POST['accompte'];
+    }
 
     // end vide 
 
-    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, nomproduit, devispour, adresse, email, tel, departement, modalite, monnaie, note, status_devis, status_color, etiquette, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, refdevis, nomproduit, devispour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_devis, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
-        htmlspecialchars($numerosfacture),
+        htmlspecialchars($_POST['numerosdevis']),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
+        htmlspecialchars($_POST['refdevis']),
         htmlspecialchars($nomproduit),
-        htmlspecialchars($facturepour),
+        htmlspecialchars($_POST['devispour']),
         htmlspecialchars($adresse),
         htmlspecialchars($email),
         htmlspecialchars($tel),
         htmlspecialchars($departement),
         htmlspecialchars($_POST['modalite']),
         htmlspecialchars($_POST['monnaie']),
+        htmlspecialchars($accompte),
         htmlspecialchars($note),
         htmlspecialchars("NON PAYE"),
         htmlspecialchars("badge badge-light-danger badge-pill"),
         htmlspecialchars($_POST['etiquette']),
+        htmlspecialchars($_POST['descrip']),
         htmlspecialchars($_SESSION['id_session']) //$_SESSION
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $numerosfacture);
+        $pdoA->bindValue(':numeros', $numeroarticle);
         $pdoA->execute();
 
         //calculs
@@ -101,7 +109,7 @@ ini_set('display_startup_errors', TRUE);
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numerosfacture']); 
+        $req->bindValue(':numeros',$_POST['numeroarticle']); 
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
