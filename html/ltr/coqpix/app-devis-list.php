@@ -9,7 +9,7 @@ require_once 'php/config.php';
     $pdoStat = $bdd->prepare('SELECT * FROM devis WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
     $pdoStat->execute();
-    $facture = $pdoStat->fetchAll();
+    $devis = $pdoStat->fetchAll();
 
     $pdoStatr = $bdd->prepare('SELECT * FROM devis WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
@@ -21,6 +21,12 @@ require_once 'php/config.php';
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
+    
+    $pdoStatr = $bdd->prepare('SELECT refdevis,numerosdevis FROM devis WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $fu = $pdoStatr->fetch();
+    $nom = $fu['refdevis'];
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -146,18 +152,10 @@ require_once 'php/config.php';
                         ?>
                         <div class="col">
                             <div class="invoice-create-btn mb-1">
-                                <a href="app-devis-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "Rt82u";}else{echo "y44vJ";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un devis</a>
+                                <a href="app-devis-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un devis</a>
                             </div>
                         </div>
-                        <div class="col text-right">
-                            <div class="invoice-create-btn mb-1">
-                                <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
-                                   Auto-incrementation sous la forme FAC-(année)(numéro)<br>
-                                   <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
-                                   <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
-                                </p>
-                            </div>
-                        </div>
+                        
                     </div>
                     
                     <!-- Options and filter dropdown button-->
@@ -178,7 +176,10 @@ require_once 'php/config.php';
                                     <th></th>
                                     <th></th>
                                     <th>
-                                        <span class="align-middle">Numéro</span>
+                                       Numéro Devis
+                                    </th>
+                                    <th>
+                                        <span class="align-middle">Référence</span>
                                     </th>
                                     <th>Valeur</th>
                                     <th>Date</th>
@@ -186,55 +187,58 @@ require_once 'php/config.php';
                                     <th>Etiquette</th>
                                     <th>Statut</th>
                                     <th>Action</th>
+                                 
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($facture as $factures):
-                            $numeros = $factures['numerosdevis'];
+                            
+                            <?php foreach ($devis as $deviss): 
+                                $ref = $deviss['numerosdevis'];
+                                $numeros = $deviss['id'];
                                 try{
-  
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='devisvente' ) T ";
+                                    
+                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='devisvente' ) T";
   
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-                                $req->bindValue(':numeros',$numeros); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
                                     echo "Erreur " . $e->getMessage();
                                 }
+                                
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
-
-                            ?>
+                                
+                            ?> 
                                 <tr>
                                     <td></td>
-                                    
                                     <td></td>
+                                    <td>DEV-<?= $deviss['id'] ?></td>
                                     <td>
-                                        <a href="app-devis-view.php?numdevis=<?= $factures['id'] ?>">DEV-<?= $factures['numerosdevis'] ?></a>
+                                        <a href="app-invoice-view.php?numdevis=<?= $deviss['id'] ?>"><?= $deviss['refdevis'],$ref ?></a>
                                     </td>
-                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
-                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
-                                    <td><span class="invoice-customer"><?= $factures['devispour'] ?></span></td>
+                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $deviss['monnaie'] ?></span></td>
+                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($deviss['dte'])); ?></small></td>
+                                    <td><span class="invoice-customer"><?= $deviss['devispour'] ?></span></td>
                                     <td>
                                         <span class="bullet bullet-success bullet-sm"></span>
-                                        <small class="text-muted"><?= $factures['etiquette'] ?></small>
+                                        <small class="text-muted"><?= $deviss['etiquette'] ?></small>
                                     </td>
-                                    <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_devis'] ?></span></td>
+                                    <td><span class="<?= $deviss['status_color'] ?>"><?= $deviss['status_devis'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-devis-view.php?numdevis=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-invoice-view.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-devis-edit.php?numdevis=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <a href="app-invoice-edit.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
-                                            <a href="php/dev-inv.php?id=<?= $factures['id'] ?>"
+                                            <a href="php/inv-dev.php?id=<?= $deviss['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_dev.php?numdevis=<?= $factures['numerosdevis'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="php/delete_dev.php?numdevis=<?= $deviss['numerosdevis'] ?>&id=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>

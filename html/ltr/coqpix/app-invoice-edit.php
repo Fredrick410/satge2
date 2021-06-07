@@ -220,12 +220,24 @@ require_once 'php/config.php';
                                 <form autocomplete="off" action="php/edit_facture.php" method="POST">
                                     <input type="hidden" name="numfacture" value="<?= $facture['id'] ?>">
                                         <div class="row mx-0">
-                                            <div class="col-xl-4 col-md-12 d-flex align-items-center pl-0">
+                                        
+                                            <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
+                                                        <h6 class="invoice-number mr-75">
+                                                                        N°
+														</h6>
+														<input type="number"  value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+                                                <h6 class="invoice-number mr-75">
+                                                                Référence
+                                                            </h6>
+                                                            <input name="reffacture" id="reffacture" type="text" value="<?= $facture['reffacture'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
+                                                            <p style='position: relative; top: 7px;'>
+                                                                &nbsp&nbsp&nbsp 
+                                                            </p>
                                                 <h6 class="invoice-number mr-75">Facture N°</h6>
-                                                <input name="numerosfacture" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosfacture'] ?>" disabled>
+                                                <input name="numerosfacture" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosfacture'] ?>" >
                                                 <input type="hidden" name="numerosfacture" value="<?= $facture['numerosfacture'] ?>">
                                             </div>
-                                            <div class="col-xl-8 col-md-12 px-0 pt-xl-0 pt-1">
+                                            <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
                                                 <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
                                                     <div class="d-flex align-items-center">
                                                         <small class="text-muted mr-75">*Date : </small>

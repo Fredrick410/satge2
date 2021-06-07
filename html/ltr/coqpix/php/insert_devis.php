@@ -7,12 +7,12 @@ ini_set('display_startup_errors', TRUE);
 
     // vide
 
-    if($_POST['numerosfacture'] == ""){
-        $numerosfacture = "000d";
+    if($_POST['numerosdevis'] == ""){
+        $numerosdevis = "000d";
     }else{
-        $numerosfacture = $_POST['numerosfacture'];
+        $numerosdevis = $_POST['numerosdevis'];
     }
-
+    $numeroarticle = $_POST['numeroarticle'];
     if($_POST['dte'] == ""){
         $dte = "00-00-00";
     }else{
@@ -25,10 +25,10 @@ ini_set('display_startup_errors', TRUE);
         $nomproduit = $_POST['nomproduit'];
     }
 
-    if($_POST['facturepour'] == ""){
-        $facturepour = "Facture pour";
+    if($_POST['devispour'] == ""){
+        $devispour = "devis pour";
     }else{
-        $facturepour = $_POST['facturepour'];
+        $devispour = $_POST['devispour'];
     }
 
     if($_POST['adresse'] == ""){
@@ -61,31 +61,48 @@ ini_set('display_startup_errors', TRUE);
         $note = $_POST['note'];
     }
 
+    if($_POST['accompte'] == ""){
+        $accompte = "O";
+    }else{
+        $accompte = $_POST['accompte'];
+    }
+
+   
+    
     // end vide 
 
-    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, nomproduit, devispour, adresse, email, tel, departement, modalite, monnaie, note, status_devis, status_color, etiquette, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    if($_POST['statut'] == "NON PAYE"){
+        $color = "badge badge-light-danger badge-pill";
+    }else{
+        $color = "badge badge-light-success badge-pill";
+    }
+
+    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, nomproduit, refdevis, devispour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_devis, status_color, etiquette, id_session, descrip) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
-        htmlspecialchars($numerosfacture),
+        htmlspecialchars($numerosdevis),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
         htmlspecialchars($nomproduit),
-        htmlspecialchars($facturepour),
+        htmlspecialchars($_POST['refdevis']),
+        htmlspecialchars($devispour),
         htmlspecialchars($adresse),
         htmlspecialchars($email),
         htmlspecialchars($tel),
         htmlspecialchars($departement),
         htmlspecialchars($_POST['modalite']),
         htmlspecialchars($_POST['monnaie']),
+        htmlspecialchars($accompte),
         htmlspecialchars($note),
-        htmlspecialchars("NON PAYE"),
-        htmlspecialchars("badge badge-light-danger badge-pill"),
+        htmlspecialchars($_POST['statut']),
+        htmlspecialchars($color),
         htmlspecialchars($_POST['etiquette']),
-        htmlspecialchars($_SESSION['id_session']) //$_SESSION
+        htmlspecialchars($_SESSION['id_session']),//$_SESSION
+        htmlspecialchars($_POST['descrip']) 
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $numerosfacture);
+        $pdoA->bindValue(':numeros', $numeroarticle);
         $pdoA->execute();
 
         //calculs
@@ -101,7 +118,7 @@ ini_set('display_startup_errors', TRUE);
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numerosfacture']); 
+        $req->bindValue(':numeros',$_POST['numeroarticle']); 
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
@@ -110,17 +127,17 @@ ini_set('display_startup_errors', TRUE);
 
         $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;       
 
-        $facture_nb = $calculs['facture_nb'];
+        $facture_nb = $calculs['facture_nb'] + 1;
+        $facture_all = $calculs['facture_all'] + $montant_t;
         $facture_all = $calculs['facture_all'];
-        $devis_all = $calculs['devis_all'] + $montant_t;
-        $lastdte = $calculs['lastdte'];
+        $lastdte = date('d-m-Y');  // $calculs['lastdte'] pour autre de facture
 
-        $pdo = $bdd->prepare('UPDATE calculs SET facture_nb=:facture_nb, facture_all=:facture_all, devis_all=:devis_all, lastdte=:lastdte WHERE id_session=:num LIMIT 1');
+        $pdo = $bdd->prepare('UPDATE calculs SET facture_nb=:facture_nb, facture_all=:facture_all, facture_all=:facture_all, lastdte=:lastdte WHERE id_session=:num LIMIT 1');
     
         $pdo->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdo->bindValue(':facture_nb', $facture_nb);
         $pdo->bindValue(':facture_all', $facture_all);
-        $pdo->bindValue(':devis_all', $devis_all);
+        $pdo->bindValue(':facture_all', $facture_all);
         $pdo->bindValue(':lastdte', $lastdte);
         $pdo->execute();
 
@@ -129,6 +146,7 @@ ini_set('display_startup_errors', TRUE);
         
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
         $pdoDel->execute();
+
         
 
     header('Location: ../app-devis-list.php');

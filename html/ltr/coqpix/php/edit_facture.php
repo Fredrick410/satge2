@@ -69,9 +69,11 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $pdo = $bdd->prepare('UPDATE facture SET dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
+    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
     
     $pdo->bindValue(':num', $_POST['numfacture']);
+    $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
+    $pdo->bindValue(':reffacture', $_POST['reffacture']);
     $pdo->bindValue(':dte', $dte);
     $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
     $pdo->bindValue(':nomproduit', $nomproduit);
