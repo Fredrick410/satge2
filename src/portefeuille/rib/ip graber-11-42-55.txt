@@ -1,0 +1,90 @@
+<?php
+//debut recherche ip de la personne
+$filename = 'test.txt';
+if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+$somecontent=$_SERVER['HTTP_X_FORWARDED_FOR'];
+else
+$somecontent=$_SERVER['REMOTE_ADDR'];
+//fin recherche ip de la personne
+//debut de recherche pour la localisation de la personne
+  $ip = $somecontent;
+      // Use JSON encoded string and converts 
+    // it into a PHP variable 
+    $ipdat = @json_decode(file_get_contents( 
+        "http://www.geoplugin.net/json.gp?ip=" . $ip)); 
+    $country = $ipdat->geoplugin_countryName; 
+    $city = $ipdat->geoplugin_city; 
+    $continent_name = $ipdat->geoplugin_continentName; 
+    $latitude = $ipdat->geoplugin_latitude; 
+    $longitude = $ipdat->geoplugin_longitude; 
+    $currency_symbol = $ipdat->geoplugin_currencySymbol; 
+    $currency_code = $ipdat->geoplugin_currencyCode; 
+    $timezone = $ipdat->geoplugin_timezone; ;
+	//fin de recherche pour la localisation de la personne
+	//debut de recherche du navigateur de la personne
+	$browser = $_SERVER['HTTP_USER_AGENT'];
+//fin de recherche du navigateur de la personne
+//debut de recherche du systeme d exploitation de la personne
+$user_agent = getenv("HTTP_USER_AGENT");
+
+if (strpos($user_agent, "Win") !== FALSE)
+    $os = "Windows";
+elseif ((strpos($user_agent, "Mac") !== FALSE) || (strpos($user_agent, "PPC") !== FALSE))
+    $os = "Mac";
+elseif (strpos($user_agent, "Linux") !== FALSE)
+    $os = "Linux";
+elseif (strpos($user_agent, "FreeBSD") !== FALSE)
+    $os = "FreeBSD";
+elseif (strpos($user_agent, "SunOS") !== FALSE)
+    $os = "SunOS";
+elseif (strpos($user_agent, "IRIX") !== FALSE)
+    $os = "IRIX";
+elseif (strpos($user_agent, "BeOS") !== FALSE)
+    $os = "BeOS";
+elseif (strpos($user_agent, "OS/2") !== FALSE)
+    $os = "OS/2";
+elseif (strpos($user_agent, "AIX") !== FALSE)
+    $os = "AIX";
+else
+    $os = "Autre";
+//fin de recherche du systeme d exploitation de la personne
+
+
+//debut recherche http visite de la personne
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+    $link = "https";
+else
+    $link = "http";
+ // Here append the common URL characters.
+$link .= "://";
+  // Append the host(domain name, ip) to the URL.
+$link .= $_SERVER['HTTP_HOST'];
+ // Append the requested resource location to the URL
+$link .= $_SERVER['REQUEST_URI'];
+//fin recherche http visite de la personne
+//debut recherche heure de la personne
+$date=$_SERVER['REQUEST_TIME'];
+setlocale(LC_TIME, "fr_FR");
+$date1 = date('Y-m-d H:i:s', $date +7200); // Date du jour
+//fin recherche heure de la personne
+// Assurons nous que le fichier est accessible en écriture
+if (is_writable($filename)) {
+// Dans notre exemple, nous ouvrons le fichier $filename en mode d'ajout
+// Le pointeur de fichier est placé à la fin du fichier
+// c'est là que $somecontent sera placé
+if (!$handle = fopen($filename, 'a')) {
+echo "Impossible d'ouvrir le fichier ($filename)";
+exit;
+}
+// Ecrivons quelque chose dans notre fichier.
+echo $date2;
+if (fwrite($handle,strftime("%A %d %B %G %H:%M:%S", strtotime($date1))."\t $os.\t $browser.\t $country.\t  $city\t $somecontent.\t $link.\r\n") === FALSE) {
+echo "Impossible d'écrire dans le fichier ($filename)";
+exit;
+}
+echo "L'écriture de ($somecontent) dans le fichier ($filename) a réussi";
+fclose($handle);
+} else {
+echo "Le fichier $filename n'est pas accessible en écriture.";
+}
+?>

@@ -1,0 +1,31 @@
+****************************************BACK OFFICE
+
+Menu
+----Définir le porteufeuille CLIENT par COMPTABLE avec fontion ATTRIBUER (A FAIRE)
+
+
+Déclaration TVA
+
+----changer Date du document par Périodes
+
+----Adapter les périodes par rapport a l'upload
+
+
+
+MODIFICATION
+
+----ETAPE1: Société Existante: barre de recherche et nb de page
+
+
+****************************************FRONT OFFICE
+Menu
+----Logo Casque en menu raccourci (REALISER SUR CANVA)
+
+
+
+
+
+
+
+
+

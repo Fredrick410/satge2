@@ -1,0 +1,40 @@
+****************************************BACK OFFICE
+
+Menu
+----Définir le porteufeuille CLIENT par COMPTABLE avec fontion ATTRIBUER (A FAIRE)
+
+
+
+Déclaration TVA
+
+----changer Date du document par Périodes
+
+----Adapter les périodes par rapport a l'upload
+
+
+
+MODIFICATION
+----ETAPE1: Société Existante: barre de recherche et nb de page
+---- Rajouter FRAIS, HONORAIRE 
+ 
+----ETAPE2: "Selectionnez" par "Selectionner", "Session" par "Cession", "Age" par "A.G.E", "CerfaMBE" par "Cerfa MBE"
+"id" par "ID", "PS : Les changement concernant l'avancement de la barre de progression, s'applique lors de l'enregistrement !" par "PS : Les changements concernant l'avancement de la barre de progression, s'appliquent lors de l'enregistrement ! 
+----Affichage du document uploader en cliquant sur OEIL sur nouvel Onglet 
+
+ETAPE3: Ajouter Dépot et Article 3
+
+
+
+
+****************************************FRONT OFFICE
+Menu
+----Logo Casque en menu raccourci (REALISER SUR CANVA)
+
+
+
+
+
+
+
+
+

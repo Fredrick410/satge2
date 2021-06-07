@@ -1,0 +1,44 @@
+Animal : 1 produits sans changement de quantité
+
+fleurs: 1g , 5g , 10g , 20g sauf pour le trim 5 10 20g
+
+Huiles et eliqude : filtrage par rapport au poucentage  
+
+pllen et resine : idem que fleurs
+
+the etc : 50g, 100, 250g 
+*
+
+Remplacer pour thé etc quantite par les unites de mesures
+
+
+--------------------------
+1 : doc 
+
+
+--------------------
+Faire la baniere de pub
+
+
+-------------------
+Selectionner 3 images pour le slide
+
+
+thé
+
+73 	Infusion absolu d'agrumes 	Infusion absolu d'agrumes 	ETI01 	5.44 	13.9 	0.67 	50g 	0 	Infusion
+60 	Rooibos vanille fraise 	Rooibos vanille fraise 	ETR04 	5.44 	13.9 	0.67 	50g 	0 	Rooibos
+66 	Thé vert citron 	Thé vert citron 	ETV07 	5.44 	13.9 	0.67 	50g 	0 	Rooibos
+
+fleur
+
+153 	Girl scoot cookies 	Girl scoot cookies 	EFG09 	4.6 	12 	0.63 	1g 	0 	Fleur
+119 	Lemon haze 	Lemon haze 	EFO14 	21.2 	49.9 	2.6 	5g 	0 	Fleur
+149 	Strawberry diesel 	Strawberry diesel 	EFG05 	4.6 	12 	0.63 	1g 	0 	Fleur
+
+huile
+
+11 	Huile focus daily 10% 	Huile focus daily 	EHS02 	19.28 	44.9 	2.34 	1000mg/ 10ml 	0 	Huile
+24 	Huile lemon ginger 40% 	Huile lemon ginger 	EHS15 	60.74 	119.9 	6.25 	4000mg/ 10ml 	0 	Huile
+9 	Huile collection coco 40% 	EHCC04 	EHCC04 	57.62 	119.9 	6.25 	4000mg/ 10ml 	0 	Huile
+

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="loading" lang="fr" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Bientôt</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/semi-dark-layout.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/coming-soon.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column" data-layout="dark-layout">
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+            </div>
+            <div class="content-body">
+                <!-- coming soon start -->
+                <section>
+                    <div class="row flexbox-container">
+                        <div class="col-md-6 col-12 text-center p-3">
+                            <h1 class="error-title mb-2">Bientôt disponible</h1>
+                            <style>
+                                .size{
+                                    font-size: 30px;
+                                }
+                            </style>
+                            <p class="mb-1 size">PIX travaille dur pour vous préparer une surprise!</p>
+
+                            <!-- <div class="card-text text-center coming-soon pt-2 d-flex justify-content-center mb-2" id="compte_a_rebours"><noscript>Fin de l'évènement le 1er janvier 2018.</noscript></div>
+                                <script type="text/javascript">
+                                function compte_a_rebours()
+                                {
+                                var compte_a_rebours = document.getElementById("compte_a_rebours");
+
+                                var date_actuelle = new Date();
+                                var date_evenement = new Date("Dec 31 00:00:00 2020");
+                                var total_secondes = (date_evenement - date_actuelle) / 1000;
+
+                                var prefixe = "";
+                                if (total_secondes < 0)
+                                {
+                                    prefixe = "Compte à rebours terminé il y a "; // On modifie le préfixe si la différence est négatif
+                                    total_secondes = Math.abs(total_secondes); // On ne garde que la valeur absolue
+                                }
+
+                                if (total_secondes > 0)
+                                {
+                                    var jours = Math.floor(total_secondes / (60 * 60 * 24));
+                                    var heures = Math.floor((total_secondes - (jours * 60 * 60 * 24)) / (60 * 60));
+                                    minutes = Math.floor((total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60))) / 60);
+                                    secondes = Math.floor(total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60 + minutes * 60)));
+
+                                    var et = "";
+                                    var mot_jour = "Jours&nbsp&nbsp";
+                                    var mot_heure = "Heures&nbsp&nbsp";
+                                    var mot_minute = "Minutes&nbsp&nbsp";
+                                    var mot_seconde = "Sec";
+
+                                    if (jours == 0)
+                                    {
+                                        jours = '';
+                                        mot_jour = '';
+                                    }
+                                    else if (jours == 1)
+                                    {
+                                        mot_jour = "jours,";
+                                    }
+
+                                    if (heures == 0)
+                                    {
+                                        heures = '';
+                                        mot_heure = '';
+                                    }
+                                    else if (heures == 1)
+                                    {
+                                        mot_heure = "heures,";
+                                    }
+
+                                    if (minutes == 0)
+                                    {
+                                        minutes = '';
+                                        mot_minute = '';
+                                    }
+                                    else if (minutes == 1)
+                                    {
+                                        mot_minute = "minutes,";
+                                    }
+
+                                    if (secondes == 0)
+                                    {
+                                        secondes = '';
+                                        mot_seconde = '';
+                                        et = '';
+                                    }
+                                    else if (secondes == 1)
+                                    {
+                                        mot_seconde = "Sec";
+                                    }
+
+                                    if (minutes == 0 && heures == 0 && jours == 0)
+                                    {
+                                        et = "";
+                                    }
+
+                                    compte_a_rebours.innerHTML = prefixe + jours + ' ' + mot_jour + ' ' + heures + ' ' + mot_heure + ' ' + minutes + ' ' + mot_minute + ' ' + et + ' ' + secondes + ' ' + mot_seconde;
+                                }                                                   
+                                else
+                                {
+                                    compte_a_rebours.innerHTML = 'Compte à rebours terminé.';
+                                }
+
+                                var actualisation = setTimeout("compte_a_rebours();", 1000);
+                            }
+                            compte_a_rebours();
+                            </script> -->
+
+
+
+                            <!-- <form>
+                                <fieldset class="form-group position-relative w-75 mx-auto">
+                                    <input type="text" class="form-control round form-control-lg shadow pl-2" placeholder="Email">
+                                    <button class="btn btn-primary cs-btn-notify round position-absolute" type="button">Notify</button>
+                                </fieldset>
+                            </form> -->
+
+
+
+                        </div>
+                        <div class="col-md-6 d-lg-block d-none p-2">
+                            <img class="img-fluid cs-effect cs-effect-bounce" src="../../../app-assets/images/pages/comingsoon.png" alt="coming soon" width="650">
+                        </div>
+                    </div>
+                </section>
+                <!--/ coming soon end -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
+    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="../../../app-assets/vendors/js/coming-soon/jquery.countdown.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
+    <script src="../../../app-assets/js/core/app-menu.js"></script>
+    <script src="../../../app-assets/js/core/app.js"></script>
+    <script src="../../../app-assets/js/scripts/components.js"></script>
+    <script src="../../../app-assets/js/scripts/footer.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="../../../app-assets/js/scripts/pages/coming-soon.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+
+</html>

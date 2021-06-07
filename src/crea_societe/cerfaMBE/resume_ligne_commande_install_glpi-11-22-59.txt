@@ -1,0 +1,45 @@
+
+INSTALLATION apache2
+____________________
+apt install apache2
+
+
+INSTALLATION MARIADB
+____________________
+apt install mariadb-server
+mysql_secure_installation 
+(on répond oui à chaque question...)
+
+CREATION UTILISATEUR BDD
+________________________
+mysql
+(là on est sur l'invite de commande mysql et on rentre les commandes suivantes)
+> use mysql
+[(mysql)] > create user 'glpi'@'localhost' identified by 'glpi';
+[(mysql)] > grant all on *.* to 'glpi'@'localhost';
+[(mysql)] > flush privileges;
+[(mysql)] > exit
+
+
+INSTALLATION PHP (minimum version 7.2)
+______________________________________
+apt search php7
+(si php dispo en version < 7.2 alors rajouter le dépôt suivant, sinon passer directement à apt install php)
+apt install apt-transport-https lsb-release ca-certificates
+wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+apt update
+apt search php7
+apt install php
+php -v
+(installation des prérequis glpi, extensions php manquantes)
+apt install php7.4-mysqli
+apt install php7.4-mbstring php7.4-curl php7.4-gd php7.4-xml php7.4-intl php7.4-ldap php7.4-apcu
+apt install php-cas php7.4-zip php7.4-bz2
+apt install php7.4-xmlrpc
+systemctl restart apache2
+
+
+Réglage des droits répertoire /var/www/html/glpi
+________________________________________________
+chown -R www-data:www-data glpi

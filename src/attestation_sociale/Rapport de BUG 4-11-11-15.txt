@@ -1,0 +1,10 @@
+*******BACKOFFICE
+
+*******CREA
+Changer couleur icone chat en Noir (invisible)
+
+*******Modification
+Dépot Etape 3 dans Etape 1
+
+*******Cloud PIX
+probleme affichage facture dans ACHAT; VENTE:  voir IKAM SEKURITY

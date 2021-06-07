@@ -1,0 +1,92 @@
+<?php 
+require_once 'php/verif_session_connect_admin.php';
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+require_once 'php/config.php';
+
+    $pdoSta = $bdd->prepare('SELECT * FROM bulletin_salaire WHERE name_membre=:document');
+    $pdoSta->bindValue(':document',$_GET['document']);
+    $pdoSta->execute();
+    $bulletin = $pdoSta->fetch();
+    require('fpdf.php');
+   
+
+    $pdf = new FPDF();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial','B',16);
+
+    $pdf->SetLineWidth(2);
+    $pdf->SetDrawColor(0 , 197, 255);
+    $pdf->Image('../../../app-assets/images/logo/coqpix2.png',100,10,-200);
+    
+    $pdf->Cell(40,10,$bulletin['name_entreprise']);
+    $pdf->Line(0, 23, 210, 23);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(40,10,'Nom Prenom :');
+    $pdf->Cell(40,10,$bulletin['name_membre']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(60,10,'Date de la demande :');
+    $pdf->Cell(40,10,$bulletin['date_demande']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(50,10,'Statut bulletin :');
+    $pdf->Cell(40,10,$bulletin['statut_bulletin']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(40,10,'Fichiers Bulletin :');
+    $pdf->Cell(40,10,$bulletin['files_bulletin']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(50,10,'Secteur d activité :');
+    $pdf->Cell(40,10,$bulletin['secteur_activité']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(50,10,'Heure de base :');
+    $pdf->Cell(15,10,$bulletin['heuredebase']);$pdf->Cell(40,10,'€');
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(60,10,'Congés Sans Solde :');
+    $pdf->Cell(40,10,$bulletin['congessanssolde']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(70,10,'Heures supplémentaires :');
+    $pdf->Cell(40,10,$bulletin['heuresupp_tp']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(70,10,'Heures complémentaires :');
+    $pdf->Cell(40,10,$bulletin['heurecompl_tpartiel']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(50,10,'Heures de nuit :');
+    $pdf->Cell(40,10,$bulletin['heuredenuit']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(30,10,'Repas :');
+    $pdf->Cell(40,10,$bulletin['repas']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(30,10,'Primes :');
+    $pdf->Cell(40,10,$bulletin['primes']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(80,10,'Remboursement Transport :');
+    $pdf->Cell(40,10,$bulletin['remboursementtransport']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(50,10,'Congés Payés :');
+    $pdf->Cell(40,10,$bulletin['congespayes']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(60,10,'Congés Maternité :');
+    $pdf->Cell(40,10,$bulletin['congesmaternite']);
+    $pdf->Ln(15);
+    $pdf->Cell(60,10,'');
+    $pdf->Cell(60,10,'Congés Paternité :');
+    $pdf->Cell(40,10,$bulletin['congespaternite']);
+    $pdf->Line(0, 270, 210, 270);
+    $pdf->Output();
+
+?>

@@ -1,0 +1,18 @@
+*** Création BACK ***
+- les notifications d'en haut empêche la barre déroulante d'aller tout en bas (fait) 
+- le systeme de coche n'est pas fonctionnel (valide)
+- il n'y a pas de fonction suppression de dossier (fait)
+- affichage du systeme de chat avec le client (Pas compris)
+- le tri par étiquette ne fonctionne pas (fait)
+- Orthographe: "L'Icône diamant signifie que les frais et les honoraires de créa ont été payés" 
+               "Cette Icône va vous permettre de suivre l'avancement du dossier en 3 étapes" (fait)
+-les notifications d'aides doivent disparaitre dans une icone "?" (Pas compris)
+
+A faire:
+- notification: des documents reçus et des messages chats de création (fait)
+- Créa validé: dans créa validé (Fais)
+- Important: rendre les favoris importants fonctionnels (Fonctionnel)
+
+*** Outils FRONT ****
+-les images dans Outils n'apparaisse pas (fait) 
+-l'onglet Outils n'apparait pas dans le menu selon les onglets selectionnés ( il n'apparait pas avec Sociale et Fiscale ) (fait)

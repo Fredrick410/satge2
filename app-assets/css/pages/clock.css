@@ -1,0 +1,52 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:700);
+
+#clock {
+  position: relative;
+  top: 30px;
+  left: 50%;
+  -webkit-transform: translateX(-50%) rotate(180deg);
+          transform: translateX(-50%) rotate(180deg);
+  width: 200px;
+  height: 200px;
+  background-color: #0B1016;
+  border-radius: 50%;
+}
+#clock #secondes, #clock #minutes, #clock #heures {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+#clock #secondes {
+  width: 2px;
+  height: 40px;
+  -webkit-transform-origin: 50% 0;
+          transform-origin: 50% 0;
+  background-color: #E73A2C;
+}
+#clock #minutes {
+  width: 4px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: #373C42;
+  -webkit-transform-origin: 50% 0;
+          transform-origin: 50% 0;
+}
+#clock #heures {
+  width: 5px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #373C42;
+  -webkit-transform-origin: 50% 0;
+          transform-origin: 50% 0;
+}
+
+img.img_one{
+  position: relative;
+  top: 0px;
+  left: 50%;
+  -webkit-transform: translateX(-50%) rotate(180deg);
+          transform: translateX(-50%) rotate(180deg);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}

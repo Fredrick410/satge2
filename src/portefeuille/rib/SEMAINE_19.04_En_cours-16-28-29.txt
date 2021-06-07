@@ -1,0 +1,40 @@
+**Template TASTYC**
+réalisation de la page home
+Nettoyer le menu - HOME CONTACT BLOG ABOUT / RENOMME RESERVATION 
+Changer phrase (Content de vous...)
+
+Description en 3 temp (ACCUEIL)
+-la tablette va vous permettre de commander sans l'aide d'un serveur
+-la tablette va vous permettre de visualiser les menus du restaurant
+-la tablette va vous permettre Filtrer le type de repa ex : Entrée, Plat, Desserts.
+
+POURQUOI LES GENS...
+
+Puissance => Ergonomie 
+
+Descrip app : app dispo sur le playstore, pour les apppareils android 
+
+=> Enlever bouton App store
+
+
+**Cuba**
+Espace de connexion pour admin 
+	- PAGE DE LOGIN/ SIGN IN (Fait)
+	- LOCK PAGE
+	- FORGET PASSWORD
+	- MAINTENANCE (Fait) Changer couleur bouton (orange)
+
+**E-COMMERCE PRODUCT**
+	- PAGE DES PRODUITS / (Prendre une image ) %%a l'horizontal
+enlever les traits violet
+
+
+Menu backend
+
+- Dashboard / dashboard.html
+- Mes commandes / myorders.html
+- Mes menus / mymenus.html
+- Mes tablettes mytablets.html
+- Mes themes / mythemes.html
+- Statistiques / statistics.html
+- Boutiques / shop.html

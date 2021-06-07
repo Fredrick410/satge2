@@ -1,0 +1,19 @@
+Mettre en place :
+	BT Arret 
+	   Redemarer
+   	   Veille
+
+
+Tache obligatoire : 
+
+	- Création cassier judiciaire
+	- View cassier
+	- Création de rapport
+	- Envoye de fichier
+	- Parametre
+		- Fond ecran
+		- Theme windows
+		- police d'ecriture
+	- Image dans galerie
+	
+	

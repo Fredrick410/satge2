@@ -1,0 +1,13 @@
+*******BACKOFFICE
+
+*******CREA
+bouton escape dépot ( pas de possibilité de revenir en arriere )
+select filtre type de société pour affichage par type de société
+Important filtre non fonctionel
+Changer couleur icone chat en Noir (invisible)
+
+*******Modification
+Dépot Etape 3 dans Etape 1
+
+*******Cloud PIX
+probleme affichage facture dans ACHAT; VENTE:  voir IKAM SEKURITY
