@@ -216,7 +216,7 @@ require_once 'php/config.php';
                                     <td></td>
                                     <td>DEV-<?= $deviss['id'] ?></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numdevis=<?= $deviss['id'] ?>"><?= $deviss['refdevis'],$ref ?></a>
+                                        <a href="app-devis-view.php?numdevis=<?= $deviss['id'] ?>"><?= $deviss['refdevis'],$ref ?></a>
                                     </td>
                                     <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $deviss['monnaie'] ?></span></td>
                                     <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($deviss['dte'])); ?></small></td>
@@ -228,10 +228,10 @@ require_once 'php/config.php';
                                     <td><span class="<?= $deviss['status_color'] ?>"><?= $deviss['status_devis'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-invoice-view.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-devis-view.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-invoice-edit.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <a href="app-devis-edit.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
                                             <a href="php/inv-dev.php?id=<?= $deviss['id'] ?>"
