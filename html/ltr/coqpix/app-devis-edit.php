@@ -19,7 +19,7 @@ require_once 'php/config.php';
     $pdoS->bindValue(':num',$_GET['numdevis']);
     $pdoS->execute(); 
     $facture = $pdoS->fetch();
-    $numeros = $facture['numerosdevis'];
+    $numeros = $facture['id'];
 
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="devisvente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
@@ -222,38 +222,54 @@ require_once 'php/config.php';
                                     </div>
                                 <form autocomplete="off" action="php/edit-devis.php" method="POST">
                                     <input type="hidden" name="numdevis" value="<?= $facture['id'] ?>">
-                                        <div class="row mx-0">
-                                            <div class="col-xl-4 col-md-12 d-flex align-items-center pl-0">
-                                                <h6 class="invoice-number mr-75">Devis N°</h6>
-                                                <input name="numerosdevis" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosdevis'] ?>" disabled>
-                                                <input type="hidden" name="numerosdevis" value="<?= $facture['numerosdevis'] ?>">
-                                            </div>
-                                            <div class="col-xl-8 col-md-12 px-0 pt-xl-0 pt-1">
-                                                <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
-                                                    <div class="d-flex align-items-center">
-                                                        <small class="text-muted mr-75">*Date : </small>
-                                                        <fieldset class="d-flex ">
-                                                            <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dte'] ?>">
-															
-                                                        </fieldset>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <small class="text-muted mr-75">
-                                                        Date d'échéance : </small>
-                                                        <fieldset class="d-flex justify-content-end">
-                                                            <input name="dateecheance" id="dateecheance" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dateecheance'] ?>">
-                                                        </fieldset>
-                                                    </div>
+                                    <div class="row mx-0">
+                                        
+                                        <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
+                                                    <h6 class="invoice-number mr-75">
+                                                                    N°
+                                                    </h6>
+                                                    <input type="text" name="numeroarticle" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+                                            <h6 class="invoice-number mr-75">
+                                                            Référence
+                                                        </h6>
+                                                        <input name="refdevis" id="refdevis" type="text" value="<?= $facture['refdevis'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
+                                                        <p style='position: relative; top: 7px;'>
+                                                            &nbsp&nbsp&nbsp 
+                                                        </p>
+                                            <h6 class="invoice-number mr-75">Devis N°</h6>
+                                            <input type="number" name="numerosdevis" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosdevis'] ?>" >
+                                            
+                                        </div>
+                                        <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
+                                            <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
+                                                <div class="d-flex align-items-center">
+                                                    <small class="text-muted mr-75">*Date : </small>
+                                                    <fieldset class="d-flex ">
+                                                        <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dte'] ?>">
+                                                    </fieldset>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <small class="text-muted mr-75">
+                                                    Date d'échéance : </small>
+                                                    <fieldset class="d-flex justify-content-end">
+                                                        <input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dateecheance'] ?>">
+                                                    </fieldset>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                         <hr>
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
                                             <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
                                                 <h4 class="text-primary">Devis</h4>
                                                 <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du devis" value="<?= $facture['nomproduit'] ?>"> 
+                                                <div class="form-group">
+                                                            <label for="exampleFormControlTextarea1">Description</label>
+                                                            <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $facture['descrip']?></textarea>
+                                                        </div> 
                                             </div>
+
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
                                             </div>
@@ -413,7 +429,7 @@ require_once 'php/config.php';
                                                 <div class="col p-0">
                                                     <button class="btn btn-light-primary btn-sm" type="button">
                                                         <i class="bx bx-plus"></i>
-                                                        <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+                                                        <span type="button" name="insert" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
                                                     </button>
                                                 </div>
                                             </div>

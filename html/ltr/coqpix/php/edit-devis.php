@@ -6,13 +6,18 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
     // vide
-
+    if($_POST['numerosdevis'] == ""){
+        $numerosfacture = "000d";
+    }else{
+        $numerosfacture = $_POST['numerosdevis'];
+    }
+    $numeroarticle = $_POST['numeroarticle'];
     if($_POST['dte'] == ""){
         $dte = "00-00-00";
     }else{
         $dte = $_POST['dte'];
     }
-
+    
     if($_POST['nomproduit'] == ""){
         $nomproduit = "nom produit";
     }else{
@@ -57,11 +62,11 @@ ini_set('display_startup_errors', TRUE);
 
     // end vide 
 
-    $pdo = $bdd->prepare('UPDATE devis SET dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, note=:note, status_devis=:status_devis, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
-    
-    $pdo->bindValue(':num', $_POST['numdevis']);
+    $pdo = $bdd->prepare('UPDATE devis SET numerosdevis=:numerosdevis, dte=:dte, dateecheance=:dateecheance, refdevis=:refdevis, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, note=:note, status_devis=:status_devis, status_color=:status_color, descrip=:descrip, etiquette=:etiquette WHERE id=:num LIMIT 1');
+    $pdo->bindValue(':numerosdevis', $numerosfacture);
     $pdo->bindValue(':dte', $dte);
     $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+    $pdo->bindValue(':refdevis', $_POST['refdevis']);
     $pdo->bindValue(':nomproduit', $nomproduit);
     $pdo->bindValue(':devispour', $facturepour);
     $pdo->bindValue(':adresse', $adresse);
@@ -73,13 +78,15 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':note', $note);
     $pdo->bindValue(':status_devis',"NON PAYE");
     $pdo->bindValue(':status_color', "badge badge-light-danger badge-pill");
+    $pdo->bindValue(':descrip', $_POST['descrip']);
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
+    $pdo->bindValue(':num', $_POST['numeroarticle']);
     
     $pdo->execute();
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $_POST['numerosdevis']);
+        $pdoA->bindValue(':numeros', $numeroarticle);
         $pdoA->execute();
 
     //calculs
@@ -95,7 +102,7 @@ ini_set('display_startup_errors', TRUE);
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numerosdevis']); 
+        $req->bindValue(':numeros',$numdevis); 
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
