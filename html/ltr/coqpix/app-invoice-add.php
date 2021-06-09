@@ -348,13 +348,13 @@ require_once 'php/config.php';
 																<select name="departement" id="ville" class="form-control " required></select>
 															</div>
 															<label for="email">Email :</label>
-															<fieldset class="invoice-address form-group">
+															<div class="invoice-address form-group">
 																<input name="email" id="email" type="email" class="form-control" placeholder="Email" >
-															</fieldset>
-															<label for="email">TEL :</label>
-															<fieldset class="invoice-address form-group">
+															</div>
+															<label >TEL :</label>
+															<div class="invoice-address form-group">
 																<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone" required>
-															</fieldset>
+															</div>
 														</div>
 													</div>
 													<hr>

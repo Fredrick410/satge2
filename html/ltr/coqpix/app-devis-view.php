@@ -10,7 +10,7 @@ require_once 'php/config.php';
     $pdoStat->bindValue(':num',$_GET['numdevis'], PDO::PARAM_INT);
     $pdoStat->execute();
     $facture = $pdoStat->fetch();
-    $numeros = $facture['numerosdevis'];
+    $numeros = $facture['id'];
     
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
@@ -243,21 +243,15 @@ require_once 'php/config.php';
 
 <!-- BEGIN: Body-->
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+
 <body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
 
-=======
-=======
->>>>>>> f75cec3fbab589f5ad463f5565c0126685d483b9
+
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
 <style>
     .none-validation{display: none;}
 </style>
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> f75cec3fbab589f5ad463f5565c0126685d483b9
+
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
@@ -276,9 +270,16 @@ require_once 'php/config.php';
                                         <!-- header section -->
                                         <div class="row">
                                             <div class="col-xl-4 col-md-12">
-                                                <span class="invoice-number mr-50">Devis N°</span><span><?= $facture['numerosdevis']; ?></span>
+                                           
+                                                <span class="invoice-number mr-50">Référence :</span>
+                                                <span><?= $facture['refdevis'],$facture['numerosdevis']; ?></span>
                                             </div>
-                                            <div class="col-xl-8 col-md-12">
+                                            <div class="col-xl-4 col-md-12">
+                                                <span class="invoice-number mr-50">Devis N°</span>
+                                                <span><?= $facture['id']; ?></span>
+                                            </div>
+                                            
+                                            <div class="col-xl-4 col-md-12">
                                                 <div class="d-flex align-items-center justify-content-xl-end flex-wrap">
                                                     <div class="mr-3">
                                                         <small class="text-muted">Date :</small>
@@ -296,6 +297,9 @@ require_once 'php/config.php';
                                             <div class="col-6">
                                                 <h4 class="text-primary">Devis</h4>
                                                 <span><?= $facture['nomproduit']; ?></span>
+                                                <br><br><br>
+                                                <h6 class="text-primary">Description</h6>
+                                                <span><?= $facture['descrip']; ?></span>
                                             </div>
                                             <div class="col-6 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">

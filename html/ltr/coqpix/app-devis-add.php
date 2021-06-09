@@ -319,7 +319,7 @@ require_once 'php/config.php';
 														<div class="col-lg-6 col-md-12 mt-25">
 															<div class="form-group">
 																<label>*Client</label>
-																<select name="facturepour" id="facturepour" class="form-control invoice-item-select"> <!--car js prend que facturepour-->
+																<select name="devispour" id="facturepour" class="form-control invoice-item-select"> <!--car js prend que facturepour-->
 																	<option value="Pas de clients">Sélectionnez un client</option>
 																	<?php foreach($client as $clientt): ?>
 																	<option value="<?= $clientt['name_client'] ?>"><?= $clientt['name_client'] ?></option>
