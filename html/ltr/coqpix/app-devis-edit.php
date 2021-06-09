@@ -251,7 +251,7 @@ require_once 'php/config.php';
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
                                             <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
-                                                <h4 class="text-primary">Devis</h4>
+                                                <h4 class="text-primary">Dev</h4>
                                                 <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du devis" value="<?= $facture['nomproduit'] ?>"> 
                                             </div>
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
