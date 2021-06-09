@@ -8,7 +8,7 @@ ini_set('display_startup_errors', TRUE);
     // vide
 
     if($_POST['numerosdevis'] == ""){
-        $numerosfacture = "000d";
+        $numerosdevis = "000d";
     }else{
         $numerosfacture = $_POST['numerosdevis'];
     }
@@ -68,14 +68,20 @@ ini_set('display_startup_errors', TRUE);
 
     // end vide 
 
-    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, refdevis, nomproduit, devispour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_devis, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    if($_POST['statut'] == "NON PAYE"){
+        $color = "badge badge-light-danger badge-pill";
+    }else{
+        $color = "badge badge-light-success badge-pill";
+    }
+
+    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, nomproduit, refdevis, devispour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_devis, status_color, etiquette, id_session, descrip) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
-        htmlspecialchars($_POST['numerosdevis']),
+        htmlspecialchars($numerosdevis),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
-        htmlspecialchars($_POST['refdevis']),
         htmlspecialchars($nomproduit),
-        htmlspecialchars($_POST['devispour']),
+        htmlspecialchars($_POST['refdevis']),
+        htmlspecialchars($devispour),
         htmlspecialchars($adresse),
         htmlspecialchars($email),
         htmlspecialchars($tel),
@@ -84,11 +90,11 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($_POST['monnaie']),
         htmlspecialchars($accompte),
         htmlspecialchars($note),
-        htmlspecialchars("NON PAYE"),
-        htmlspecialchars("badge badge-light-danger badge-pill"),
+        htmlspecialchars($_POST['statut']),
+        htmlspecialchars($color),
         htmlspecialchars($_POST['etiquette']),
-        htmlspecialchars($_POST['descrip']),
-        htmlspecialchars($_SESSION['id_session']) //$_SESSION
+        htmlspecialchars($_SESSION['id_session']),//$_SESSION
+        htmlspecialchars($_POST['descrip']) 
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
