@@ -225,7 +225,7 @@ require_once 'php/config.php';
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
 														</h6>
-														<input type="number"  value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+														<input type="number" name="id" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
                                                 <h6 class="invoice-number mr-75">
                                                                 Référence
                                                             </h6>
@@ -234,8 +234,8 @@ require_once 'php/config.php';
                                                                 &nbsp&nbsp&nbsp 
                                                             </p>
                                                 <h6 class="invoice-number mr-75">Facture N°</h6>
-                                                <input name="numerosfacture" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosfacture'] ?>" >
-                                                <input type="hidden" name="numerosfacture" value="<?= $facture['numerosfacture'] ?>">
+                                                <input name="numerosfacture"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosfacture'] ?>" >
+                                               
                                             </div>
                                             <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
                                                 <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
@@ -296,10 +296,10 @@ require_once 'php/config.php';
                                               
                                             </div>
 											  <div class="col-lg-6 col-md-12 mt-25">
-                                               
+                                            
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
-                                                    <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
+                                                    <input name="departement" id="departement" type="text" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
                                                 </fieldset>
                                                  <label for="email">*Email :</label>
                                                 <fieldset class="invoice-address form-group">

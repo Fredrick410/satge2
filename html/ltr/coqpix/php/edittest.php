@@ -19,10 +19,10 @@ ini_set('display_startup_errors', TRUE);
         $nomproduit = $_POST['nomproduit'];
     }
 
-    if($_POST['facturepour'] == ""){
-        $facturepour = "Facture pour";
+    if($_POST['devispour'] == ""){
+        $facturepour = "devis pour";
     }else{
-        $facturepour = $_POST['facturepour'];
+        $facturepour = $_POST['devispour'];
     }
 
     if($_POST['adresse'] == ""){
@@ -55,47 +55,38 @@ ini_set('display_startup_errors', TRUE);
         $note = $_POST['note'];
     }
 
-    if($_POST['accompte'] == ""){
-        $accompte = "Non définie";
-    }else{
-        $accompte = $_POST['modalite'];
-    }
-
     // end vide 
-
-    if($_POST['status_facture'] == "NON PAYE"){
-        $color  = "badge badge-light-danger badge-pill";
+    if($_POST['statut'] == "NON PAYE"){
+        $color = "badge badge-light-danger badge-pill";
     }else{
         $color = "badge badge-light-success badge-pill";
     }
 
-    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip WHERE id=:num LIMIT 1');
+    $pdo = $bdd->prepare('UPDATE devis SET numerosdevis=:numerosdevis, dte=:dte, dateecheance=:dateecheance, refdevis=:refdevis, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, note=:note, status_devis=:status_devis, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
     
-    $pdo->bindValue(':num', $_POST['numfacture']);
-    $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
-    $pdo->bindValue(':reffacture', $_POST['reffacture']);
+    $pdo->bindValue(':num', $_POST['iddev']);
+    $pdo->bindValue(':numerosdevis', $_POST['numerosdevis']);
     $pdo->bindValue(':dte', $dte);
     $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+    $pdo->bindValue(':refdevis', $_POST['refdevis']);
     $pdo->bindValue(':nomproduit', $nomproduit);
-    $pdo->bindValue(':facturepour', $facturepour);
+    $pdo->bindValue(':devispour', $facturepour);
     $pdo->bindValue(':adresse', $adresse);
     $pdo->bindValue(':email', $email);
     $pdo->bindValue(':tel', $tel);
     $pdo->bindValue(':departement', $departement);
-    $pdo->bindValue(':modalite', $accompte);
+    $pdo->bindValue(':modalite', $_POST['modalite']);
     $pdo->bindValue(':monnaie', $_POST['monnaie']);
-    $pdo->bindValue(':accompte', $_POST['accompte']);
     $pdo->bindValue(':note', $note);
-    $pdo->bindValue(':status_facture', $_POST['status_facture']);
+    $pdo->bindValue(':status_devis', $_POST['status_devis']);
     $pdo->bindValue(':status_color', $color);
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
-    $pdo->bindValue(':descrip', $_POST['descrip']);
     
     $pdo->execute();
 
-        $pdoA = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
+        $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $_GET['numfacture']);
+        $pdoA->bindValue(':numeros', $_POST['iddev']);
         $pdoA->execute();
 
     //calculs
@@ -107,11 +98,11 @@ ini_set('display_startup_errors', TRUE);
 
     try{
   
-        $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
+        $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='devisvente' ) T ";
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_GET['numfacture']); 
+        $req->bindValue(':numeros',$_POST['iddev']); 
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
@@ -119,13 +110,13 @@ ini_set('display_startup_errors', TRUE);
         }
 
         $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
-        $res_montant = $calculs['facture_all']; //PAS OUBLIER DE CHANGER
+        $res_montant = $calculs['devis_all']; //PAS OUBLIER DE CHANGER
         $edit = $montant_t - $res_montant;    
 
         $facture_nb = $calculs['facture_nb'];
-        $facture_all = $calculs['facture_all'] + $edit;
-        $devis_all = $calculs['devis_all'];
-        $lastdte = date('d-m-Y');  // $calculs['lastdte'] pour autre de facture
+        $facture_all = $calculs['facture_all'];
+        $devis_all = $calculs['devis_all']  + $edit;
+        $lastdte = $calculs['lastdte'];  // $calculs['lastdte'] pour autre de facture
 
         $pdo = $bdd->prepare('UPDATE calculs SET facture_nb=:facture_nb, facture_all=:facture_all, devis_all=:devis_all, lastdte=:lastdte WHERE id_session=:num LIMIT 1');
     
@@ -137,7 +128,7 @@ ini_set('display_startup_errors', TRUE);
         $pdo->execute();
 
         sleep(2);
-        header('Location: ../app-invoice-list.php');
+        header('Location: ../app-devis-list.php');
         
     
 

@@ -8,7 +8,7 @@ ini_set('display_startup_errors', TRUE);
     // vide
 
     if($_POST['numerosdevis'] == ""){
-        $numerosdevis = "000d";
+        $numerosfacture = "000d";
     }else{
         $numerosfacture = $_POST['numerosdevis'];
     }
@@ -31,28 +31,28 @@ ini_set('display_startup_errors', TRUE);
         $facturepour = $_POST['facturepour'];
     }
 
-    if($_POST['adresse'] == ""){
+    if($_POST['adressefirst'] == ""){
         $adresse = "Adresse";
     }else{
-        $adresse = $_POST['adresse'];
+        $adresse = $_POST['adressefirst'];
     }
 
-    if($_POST['departement'] == ""){
+    if($_POST['departementfirst'] == ""){
         $departement = "31100";
     }else{
-        $departement = $_POST['departement'];
+        $departement = $_POST['departementfirst'];
     }
 
-    if($_POST['email'] == ""){
+    if($_POST['emailfirst'] == ""){
         $email = "email@email.com";
     }else{
-        $email = $_POST['email'];
+        $email = $_POST['emailfirst'];
     }
 
-    if($_POST['tel'] == ""){
+    if($_POST['telfirst'] == ""){
         $tel = "06.00.00.00.00";
     }else{
-        $tel = $_POST['tel'];
+        $tel = $_POST['telfirst'];
     }
 
     if($_POST['note'] == ""){
@@ -68,20 +68,14 @@ ini_set('display_startup_errors', TRUE);
 
     // end vide 
 
-    if($_POST['statut'] == "NON PAYE"){
-        $color = "badge badge-light-danger badge-pill";
-    }else{
-        $color = "badge badge-light-success badge-pill";
-    }
-
-    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, nomproduit, refdevis, devispour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_devis, status_color, etiquette, id_session, descrip) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO devis (numerosdevis, dte, dateecheance, refdevis, nomproduit, devispour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_devis, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
-        htmlspecialchars($numerosdevis),
+        htmlspecialchars($_POST['numerosdevis']),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
-        htmlspecialchars($nomproduit),
         htmlspecialchars($_POST['refdevis']),
-        htmlspecialchars($devispour),
+        htmlspecialchars($nomproduit),
+        htmlspecialchars($_POST['devispour']),
         htmlspecialchars($adresse),
         htmlspecialchars($email),
         htmlspecialchars($tel),
@@ -90,11 +84,11 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($_POST['monnaie']),
         htmlspecialchars($accompte),
         htmlspecialchars($note),
-        htmlspecialchars($_POST['statut']),
-        htmlspecialchars($color),
+        htmlspecialchars("NON PAYE"),
+        htmlspecialchars("badge badge-light-danger badge-pill"),
         htmlspecialchars($_POST['etiquette']),
-        htmlspecialchars($_SESSION['id_session']),//$_SESSION
-        htmlspecialchars($_POST['descrip']) 
+        htmlspecialchars($_POST['descrip']),
+        htmlspecialchars($_SESSION['id_session']) //$_SESSION
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  

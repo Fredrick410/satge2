@@ -56,19 +56,12 @@ ini_set('display_startup_errors', TRUE);
     }
 
     // end vide 
-    if($_POST['statut'] == "NON PAYE"){
-        $color = "badge badge-light-danger badge-pill";
-    }else{
-        $color = "badge badge-light-success badge-pill";
-    }
 
-    $pdo = $bdd->prepare('UPDATE devis SET numerosdevis=:numerosdevis, dte=:dte, dateecheance=:dateecheance, refdevis=:refdevis, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, note=:note, status_devis=:status_devis, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
+    $pdo = $bdd->prepare('UPDATE devis SET dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, note=:note, status_devis=:status_devis, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
     
-    $pdo->bindValue(':num', $_POST['iddev']);
-    $pdo->bindValue(':numerosdevis', $_POST['numerosdevis']);
+    $pdo->bindValue(':num', $_POST['numdevis']);
     $pdo->bindValue(':dte', $dte);
     $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
-    $pdo->bindValue(':refdevis', $_POST['refdevis']);
     $pdo->bindValue(':nomproduit', $nomproduit);
     $pdo->bindValue(':devispour', $facturepour);
     $pdo->bindValue(':adresse', $adresse);
@@ -78,15 +71,15 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':modalite', $_POST['modalite']);
     $pdo->bindValue(':monnaie', $_POST['monnaie']);
     $pdo->bindValue(':note', $note);
-    $pdo->bindValue(':status_devis', $_POST['statut']);
-    $pdo->bindValue(':status_color', $color);
+    $pdo->bindValue(':status_devis',"NON PAYE");
+    $pdo->bindValue(':status_color', "badge badge-light-danger badge-pill");
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
     
     $pdo->execute();
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $_POST['iddev']);
+        $pdoA->bindValue(':numeros', $_POST['numerosdevis']);
         $pdoA->execute();
 
     //calculs
