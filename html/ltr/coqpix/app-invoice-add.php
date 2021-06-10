@@ -245,7 +245,7 @@ require_once 'php/config.php';
                                 <div class="card-content">
                                     <div class="card-body pb-0 mx-25">
                                         <!-- header section -->
-                                <form autocomplete="off" action="php/insert_facture.php" method="POST">
+                                <form autocomplete="off"  method="POST" action="php/insert_facture.php">
                                         <div class="row mx-0" > 
 
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
@@ -332,9 +332,9 @@ require_once 'php/config.php';
 															<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup">Créer un client particulier</button>
 															<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup2" id="#2">Créer un client professionnel</button>
 															<hr>
-															<label for="adress">*Adresse :</label>
+															<label for="adresse">*Adresse :</label>
 															<fieldset class="invoice-address form-group">
-																<textarea name="adresse" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
+																<textarea name="adressefirst" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
 															</fieldset>
 														</div>
 														<div class="col-lg-6 col-md-12 mt-25" style="padding-top: 0px;">
@@ -343,18 +343,19 @@ require_once 'php/config.php';
 																<input type="number" name="codePostal" class=" form-control" placeholder="Code Postal" onkeyup="getCp($(this))" autocomplete="off">
 																<input type="hidden" name="insee_code" id="insee_code" value="" autocomplete="off">
 															</div>
+															
 															<div class="form-group">
 																<label for="email">*Département :</label>
-																<select name="departement" id="ville" class="form-control " required></select>
-															</div>
+																<select name="departementfirst" id="ville" class="form-control " required></select>
+															</div>													
 															<label for="email">Email :</label>
-															<div class="invoice-address form-group">
-																<input name="email" id="email" type="email" class="form-control" placeholder="Email" >
-															</div>
-															<label >TEL :</label>
-															<div class="invoice-address form-group">
-																<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone" required>
-															</div>
+															<fieldset class="invoice-address form-group">
+																<input name="emailfirst" id="email" type="email" class="form-control">
+															</fieldset>
+															<label for="email">TEL :</label>
+															<fieldset class="invoice-address form-group">
+																<input name="telfirst" id="telephone" type="text" class="form-control" required>
+															</fieldset>
 														</div>
 													</div>
 													<hr>
