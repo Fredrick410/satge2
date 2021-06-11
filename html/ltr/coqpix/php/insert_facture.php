@@ -31,28 +31,28 @@ ini_set('display_startup_errors', TRUE);
         $facturepour = $_POST['facturepour'];
     }
 
-    if($_POST['adresse'] == ""){
+    if($_POST['adressefirst']== ""){
         $adresse = "Adresse";
     }else{
-        $adresse = $_POST['adresse'];
+        $adresse = $_POST['adressefirst'];
     }
 
-    if($_POST['departement'] == ""){
+    if($_POST['departementfirst'] == ""){
         $departement = "31100";
     }else{
-        $departement = $_POST['departement'];
+        $departement = $_POST['departementfirst'];
     }
 
-    if($_POST['email'] == ""){
+    if($_POST['emailfirst']== ""){
         $email = "email@email.com";
     }else{
-        $email = $_POST['email'];
+        $email = $_POST['emailfirst'];
     }
 
-    if($_POST['tel'] == ""){
+    if($_POST['telfirst']== ""){
         $tel = "06.00.00.00.00";
     }else{
-        $tel = $_POST['tel'];
+        $tel = $_POST['telfirst'];
     }
 
     if($_POST['note'] == ""){
@@ -67,7 +67,7 @@ ini_set('display_startup_errors', TRUE);
         $accompte = $_POST['accompte'];
     }
 
-   
+
     
     // end vide 
 

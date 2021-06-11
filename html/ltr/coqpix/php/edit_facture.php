@@ -69,7 +69,7 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
+    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip WHERE id=:num LIMIT 1');
     
     $pdo->bindValue(':num', $_POST['numfacture']);
     $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
@@ -89,14 +89,16 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':status_facture', $_POST['status_facture']);
     $pdo->bindValue(':status_color', $color);
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
+    $pdo->bindValue(':descrip', $_POST['descrip']);
     
     $pdo->execute();
+    
+        $pdot = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
+        $pdot->bindValue(':num', $_SESSION['id_session']); //$_SESSION
+        $pdot->bindValue(':numeros', $_POST['numfacture']);
+        $pdot->execute();
 
-        $pdoA = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
-        $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $_POST['numerosfacture']);
-        $pdoA->execute();
-
+        
     //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
@@ -110,7 +112,7 @@ ini_set('display_startup_errors', TRUE);
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numerosfacture']); 
+        $req->bindValue(':numeros',$_GET['numfacture']); 
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){

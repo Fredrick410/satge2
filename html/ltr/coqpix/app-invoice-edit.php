@@ -23,7 +23,7 @@ require_once 'php/config.php';
     
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="facturevente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdo->bindValue(':numeros',$id);
+    $pdo->bindValue(':numeros',$_GET['numfacture']);
     $pdo->execute(); 
     $articles = $pdo->fetchAll();
 
@@ -38,7 +38,7 @@ require_once 'php/config.php';
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$id); 
+    $req->bindValue(':numeros',$_GET['numfacture']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -54,7 +54,7 @@ require_once 'php/config.php';
   
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$id); 
+    $re->bindValue(':numeros',$_GET['numfacture']); 
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -69,7 +69,7 @@ require_once 'php/config.php';
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$id); 
+    $req->bindValue(':numeros',$_GET['numfacture']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -225,7 +225,7 @@ require_once 'php/config.php';
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
 														</h6>
-														<input type="number"  value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+														<input type="number" name="id" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
                                                 <h6 class="invoice-number mr-75">
                                                                 Référence
                                                             </h6>
@@ -234,8 +234,8 @@ require_once 'php/config.php';
                                                                 &nbsp&nbsp&nbsp 
                                                             </p>
                                                 <h6 class="invoice-number mr-75">Facture N°</h6>
-                                                <input name="numerosfacture" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosfacture'] ?>" >
-                                                <input type="hidden" name="numerosfacture" value="<?= $facture['numerosfacture'] ?>">
+                                                <input name="numerosfacture"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosfacture'] ?>" >
+                                               
                                             </div>
                                             <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
                                                 <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
@@ -296,10 +296,10 @@ require_once 'php/config.php';
                                               
                                             </div>
 											  <div class="col-lg-6 col-md-12 mt-25">
-                                               
+                                            
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
-                                                    <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
+                                                    <input name="departement" id="departement" type="text" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
                                                 </fieldset>
                                                  <label for="email">*Email :</label>
                                                 <fieldset class="invoice-address form-group">
@@ -462,6 +462,8 @@ require_once 'php/config.php';
                                                             <option value="CB">Carte bancaire</option>
                                                             <option value="Chèque">Chèque</option>
                                                             <option value="Espèce">Espece</option>
+                                                            <option value="Virement">Virement</option>
+															<option value="Prélèvement">Prélèvement</option>
                                                          </select>
                                                     </div>
                                                     <label>*Monnaie :</label>

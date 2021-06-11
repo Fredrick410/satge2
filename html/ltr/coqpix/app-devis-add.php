@@ -331,7 +331,7 @@ require_once 'php/config.php';
 															<hr>
 															<label for="adress">*Adresse :</label>
 															<fieldset class="invoice-address form-group">
-																<textarea name="adresse" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
+																<textarea name="adressefirst" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
 															</fieldset>
 														</div>
 														<div class="col-lg-6 col-md-12 mt-25" style="padding-top: 0px;">
@@ -342,15 +342,15 @@ require_once 'php/config.php';
 															</div>
 															<div class="form-group">
 																<label for="email">*Département :</label>
-																<select name="departement" id="ville" class="form-control " required></select>
+																<select name="departementfirst" id="ville" class="form-control " required></select>
 															</div>
 															<label for="email">Email :</label>
 															<fieldset class="invoice-address form-group">
-																<input name="email" id="email" type="email" class="form-control" placeholder="Email" >
+																<input name="emailfirst" id="email" type="email" class="form-control" placeholder="Email" >
 															</fieldset>
 															<label for="email">TEL :</label>
 															<fieldset class="invoice-address form-group">
-																<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone" required>
+																<input name="telfirst" id="telephone" type="text" class="form-control" placeholder="Téléphone" required>
 															</fieldset>
 														</div>
 													</div>
