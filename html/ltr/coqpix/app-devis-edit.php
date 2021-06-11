@@ -495,14 +495,8 @@ require_once 'php/config.php';
                                                     </div>
                                                     <label >*Status :</label>
                                                     <div class="form-group">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 22682b5709cc3d8920570e90d8e74c62d4358838
+
                                                         <select name="status_devis" class="form-control invoice-item-select">
-=======
-                                                        <select name="status_facture" class="form-control invoice-item-select">
->>>>>>> 6a99fb92ca2b68fcaf341ac6e05645b1999de90f
                                                             <option value="<?= $facture['status_devis'] ?>"><?= $facture['status_devis'] ?></option>
                                                             <option value="NON PAYE">Non payé</option>
                                                             <option value="PAYE">Payé</option>
