@@ -56,11 +56,17 @@ ini_set('display_startup_errors', TRUE);
     }
 
     // end vide 
-
-    $pdo = $bdd->prepare('UPDATE devis SET dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, note=:note, status_devis=:status_devis, status_color=:status_color, etiquette=:etiquette WHERE id=:num LIMIT 1');
+    if($_POST['status_devis'] == "NON PAYE"){
+        $color  = "badge badge-light-danger badge-pill";
+    }else{
+        $color = "badge badge-light-success badge-pill";
+    }
+    $pdo = $bdd->prepare('UPDATE devis SET numerosdevis=:numerosdevis, dte=:dte, refdevis=:refdevis, dateecheance=:dateecheance, nomproduit=:nomproduit, devispour=:devispour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_devis=:status_devis, status_color=:status_color, etiquette=:etiquette, descrip=:descrip WHERE id=:num LIMIT 1');
     
     $pdo->bindValue(':num', $_POST['numdevis']);
+    $pdo->bindValue(':numerosdevis', $_POST['numerosdevis']);
     $pdo->bindValue(':dte', $dte);
+    $pdo->bindValue(':refdevis', $_POST['refdevis']);
     $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
     $pdo->bindValue(':nomproduit', $nomproduit);
     $pdo->bindValue(':devispour', $facturepour);
@@ -70,16 +76,18 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':departement', $departement);
     $pdo->bindValue(':modalite', $_POST['modalite']);
     $pdo->bindValue(':monnaie', $_POST['monnaie']);
+    $pdo->bindValue(':accompte', $_POST['accompte']);
     $pdo->bindValue(':note', $note);
-    $pdo->bindValue(':status_devis',"NON PAYE");
-    $pdo->bindValue(':status_color', "badge badge-light-danger badge-pill");
+    $pdo->bindValue(':status_devis', $_POST['status_devis']);
+    $pdo->bindValue(':status_color', $color);
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
+    $pdo->bindValue(':descrip', $_POST['descrip']);
     
     $pdo->execute();
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="devisvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $_POST['numerosdevis']);
+        $pdoA->bindValue(':numeros', $_POST['numdevis']);
         $pdoA->execute();
 
     //calculs
