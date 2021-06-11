@@ -92,12 +92,13 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':descrip', $_POST['descrip']);
     
     $pdo->execute();
+    
+        $pdot = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
+        $pdot->bindValue(':num', $_SESSION['id_session']); //$_SESSION
+        $pdot->bindValue(':numeros', $_POST['numfacture']);
+        $pdot->execute();
 
-        $pdoA = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
-        $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $_GET['numfacture']);
-        $pdoA->execute();
-
+        
     //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
