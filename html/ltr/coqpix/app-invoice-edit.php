@@ -23,7 +23,7 @@ require_once 'php/config.php';
     
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="facturevente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdo->bindValue(':numeros',$id);
+    $pdo->bindValue(':numeros',$_GET['numfacture']);
     $pdo->execute(); 
     $articles = $pdo->fetchAll();
 
@@ -38,7 +38,7 @@ require_once 'php/config.php';
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$id); 
+    $req->bindValue(':numeros',$_GET['numfacture']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -54,7 +54,7 @@ require_once 'php/config.php';
   
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$id); 
+    $re->bindValue(':numeros',$_GET['numfacture']); 
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -69,7 +69,7 @@ require_once 'php/config.php';
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$id); 
+    $req->bindValue(':numeros',$_GET['numfacture']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -462,6 +462,8 @@ require_once 'php/config.php';
                                                             <option value="CB">Carte bancaire</option>
                                                             <option value="Chèque">Chèque</option>
                                                             <option value="Espèce">Espece</option>
+                                                            <option value="Virement">Virement</option>
+															<option value="Prélèvement">Prélèvement</option>
                                                          </select>
                                                     </div>
                                                     <label>*Monnaie :</label>
