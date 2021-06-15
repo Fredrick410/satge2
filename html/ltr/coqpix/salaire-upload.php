@@ -22,7 +22,7 @@ require_once 'php/config.php';
             }
 
             $name_files = $_FILES['files']['name'];   
-            $date_h = date("H") + 1;                      
+            $date_h = date("H") + 1;
             $date_now = '-'.$date_h.'-'.date("i-s").'';
             $type_files = "." . strtolower(substr(strrchr($name_files, '.'), 1));
             $target_file = $_FILES['files']['tmp_name'];                                     
@@ -39,6 +39,7 @@ require_once 'php/config.php';
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_bulletin', $file_name);
             $pdo->bindValue(':statut_bulletin', "Terminée");
+            $pdo->bindValue(':statut_notif_back',"Inactive");
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
             

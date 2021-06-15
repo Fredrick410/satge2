@@ -39,6 +39,7 @@ require_once 'php/config.php';
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_attestation', $file_name);
             $pdo->bindValue(':statut_attestation', "Terminée");
+            $pdo->bindValue(':statut_notif_back', "Inactive");
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
             
