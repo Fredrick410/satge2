@@ -15,7 +15,6 @@ require_once 'php/config.php';
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
     $pdoStatr->execute();
     $facturer = $pdoStatr->fetch();
-    $numeros = $facturer['numerosfacture'];
     
     
     $pdoStatr = $bdd->prepare('SELECT reffacture,numerosfacture FROM facture WHERE id_session = :num');
@@ -201,6 +200,7 @@ require_once 'php/config.php';
                             <?php foreach ($facture as $factures): 
                                 $ref = $factures['numerosfacture'];
                                 $numeros = $factures['id'];
+                               
                                 try{
                                     
                                 $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente' ) T";
