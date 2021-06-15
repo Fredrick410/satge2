@@ -8,7 +8,7 @@ require_once 'config.php';
     $name_enteprise = $_POST['name_entreprise'];
     $date_demande = date('d/m/Y');
     $date_donner = "";
-    $statut_notif_back = "Non Lue";
+    $statut_notif_back = "Non lue";
     $message_attestation = "";
     $files_attestation = "";
     $id_session = $_POST['num'];

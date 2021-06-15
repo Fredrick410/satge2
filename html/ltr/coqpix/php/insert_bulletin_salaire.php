@@ -10,7 +10,7 @@ ini_set('display_startup_errors', TRUE);
     $date_demande = date('d/m/Y');
     $date_donner = "";
     $statut_bulletin = "En cours";
-    $statut_notif_back = "Non Lue";
+    $statut_notif_back = "Non lue";
     $message_bulletin = "";
     $files_bulletin = "";
     $secteur_activité = $_POST['secteur_activité'] !== "" ? $_POST['secteur_activité'] : "0";
