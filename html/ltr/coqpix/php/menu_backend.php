@@ -11,8 +11,8 @@
     </div>
     <div class="shadow-bottom"></div>
     <!-- Horizontal menu content-->
-    <div class="d-flex">
-    <div class="navbar-container flex-grow-1 main-menu-content" data-menu="menu-container">
+    <div class="navbar-collapse collapse justify-content-between">
+    <div class="navbar-container main-menu-content" data-menu="menu-container">
         <!-- include ../../../includes/mixins-->
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="index.html" data-toggle="dropdown"><i class="menu-livicon" data-icon="rocket"></i><span data-i18n="Dashboard">Coqpit</span></a>
