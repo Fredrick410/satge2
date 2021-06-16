@@ -11,7 +11,8 @@
     </div>
     <div class="shadow-bottom"></div>
     <!-- Horizontal menu content-->
-    <div class="navbar-container main-menu-content" data-menu="menu-container">
+    <div class="d-flex">
+    <div class="navbar-container flex-grow-1 main-menu-content" data-menu="menu-container">
         <!-- include ../../../includes/mixins-->
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="index.html" data-toggle="dropdown"><i class="menu-livicon" data-icon="rocket"></i><span data-i18n="Dashboard">Coqpit</span></a>
@@ -140,9 +141,9 @@
         </ul>
 
     </div>
-    <div class="navbar-container navbar-expand main-menu-content" data-menu="menu-container">
+    <div class="navbar-container main-menu-content" data-menu="menu-container">
         <ul class="nav navbar-nav ml-auto" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
-            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>   <!--NOTIFICATION-->
+            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i><span style="margin-top: 2px; margin-right: 20px;" class="badge badge-pill badge-danger badge-up">5</span></a>   <!--NOTIFICATION-->
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                     <li class="dropdown-menu-header">
                             <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
@@ -158,6 +159,7 @@
                 </ul>
             </li>
         </ul>
+    </div>
     </div>
     <!-- /horizontal menu content-->
 </div>
