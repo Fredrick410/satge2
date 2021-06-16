@@ -3,21 +3,22 @@
 	$select_notif = $bdd->prepare('SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, "attestation_fiscale" AS type_demande FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, "attestation_sociale" AS type_demande FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, "bulletin_salaire" AS type_demande FROM bulletin_salaire WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, date_demande DESC LIMIT 10');
 	$select_notif->execute(array("Inactive", "Inactive", "Inactive"));
 
-    $nb_notif = $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back = "Non lue" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back = "Non lue" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back = "Non lue") AS temp');
+    $nb_notif_non_lue = $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back = "Non lue" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back = "Non lue" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back = "Non lue") AS temp');
+    $nb_notif = $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back != "Inactive") AS temp');
 ?>
 
 
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
                 <?php
-                    if($nb_notif){
+                    if($nb_notif_non_lue){
                         ?>
-                        <span style="margin-top: 2px; margin-right: 20px;" class="badge badge-pill badge-danger badge-up"><?php echo ($nb_notif->fetch())['nb'] ?></span></a>   <!--NOTIFICATION-->
+                        <span style="margin-top: 2px; margin-right: 20px;" class="badge badge-pill badge-danger badge-up"><?php echo ($nb_notif_non_lue->fetch())['nb'] ?></span></a>   <!--NOTIFICATION-->
                         <?php
                      }
                 ?>
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                     <li class="dropdown-menu-header">
-                            <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
+                            <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title"><?php echo ($nb_notif->fetch())['nb'] ?> Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
                     </li>
                     <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
                                                             <!-- CONTENUE ONE -->
@@ -80,6 +81,9 @@
 	                </div>
 	                <div class="col-auto">
 	                        <div class="fonticon-wrap">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="red" class="bi bi-circle-fill mb-3" viewBox="0 0 8 8">
+  <circle cx="4" cy="4" r="4"/>
+</svg>
 	                            <button type="button" class="btn btn-icon"><i class="bx bx-x-circle"></i></button>
 	                        </div>
 	                </div>
