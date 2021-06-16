@@ -263,7 +263,7 @@ require_once 'php/config.php';
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 														<h6 class="invoice-number mr-75">
-															devis N°
+														Devis N°
 														</h6>
 														<input type="number" name="numerosdevis" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
 														<p style='position: relative; top: 7px; display: <?php if($entreprise['incrementation'] == "no"){echo "none";} ?>;'>

@@ -6,13 +6,18 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
     // vide
-
+    if($_POST['numerosdevis'] == ""){
+        $numerosfacture = "000d";
+    }else{
+        $numerosfacture = $_POST['numerosdevis'];
+    }
+    $numeroarticle = $_POST['numeroarticle'];
     if($_POST['dte'] == ""){
         $dte = "00-00-00";
     }else{
         $dte = $_POST['dte'];
     }
-
+    
     if($_POST['nomproduit'] == ""){
         $nomproduit = "nom produit";
     }else{
@@ -68,6 +73,7 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':dte', $dte);
     $pdo->bindValue(':refdevis', $_POST['refdevis']);
     $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+    $pdo->bindValue(':refdevis', $_POST['refdevis']);
     $pdo->bindValue(':nomproduit', $nomproduit);
     $pdo->bindValue(':devispour', $facturepour);
     $pdo->bindValue(':adresse', $adresse);
@@ -103,7 +109,7 @@ ini_set('display_startup_errors', TRUE);
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numerosdevis']); 
+        $req->bindValue(':numeros',$numdevis); 
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
