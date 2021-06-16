@@ -116,21 +116,11 @@
     </div>
     <div class="navbar-container main-menu-content" data-menu="menu-container">
         <ul class="nav navbar-nav ml-auto" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
-            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i><span style="margin-top: 2px; margin-right: 20px;" class="badge badge-pill badge-danger badge-up">5</span></a>   <!--NOTIFICATION-->
-                <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                    <li class="dropdown-menu-header">
-                            <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
-                    </li>
-                    <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                                            <!-- CONTENUE ONE -->
-                        </a>
+            
 
-                        <?php include('notifs_backend.php'); ?>
+            <?php include('notifs_backend.php'); ?>
 
-                    </li>
-                    <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
-                </ul>
-            </li>
+                   
         </ul>
     </div>
     </div>
