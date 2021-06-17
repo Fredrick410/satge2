@@ -11,6 +11,7 @@
     </div>
     <div class="shadow-bottom"></div>
     <!-- Horizontal menu content-->
+    <div class="navbar-collapse collapse justify-content-between">
     <div class="navbar-container main-menu-content" data-menu="menu-container">
         <!-- include ../../../includes/mixins-->
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
@@ -110,35 +111,16 @@
                     </li>
                 </ul>
             </li>
-            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>   <!--NOTIFICATION-->
-                <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                    <li class="dropdown-menu-header">
-                            <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
-                    </li>
-                    <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                                            <!-- CONTENUE ONE -->
-                        </a>
-                        <div class="d-flex justify-content-between cursor-pointer">
-                            <div class="media d-flex align-items-center border-0">
-                                <div class="media-left pr-0">
-                                        <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="39" width="39"></div>
-                                </div>
-                                <div class="media-body">
-                                        <h6 class="media-heading"><span class="text-bold-500">Nouveaux compte</span> création du compte</h6><small class="notification-text">Aujourd'hui, 19h30</small>
-                                </div>
-                                <div class="col-auto">
-                                        <div class="fonticon-wrap">
-                                            <button type="button" class="btn btn-icon"><i class="bx bx-x-circle"></i></button>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
-                </ul>
-            </li>
         </ul>
 
+    </div>
+    <div class="navbar-container main-menu-content" data-menu="menu-container">
+        <ul class="nav navbar-nav ml-auto" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
+
+            <?php include('notifs_backend.php'); ?>
+        
+        </ul>
+    </div>
     </div>
     <!-- /horizontal menu content-->
 </div>

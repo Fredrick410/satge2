@@ -52,6 +52,9 @@ $entreprise = $pdoSta->fetchAll();
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="main.js"></script>
+
 </head>
 <!-- END: Head-->
 
