@@ -20,7 +20,7 @@
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                     <li class="dropdown-menu-header">
                             <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title"><?= $nb_notif['nb'] ?> Notifications</span></div>
--
+
 
 <?php              if ($nb_notif['nb']){
 ?>
@@ -82,7 +82,7 @@
 	    	<div class="d-flex justify-content-between cursor-pointer">
 	            <div class="media d-flex align-items-center border-0">
 	                <div class="media-left pr-0">
-	                        <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/<?= $img_entreprise['img_entreprise'] ?>" alt="avatar" height="39" width="39"></div>
+	                        <div class="avatar mr-1 m-0"><img src="../../../src/img/<?= $img_entreprise['img_entreprise'] ?>" alt="avatar" height="39" width="39"></div>
 	                </div>
 	                <div class="media-body">
 	                        <h6 class="media-heading"><span class="text-bold-500"><?php echo $notif; ?></span></h6><small class="notification-text"><?= $result['date_demande']; ?></small>
