@@ -144,21 +144,15 @@ require_once 'php/verif_session_crea.php';
     <div class="app-content content">
         <div class="content-area-wrapper">
             <div class="sidebar-left">
-                <div class="sidebar">
-                    <div class="sidebar-content email-app-sidebar d-flex">
-                        <!-- sidebar close icon -->
-                        <span class="sidebar-close-icon">
-                            <i class="bx bx-x"></i>
-                        </span>
-                        <!-- sidebar close icon -->
-                        <div class="email-app-menu">
-                            <div class="sidebar-menu-list">
-                                <!-- sidebar menu  -->
-                                <div class="list-group list-group-messages">
-                                    
-                                </div>
-                                <!-- sidebar menu  end-->
-                            </div>
+                <div class="sidebar">               
+                    <div class="col-12">  
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb p-0 mb-0">
+                                <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a>
+                                </li>
+                                <li class="breadcrumb-item active"> Domiciliation
+                                </li>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -170,10 +164,10 @@ require_once 'php/verif_session_crea.php';
                         
                     </div>
                     <div class="content-body">
-                    <form action="recherche-domiciliation.php">
+                    <form method='POST' action="php/recherche-domiciliation.php">
                         <div class="form-group col-md-6 mb-50">
-                            <label for="inputlastname4">Entrer l'adresse de domiciliation souhaitée</label>
-                            <input type="text" name="adresse" class="form-control rounded-pill" placeholder="Adresse" required>
+                            <label for="inputlastname4">Entrer la ville de domiciliation souhaitée</label>
+                            <input type="text" name="adresse" class="form-control rounded-pill" placeholder="Ville" required>
                             <br>
                             <button type="submit" class="btn btn-primary glow position-relative rounded-pill">Rechercher<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                         </div>
