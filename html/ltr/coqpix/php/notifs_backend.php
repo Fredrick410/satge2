@@ -1,11 +1,30 @@
+<script>
+	
+	// $('#delete_notifs').click(function(e){
+	// 	e.preventDefault(); // on empêche le bouton d'envoyer le formulaire
+	
+	// 	$.ajax({
+	// 		url : "php/delete_notifs.php", // on donne l'URL du fichier de traitement
+	// 		type : "POST", // la requête est de type POST
+	// 		success : function(code_html, statut) { 
+	// 			$(code_html).remove;
+	// 		}
+
+	// 	});
+	// });
+
+	
+
+</script>
+
 <?php
+
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-	$select_notif = $bdd->prepare('SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, "attestation_fiscale" AS type_demande FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, "attestation_sociale" AS type_demande FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, "bulletin_salaire" AS type_demande FROM bulletin_salaire WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, date_demande DESC LIMIT 10');
+	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande FROM bulletin_salaire WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
 	$select_notif->execute(array("Inactive", "Inactive", "Inactive"));
 
     $nb_notif = $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back = "Non lue" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back = "Non lue" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back = "Non lue") AS temp');
 ?>
-
 
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
                 <?php
@@ -112,6 +131,8 @@
 ?>
 
                     </li>
-                    <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
+                    <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="php/delete_notifs.php?previous_page=<?php echo $_SERVER['PHP_SELF']; ?>"><span class="text-light">Tout marquer comme lu</span></a></li>
+
+					</li>
                 </ul>
             </li>
