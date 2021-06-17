@@ -72,20 +72,20 @@
         
 		// affichage de la notification
 
+        $pdoSt = $bdd->prepare('SELECT img_entreprise FROM entreprise WHERE id = :id');
+        $pdoSt->bindValue(':id', $result['id_session']);
+        $pdoSt->execute();
+        $img_entreprise = $pdoSt->fetch();
+               
         ?>
             
 	    	<div class="d-flex justify-content-between cursor-pointer">
 	            <div class="media d-flex align-items-center border-0">
 	                <div class="media-left pr-0">
-	                        <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="39" width="39"></div>
+	                        <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/<?= $img_entreprise['img_entreprise'] ?>" alt="avatar" height="39" width="39"></div>
 	                </div>
 	                <div class="media-body">
 	                        <h6 class="media-heading"><span class="text-bold-500"><?php echo $notif; ?></span></h6><small class="notification-text"><?= $result['date_demande']; ?></small>
-	                </div>
-	                <div class="col-auto">
-	                        <div class="fonticon-wrap">
-	                            <button type="button" class="btn btn-icon"><i class="bx bx-x-circle"></i></button>
-	                        </div>
 	                </div>
 	            </div>
 	        </div>
