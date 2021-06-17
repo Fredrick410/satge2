@@ -64,7 +64,7 @@
                                     <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
                                         <div class="card-header pb-1">
                                             <div class="card-title">
-                                                <h4 class="text-center mb-2">Création votre société facilement et rapidement</h4>
+                                                <h4 class="text-center mb-2">Création de votre société facilement et rapidement</h4>
                                             </div>
                                         </div>
                                         <div class="card-content">
@@ -116,7 +116,7 @@
                                                         <input type="text" name="email_crea" class="form-control"placeholder="E-mail de contact" required></div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
-                                                        <input type="password" name="password_crea" class="form-control" placeholder="Mot de passe" required>
+                                                        <input type="password" name="password_crea" class="form-control" style="border-radius: 100px;" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <small>*Champ obligatoire</small>
@@ -126,10 +126,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- image section right -->
-                                <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
-                                    <img class="img-fluid" src="../../../app-assets/images/pages/register.png" alt="branding logo">
                                 </div>
                             </div>
                         </div>
