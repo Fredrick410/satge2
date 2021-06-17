@@ -4,6 +4,49 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
+    // Editer une tâche
+    if($_GET['type'] == 'editer_task') {
+        if($_GET['categorie'] == "compta"){
+            if(isset($_POST['editer_task_compta'])) {
+                $pdo = $bdd->prepare('UPDATE task_compta SET name_task=:name_task, pour_task=:pour_task, dte_echeance=:dte_echeance WHERE id=:num');
+                $pdo->bindValue(':name_task', $_POST['name_task']);
+                $pdo->bindValue(':pour_task', $_POST['pour_task']);
+                $pdo->bindValue(':dte_echeance', $_POST['dte_echeance']);
+                $pdo->bindValue(':num', $_GET['num']);
+                $pdo->execute();
+
+                header('Location: ../task-compta.php');
+                exit();
+            }
+        }
+        if($_GET['categorie'] == "socia"){
+            if(isset($_POST['editer_task_socia'])) {
+                $pdo = $bdd->prepare('UPDATE task_socia SET name_task=:name_task, pour_task=:pour_task, dte_echeance=:dte_echeance WHERE id=:num');
+                $pdo->bindValue(':name_task', $_POST['name_task']);
+                $pdo->bindValue(':pour_task', $_POST['pour_task']);
+                $pdo->bindValue(':dte_echeance', $_POST['dte_echeance']);
+                $pdo->bindValue(':num', $_GET['num']);
+                $pdo->execute();
+
+                header('Location: ../task-socia.php');
+                exit();
+            }
+        }
+        if($_GET['categorie'] == "fisca"){
+            if(isset($_POST['editer_task_fisca'])) {
+                $pdo = $bdd->prepare('UPDATE task_fisca SET name_task=:name_task, pour_task=:pour_task, dte_echeance=:dte_echeance WHERE id=:num');
+                $pdo->bindValue(':name_task', $_POST['name_task']);
+                $pdo->bindValue(':pour_task', $_POST['pour_task']);
+                $pdo->bindValue(':dte_echeance', $_POST['dte_echeance']);
+                $pdo->bindValue(':num', $_GET['num']);
+                $pdo->execute();
+
+                header('Location: ../task-fisca.php');
+                exit();
+            }
+        }
+    }
+
     if($_GET['type'] == "statut_task"){
         if($_GET['categorie'] == "compta"){
 
