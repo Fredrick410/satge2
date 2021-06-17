@@ -1,7 +1,7 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande FROM bulletin_salaire WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
+	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
 	$select_notif->execute(array("Inactive", "Inactive", "Inactive"));
 
     $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back != "Inactive") AS temp');
@@ -36,11 +36,6 @@
 
 	while ($result = $select_notif->fetch()) {
 
-        //Récupération de l'id de l'entreprise
-        $pdoSt = $bdd->prepare("SELECT id from entreprise WHERE nameentreprise = :name_entreprise");
-        $pdoSt->bindValue(":name_entreprise", $result['name_entreprise']);
-        $pdoSt->execute();
-        $id_entreprise = $pdoSt->fetch();
         
 
 		// si c'est une demande d'attestation fiscale
@@ -50,7 +45,7 @@
 
 
             ?>
-            <a href="attestation-fiscale-view.php?num=<?= $id_entreprise['id'] ?>">
+            <a href="attestation-fiscale-view.php?num=<?= $result['id_session'] ?>">
             <?php
 
 		// si c'est une demande d'attestation sociale
@@ -59,7 +54,7 @@
 			$notif = "Vous avez une attestation sociale de " .$result['name_entreprise']. " en attente de traitement";
 
             ?>
-            <a href="attestation-sociale-view.php?num=<?= $id_entreprise['id'] ?>">
+            <a href="attestation-sociale-view.php?num=<?= $result['id_session'] ?>">
             <?php
 
 		// si c'est un bulletin de salaire
@@ -68,7 +63,7 @@
 			$notif = "Vous avez un bulletin de salaire de " .$result['name_entreprise']. " en attente de traitement";
             
             ?>
-            <a href="salaire-view.php?num=<?= $id_entreprise['id'] ?>">
+            <a href="salaire-view.php?num=<?= $result['id_session'] ?>">
             <?php
 
 		}
