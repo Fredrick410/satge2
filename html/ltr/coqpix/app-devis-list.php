@@ -234,7 +234,7 @@ require_once 'php/config.php';
                                             <a href="app-devis-edit.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
-                                            <a href="php/inv-dev.php?id=<?= $deviss['id'] ?>"
+                                            <a href="php/envoie_dev.php?id=<?= $deviss['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
