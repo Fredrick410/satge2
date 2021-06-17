@@ -286,9 +286,7 @@ require_once 'php/config.php';
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>
                                                 </div>
-                                                <fieldset class="invoice-address form-group">
-                                                    <input name="facturepour" id="newfacturepour" type="text" class="form-control" placeholder="Nouveau client" disabled>
-                                                </fieldset>
+                                                
                                                 <label for="adress">*Adresse :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="adresse" id="adresse" class="form-control" rows="4" value="<?= $facture['adresse'] ?>">
@@ -388,10 +386,7 @@ require_once 'php/config.php';
                                                                 <div class="col-md-2 col-12 form-group">
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                 </div>
-                                                                <div class="col-md-4 col-12 form-group">
-                                                                    <label for="article">Nouvelle Article :</label>
-                                                                    <input name="article" id="newarticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Nouvelle article">
-                                                                </div>
+                                                                
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label for="ref">REF :</label>
                                                                     <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
