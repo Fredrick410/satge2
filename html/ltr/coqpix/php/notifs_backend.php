@@ -20,7 +20,7 @@
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                     <li class="dropdown-menu-header">
                             <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title"><?= $nb_notif['nb'] ?> Notifications</span></div>
--
+
 
 <?php              if ($nb_notif['nb']){
 ?>
@@ -97,7 +97,7 @@
 ?>
                     </li>
 
-                    <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="php/delete_notifs.php?previous_page=<?php echo $_SERVER['PHP_SELF']; ?>"><span class="text-light">Tout marquer comme lu</span></a></li>
+                    <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="php/delete_notifs.php"><span class="text-light">Tout marquer comme lu</span></a></li>
 
 <?php
         }
