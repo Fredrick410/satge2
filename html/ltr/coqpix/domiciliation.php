@@ -144,91 +144,15 @@ require_once 'php/verif_session_crea.php';
     <div class="app-content content">
         <div class="content-area-wrapper">
             <div class="sidebar-left">
-                <div class="sidebar">
-                    <div class="sidebar-content email-app-sidebar d-flex">
-                        <!-- sidebar close icon -->
-                        <span class="sidebar-close-icon">
-                            <i class="bx bx-x"></i>
-                        </span>
-                        <!-- sidebar close icon -->
-                        <div class="email-app-menu">
-                            <div class="sidebar-menu-list">
-                                <!-- sidebar menu  -->
-                                <div class="list-group list-group-messages">
-                                    <a href="page-creation-document-physique.php" class="list-group-item pt-0" id="inbox-menu">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: briefcase.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Tous
-                                    </a>
-                                    <div class="form-group">
-                                        <hr>
-                                        <label class="line">Administration</label>
-                                    </div>
-                                    <a href="creation-view-physique-pieceid.php" class="list-group-item active">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Piece d'identitée <?php if($doc_pieceid == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-physique-cerfaM0.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div> 
-                                        Cerfa M0 <?php if($doc_cerfaM0 == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-physique-xp.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Exp professionnel <?php if($doc_xp == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-physique-justificatifd.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Justificatif domicile <?php if($doc_justificatifd == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-physique-peirl.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        PEIRL <?php if($doc_peirl == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <div class="form-group">
-                                        <hr>
-                                        <label class="line">Rédaction</label>
-                                    </div>
-                                    <a href="creation-view-physique-affectation.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Affectation patrimoine <?php if($doc_affectation == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-physique-pouvoir.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Pouvoir <?php if($doc_pouvoir == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-physique-attestation.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Attestation de non condamnation <?php if($doc_attestation == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                </div>
-                                <!-- sidebar menu  end-->
-                            </div>
+                <div class="sidebar">               
+                    <div class="col-12">  
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb p-0 mb-0">
+                                <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a>
+                                </li>
+                                <li class="breadcrumb-item active"> Domiciliation
+                                </li>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -237,8 +161,17 @@ require_once 'php/verif_session_crea.php';
                 <div class="content-overlay"></div>
                 <div class="content-wrapper">
                     <div class="content-header row">
+                        
                     </div>
                     <div class="content-body">
+                    <form method='POST' action="php/recherche-domiciliation.php">
+                        <div class="form-group col-md-6 mb-50">
+                            <label for="inputlastname4">Entrer la ville de domiciliation souhaitée</label>
+                            <input type="text" name="adresse" class="form-control rounded-pill" placeholder="Ville" required>
+                            <br>
+                            <button type="submit" class="btn btn-primary glow position-relative rounded-pill">Rechercher<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                        </div>
+                    </form>
                         <!-- email app overlay -->
                         <div class="app-content-overlay"></div>
                         <div class="email-app-area">

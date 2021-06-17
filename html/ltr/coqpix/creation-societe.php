@@ -79,11 +79,13 @@ a:hover{
                             <div class="container-fluid" >
                             <div class="row m-0">
 
+
                                 <!-- image section left -->
                                 <div class="col-lg-6">
                                     <div class="card-header pb-0">
                                         <div class="p-3" style="text-align: center; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;">
                                             <h2 class="mb-5" style="font-family: Noto Sans, sans-serif;"><strong><a href="#">Créez</a> votre société<br> rapidement et <span style="text-decoration: underline wavy rgba(41,254,140,1);">gratuitement</strong></h2>
+
                                         </div>
                                     </div>
                                     <img class="img-fluid pt-5" src="../../../app-assets/images/pages/register2.png" alt="branding logo" style="">
@@ -146,11 +148,13 @@ a:hover{
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
+
                                                         <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
                                                         <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+
                                                     </div>
                                                     <div class="form-group">
                                                         <small>*Champ obligatoire</small>
@@ -159,9 +163,12 @@ a:hover{
                                                 </form>
                                             </div>
                                         </div>
+
                                 </div>
                          
                             </div>
+
+
                             </div>
                          </div>
                     </div>

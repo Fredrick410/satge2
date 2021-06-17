@@ -1,8 +1,19 @@
-branch de oscar : 
-tache rÈaliser 16/06/2021
-	- bouton retour page creation chat fait
-	- forme arrondi input formulaire crÈation sociÈtÈ
 
-tache rÈaliser 17/06/2021
-	- formulaire crÈation sociÈtÈ presque fini -> input telephone ‡ terminer
-											   -> le mot "gratuitement" du titre mal soulignÈ
+branch de oscar : 
+tache realiser 16/06/2021
+	- bouton retour page creation chat fait
+	- forme arrondi input formulaire creation societe
+
+tache realiser 17/06/2021
+	- formulaire creation societe presque fini -> input telephone est terminer
+											   -> le mot "gratuitement" du titre mal souligne
+
+branch de robin :
+tache r√©alis√© 16/06/21
+
+implementation du site + bdd sur ma machine,
+essai de r√©orientation du bouton sur page-creation-chat.php
+travail sur page creation-societe
+
+tache r√©alis√© 17/06/21
+creation de domiciliation.php

@@ -138,7 +138,9 @@ require_once 'php/verif_session_crea.php';
                                 <div class="chat-sidebar-profile-toggle">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="margin-top: 6px;"></div>
+
+                                                <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="cursor: pointer; position: relative; top: 6px;"></div>
+
                                                 <script>
                                                     function retourn() {
                                                         window.history.back();
