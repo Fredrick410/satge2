@@ -16,7 +16,7 @@
 	$delete_notifs->bindValue(':statut_notif_back', "Inactive");
 	$delete_notifs->execute();
 	sleep(1);
-	$previous_page = $_GET['previous_page'];   
+	$previous_page = $_SERVER['HTTP_REFERER'];  
 	header('Location: '.$previous_page);        
 	exit();    
 ?>
