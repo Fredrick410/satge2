@@ -110,7 +110,7 @@ require_once 'php/verif_session_crea.php';
                         <div class="chat-user-profile-content">
                             <div class="chat-user-profile-scroll">
                                 <h6 class="text-uppercase mb-1">A propos de vous</h6>
-                                <p class="mb-2">Bonjour et bienvenue sur coquin vos etes actuellement en cours de création d'entreprise n'hésitez pas à nous contacter via l'espace chat pour plus de question .</p>
+                                <p class="mb-2">Bonjour et bienvenue sur Coqpix vous etes actuellement en cours de création d'entreprise n'hésitez pas à nous contacter via l'espace chat pour plus de question .</p>
                                 <h6>Information personnelle</h6>
                                 <ul class="list-unstyled mb-2">
                                     <li class="mb-25"><?= $crea['email_crea'] ?></li>
@@ -137,16 +137,16 @@ require_once 'php/verif_session_crea.php';
                             <div class="d-flex align-items-center">
                                 <div class="chat-sidebar-profile-toggle">
                                         <div class="row">
-                                            <div class="col-md-4 mr-auto">
-                                                <img src="../../../app-assets/images/ico/<?= $crea['img_crea'] ?>" alt="user_avatar" height="36" width="36">
-                                            </div>
                                             <div class="col-md-4">
-                                                <div class="livicon-evo" onclick="retourn()" data-options=" name: share-alt.svg; size: 30px " style="transform: rotate(-90deg); cursor: pointer; position: relative; top: 6px;"></div>
+                                                <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="margin-top: 6px;"></div>
                                                 <script>
                                                     function retourn() {
                                                         window.history.back();
                                                     }
                                                 </script>
+                                            </div>
+                                            <div class="col-md-4 mr-auto">
+                                                <img src="../../../app-assets/images/ico/<?= $crea['img_crea'] ?>" alt="user_avatar" height="36" width="36">
                                             </div>
                                         </div>
                                 </div>

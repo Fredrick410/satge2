@@ -38,55 +38,82 @@
 </head>
 <!-- END: Head-->
 
-<!-- BEGIN: Body-->
-
-<body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 <style>
 .line {
     text-decoration: underline;
 }
 
+label{
+    margin-top: 15px;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+    background: linear-gradient(to top, rgba(41,254,140,1) 9px, transparent 5px);
+}
+
+
+a:hover{
+    color: inherit;
+    text-decoration: none;
+}
+
 </style>
+
+<!-- BEGIN: Body-->
+<body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
+
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
+            <div class="content-header row"></div>
             <div class="content-body">
+
                 <!-- register section starts -->
                 <section class="row flexbox-container">
-                    <div class="col-xl-8 col-10">
-                        <div class="card bg-authentication mb-0">
+                    <div class="col-2"></div>
+                    <div class="col-8">        
+                        <div class="card m-0">
+                            <div class="container-fluid" >
                             <div class="row m-0">
-                                <!-- register section left -->
-                                <div class="col-md-6 col-12 px-0">
-                                    <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
-                                        <div class="card-header pb-1">
-                                            <div class="card-title">
-                                                <h4 class="text-center mb-2">Création votre société facilement et rapidement</h4>
-                                            </div>
+
+                                <!-- image section left -->
+                                <div class="col-lg-6">
+                                    <div class="card-header pb-0">
+                                        <div class="p-3" style="text-align: center; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;">
+                                            <h2 class="mb-5" style="font-family: Noto Sans, sans-serif;"><strong><a href="#">Créez</a> votre société<br> rapidement et <span style="text-decoration: underline wavy rgba(41,254,140,1);">gratuitement</strong></h2>
                                         </div>
-                                        <div class="card-content">
+                                    </div>
+                                    <img class="img-fluid pt-5" src="../../../app-assets/images/pages/register2.png" alt="branding logo" style="">
+                                </div>
+
+                                <!-- register section right -->
+                                <div class="col-lg-6">
+                                    <div class="card-content">
                                             <div class="card-body">
                                                 <form action="php/insert_crea_client.php" method="POST">
+                                                    <div class="form-group">
+                                                        <label class="line">Remplissez le formulaire de contact</label>
+                                                    </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6 mb-50">
                                                             <label>Nom du dirigeant *</label>
-                                                            <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" required>
+                                                            <input type="text" name="nom_diri" class="form-control border rounded-pill border-dark" placeholder="Nom du dirigeant" required>
                                                         </div>
                                                         <div class="form-group col-md-6 mb-50">
                                                             <label for="inputlastname4">Prénom du dirigeant *</label>
-                                                            <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" required>
+                                                            <input type="text" name="prenom_diri" class="form-control border rounded-pill border-dark" placeholder="Prénom du dirigeant" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group mb-50">
                                                         <label class="text-bold-600">Nom de l'entreprise *</label>
-                                                        <input type="text" name="crea_societe" class="form-control" placeholder="Nom de l'entreprise" required></div>
+                                                        <input type="text" name="crea_societe" class="form-control border rounded-pill border-dark" placeholder="Nom de l'entreprise" required></div>
                                                     <div class="form-group mb-50">
                                                         <label class="invoice-address form-group">Forme Juridique</label>
-                                                        <br><span title="Vous pouvez demander de l'aide à un conseiller après votre inscription dans la catégorie chat"><small>Comment bien choisir ma forme juridique?<span class="livicon-evo" data-options=" name: bulb.svg; size: 20px "></span></small></span>
-                                                        <select name="status_crea" class="form-control invoice-item-select">
+                                                        <span title="Vous pouvez demander de l'aide à un conseiller après votre inscription dans la catégorie chat"><span class="livicon-evo" data-options=" name: bulb.svg; size: 20px "></span></span>
+                                                        <select name="status_crea" style="margin-top:-10px;" class="form-control border rounded-pill border-dark invoice-item-select">
                                                             <option value="" selected>Choisir une forme juridique</option>
                                                             <optgroup label="Morale">
                                                                 <option value="SARL">SARL</option>
@@ -102,40 +129,46 @@
                                                             </optgroup>    
                                                         </select>
                                                     </div>
-                                                    <div class="form-group mb-50">
-                                                        <label class="text-bold-600">Téléphone du dirigeant *</label>
-                                                        <input type="number" name="tel_diri" class="form-control"placeholder="06.00.00.00.00" required></div>
-                                                    <div class="form-group">
-                                                        <hr>
+                                                    <div class="form-row" >
+                                                        <div class="form-group col-md-6 mb-50">
+                                                            <label class="text-bold-600">Téléphone du dirigeant *</label>
+                                                            <input type="number" name="tel_diri" class="form-control border rounded-pill border-dark" placeholder="06.00.00.00.00" required>
+                                                        </div>
+                                                        <div class="form-group col-md-6 mb-50"></div>
                                                     </div>
+                                                    <br>
                                                     <div class="form-group">
                                                         <label class="line">Information de connexion</label>
                                                     </div>
                                                     <div class="form-group mb-50">
                                                         <label class="text-bold-600">E-mail (Identifiant de connexion) *</label>
-                                                        <input type="text" name="email_crea" class="form-control"placeholder="E-mail de contact" required></div>
+                                                        <input type="text" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="E-mail de contact" required>
+                                                    </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
-                                                        <input type="password" name="password_crea" class="form-control" placeholder="Mot de passe" required>
+                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
+                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <small>*Champ obligatoire</small>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary glow position-relative w-100">Créer<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                    <button type="submit" style="font-family: Noto Sans, sans-serif; width: 150px; white-space: nowrap; background-color: rgba(41,254,140,1);" class="btn text-dark glow position-relative border rounded-pill"><strong>Créer</strong><i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
-                                <!-- image section right -->
-                                <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
-                                    <img class="img-fluid" src="../../../app-assets/images/pages/register.png" alt="branding logo">
-                                </div>
+                         
                             </div>
-                        </div>
+                            </div>
+                         </div>
                     </div>
-                </section>
+                    <div class="col-2"></div>
+                </div>
                 <!-- register section endss -->
+            
             </div>
         </div>
     </div>
