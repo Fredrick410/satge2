@@ -356,7 +356,223 @@ require_once 'php/config.php';
 													</div>
 													<hr>
 												</div>									
-											<!-- DEBUT DES FORMS -->
+											
+													<div class="card-body pt-50 col-lg-12  ">
+														<!-- product details table-->
+														<div class="invoice-product-details ">
+															<div data-repeater-list="group-a">
+																<div data-repeater-item>
+																	<div class="row mb-50">
+																		<div class="col-3 col-md-3 invoice-item-title">
+																			Article
+																		</div>
+																		<div class="col-4 invoice-item-title">
+																			Prix Unitaire
+																		</div>
+																		<div class="col-2 invoice-item-title">
+																			Quantite
+																		</div>
+																		<div class="col-1 invoice-item-title">
+																			Prix HT
+																		</div>
+																	</div>
+																	<div class="invoice-item d-flex border rounded mb-1">
+																		<div class="invoice-item-filed row pt-1 px-1">
+																			<div class="col-12 col-md-4 form-group">
+																				<select id="article" class="form-control invoice-item-select">
+																					<option value="Pas d'article">Sélectionnez un article</option>
+																					<optgroup label="Liste des articles"></optgroup>
+																					<?php foreach($article as $articlee): ?>
+																					<option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
+																					<?php endforeach; ?>
+																					<optgroup label="Autres options">
+																						<option value="Pas d'article">Autres</option>
+																					</optgroup>
+																				</select>
+																			</div>
+																			<div class="col-md-3 col-12 form-group">
+																				<input name="cout" id="cout" type="number" class="form-control" placeholder="0" onkeyup="myFunction()" step="any">
+																			</div>
+																			<div class="col-md-3 col-12 form-group">
+																				<input name="quantite" id="quantite" type="number" value="" class="form-control" placeholder="" onkeyup="myFunction()" step="any">
+																			</div>
+																			<div class="col-md-2 col-12 form-group">
+																				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+																				<strong id="demo" class="text-primary align-middle">00.00 €</strong>
+																			</div>
+																			<div class="col-md-4 col-12 form-group">
+																				<button type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
+																				<!-- popup article déplacé -->
+																			</div>
+																		</div>
+																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
+																			<!-- 
+																			<label for="ref">REF :</label>
+																			-->
+																			<input name="referencearticle"  id="referencearticle" type="text" class="form-control" placeholder="Référence">
+																		</div>
+																		<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
+																			<div class="dropdown" style="margin-top: 15px;">
+																				<i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
+																				<div class="dropdown-menu p-1">
+																					<div class="row">
+																						<div class="col-12 form-group">
+																							<label for="discount">Remise(%)</label>
+																							<input name="remise" id="remise" value="0" type="number" class="form-control" id="discount" placeholder="remise" maxlength="3" min="0" max="100">
+																						</div>
+																						<div class="col-12 form-group">
+																							<label for="discount">Tva(%)</label>
+																							<input name="tva" id="tva" value="20" type="number" class="form-control" id="discount" placeholder="0" maxlength="3" min="0" max="100">
+																						</div>
+																						<div class="col-12 form-group">
+																							<label>Unite de mesure :</label>
+																							<input name="umesure" id="umesure"  type="text" class="form-control" placeholder="Unite de mesure">
+																						</div>
+																						
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+														
+															<div class="form-group">
+																	<div class="col p-0">
+																		<button class="btn btn-light-primary btn-sm" type="button">
+																			<i class="bx bx-plus"></i>
+																			<span type="button" name="insert" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+																		</button>
+																	</div>
+																</div>
+																<table id="table" name="table" class="table table-bordered">
+																	<style>
+																		.red
+																		{
+																			color: red;
+																		}
+
+																		.line
+																		{
+																			text-decoration: underline;
+																		}
+																	</style>
+																	<tbody>
+																		<tr>
+																			<th>
+																				devis
+																			</th>
+																			<th>
+																				Ref
+																			</th>
+																			<th>
+																				Nom
+																			</th>
+																			<th>
+																				Pu
+																			</th>
+																			<th>
+																				Qt
+																			</th>
+																			<th>
+																				U
+																			</th>
+																			<th>
+																				Tva(%)
+																			</th>
+																			<th>
+																				Red(%)
+																			</th>
+																			<tr>
+																	</tbody>
+																</table>
+															</div>
+														
+														<!-- invoice subtotal -->
+																<hr>
+
+													<div class="card-body">
+															<div class="invoice-subtotal pt-50">
+																<div class="row">
+																	<div class="col-lg-12 col-12"></div>
+																	<div class="col-md-6 col-12">
+																		<div class="form-group">
+																			<label>Accompte :</label>
+																			<input name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un accompte sur le devis">
+																		</div>
+																		<div class="form-group">
+																			<label>Modalité de paiement:</label>
+																			<select name="modalite" class="form-control invoice-item-select">
+																				<option value="Non définie" selected>Selectionnez une modalite</option>
+																				<option value="CB">CB</option>
+																				<option value="Chèque">Chèque</option>
+																				<option value="Espèce">Espece</option>
+																				<option value="Virement">Virement</option>
+																				<option value="Prélèvement">Prélèvement</option>
+																			</select>
+																		</div>
+																		<label>Monnaie :</label>
+																		<div class="form-group" id="etiq">
+																			<select name="monnaie" class="form-control invoice-item-select">
+																				<option value="€" selected>€</option>
+																				<option value="$">$</option>
+																				<option value="Dinar">Dinar</option>
+																			</select>
+																		</div>
+																	</div>
+																	<div class="col-md-6 col-12">
+																		<div class="form-group">
+																			<label>Commentaire :</label>
+																			<input name="note" type="text" class="form-control" placeholder="Ajouter une note client">
+																		</div>
+																		<label for="etiq">Etiquette :</label>
+																		<div class="form-group" id="etiq">
+																			<select name="etiquette" class="form-control invoice-item-select">
+																				<option value="Inconnue" selected>Inconnue</option>
+																				<option value="Electronique">Electronique</option>
+																				<option value="Décoration">Décoration</option>
+																				<option value="Ecommerce">Ecommerce</option>
+																				<option value="Autre">Autre</option>
+																			</select>
+																		</div>
+																		<label >Statut :</label>
+																		<div class="form-group">
+																			<select name="statut" class="form-control invoice-item-select">
+																				<option value="NON PAYE" selected>Non payé</option>
+																				<option value="PAYE">Payé</option>
+																			</select>
+																		</div>
+																	</div>
+																	<div class="col-lg-12 col-12">
+																		<ul class="list-group list-group-flush">
+																			<li class="list-group-item border-0 pb-0">
+																				<style>
+																					.green
+																					{
+																						background: #43b546;
+																						color: white;
+																					}
+
+																					.green:hover
+																					{
+																						background: #3fff45;
+																						color: white;
+																					}
+																				</style>
+																				<input name="insert" id="button_save" type="button" value="Vérification" class="btn btn-primary btn-block subtotal-preview-btn" onclick="buttonc()"/>
+																				<input name="insert" id="subbt" type="hidden" value="Sauvegarder" class="btn btn btn-block subtotal-preview-btn green"/>
+																			</li>
+																		</ul>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+                                    	</div>
+                                </form>
+								<!-- DEBUT DES FORMS -->
 											<!-- logo and title -->
 											<div class="card-body">
 												<div class="row invoice-info">
@@ -397,7 +613,7 @@ require_once 'php/config.php';
 																									-->
 																									<!-- users edit media object ends -->
 																									<!-- users edit account form start -->
-																									<form action="php/insert_client_particulier.php" method="POST">
+																									<form action="php/insert_popupdevc.php" method="POST">
 																										<input type="hidden" name="cat" value="Particulier">
 																										<div class="row">
 																											<div class="col-12 col-sm-6">
@@ -750,7 +966,7 @@ require_once 'php/config.php';
 																								-->
 																								<!-- users edit media object ends -->
 																								<!-- users edit account form start -->
-																								<form action="php/insert_client_societe.php" method="POST">
+																								<form action="php/insert_popupdevcs.php" method="POST">
 																									<input type="hidden" name="cat" value="Professionnel">
 																									<div class="row">
 																										<div class="col-12 col-sm-6">
@@ -1094,53 +1310,7 @@ require_once 'php/config.php';
 												</div>
 											</div>
 											<!-- FIN DES 2 FORMS -->
-													<div class="card-body pt-50 col-lg-12  ">
-														<!-- product details table-->
-														<div class="invoice-product-details ">
-															<div data-repeater-list="group-a">
-																<div data-repeater-item>
-																	<div class="row mb-50">
-																		<div class="col-3 col-md-3 invoice-item-title">
-																			Article
-																		</div>
-																		<div class="col-4 invoice-item-title">
-																			Prix Unitaire
-																		</div>
-																		<div class="col-2 invoice-item-title">
-																			Quantite
-																		</div>
-																		<div class="col-1 invoice-item-title">
-																			Prix HT
-																		</div>
-																	</div>
-																	<div class="invoice-item d-flex border rounded mb-1">
-																		<div class="invoice-item-filed row pt-1 px-1">
-																			<div class="col-12 col-md-4 form-group">
-																				<select id="article" class="form-control invoice-item-select">
-																					<option value="Pas d'article">Sélectionnez un article</option>
-																					<optgroup label="Liste des articles"></optgroup>
-																					<?php foreach($article as $articlee): ?>
-																					<option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
-																					<?php endforeach; ?>
-																					<optgroup label="Autres options">
-																						<option value="Pas d'article">Autres</option>
-																					</optgroup>
-																				</select>
-																			</div>
-																			<div class="col-md-3 col-12 form-group">
-																				<input name="cout" id="cout" type="number" class="form-control" placeholder="0" onkeyup="myFunction()" step="any">
-																			</div>
-																			<div class="col-md-3 col-12 form-group">
-																				<input name="quantite" id="quantite" type="number" value="" class="form-control" placeholder="" onkeyup="myFunction()" step="any">
-																			</div>
-																			<div class="col-md-2 col-12 form-group">
-																				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-																				<strong id="demo" class="text-primary align-middle">00.00 €</strong>
-																			</div>
-																			<div class="col-md-4 col-12 form-group">
-																				<button type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
-																				<!-- Pop-up -->
-																				<div id="popup3" class="modal">
+											<div id="popup3" class="modal">
 																					<div class="modal-dialog modal-dialog-centered">
 																						<div class="modal-content">
 																							<div class="h-auto card">
@@ -1157,7 +1327,7 @@ require_once 'php/config.php';
 																										<div class="tab-content">
 																											<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																											
-																												<form action="php/insert_articles_facture.php" method="POST">
+																												<form action="php/insert_popup_devis.php" method="POST">
 																													<div class="row">
 																														<div class="col-12 col-sm-6">
 																															<div class="form-group">
@@ -1255,175 +1425,6 @@ require_once 'php/config.php';
 																						</div>
 																					</div>
 																				</div>
-																			</div>
-																		</div>
-																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																			<!-- 
-																			<label for="ref">REF :</label>
-																			-->
-																			<input name="referencearticle"  id="referencearticle" type="text" class="form-control" placeholder="Référence">
-																		</div>
-																		<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
-																			<div class="dropdown" style="margin-top: 15px;">
-																				<i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
-																				<div class="dropdown-menu p-1">
-																					<div class="row">
-																						<div class="col-12 form-group">
-																							<label for="discount">Remise(%)</label>
-																							<input name="remise" id="remise" value="0" type="number" class="form-control" id="discount" placeholder="remise" maxlength="3" min="0" max="100">
-																						</div>
-																						<div class="col-12 form-group">
-																							<label for="discount">Tva(%)</label>
-																							<input name="tva" id="tva" value="20" type="number" class="form-control" id="discount" placeholder="0" maxlength="3" min="0" max="100">
-																						</div>
-																						<div class="col-12 form-group">
-																							<label>Unite de mesure :</label>
-																							<input name="umesure" id="umesure"  type="text" class="form-control" placeholder="Unite de mesure">
-																						</div>
-																						
-																					</div>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-														
-															<div class="form-group">
-																	<div class="col p-0">
-																		<button class="btn btn-light-primary btn-sm" type="button">
-																			<i class="bx bx-plus"></i>
-																			<span type="button" name="insert" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
-																		</button>
-																	</div>
-																</div>
-																<table id="table" name="table" class="table table-bordered">
-																	<style>
-																		.red
-																		{
-																			color: red;
-																		}
-
-																		.line
-																		{
-																			text-decoration: underline;
-																		}
-																	</style>
-																	<tbody>
-																		<tr>
-																			<th>
-																				devis
-																			</th>
-																			<th>
-																				Ref
-																			</th>
-																			<th>
-																				Nom
-																			</th>
-																			<th>
-																				Pu
-																			</th>
-																			<th>
-																				Qt
-																			</th>
-																			<th>
-																				U
-																			</th>
-																			<th>
-																				Tva(%)
-																			</th>
-																			<th>
-																				Red(%)
-																			</th>
-																			<tr>
-																	</tbody>
-																</table>
-															</div>
-														
-														<!-- invoice subtotal -->
-																<hr>
-
-													<div class="card-body">
-															<div class="invoice-subtotal pt-50">
-																<div class="row">
-																	<div class="col-lg-12 col-12"></div>
-																	<div class="col-md-6 col-12">
-																		<div class="form-group">
-																			<label>Accompte :</label>
-																			<input name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un accompte sur le devis">
-																		</div>
-																		<div class="form-group">
-																			<label>Modalité de paiement:</label>
-																			<select name="modalite" class="form-control invoice-item-select">
-																				<option value="Non définie" selected>Selectionnez une modalite</option>
-																				<option value="CB">CB</option>
-																				<option value="Chèque">Chèque</option>
-																				<option value="Espèce">Espece</option>
-																				<option value="Virement">Virement</option>
-																				<option value="Prélèvement">Prélèvement</option>
-																			</select>
-																		</div>
-																		<label>Monnaie :</label>
-																		<div class="form-group" id="etiq">
-																			<select name="monnaie" class="form-control invoice-item-select">
-																				<option value="€" selected>€</option>
-																				<option value="$">$</option>
-																				<option value="Dinar">Dinar</option>
-																			</select>
-																		</div>
-																	</div>
-																	<div class="col-md-6 col-12">
-																		<div class="form-group">
-																			<label>Commentaire :</label>
-																			<input name="note" type="text" class="form-control" placeholder="Ajouter une note client">
-																		</div>
-																		<label for="etiq">Etiquette :</label>
-																		<div class="form-group" id="etiq">
-																			<select name="etiquette" class="form-control invoice-item-select">
-																				<option value="Inconnue" selected>Inconnue</option>
-																				<option value="Electronique">Electronique</option>
-																				<option value="Décoration">Décoration</option>
-																				<option value="Ecommerce">Ecommerce</option>
-																				<option value="Autre">Autre</option>
-																			</select>
-																		</div>
-																		<label >Statut :</label>
-																		<div class="form-group">
-																			<select name="statut" class="form-control invoice-item-select">
-																				<option value="NON PAYE" selected>Non payé</option>
-																				<option value="PAYE">Payé</option>
-																			</select>
-																		</div>
-																	</div>
-																	<div class="col-lg-12 col-12">
-																		<ul class="list-group list-group-flush">
-																			<li class="list-group-item border-0 pb-0">
-																				<style>
-																					.green
-																					{
-																						background: #43b546;
-																						color: white;
-																					}
-
-																					.green:hover
-																					{
-																						background: #3fff45;
-																						color: white;
-																					}
-																				</style>
-																				<input name="insert" id="button_save" type="button" value="Vérification" class="btn btn-primary btn-block subtotal-preview-btn" onclick="buttonc()"/>
-																				<input name="insert" id="subbt" type="hidden" value="Sauvegarder" class="btn btn btn-block subtotal-preview-btn green"/>
-																			</li>
-																		</ul>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-                                    	</div>
-                                </form>
                                 </div>
                             </div>
                         </div>
