@@ -141,7 +141,7 @@ require_once 'php/verif_session_crea.php';
                                                 <img src="../../../app-assets/images/ico/<?= $crea['img_crea'] ?>" alt="user_avatar" height="36" width="36">
                                             </div>
                                             <div class="col-md-4">
-                                                <div class="livicon-evo" onclick="retourn()" data-options=" name: share-alt.svg; size: 30px " style="transform: rotate(-96deg); cursor: pointer; position: relative; top: 0px;"></div>
+                                                <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="cursor: pointer; position: relative; top: 6px;"></div>
                                                 <script>
                                                     function retourn() {
                                                         window.history.back();
