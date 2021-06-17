@@ -217,7 +217,7 @@ require_once 'php/config.php';
                                                             <div class="todo-badge-wrapper d-flex"></div>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=fisca&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75' style="color:red" ><i class="bx bx-trash"></i></a>
                                                         </div>
                                                     </div>
                                                 </li>
