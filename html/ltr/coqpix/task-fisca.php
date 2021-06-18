@@ -62,6 +62,16 @@ require_once 'php/config.php';
         color: #c7cfd6;
     }
     .icon_check:hover{color: green;}
+    .icon_fav {
+        font-size: 1.2rem;
+        color: #c7cfd6;
+    }
+    .icon_fav:hover{color:orange;}
+    .icon_trash{
+        font-size: 1.2rem;
+        color: #c7cfd6;
+    }
+    .icon_trash:hover{color:red;}
 </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: #e72424;">
