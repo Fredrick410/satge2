@@ -13,6 +13,13 @@ ini_set('display_startup_errors', TRUE);
     $pdoStat->execute();
     $info = $pdoStat->fetch();
     
+
+    $pdoStaat = $bdd->prepare('SELECT * FROM articles WHERE numeros = :id AND id_session=:id_session');
+    $pdoStaat->bindValue(':id',$_GET['id']);
+    $pdoStaat->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION 
+    $pdoStaat->execute();
+    $art = $pdoStaat->fetch();
+
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM facture');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
@@ -43,8 +50,8 @@ ini_set('display_startup_errors', TRUE);
                 $max_num = $max_num;
             }
 
-           
-    
+      
+     
       $idfac = $info['id'];
       $numerosinfo = $info['numerosdevis'];   // numeros facture ou devis ect
       $dte = $info['dte']; //changer 
@@ -67,32 +74,22 @@ ini_set('display_startup_errors', TRUE);
       
     //insert
 
-    $insert = $bdd->prepare('INSERT INTO facture (numerosfacture, dte, dateecheance, reffacture, nomproduit, facturepour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_facture, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-    $insert->execute(array(
-        htmlspecialchars($numerosinfo),
-        htmlspecialchars($dte),
-        htmlspecialchars($dateecheance),
-        htmlspecialchars($ref),
-        htmlspecialchars($nomproduit),
-        htmlspecialchars($pour),
-        htmlspecialchars($adresse),
-        htmlspecialchars($email),
-        htmlspecialchars($tel),
-        htmlspecialchars($departement),
-        htmlspecialchars($modalite),
-        htmlspecialchars($monnaie),
-        htmlspecialchars($note),
-        htmlspecialchars($accompte),
-        htmlspecialchars($status),
-        htmlspecialchars($color),
-        htmlspecialchars($etiquette),
-        htmlspecialchars($descrip),
-        htmlspecialchars($_SESSION['id_session']) //$_SESSION
-    ));
-        $pdod = $bdd->prepare('UPDATE devis SET monnaie="Devis Envoyée" WHERE monnaie="€" AND id=:numeros AND id_session=:num');  
-        $pdod->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdod->bindValue(':numeros',  $idfac);
-        $pdod->execute();
+    
+        
+        $pdodd = $bdd->prepare('INSERT INTO articles(article, referencearticle, cout, quantite, umesure, tva, remise, numeros, typ, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');  
+        $pdodd->execute(array(
+            htmlspecialchars($art['article']),
+            htmlspecialchars($art['referencearticle']),
+            htmlspecialchars($art['cout']),
+            htmlspecialchars($art['quantite']),
+            htmlspecialchars($art['umesure']),
+            htmlspecialchars($art['tva']),
+            htmlspecialchars($art['remise']),
+            htmlspecialchars($info['id']),
+            htmlspecialchars($art['typ']),
+            htmlspecialchars($art['id_session'])));
+
+        
         //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
@@ -145,7 +142,28 @@ ini_set('display_startup_errors', TRUE);
         $pdoc->execute();
         
         //delete devis
-
+        $insert = $bdd->prepare('INSERT INTO facture (numerosfacture, dte, dateecheance, reffacture, nomproduit, facturepour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_facture, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars($numerosinfo),
+            htmlspecialchars($dte),
+            htmlspecialchars($dateecheance),
+            htmlspecialchars($ref),
+            htmlspecialchars($nomproduit),
+            htmlspecialchars($pour),
+            htmlspecialchars($adresse),
+            htmlspecialchars($email),
+            htmlspecialchars($tel),
+            htmlspecialchars($departement),
+            htmlspecialchars($modalite),
+            htmlspecialchars($monnaie),
+            htmlspecialchars($note),
+            htmlspecialchars($accompte),
+            htmlspecialchars($status),
+            htmlspecialchars($color),
+            htmlspecialchars($etiquette),
+            htmlspecialchars($descrip),
+            htmlspecialchars($_SESSION['id_session']) //$_SESSION
+        ));
        
         
         
