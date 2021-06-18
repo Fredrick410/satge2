@@ -6,7 +6,6 @@ tache realiser 16/06/2021
 
 tache realiser 17/06/2021
 	- formulaire creation societe presque fini -> input telephone est terminer
-											   -> le mot "gratuitement" du titre mal souligne
 
 branch de robin :
 tache réalisé 16/06/21
@@ -17,3 +16,7 @@ travail sur page creation-societe
 
 tache réalisé 17/06/21
 creation de domiciliation.php
+
+branch de oscar :
+tache réalisé le 18/06/2021
+	- travail sur la page crea societe (passage en full screen, ajout librairie pour l'input de telephone)
