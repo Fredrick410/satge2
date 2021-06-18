@@ -62,6 +62,16 @@ require_once 'php/config.php';
         color: #c7cfd6;
     }
     .icon_check:hover{color: green;}
+    .icon_fav {
+        font-size: 1.2rem;
+        color: #c7cfd6;
+    }
+    .icon_fav:hover{color:orange;}
+    .icon_trash{
+        font-size: 1.2rem;
+        color: #c7cfd6;
+    }
+    .icon_trash:hover{color:red;}
 </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: #e72424;">
@@ -216,8 +226,8 @@ require_once 'php/config.php';
                                                         <div class="todo-item-action d-flex align-items-center">
                                                             <div class="todo-badge-wrapper d-flex"></div>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=fisca&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75' style="color:red" ><i class="bx bx-trash"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='icon_fav ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='icon_trash ml-75'  ><i class="bx bx-trash"></i></a>
                                                         </div>
                                                     </div>
                                                 </li>
