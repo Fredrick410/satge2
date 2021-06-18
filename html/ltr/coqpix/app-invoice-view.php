@@ -120,7 +120,9 @@ require_once 'php/config.php';
 .none-validation{display: none;}
 </style>
     <!-- BEGIN: Content-->
-    <div class="app-content content">
+    
+        
+        <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
@@ -128,14 +130,23 @@ require_once 'php/config.php';
             <div class="content-body">
                 <!-- app invoice View Page -->
                 <section class="invoice-view-wrapper">
-                    <div class="row">
+                    <div class="row" >
+                        <?php if($_GET['st']=="14986548"){?>
+                                        <style>
+                                            #test{
+                                                background-image: url(../../../app-assets/images/backgrounds/annulé.png);
+                                            }
+                                        </style>
+                                    <?php } ?>
                         <!-- invoice view page -->
-                        <div class="col-xl-9 col-md-8 col-12">
-                            <div class="card invoice-print-area">
+                        <div class="col-xl-9 col-md-8 col-12"  >
+                            <div class="card invoice-print-area" id="test">
                                 <div class="card-content">
-                                    <div class="card-body pb-0 mx-25">
+                                    
+                                <div class="card-body pb-0 mx-25" >
+                                    
                                         <!-- header section -->
-                                        <div class="row">
+                                        <div class="row" >
                                             <div class="col-xl-4 col-md-12">
                                                 <span class="invoice-number mr-50">Référence :</span>
                                                 <span><?= $facture['reffacture'],$facture['numerosfacture']; ?></span>

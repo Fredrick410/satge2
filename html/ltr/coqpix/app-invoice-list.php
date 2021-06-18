@@ -28,7 +28,8 @@ require_once 'php/config.php';
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
-
+    
+    
     // $p = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
     // $p->bindValue(':num',$_SESSION['id_session']);
     // $p->execute();
@@ -222,7 +223,12 @@ require_once 'php/config.php';
                                     <td></td>
                                     <td>FAC-<?= $factures['id'] ?></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>"><?= $factures['reffacture'],$ref ?></a>
+                                        <?php if($factures['status_facture'] == "Facture_Annulée"){
+                                                $numbre = "14986548";
+                                            } else{
+                                                $numbre = "68406510";
+                                            };?>
+                                        <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=<?=$numbre?>"><?= $factures['reffacture'],$ref ?></a>
                                     </td>
                                     <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
                                     <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
@@ -234,16 +240,17 @@ require_once 'php/config.php';
                                     <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_facture'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=14986548" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
                                             <a href="app-invoice-edit.php?numfacture=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
-                                            <a href="php/inv-dev.php?id=<?= $factures['id'] ?>"
+                                            <a href="php/inv-dev.php?id=<?= $factures['id'] ?>&idfac=<?= $factures['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
+                                            
                                             <a href="php/inv-annuler.php?statusfac=Facture_Annulée&id=<?= $factures['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-x-square'></i>
