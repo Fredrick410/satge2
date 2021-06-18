@@ -19,8 +19,8 @@ require_once 'config.php';
                 exit();
             }
         }
-        if($_GET['categorie'] == "socia"){
-            if(isset($_POST['editer_task_socia'])) {
+        if($_GET['categorie'] == "sociale"){
+            if(isset($_POST['editer_task_sociale'])) {
                 $pdo = $bdd->prepare('UPDATE task_socia SET name_task=:name_task, pour_task=:pour_task, dte_echeance=:dte_echeance WHERE id=:num');
                 $pdo->bindValue(':name_task', $_POST['name_task']);
                 $pdo->bindValue(':pour_task', $_POST['pour_task']);
@@ -28,8 +28,13 @@ require_once 'config.php';
                 $pdo->bindValue(':num', $_GET['num']);
                 $pdo->execute();
 
-                header('Location: ../task-socia.php');
-                exit();
+                if(isset($_GET['filter'])) {
+                    header('Location: ../task-sociale-filtre.php?filter='.$_GET['filter']);
+                    exit();
+                } else {
+                    header('Location: ../task-sociale.php');
+                    exit();
+                }
             }
         }
         if($_GET['categorie'] == "fisca"){
@@ -41,8 +46,13 @@ require_once 'config.php';
                 $pdo->bindValue(':num', $_GET['num']);
                 $pdo->execute();
 
-                header('Location: ../task-fisca.php');
-                exit();
+                if(isset($_GET['filter'])) {
+                    header('Location: ../task-fisca-filtre.php?filter='.$_GET['filter']);
+                    exit();
+                } else {
+                    header('Location: ../task-fisca.php');
+                    exit();
+                }
             }
         }
     }
