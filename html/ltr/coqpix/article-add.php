@@ -229,7 +229,7 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>Cout d'achat HT :</label>
-                                                            <input name="coutachat" type="number" step="any"  class="form-control" placeholder="Cout d'achat de l'article">
+                                                            <input name="coutachat" type="number" step="any" class="form-control" placeholder="Cout d'achat de l'article">
                                                         </div>
                                                         <div class="controls">
                                                             <label>Tva achat :</label>

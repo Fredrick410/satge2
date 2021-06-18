@@ -613,7 +613,7 @@ require_once 'php/config.php';
 																									-->
 																									<!-- users edit media object ends -->
 																									<!-- users edit account form start -->
-																									<form action="php/insert_client_particulier.php" method="POST">
+																									<form action="php/insert_popupdevc.php" method="POST">
 																										<input type="hidden" name="cat" value="Particulier">
 																										<div class="row">
 																											<div class="col-12 col-sm-6">
@@ -966,7 +966,7 @@ require_once 'php/config.php';
 																								-->
 																								<!-- users edit media object ends -->
 																								<!-- users edit account form start -->
-																								<form action="php/insert_client_societe.php" method="POST">
+																								<form action="php/insert_popupdevcs.php" method="POST">
 																									<input type="hidden" name="cat" value="Professionnel">
 																									<div class="row">
 																										<div class="col-12 col-sm-6">
@@ -1310,6 +1310,121 @@ require_once 'php/config.php';
 												</div>
 											</div>
 											<!-- FIN DES 2 FORMS -->
+											<div id="popup3" class="modal">
+																					<div class="modal-dialog modal-dialog-centered">
+																						<div class="modal-content">
+																							<div class="h-auto card">
+																								<div class="card-content">
+																									<div class="card-body">
+																										<ul class="nav nav-tabs mb-2" role="tablist">
+																											<li class="nav-item">
+																												<a class="nav-link d-flex align-items-center active" id="account-tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="true">
+																													<i class='bx bxs-purchase-tag-alt'></i>
+																													<span class="d-none d-sm-block">Ajouter un article</span>
+																												</a>
+																											</li>
+																										</ul>
+																										<div class="tab-content">
+																											<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
+																											
+																												<form action="php/insert_popup_devis.php" method="POST">
+																													<div class="row">
+																														<div class="col-12 col-sm-6">
+																															<div class="form-group">
+																																<div class="controls">
+																																	<label>*Désignation :</label>
+																																	<input name="article" type="text" class="form-control" placeholder="Désignation de l'article" >
+																																</div>
+																															</div>
+																															<div class="form-group">
+																																<div class="controls">
+																																	<label>Unités de mesure :</label>
+																																	<input name="umesure" type="text" class="form-control" placeholder="Unités de mesure">
+																																</div>
+																															</div>
+																														</div>
+																														<div class="col-12 col-sm-6">
+																															<div class="form-group">
+																																<label>Référence de l'article :</label>
+																																<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
+																															</div>
+																														</div>
+																														<div class="col-12">
+																															<hr>
+																															<style>
+																																.line
+																																{
+																																	text-decoration: underline;
+																																}
+																															</style>
+																														</div>
+																														<div class="col-12 col-sm-6  border">
+																															<div class="form-group text-center">
+																																<div class="controls">
+																																	<h4 class="line">VENTE</h4>
+																																</div>
+																															</div>
+																														</div>
+																														<div class="col-12 col-sm-6  border">
+																															<div class="form-group text-center">
+																																<h4 class="line">ACHAT</h4>
+																															</div>
+																														</div>
+																														<div class="col-12 col-sm-6 border">
+																															<div class="form-group">
+																																<div class="controls">
+																																	<label>Prix de vente HT :</label>
+																																	<input name="prixvente" type="number" class="form-control" placeholder="Prix de vente de l'article">
+																																</div>
+																																<div class="controls">
+																																	<label>Tva vente :</label>
+																																	<fieldset class="invoice-address form-group">
+																																		<select name="tvavente" class="form-control invoice-item-select">
+																																			<option value="20">Taux normal : 20 %</option>
+																																			<option value="10">Taux intermédiaire : 10 %</option>
+																																			<option value="5.5">Taux réduit : 5.5 %</option>
+																																			<option value="2.1">Taux particulier : 2.1 %</option>
+																																			<option value="0">Taux nul : 0 %</option>
+																																		</select>
+																																	</fieldset>
+																																</div>
+																															</div>
+																														</div>
+																														<div class="col-12 col-sm-6 border">
+																															<div class="form-group">
+																																<div class="controls">
+																																	<label>Cout d'achat HT :</label>
+																																	<input name="coutachat" type="number" class="form-control" placeholder="Cout d'achat de l'article">
+																																</div>
+																																<div class="controls">
+																																	<label>Tva achat :</label>
+																																	<fieldset class="invoice-address form-group">
+																																		<select name="tvaachat" class="form-control invoice-item-select">
+																																			<option value="20">Taux normal : 20 %</option>
+																																			<option value="10">Taux intermédiaire : 10 %</option>
+																																			<option value="5.5">Taux réduit : 5.5 %</option>
+																																			<option value="2.1">Taux particulier : 2.1 %</option>
+																																			<option value="0">Taux nul : 0 %</option>
+																																		</select>
+																																	</fieldset>
+																																</div>
+																															</div>
+																														</div>
+																														<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
+																															<button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
+																														</div>
+																														<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
+																													</div>
+																													<!-- users edit account form ends -->
+																												</form>
+																											
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
                                 </div>
                             </div>
                         </div>

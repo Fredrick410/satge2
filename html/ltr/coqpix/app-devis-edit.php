@@ -222,46 +222,6 @@ require_once 'php/config.php';
                                     </div>
                                 <form autocomplete="off" action="php/edit-devis.php" method="POST">
                                     <input type="hidden" name="numdevis" value="<?= $facture['id'] ?>">
-
-
-
-                                    <div class="row mx-0">
-                                        
-                                        <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
-                                                    <h6 class="invoice-number mr-75">
-                                                                    N°
-                                                    </h6>
-                                                    <input type="text" name="numeroarticle" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
-                                            <h6 class="invoice-number mr-75">
-                                                            Référence
-                                                        </h6>
-                                                        <input name="refdevis" id="refdevis" type="text" value="<?= $facture['refdevis'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
-                                                        <p style='position: relative; top: 7px;'>
-                                                            &nbsp&nbsp&nbsp 
-                                                        </p>
-                                            <h6 class="invoice-number mr-75">Devis N°</h6>
-                                            <input type="number" name="numerosdevis" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosdevis'] ?>" >
-                                            
-                                        </div>
-                                        <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
-                                            <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
-                                                <div class="d-flex align-items-center">
-                                                    <small class="text-muted mr-75">*Date : </small>
-                                                    <fieldset class="d-flex ">
-                                                        <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dte'] ?>">
-                                                    </fieldset>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <small class="text-muted mr-75">
-                                                    Date d'échéance : </small>
-                                                    <fieldset class="d-flex justify-content-end">
-                                                        <input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dateecheance'] ?>">
-                                                    </fieldset>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                         <div class="row mx-0">
                                         
                                             <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
@@ -299,7 +259,6 @@ require_once 'php/config.php';
                                             </div>
                                         </div>
                                         
-
                                         <hr>
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
@@ -311,7 +270,6 @@ require_once 'php/config.php';
                                                             <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $facture['descrip']?></textarea>
                                                         </div>  
                                             </div>
-
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
                                             </div>
@@ -332,9 +290,7 @@ require_once 'php/config.php';
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>
                                                 </div>
-                                                <fieldset class="invoice-address form-group">
-                                                    <input name="facturepour" id="newfacturepour" type="text" class="form-control" placeholder="Nouveau client" disabled>
-                                                </fieldset>
+                                               
                                                 <label for="adress">*Adresse :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="adresse" id="adresse" class="form-control" rows="4" value="<?= $facture['adresse'] ?>">
@@ -434,10 +390,7 @@ require_once 'php/config.php';
                                                                 <div class="col-md-2 col-12 form-group">
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                 </div>
-                                                                <div class="col-md-4 col-12 form-group">
-                                                                    <label for="article">Nouvelle Article :</label>
-                                                                    <input name="article" id="newarticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Nouvelle article">
-                                                                </div>
+                                                                
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label for="ref">REF :</label>
                                                                     <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
@@ -471,7 +424,7 @@ require_once 'php/config.php';
                                                 <div class="col p-0">
                                                     <button class="btn btn-light-primary btn-sm" type="button">
                                                         <i class="bx bx-plus"></i>
-                                                        <span type="button" name="insert" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+                                                        <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -537,7 +490,8 @@ require_once 'php/config.php';
                                                     </div>
                                                     <label >*Status :</label>
                                                     <div class="form-group">
-                                                        <select name="status_facture" class="form-control invoice-item-select">
+
+                                                        <select name="status_devis" class="form-control invoice-item-select">
                                                             <option value="<?= $facture['status_devis'] ?>"><?= $facture['status_devis'] ?></option>
                                                             <option value="NON PAYE">Non payé</option>
                                                             <option value="PAYE">Payé</option>

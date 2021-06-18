@@ -44,6 +44,6 @@ require_once 'config.php';
         htmlspecialchars($_SESSION['id_session'])
     ));
 
-    header('Location: ../app-invoice-add.php?jXN955CbHqqbQ463u5Uq=1');
+    header('Location: ../app-devis-add.php?jXN955CbHqqbQ463u5Uq=1');
 
 ?>

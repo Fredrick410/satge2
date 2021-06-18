@@ -10,7 +10,7 @@ require_once 'php/config.php';
     $pdoStat->bindValue(':num',$_GET['numbon'], PDO::PARAM_INT);
     $pdoStat->execute();
     $facture = $pdoStat->fetch();
-    $numeros = $facture['numerosbon'];
+    $numeros = $facture['id'];
     
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
@@ -209,9 +209,9 @@ require_once 'php/config.php';
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
-    <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
-    <meta name="author" content="Audit action plus - Youness Haddou">
+    <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
     <title>View bon</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -243,7 +243,14 @@ require_once 'php/config.php';
 
 <!-- BEGIN: Body-->
 
+
+<body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
+
+
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
+<style>
+    .none-validation{display: none;}
+</style>
 
     <!-- BEGIN: Content-->
     <div class="app-content content">
@@ -263,9 +270,16 @@ require_once 'php/config.php';
                                         <!-- header section -->
                                         <div class="row">
                                             <div class="col-xl-4 col-md-12">
-                                                <span class="invoice-number mr-50">Bon N°</span><span><?= $facture['numerosbon']; ?></span>
+                                           
+                                                <span class="invoice-number mr-50">Référence :</span>
+                                                <span><?= $facture['refbon'],$facture['numerosbon']; ?></span>
                                             </div>
-                                            <div class="col-xl-8 col-md-12">
+                                            <div class="col-xl-4 col-md-12">
+                                                <span class="invoice-number mr-50">bon N°</span>
+                                                <span><?= $facture['id']; ?></span>
+                                            </div>
+                                            
+                                            <div class="col-xl-4 col-md-12">
                                                 <div class="d-flex align-items-center justify-content-xl-end flex-wrap">
                                                     <div class="mr-3">
                                                         <small class="text-muted">Date :</small>
@@ -281,8 +295,11 @@ require_once 'php/config.php';
                                         <!-- logo and title -->
                                         <div class="row my-3">
                                             <div class="col-6">
-                                                <h4 class="text-primary">Bon de livraison</h4>
+                                                <h4 class="text-primary">bon</h4>
                                                 <span><?= $facture['nomproduit']; ?></span>
+                                                <br><br><br>
+                                                <h6 class="text-primary">Description</h6>
+                                                <span><?= $facture['descrip']; ?></span>
                                             </div>
                                             <div class="col-6 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
@@ -292,7 +309,7 @@ require_once 'php/config.php';
                                         <!-- invoice address and contact -->
                                         <div class="row invoice-info">
                                             <div class="col-6 mt-1">
-                                                <h5 class="invoice-from">Bon de livraison de</h5>
+                                                <h5 class="invoice-from">bon de</h5>
                                                 <div class="mb-1">
                                                     <span><?= $entreprise['nameentreprise']; ?></span>
                                                 </div>
@@ -307,7 +324,7 @@ require_once 'php/config.php';
                                                 </div>
                                             </div>
                                             <div class="col-6 mt-1">
-                                                <h5 class="invoice-to">Bon de livraison pour</h5>
+                                                <h5 class="invoice-to">bon pour</h5>
                                                 <div class="mb-1">
                                                     <span><?= $facture['bonpour']; ?></span>
                                                 </div>
@@ -495,9 +512,10 @@ require_once 'php/config.php';
                                     <div class="form-group">
                                         <h6 class="line">Bas de page :</h6>
                                     </div>
-                                    <div class="form-group">
-                                            <label>Siège Social :</label>
-                                            <input name="social" id="siegeinp" type="text" class="form-control invoice-item-desc" value="<?= $entreprise['adresseentreprise'] ?>" placeholder="Mon siège social" onkeyup="siegeinp()">
+                                    <div class="form-group"><!-- <style>.sizetitle{font-size: 11px; color: red; font-family-monospace: "Rubik", Helvetica, Arial, serif; cursor: pointer;}</style> -->
+                                            <label>Siège Social : </label>
+                                            <!-- <div class="invoice-icon d-flex flex-column justify-content-between text-right p-25"><span class="sizetitle" id="socialdelet" onclick="socialdelete()">Supprimer</span></div> SUPPRIMER UN ELEMENT DANS LE BAS DE PAGE -->
+                                            <input name="social" id="siegeinp" type="text" class="form-control invoice-item-desc border" value="<?= $entreprise['adresseentreprise'] ?>" placeholder="Mon siège social" onkeyup="siegeinp()">
                                     </div>
                                     <div class="form-group">
                                             <label>N° Siret :</label>

@@ -359,8 +359,7 @@ require_once 'php/config.php';
 														</div>
 													</div>
 													<hr>
-												</div>	
-												<!-- popup créer clients déplacés								 -->
+												</div>									
 													<div class="card-body pt-50 col-lg-12  ">
 														<!-- product details table-->
 														<div class="invoice-product-details ">
@@ -615,7 +614,7 @@ require_once 'php/config.php';
 																									-->
 																									<!-- users edit media object ends -->
 																									<!-- users edit account form start -->
-																									<form action="php/insert_clientpopup_particulier.php" method="POST">
+																									<form action="php/insert_popup_clp.php" method="POST">
 																										<input type="hidden" name="cat" value="Particulier">
 																										<div class="row">
 																											<div class="col-12 col-sm-6">
@@ -968,7 +967,7 @@ require_once 'php/config.php';
 																								-->
 																								<!-- users edit media object ends -->
 																								<!-- users edit account form start -->
-																								<form action="php/insert_clientpopup_societe.php" method="POST">
+																								<form action="php/insert_popup_cls.php" method="POST">
 																									<input type="hidden" name="cat" value="Professionnel">
 																									<div class="row">
 																										<div class="col-12 col-sm-6">
@@ -1377,7 +1376,7 @@ require_once 'php/config.php';
 																															<div class="form-group">
 																																<div class="controls">
 																																	<label>Prix de vente HT :</label>
-																																	<input name="prixvente" type="number" class="form-control" placeholder="Prix de vente de l'article">
+																																	<input name="prixvente" type="number" step="any" class="form-control" placeholder="Prix de vente de l'article">
 																																</div>
 																																<div class="controls">
 																																	<label>Tva vente :</label>
@@ -1397,7 +1396,7 @@ require_once 'php/config.php';
 																															<div class="form-group">
 																																<div class="controls">
 																																	<label>Cout d'achat HT :</label>
-																																	<input name="coutachat" type="number" class="form-control" placeholder="Cout d'achat de l'article">
+																																	<input name="coutachat" type="number" step="any" class="form-control" placeholder="Cout d'achat de l'article">
 																																</div>
 																																<div class="controls">
 																																	<label>Tva achat :</label>
