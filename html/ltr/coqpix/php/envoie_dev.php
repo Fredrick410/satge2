@@ -15,7 +15,7 @@ ini_set('display_startup_errors', TRUE);
     
 
     $pdoStaat = $bdd->prepare('SELECT * FROM articles WHERE numeros = :id AND id_session=:id_session');
-    $pdoStaat->bindValue(':id',$_GET['id']);
+    $pdoStaat->bindValue(':id',$_GET['iddev']);
     $pdoStaat->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION 
     $pdoStaat->execute();
     $art = $pdoStaat->fetch();
@@ -51,7 +51,7 @@ ini_set('display_startup_errors', TRUE);
             }
 
       
-     
+      $iddev = $_GET['iddev'];
       $idfac = $info['id'];
       $numerosinfo = $info['numerosdevis'];   // numeros facture ou devis ect
       $dte = $info['dte']; //changer 
@@ -76,18 +76,7 @@ ini_set('display_startup_errors', TRUE);
 
     
         
-        $pdodd = $bdd->prepare('INSERT INTO articles(article, referencearticle, cout, quantite, umesure, tva, remise, numeros, typ, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');  
-        $pdodd->execute(array(
-            htmlspecialchars($art['article']),
-            htmlspecialchars($art['referencearticle']),
-            htmlspecialchars($art['cout']),
-            htmlspecialchars($art['quantite']),
-            htmlspecialchars($art['umesure']),
-            htmlspecialchars($art['tva']),
-            htmlspecialchars($art['remise']),
-            htmlspecialchars($info['id']),
-            htmlspecialchars($art['typ']),
-            htmlspecialchars($art['id_session'])));
+        
 
         
         //calculs
@@ -165,6 +154,18 @@ ini_set('display_startup_errors', TRUE);
             htmlspecialchars($_SESSION['id_session']) //$_SESSION
         ));
        
+        $pdodd = $bdd->prepare('INSERT INTO articles(article, referencearticle, cout, quantite, umesure, tva, remise, numeros, typ, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');  
+        $pdodd->execute(array(
+            htmlspecialchars($art['article']),
+            htmlspecialchars($art['referencearticle']),
+            htmlspecialchars($art['cout']),
+            htmlspecialchars($art['quantite']),
+            htmlspecialchars($art['umesure']),
+            htmlspecialchars($art['tva']),
+            htmlspecialchars($art['remise']),
+            htmlspecialchars($iddev),
+            htmlspecialchars($art['typ']),
+            htmlspecialchars($art['id_session'])));
         
         
         header('Location: ../app-invoice-list.php');

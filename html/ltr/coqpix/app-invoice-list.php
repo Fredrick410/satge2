@@ -244,6 +244,10 @@ require_once 'php/config.php';
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
+                                            <a href="php/inv-annuler.php?statusfac=Facture_Annulée&id=<?= $factures['id'] ?>"
+                                            class="invoice-action-edit cursor-pointer">
+                                                <i class='bx bxs-x-square'></i>
+                                            </a>&nbsp&nbsp&nbsp&nbsp
                                             <a href="php/delete_facture.php?numfacture=<?= $factures['numerosfacture'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
