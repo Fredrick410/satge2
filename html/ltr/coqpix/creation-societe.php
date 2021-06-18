@@ -33,7 +33,10 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     <!-- END: Custom CSS-->
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
 </head>
 <!-- END: Head-->
@@ -134,7 +137,7 @@ a:hover{
                                                     <div class="form-row" >
                                                         <div class="form-group col-md-6 mb-50">
                                                             <label class="text-bold-600">Téléphone du dirigeant *</label>
-                                                            <input type="number" name="tel_diri" class="form-control border rounded-pill border-dark" placeholder="06.00.00.00.00" required>
+                                                            <input type="tel" id="tel_diri" name="tel_diri" class="form-control border rounded-pill border-dark" required>
                                                         </div>
                                                         <div class="form-group col-md-6 mb-50"></div>
                                                     </div>
@@ -201,6 +204,13 @@ a:hover{
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
+    <script>
+   const phoneInputField = document.querySelector("#tel_diri");
+   const phoneInput = window.intlTelInput(phoneInputField, {
+     utilsScript:
+       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+   });
+ </script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
