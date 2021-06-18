@@ -8,6 +8,7 @@ require_once 'config.php';
     $name_enteprise = $_POST['name_entreprise'];
     $date_demande = date('d/m/Y');
     $date_donner = "";
+    $statut_notif_back = "Non lue";
     $message_attestation = "";
     $files_attestation = "";
     $id_session = $_POST['num'];
@@ -18,18 +19,29 @@ require_once 'config.php';
 
         if($type_attestation !== ""){
 
-            $insert = $bdd->prepare('INSERT INTO attestation_sociale (name_entreprise, date_demande, date_donner, type_attestation, statut_attestation, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?)');
+            $insert = $bdd->prepare('INSERT INTO attestation_sociale (name_entreprise, date_demande, date_donner, type_attestation, statut_attestation, statut_notif_back, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?,?)');
             $insert->execute(array(
                 htmlspecialchars($name_enteprise),
                 htmlspecialchars($date_demande),
                 htmlspecialchars($date_donner),
                 htmlspecialchars($type_attestation),
                 htmlspecialchars("En cours"),
+                htmlspecialchars($statut_notif_back),
                 htmlspecialchars($message_attestation),
                 htmlspecialchars($files_attestation),
                 htmlspecialchars($id_session)
             ));
+            
+            $insert = $bdd->prepare('INSERT INTO task_sociale (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars("demande d'attestation"),
+            htmlspecialchars($date_demande),
+            htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
+            htmlspecialchars($name_enteprise),
+            htmlspecialchars("en cours")
+        ));
 
+            
             header('Location: ../attestation-social.php?h6W83pUU2b=L6jH744fmT');
             exit();
 
@@ -42,20 +54,31 @@ require_once 'config.php';
     }else{
 
 
-        $insert = $bdd->prepare('INSERT INTO attestation_fiscale (name_entreprise, date_demande, date_donner, statut_attestation, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO attestation_fiscale (name_entreprise, date_demande, date_donner, statut_attestation, statut_notif_back, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($name_enteprise),
             htmlspecialchars($date_demande),
             htmlspecialchars($date_donner),
             htmlspecialchars("En cours"),
+            htmlspecialchars($statut_notif_back),
             htmlspecialchars($message_attestation),
             htmlspecialchars($files_attestation),
             htmlspecialchars($id_session)
         ));
 
-            header('Location: ../attestation-fiscale.php?h6W83pUU2b=L6jH744fmT');
-            exit(); 
+        
+        $insert = $bdd->prepare('INSERT INTO task_fisca (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars("demande d'attestation"),
+            htmlspecialchars($date_demande),
+            htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
+            htmlspecialchars($name_enteprise),
+            htmlspecialchars("en cours")
+        ));
 
+        header('Location: ../attestation-fiscale.php?h6W83pUU2b=L6jH744fmT');
+        exit(); 
+            
     }   
 
 ?>
