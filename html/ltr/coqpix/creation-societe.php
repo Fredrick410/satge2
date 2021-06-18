@@ -187,6 +187,7 @@ small{
                                                     <div class="form-row" >
                                                         <div class="form-group col-md-6 mb-50" >
                                                             <label class="text-bold-600">Téléphone du dirigeant *</label><br>
+                                                            <div class="alert alert-info" style="display: none;"></div>
                                                             <input type="number" name="tel_diri" id="tel_diri" class="form-control border rounded-pill border-dark" required>
                                                         </div>
                                                         <div class="form-group col-md-6 mb-50"></div>
@@ -240,6 +241,16 @@ small{
             utilsScript: 
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
+        const info = document.querySelector(".alert-info");
+
+        function process(event) {
+            event.preventDefault();
+
+            const phoneNumber = phoneInput.getNumber();
+
+            info.style.display = "";
+            info.innerHTML = `Phone number in E.164 format: <strong>${phoneNumber}</strong>`;
+        }
     </script>
 
     <!-- BEGIN: Vendor JS-->
