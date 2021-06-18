@@ -207,9 +207,9 @@ require_once 'php/config.php';
                                     <div class="todo-task-list list-group">
                                         <!-- task list start -->
                                         <ul class="todo-task-list-wrapper list-unstyled" id="">
-                                            <?php $index=1000; ?>
+                                            <?php $index=98; ?>
                                             <?php foreach($task as $tasks): ?>
-                                                <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; z-index: <?= $index; ?>;">
+                                                <li class="vertical-align-center todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; position: relative; z-index: <?= $index; ?>;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
                                                         <div class="todo-title-area d-flex">
                                                             <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Par: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
@@ -220,11 +220,14 @@ require_once 'php/config.php';
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
                                                             <!-- Edition de la tâche -->
-                                                            <div class="dropdown">
-                                                                <button class="btn dropdown-toggle sorting" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <span class="badge badge-light badge-down">Editer</span>
-                                                                </button>
-                                                                <div class="dropdown-menu dropdown-menu-right p-1" style="min-width: 250px;" aria-labelledby="sortDropdown">
+                                                            <div class="btn-group ml-2">
+                                                                <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C0C0C0" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="dropdown-menu dropdown-menu-right pt-1 px-1" style="min-width: 250px;">
                                                                     <div class="form-group">
                                                                         <form method="POST" action="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=editer_task&categorie=fisca">
                                                                             <div class="form-group">
