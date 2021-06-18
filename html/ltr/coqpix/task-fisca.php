@@ -207,8 +207,9 @@ require_once 'php/config.php';
                                     <div class="todo-task-list list-group">
                                         <!-- task list start -->
                                         <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                            <?php $index=1000; ?>
                                             <?php foreach($task as $tasks): ?>
-                                                <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px;">
+                                                <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; z-index: <?= $index; ?>;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
                                                         <div class="todo-title-area d-flex">
                                                             <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Par: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
@@ -218,10 +219,41 @@ require_once 'php/config.php';
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=fisca&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
+                                                            <!-- Edition de la tâche -->
+                                                            <div class="dropdown">
+                                                                <button class="btn dropdown-toggle sorting" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <span class="badge badge-light badge-down">Editer</span>
+                                                                </button>
+                                                                <div class="dropdown-menu dropdown-menu-right p-1" style="min-width: 250px;" aria-labelledby="sortDropdown">
+                                                                    <div class="form-group">
+                                                                        <form method="POST" action="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=editer_task&categorie=fisca">
+                                                                            <div class="form-group">
+                                                                                <label>Nom de la tache <label class="text-danger">*</label></label>
+                                                                                <input class="form-control" type="text" name="name_task" value="<?= $tasks['name_task'] ?>" required>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Tache pour <label class="text-danger">*</label></label>
+                                                                                <input class="form-control" type="text" name="pour_task" value="<?= $tasks['pour_task'] ?>" required>
+                                                                            </div>
+                                                                            <label>Date d'échéance <label class="text-danger">*</label></label>
+                                                                            <fieldset class="form-group position-relative has-icon-left">
+                                                                                <input name="dte_echeance" type="text" class="form-control pickadate" value="<?= $tasks['dte_echeance'] ?>" required>
+                                                                                <div class="form-control-position">
+                                                                                    <i class='bx bx-calendar'></i>
+                                                                                </div>
+                                                                            </fieldset>
+                                                                            <button class="btn btn-success glow" type="submit" name="editer_task_fisca">
+                                                                                Enregister
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Fin édition de la tâche -->
                                                         </div>
                                                     </div>
                                                 </li>
-                                            <?php endforeach; ?>
+                                            <?php $index = $index - 1; endforeach; ?>
                                         </ul>
                                         <!-- task list end -->
                                         <div class="no-results">
