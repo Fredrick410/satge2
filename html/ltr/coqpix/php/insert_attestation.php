@@ -32,7 +32,16 @@ require_once 'config.php';
                 htmlspecialchars($id_session)
             ));
             
+            $insert = $bdd->prepare('INSERT INTO task_sociale (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars("demande d'attestation"),
+            htmlspecialchars($date_demande),
+            htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
+            htmlspecialchars($name_enteprise),
+            htmlspecialchars("en cours")
+        ));
 
+            
             header('Location: ../attestation-social.php?h6W83pUU2b=L6jH744fmT');
             exit();
 
@@ -56,11 +65,13 @@ require_once 'config.php';
             htmlspecialchars($files_attestation),
             htmlspecialchars($id_session)
         ));
+
+        
         $insert = $bdd->prepare('INSERT INTO task_fisca (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars("demande d'attestation"),
             htmlspecialchars($date_demande),
-            htmlspecialchars($date_donner),
+            htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
             htmlspecialchars($name_enteprise),
             htmlspecialchars("en cours")
         ));
