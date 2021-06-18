@@ -21,7 +21,7 @@ require_once 'config.php';
         }
         if($_GET['categorie'] == "sociale"){
             if(isset($_POST['editer_task_sociale'])) {
-                $pdo = $bdd->prepare('UPDATE task_socia SET name_task=:name_task, pour_task=:pour_task, dte_echeance=:dte_echeance WHERE id=:num');
+                $pdo = $bdd->prepare('UPDATE task_sociale SET name_task=:name_task, pour_task=:pour_task, dte_echeance=:dte_echeance WHERE id=:num');
                 $pdo->bindValue(':name_task', $_POST['name_task']);
                 $pdo->bindValue(':pour_task', $_POST['pour_task']);
                 $pdo->bindValue(':dte_echeance', $_POST['dte_echeance']);

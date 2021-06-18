@@ -79,10 +79,10 @@ ini_set('display_startup_errors', TRUE);
     ));
         $insert = $bdd->prepare('INSERT INTO task_sociale (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
-        htmlspecialchars("demande de bulletin de salaire"),
+        htmlspecialchars("Demande de bulletin de salaire de ".$name_entreprise),
         htmlspecialchars($date_demande),
         htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
-        htmlspecialchars($name_enteprise),
+        htmlspecialchars("Non défini"),
         htmlspecialchars("en cours")
         ));
     header('Location: ../bulletin-choose.php');

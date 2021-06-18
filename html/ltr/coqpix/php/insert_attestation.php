@@ -34,10 +34,10 @@ require_once 'config.php';
             
             $insert = $bdd->prepare('INSERT INTO task_sociale (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
-            htmlspecialchars("demande d'attestation"),
+            htmlspecialchars("Demande d'attestation sociale de ".$name_enteprise),
             htmlspecialchars($date_demande),
             htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
-            htmlspecialchars($name_enteprise),
+            htmlspecialchars("Non défini"),
             htmlspecialchars("en cours")
         ));
 
@@ -69,10 +69,10 @@ require_once 'config.php';
         
         $insert = $bdd->prepare('INSERT INTO task_fisca (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
-            htmlspecialchars("demande d'attestation"),
+            htmlspecialchars("Demande d'attestation fiscale de ".$name_entreprise),
             htmlspecialchars($date_demande),
             htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
-            htmlspecialchars($name_enteprise),
+            htmlspecialchars("Non défini"),
             htmlspecialchars("en cours")
         ));
 

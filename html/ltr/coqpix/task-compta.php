@@ -221,7 +221,7 @@ require_once 'php/config.php';
                                                 <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
                                                         <div class="todo-title-area d-flex">
-                                                            <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Par: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
+                                                            <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Pour: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
                                                         </div>
                                                         <div class="todo-item-action d-flex align-items-center">
                                                             <div class="todo-badge-wrapper d-flex"></div>
