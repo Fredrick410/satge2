@@ -304,6 +304,13 @@ require_once 'php/verif_session_crea.php';
                                 <div class="list-group list-group-messages">
                                     <div class="form-group">
                                         <br>
+                                         <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="cursor: pointer; display:inline-block; top: 6px;"></div>
+
+                                                <script>
+                                                    function retourn() {
+                                                        document.location.href="page-creation.php";
+                                                    }
+                                                </script>
                                         <label class="line">Administration</label>
                                     </div>
                                     <a href="creation-view-morale-pieceid.php" class="list-group-item">
