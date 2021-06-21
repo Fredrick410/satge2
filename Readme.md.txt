@@ -40,3 +40,4 @@ branch de leo :
 branch de robin :
 	tache réalisée 21/06/21
 		-verification que les mdp correspondent aux conditions dans creation-societe
+		-implementation de verif mail
