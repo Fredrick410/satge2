@@ -6,9 +6,16 @@ ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 require_once 'verif_session_connect_admin.php';
 
+    $_SESSION['ERR_MDP_verif'] = 0;
     $name_crea = $_POST['crea_societe'];
     $email_crea = $_POST['email_crea'];
     $password_crea = $_POST['password_crea'];
+    $password_verif = $_POST['password_verif'];
+    if($password_crea != $password_verif){ //si l'utilisateur a entré 2 mots de passes différents lors de la verif
+        $_SESSION['ERR_MDP_verif'] = 1;
+        header('Location: ../creation-societe.php'); //on revient sur la page de crea
+        exit();
+    }
     $img_crea = !empty($_FILES['img_crea']['name']) ? $_FILES['img_crea']['name'] : "crea.png";
     $date_crea = date("d-m-Y");
     $date_crea_j = date("d");

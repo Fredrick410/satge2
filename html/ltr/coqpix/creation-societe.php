@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -152,13 +151,19 @@ a:hover{
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
 
-                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" id="mdp" placeholder="Mot de passe" required>
+                                                    </div>
+                                                    <div id="alert-mdp" class="alert alert-danger" style="display: none;">
+                                                            erreur mot de passe
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
-                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
-
+                                                        <input type="password" id="mdp_verif" name="password_verif" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
                                                     </div>
+                                                    <div id="alert-mdp2" class="alert alert-danger" style="display: none;">
+                                                            Les deux mots de passe ne correspondent pas
+                                                    </div>
+                                                    
                                                     <div class="form-group">
                                                         <small>*Champ obligatoire</small>
                                                     </div>
@@ -205,6 +210,22 @@ a:hover{
 
     <!-- BEGIN: Page JS-->
     <script>
+    //mot de passe
+
+    $('#mdp').keyup(function (event) {
+        document.getElementById("alert-mdp").style = "display:inline-block;";
+    });
+
+
+    $('#mdp_verif').keyup(function (event) {
+    if($("#mdp").val() != $("#mdp_verif").val()) //si les 2 mdp ne correspondent pas
+        document.getElementById("alert-mdp2").style = "display:inline-block;"; //on affiche msg d'erreur
+    else
+        document.getElementById("alert-mdp2").style = "display:none;"; //on n'affiche pas le msg
+    });
+        
+
+    //telephone
    const phoneInputField = document.querySelector("#tel_diri");
    const phoneInput = window.intlTelInput(phoneInputField, {
      utilsScript:
