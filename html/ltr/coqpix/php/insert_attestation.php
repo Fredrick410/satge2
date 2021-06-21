@@ -67,7 +67,7 @@ require_once 'config.php';
         ));
 
         
-        $pdoS = $bdd->query('SELECT LAST_INSERT_ID() as id_task FROM task_fica');
+        $pdoS = $bdd->query('SELECT LAST_INSERT_ID() as id_task FROM task_fisca');
         $id_task = ($pdoS->fetch()['id_task']);
 
         $insert = $bdd->prepare('INSERT INTO attestation_fiscale (name_entreprise, date_demande, date_donner, statut_attestation, statut_notif_back, id_task, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?,?)');

@@ -263,10 +263,7 @@ require_once 'php/config.php';
                                                                 </div>
                                                             </div>
                                                             <!-- Fin édition de la tâche -->
-<<<<<<< HEAD
-=======
 
->>>>>>> indah
                                                         </div>
                                                     </div>
                                                 </li>
