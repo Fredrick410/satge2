@@ -10,7 +10,7 @@
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
     <title>Création de société</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -187,8 +187,8 @@ small{
                                                     <div class="form-row" >
                                                         <div class="form-group col-md-6 mb-50" >
                                                             <label class="text-bold-600">Téléphone du dirigeant *</label><br>
-                                                            <div class="alert alert-info" style="display: none;"></div>
-                                                            <input type="number" name="tel_diri" id="tel_diri" class="form-control border rounded-pill border-dark" required>
+                                                            <input onchange='process(event)' type="number" name="tel_temp" id="tel_temp" class="form-control border rounded-pill border-dark" required>
+                                                            <input type="text" name="tel_diri" id="tel_diri" hidden required>
                                                         </div>
                                                         <div class="form-group col-md-6 mb-50"></div>
                                                     </div>
@@ -236,20 +236,18 @@ small{
     <!-- END: Content-->
 
     <script>
-        const phoneInputField = document.querySelector("#tel_diri");
+        const phoneInputField = document.querySelector("#tel_temp");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript: 
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-        const info = document.querySelector(".alert-info");
-
         function process(event) {
             event.preventDefault();
 
             const phoneNumber = phoneInput.getNumber();
 
-            info.style.display = "";
-            info.innerHTML = `Phone number in E.164 format: <strong>${phoneNumber}</strong>`;
+           
+            document.getElementById("tel_diri").value=`${phoneNumber}`;
         }
     </script>
 
