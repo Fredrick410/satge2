@@ -11,7 +11,7 @@ ini_set('display_startup_errors', TRUE);
     $date_donner = "";
     $statut_bulletin = "En cours";
     $statut_notif_back = "Non lue";
-    $statut_notif_front = "Non lue";
+    $statut_notif_front = "Inactive";
     $message_bulletin = "";
     $files_bulletin = "";
     $secteur_activité = $_POST['secteur_activité'] !== "" ? $_POST['secteur_activité'] : "0";

@@ -9,7 +9,7 @@ require_once 'config.php';
     $date_demande = date('d/m/Y');
     $date_donner = "";
     $statut_notif_back = "Non lue";
-    $statut_notif_front = "Non lue";
+    $statut_notif_front = "Inactive";
     $message_attestation = "";
     $files_attestation = "";
     $id_session = $_POST['num'];

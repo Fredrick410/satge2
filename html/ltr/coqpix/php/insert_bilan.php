@@ -8,7 +8,7 @@ require_once 'config.php';
     $email_bilan = $_POST['email_bilan'];
     $name_entreprise = $_POST['name_entreprise'];
     $statut_notif_back = "Non lue";
-    $statut_notif_front = "Non lue";
+    $statut_notif_front = "Inactive";
     
     if ($_POST['date_bilan'] == "") {
 
