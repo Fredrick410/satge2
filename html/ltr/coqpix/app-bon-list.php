@@ -192,6 +192,7 @@ require_once 'php/config.php';
                             </thead>
                             <tbody>
                             
+                            <!-- Afficher les prix  -->
                             <?php foreach ($bon as $bons): 
                                 $ref = $bons['numerosbon'];
                                 $numeros = $bons['id'];
@@ -214,8 +215,10 @@ require_once 'php/config.php';
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td>DEV-<?= $bons['id'] ?></td>
+                                    <!-- affichage dans le tableau des données -->
+                                    <td>BON-<?= $bons['id'] ?></td>
                                     <td>
+                                    <!-- pour voir le bon  -->
                                         <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>"><?= $bons['refbon'],$ref ?></a>
                                     </td>
                                     <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $bons['monnaie'] ?></span></td>
@@ -225,12 +228,14 @@ require_once 'php/config.php';
                                         <span class="bullet bullet-success bullet-sm"></span>
                                         <small class="text-muted"><?= $bons['etiquette'] ?></small>
                                     </td>
+                                    <!-- paye en vert non paye en rouge -->
                                     <td><span class="<?= $bons['status_color'] ?>"><?= $bons['status_bon'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
                                             <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
+                                            <!-- pour edit le bon -->
                                             <a href="app-bon-edit.php?numbon=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
@@ -238,6 +243,7 @@ require_once 'php/config.php';
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp -->
+                                            <!-- pour delete -->
                                             <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                

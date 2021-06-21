@@ -49,7 +49,7 @@ require_once 'php/config.php';
 
 
     try{
-  
+//   Different calcul pour le prix TTC et SANS REMISE
     $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) R ";
   
     $re = $bdd->prepare($sq);
@@ -220,7 +220,7 @@ require_once 'php/config.php';
                                 <form autocomplete="off" action="php/edit_facture.php" method="POST">
                                     <input type="hidden" name="numfacture" value="<?= $facture['id'] ?>">
                                         <div class="row mx-0">
-                                        
+                                         <!-- Elément du haut de la facture  -->
                                             <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
@@ -281,7 +281,7 @@ require_once 'php/config.php';
                                                         <optgroup label="--------------------------------">
                                                         <?php foreach($client as $clientt): ?>
                                                         <option value="<?= $clientt['name_client'] ?>"><?= $clientt['name_client'] ?></option>
-                                                        <?php endforeach; ?>
+                                                         <?php endforeach; ?> <!--Affiche la liste de client -->
                                                         <optgroup label="--------------------------------">
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>

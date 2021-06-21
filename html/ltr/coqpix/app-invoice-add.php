@@ -30,6 +30,7 @@ require_once 'php/config.php';
 
 	$total = $cliet['cout']*$cliet['quantite'];
    
+	// Auto incrémentation de l'ID de la facture
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM facture');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
@@ -247,7 +248,7 @@ require_once 'php/config.php';
                                         <!-- header section -->
                                 <form autocomplete="off"  method="POST" action="php/insert_facture.php">
                                         <div class="row mx-0" > 
-
+													<!-- Contenue du haut de l'ajout de facture DEBUT -->
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 																	<h6 class="invoice-number mr-75">
 																		N°
@@ -298,7 +299,7 @@ require_once 'php/config.php';
 															</fieldset>
 														</div>
 													</div>
-												
+												<!-- Contenue du haut de l'ajout de facture FIN -->
 												<!-- logo and title -->
 												<div class="col-lg-12 col-md-12 mt-25">
 													<div class="row my-2 py-50">
@@ -387,7 +388,7 @@ require_once 'php/config.php';
 																					<optgroup label="Liste des articles"></optgroup>
 																					<?php foreach($article as $articlee): ?>
 																					<option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
-																					<?php endforeach; ?>
+																					<?php endforeach; ?>  <!--Affichage de tout les produits -->
 																					<optgroup label="Autres options">
 																						<option value="Pas d'article">Autres</option>
 																					</optgroup>
@@ -614,6 +615,9 @@ require_once 'php/config.php';
 																									-->
 																									<!-- users edit media object ends -->
 																									<!-- users edit account form start -->
+
+
+																									<!-- Debut de la liste des popup qui permettent de créer un client et un article -->
 																									<form action="php/insert_popup_clp.php" method="POST">
 																										<input type="hidden" name="cat" value="Particulier">
 																										<div class="row">
