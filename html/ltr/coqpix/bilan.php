@@ -19,7 +19,7 @@ $count_bilan = count($bilan);
 
 //désactivation des notifications
 $pdoSta = $bdd->prepare('UPDATE bilan SET statut_notif_front = :statut WHERE id_session=:num AND statut_notif_front != "Inactive"');
-$pdoStat->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
+$pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
 $pdoSta->bindValue(':statut', 'Inactive');
 $pdoSta->execute();
 
