@@ -9,6 +9,7 @@ require_once 'config.php';
     $date_demande = date('d/m/Y');
     $date_donner = "";
     $statut_notif_back = "Non lue";
+    $statut_notif_front = "Non lue";
     $message_attestation = "";
     $files_attestation = "";
     $id_session = $_POST['num'];
@@ -19,7 +20,7 @@ require_once 'config.php';
 
         if($type_attestation !== ""){
 
-            $insert = $bdd->prepare('INSERT INTO attestation_sociale (name_entreprise, date_demande, date_donner, type_attestation, statut_attestation, statut_notif_back, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?,?)');
+            $insert = $bdd->prepare('INSERT INTO attestation_sociale (name_entreprise, date_demande, date_donner, type_attestation, statut_attestation, statut_notif_back, statut_notif_front, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');
             $insert->execute(array(
                 htmlspecialchars($name_enteprise),
                 htmlspecialchars($date_demande),
@@ -27,6 +28,7 @@ require_once 'config.php';
                 htmlspecialchars($type_attestation),
                 htmlspecialchars("En cours"),
                 htmlspecialchars($statut_notif_back),
+                htmlspecialchars($statut_notif_front),
                 htmlspecialchars($message_attestation),
                 htmlspecialchars($files_attestation),
                 htmlspecialchars($id_session)
@@ -54,13 +56,14 @@ require_once 'config.php';
     }else{
 
 
-        $insert = $bdd->prepare('INSERT INTO attestation_fiscale (name_entreprise, date_demande, date_donner, statut_attestation, statut_notif_back, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO attestation_fiscale (name_entreprise, date_demande, date_donner, statut_attestation, statut_notif_back, statut_notif_front, message_attestation, files_attestation, id_session) VALUES(?,?,?,?,?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($name_enteprise),
             htmlspecialchars($date_demande),
             htmlspecialchars($date_donner),
             htmlspecialchars("En cours"),
             htmlspecialchars($statut_notif_back),
+            htmlspecialchars($statut_notif_front),
             htmlspecialchars($message_attestation),
             htmlspecialchars($files_attestation),
             htmlspecialchars($id_session)
