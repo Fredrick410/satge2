@@ -8,8 +8,8 @@ tache realiser 17/06/2021
 	- formulaire creation societe presque fini -> input telephone est terminer
 
 branch de robin :
-tache réalisé 16/06/21
 
+tache réalisé 16/06/21
 implementation du site + bdd sur ma machine,
 essai de réorientation du bouton sur page-creation-chat.php
 travail sur page creation-societe
@@ -36,4 +36,12 @@ tache réalisé le 18/06/2021
 branch de leo :
 	tache réalisée 21/06/21
 		-page crea societe : le formulaire envoie le telephone sous la bonne forme (+33...) dans la bdd
+<<<<<<< HEAD
 		-page-creation-edit.php : me formulaire reçoit et envoie le telephone sous la bonne forme (+33...)
+=======
+
+branch de robin :
+	tache réalisée 21/06/21
+		-verification que les mdp correspondent aux conditions dans creation-societe
+		-implementation de verif mail
+>>>>>>> cb4d7b595b611edc6c415f4dd43881b74477e73d

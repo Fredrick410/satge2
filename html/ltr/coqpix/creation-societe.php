@@ -127,8 +127,8 @@ small{
                 
                             
                     
-                        <div class="container-fluid p-0 m-0" style="">
-                            <div class="row p-0 m-0" style="">
+                        <div class="container-fluid p-0 m-0">
+                            <div class="row p-0 m-0">
 
                                 
                                 <!-- image section left -->
@@ -200,23 +200,32 @@ small{
                                                     <br>
                                                     <div class="form-group mb-50">
                                                         <label class="text-bold-600">E-mail (Identifiant de connexion) *</label>
-                                                        <input type="text" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="E-mail de contact" required>
+                                                        <input type="email" name="email_crea" id="email" class="form-control border rounded-pill border-dark" placeholder="E-mail de contact" required>
+                                                    </div>
+                                                    <div id="alert-email" class="alert alert-danger" style="display: none;">
+                                                            Entrez une adresse email valide
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
 
-                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        <input type="password" id="mdp" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        
+                                                    </div>
+                                                    <div id="alert-mdp1" class="alert alert-danger" style="display: none;">
+                                                            le mot de passe doit contenir au moins 6 caractères dont minimum une lettre minuscule, une lettre majuscule et un chiffre
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
-                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
-
+                                                        <input type="password" id="mdp_verif" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                    </div>
+                                                    <div id="alert-mdp2" class="alert alert-danger" style="display: none;">
+                                                            Les deux mots de passe ne correspondent pas
                                                     </div>
                                                     <div class="form-group">
                                                         <small>*Champ obligatoire</small>
                                                     </div>
                                                     <div class="form-group" style="text-align: center;">
-                                                    <button type="submit" style="width: 150px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Je me lance<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                    <button type="submit" id='btn' style="width: 150px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Je me lance<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -234,8 +243,39 @@ small{
                 <!-- register section endss -->
         
     <!-- END: Content-->
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
+    //mot de passe
+
+        //MDP ayant lettres majuscules, minuscules et chiffres
+        var condition = new RegExp("^(?=.{6,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])", "g");
+        
+        $("#mdp").keyup(function(event){
+            if(condition.test($(this).val())){ // mdp valide
+                document.getElementById("alert-mdp1").style = "display: none;";
+                $('#btn').prop('disabled', false);
+            }
+            else if(!condition.test($(this).val())){//mdp non valide
+                document.getElementById("alert-mdp1").style = "display:inline-block;";
+                $('#btn').prop('disabled', true);
+            }
+               
+        });
+
+
+        $('#mdp_verif').keyup(function (event) {
+            if($("#mdp").val() != $("#mdp_verif").val()){ //si les 2 mdp ne correspondent pas
+                document.getElementById("alert-mdp2").style = "display:inline-block;"; //on affiche msg d'erreur
+                $('#btn').prop('disabled', true);
+            }
+            else{
+                document.getElementById("alert-mdp2").style = "display:none;"; //on n'affiche pas le msg
+                $('#btn').prop('disabled', false);
+            }
+        });
+        
+
+    //telephone
         const phoneInputField = document.querySelector("#tel_temp");
         const phoneInput = window.intlTelInput(phoneInputField, {
             utilsScript: 
@@ -249,6 +289,28 @@ small{
            
             document.getElementById("tel_diri").value=`${phoneNumber}`;
         }
+<<<<<<< HEAD
+=======
+
+    //email
+        function checkEmail(email) {
+             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+             return re.test(email);
+         }
+         $("#email").keyup(function(event){
+             var email = document.getElementById("email").value;
+         
+            if (!checkEmail(email)){
+                document.getElementById("alert-email").style = "display:inline-block;"; //on affiche msg d'erreur
+                $('#btn').prop('disabled', true);
+            }else{
+                document.getElementById("alert-email").style = "display:none;"; //on retire le msg d'erreur
+                $('#btn').prop('disabled', false);
+            }
+             return false;
+         });
+  
+>>>>>>> cb4d7b595b611edc6c415f4dd43881b74477e73d
     </script>
 
     <!-- BEGIN: Vendor JS-->
