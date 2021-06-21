@@ -6,32 +6,28 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
-$pdoSta = $bdd->prepare('SELECT * FROM entreprise');
-$vrai = $pdoSta->execute();
-$entreprise = $pdoSta->fetchAll();
-
 ?>
 
 <!DOCTYPE html>
-<html class="loading" lang="fr" data-textdirection="ltr">
+<html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
-    <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
-    <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Dashboard - Admin</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
+    <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Dashboard analytics - Frest - Bootstrap HTML admin template</title>
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/charts/apexcharts.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/dragula.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -45,7 +41,7 @@ $entreprise = $pdoSta->fetchAll();
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/dashboard-analytics.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -96,93 +92,86 @@ $entreprise = $pdoSta->fetchAll();
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <!-- invoice list -->
-                <section class="invoice-list-wrapper">
-                    <!-- create invoice button-->
-                    <div class="invoice-create-btn mb-1">
-                        <a href="backend/add-users.php" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class='bx bx-plus-medical'></i>&nbsp&nbsp&nbsp&nbspAjouter une société</a>
-                    </div>
-                    <!-- Options and filter dropdown button-->
-                    <div class="action-dropdown-btn d-none">
-                        <div class="dropdown invoice-filter-action">
-
-                        </div>
-                        <div class="dropdown invoice-options">
-
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>
-                                        <span class="align-middle">NOM SOCiété</span>
-                                    </th>
-                                    <th>Téléphone</th>
-                                    <th>Date créaction</th>
-                                    <th>E-mail</th>
-                                    <th>Nom</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($entreprise as $entreprisee) : ?>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <a href="#"><?= $entreprisee['nameentreprise'] ?></a>
-                                        </td>
-                                        <td><span class="invoice-amount"><?= $entreprisee['telentreprise'] ?></span></td>
-                                        <td><?php setlocale(LC_TIME, "fr_FR");
-                                            echo strftime("%d-%m-%G", strtotime($entreprisee['datecreation'])); ?></small></td>
-                                        <td><span class="invoice-customer"><?= $entreprisee['emailentreprise'] ?></span></td>
-                                        <td><span class="invoice-customer"><?= $entreprisee['nom_diri'] ?></span></td>
-                                        <td><span class="<?= $entreprisee['color'] ?>"><?= $entreprisee['new_user'] ?></span></td>
-                                        <td>
-                                            <div class="invoice-action">
-                                                <a href="backend/edit-societe.php?num=<?= $entreprisee['id'] ?>" class="invoice-action-edit cursor-pointer">
-                                                    <i class="bx bx-edit"></i>
-                                                </a>&nbsp&nbsp&nbsp&nbsp
-                                                <?php if ($entreprisee['new_user'] == "New") {
-                                                    echo '<a href="php/change_desactiver.php?id=' . $entreprisee["id"] . '&new_user=Désactivé"class="invoice-action-edit cursor-pointer"><i class="bx bx-fast-forward"></i></a>';
-                                                }
-
-                                                if ($entreprisee['new_user'] == "Désactivé") {
-                                                    echo '<a href="php/change_new.php?id=' . $entreprisee["id"] . '&new_user=New"class="invoice-action-edit cursor-pointer"><i class="bx bx-reset"></i></a>';
-                                                }
-
-                                                if ($entreprisee['new_user'] == "Activé") {
-                                                    echo '<a href="php/change_bloquer.php?id=' . $entreprisee["id"] . '&new_user=Bloqué"class="invoice-action-edit cursor-pointer"><i class="bx bx-block"></i></a>';
-                                                }
-
-                                                if ($entreprisee['new_user'] == "Bloqué") {
-                                                    echo '<a href="php/change_activer.php?id=' . $entreprisee["id"] . '&new_user=Activé"class="invoice-action-edit cursor-pointer"><i class="bx bx-check-circle"></i></a>&nbsp ou &nbsp<a href="php/change_supprimer.php?id=' . $entreprisee["id"] . '&new_user=Supprimé" class="invoice-action-edit cursor-pointer"><i class="bx bxs-trash-alt"></i></a>';
-                                                }
-
-                                                if ($entreprisee['new_user'] == "Supprimé") {
-                                                    echo '<a href="php/delete_societe.php?id=' . $entreprisee["id"] . '"class="invoice-action-edit cursor-pointer"><i class="bx bxs-x-circle"></i></a>&nbsp ou &nbsp<a href="php/change_activer.php?id=' . $entreprisee["id"] . '&new_user=Activé"class="invoice-action-edit cursor-pointer"><i class="bx bx-add-to-queue"></i></a>';
-                                                }
-                                                ?>
+                <!-- Dashboard Analytics Start -->
+                <div class="row">
+                    <!-- Activity Card Starts-->
+                    <div class="col-xl-3 col-md-6 col-12 activity-card">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Activity</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-body pt-1">
+                                    <div class="d-flex activity-content">
+                                        <div class="avatar bg-rgba-primary m-0 mr-75">
+                                            <div class="avatar-content">
+                                                <i class="bx bx-bar-chart-alt-2 text-primary"></i>
                                             </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                        </div>
+                                        <div class="activity-progress flex-grow-1">
+                                            <small class="text-muted d-inline-block mb-50">Total Sales</small>
+                                            <small class="float-right">$8,125</small>
+                                            <div class="progress progress-bar-primary progress-sm">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="50" style="width:50%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex activity-content">
+                                        <div class="avatar bg-rgba-success m-0 mr-75">
+                                            <div class="avatar-content">
+                                                <i class="bx bx-dollar text-success"></i>
+                                            </div>
+                                        </div>
+                                        <div class="activity-progress flex-grow-1">
+                                            <small class="text-muted d-inline-block mb-50">Income Amount</small>
+                                            <small class="float-right">$18,963</small>
+                                            <div class="progress progress-bar-success progress-sm">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="80" style="width:80%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex activity-content">
+                                        <div class="avatar bg-rgba-warning m-0 mr-75">
+                                            <div class="avatar-content">
+                                                <i class="bx bx-stats text-warning"></i>
+                                            </div>
+                                        </div>
+                                        <div class="activity-progress flex-grow-1">
+                                            <small class="text-muted d-inline-block mb-50">Total Budget</small>
+                                            <small class="float-right">$14,150</small>
+                                            <div class="progress progress-bar-warning progress-sm">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="60" style="width:60%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-75">
+                                        <div class="avatar bg-rgba-danger m-0 mr-75">
+                                            <div class="avatar-content">
+                                                <i class="bx bx-check text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div class="activity-progress flex-grow-1">
+                                            <small class="text-muted d-inline-block mb-50">Completed Tasks</small>
+                                            <small class="float-right">106</small>
+                                            <div class="progress progress-bar-danger progress-sm">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="30" style="width:30%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </section>
+                </div>
+                <!-- Dashboard Analytics end -->
+
             </div>
         </div>
     </div>
     <!-- END: Content-->
 
     <!-- BEGIN: Footer-->
-    <footer class="footer footer-static footer-dark">
-    </footer>
+
     <!-- END: Footer-->
 
 
@@ -195,11 +184,8 @@ $entreprise = $pdoSta->fetchAll();
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
-    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
-    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
-    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
-    <script src="../../../app-assets/vendors/js/tables/datatable/responsive.bootstrap.min.js"></script>
+    <script src="../../../app-assets/vendors/js/charts/apexcharts.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/dragula.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -212,10 +198,9 @@ $entreprise = $pdoSta->fetchAll();
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <!-- END: Page JS-->
-    <!-- TIMEOUT -->
-    <?php include('timeout.php'); ?>
+
 </body>
 <!-- END: Body-->
 

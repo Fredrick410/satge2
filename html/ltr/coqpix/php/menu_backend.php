@@ -11,14 +11,15 @@
     </div>
     <div class="shadow-bottom"></div>
     <!-- Horizontal menu content-->
+    <div class="navbar-collapse collapse justify-content-between">
     <div class="navbar-container main-menu-content" data-menu="menu-container">
         <!-- include ../../../includes/mixins-->
         <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="index.html" data-toggle="dropdown"><i class="menu-livicon" data-icon="rocket"></i><span data-i18n="Dashboard">Coqpit</span></a>
                 <ul class="dropdown-menu">
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateur</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Analytique</a>
                     </li>
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="statistique.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Statistique</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>eCommerce</a>
                     </li>
                 </ul>
             </li>
@@ -111,6 +112,15 @@
                 </ul>
             </li>
         </ul>
+
+    </div>
+    <div class="navbar-container main-menu-content" data-menu="menu-container">
+        <ul class="nav navbar-nav ml-auto" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
+
+            <?php include('notifs_backend.php'); ?>
+        
+        </ul>
+    </div>
     </div>
     <!-- /horizontal menu content-->
 </div>

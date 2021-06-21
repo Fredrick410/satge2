@@ -220,7 +220,9 @@ require_once 'php/config.php';
                                 <form autocomplete="off" action="php/edit_facture.php" method="POST">
                                     <input type="hidden" name="numfacture" value="<?= $facture['id'] ?>">
                                         <div class="row mx-0">
+
                                          <!-- Elément du haut de la facture  -->
+
                                             <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
