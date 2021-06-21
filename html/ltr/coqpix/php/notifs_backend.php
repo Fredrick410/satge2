@@ -7,9 +7,6 @@
     $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM bilan WHERE statut_notif_back != "Inactive") AS temp');
     $nb_notif = $pdoSt->fetch();
 
-    $pdoSta = $bdd->prepare('SELECT * FROM entreprise');
-    $pdoSta->execute();
-    $entreprise = $pdoSta->fetchAll();
 ?>
 
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
@@ -75,10 +72,10 @@
 		}else {
 
 			$notif = "Vous avez un bilan de " .$result['name_entreprise']. " en attente de traitement";
-            foreach($entreprise as $entreprises):
+            
             ?>
-            <a href="bilan-view.php?num=<?= $entreprises['id'] ?>&time=<?= date('Y') - 1 ?>">
-            <?php endforeach; 
+            <a href="bilan-view.php?num=<?= $result['id_session'] ?>&time=<?= date('Y') - 1 ?>">
+            <?php 
 
 		}
         
