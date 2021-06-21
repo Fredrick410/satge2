@@ -7,7 +7,7 @@ ini_set('display_startup_errors', TRUE);
 
     //recuperation des données
 
-    $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id = :id AND id_session=:id_session');
+    $pdoStat = $bdd->prepare('SELECT * FROM devis WHERE id = :id AND id_session=:id_session');
     $pdoStat->bindValue(':id',$_GET['id']);
     $pdoStat->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION 
     $pdoStat->execute();
@@ -15,13 +15,13 @@ ini_set('display_startup_errors', TRUE);
     
 
     $pdoStaat = $bdd->prepare('SELECT * FROM articles WHERE numeros = :id AND id_session=:id_session');
-    $pdoStaat->bindValue(':id',$_GET['idfac']);
+    $pdoStaat->bindValue(':id',$_GET['iddev']);
     $pdoStaat->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION 
     $pdoStaat->execute();
     $art = $pdoStaat->fetchAll();
 
     $max_num = "";
-    $pdoSt = $bdd->prepare('SELECT id FROM bon');
+    $pdoSt = $bdd->prepare('SELECT id FROM facture');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
             $pdoSt->execute(); 
             $num = $pdoSt->fetchAll();
@@ -50,14 +50,15 @@ ini_set('display_startup_errors', TRUE);
                 $max_num = $max_num;
             }
 
-      $idfac = $_GET['idfac'];
-      $idbon = $info['id'];
-      $numerosinfo = $info['numerosfacture'];   // numeros facture ou devis ect
+      
+      $iddev = $_GET['iddev'];
+      $idfac = $info['id'];
+      $numerosinfo = $info['numerosdevis'];   // numeros facture ou devis ect
       $dte = $info['dte']; //changer 
       $dateecheance = $info['dateecheance'];
-      $ref = $info['reffacture'];
+      $ref = $info['refdevis'];
       $nomproduit = $info['nomproduit'];
-      $pour = $info['facturepour']; //changer
+      $pour = $info['devispour']; //changer
       $adresse = $info['adresse'];
       $email = $info['email'];
       $tel = $info['tel'];
@@ -66,10 +67,18 @@ ini_set('display_startup_errors', TRUE);
       $monnaie = $info['monnaie'];
       $note = $info['note'];
       $accompte = $info['accompte'];
-      $status = $info['status_facture']; //changer
+      $status = $info['status_devis']; //changer
       $color = "badge badge-light-danger badge-pill";
       $descrip = $info['descrip'];
       $etiquette = $info['etiquette'];
+      
+    //insert
+
+    
+        
+        
+
+        
         //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
@@ -79,11 +88,11 @@ ini_set('display_startup_errors', TRUE);
 
     try{
   
-        $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
+        $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
         
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros', $idbon); 
+        $req->bindValue(':numeros', $idfac); 
         $req->execute();
         $res = $req->fetch();
     }catch(Exception $e){
@@ -110,20 +119,19 @@ ini_set('display_startup_errors', TRUE);
         
         
 
-        $pdoA = $bdd->prepare('UPDATE articles SET typ="bonvente" WHERE typ="facturevente" AND numeros=:numeros AND id_session=:num');  
+        $pdoA = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="devisvente" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros',  $idbon);
+        $pdoA->bindValue(':numeros',  $idfac);
         $pdoA->execute();
         
-        $pdoc = $bdd->prepare('UPDATE articles SET numeros=:numeros WHERE typ="bonvente" AND numeros=:fac AND id_session=:num');  
+        $pdoc = $bdd->prepare('UPDATE articles SET numeros=:numeros WHERE typ="facturevente" AND numeros=:fac AND id_session=:num');  
         $pdoc->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdoc->bindValue(':numeros',  $max_num);
-        $pdoc->bindValue(':fac',  $idbon);
+        $pdoc->bindValue(':fac',  $idfac);
         $pdoc->execute();
         
         //delete devis
-    
-        $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, refbon, nomproduit, bonpour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_bon, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO facture (numerosfacture, dte, dateecheance, reffacture, nomproduit, facturepour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_facture, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($numerosinfo),
             htmlspecialchars($dte),
@@ -155,12 +163,12 @@ ini_set('display_startup_errors', TRUE);
             htmlspecialchars($arts['umesure']),
             htmlspecialchars($arts['tva']),
             htmlspecialchars($arts['remise']),
-            htmlspecialchars($idfac),
+            htmlspecialchars($iddev),
             htmlspecialchars($arts['typ']),
             htmlspecialchars($arts['id_session'])));
         endforeach;
         
-        header('Location: ../app-bon-list.php');
+        header('Location: ../app-invoice-list.php');
         exit();
 
 ?>
