@@ -4,9 +4,9 @@
 	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, dte,statut_notif_back, 'bilan' AS type_demande, id_session FROM bilan WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
 	$select_notif->execute(array("Inactive", "Inactive", "Inactive", "Inactive"));
 
-    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back != "Inactive") AS temp');
+    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM bilan WHERE statut_notif_front != "Inactive") AS temp');
     $nb_notif = $pdoSt->fetch();
-    
+
 ?>
 
 <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
@@ -46,41 +46,42 @@
 		// si c'est une demande d'attestation fiscale
 		if ($result['type_demande'] === "attestation_fiscale") {
 
-			$notif = "Vous avez une attestation fiscale de " .$result['name_entreprise']. " en attente de traitement";
+			$notif = "Votre attestation fiscale a été traité";
 
 
             ?>
-            <a href="attestation-fiscale-view.php?num=<?= $result['id_session'] ?>">
+            <a href="attestation-fiscale.php">
                 <?php
 
 		// si c'est une demande d'attestation sociale
 		} else if ($result['type_demande'] === "attestation_sociale"){
 
-			$notif = "Vous avez une attestation sociale de " .$result['name_entreprise']. " en attente de traitement";
+			$notif = "Votre attestation sociale a été traité";
 
             ?>
-                <a href="attestation-sociale-view.php?num=<?= $result['id_session'] ?>">
+                <a href="attestation-social.php">
                     <?php
 
 		// si c'est un bulletin de salaire
-		} else {
+		} else if ($result['type_demande'] === "bulletin_salaire"){
 
-			$notif = "Vous avez un bulletin de salaire de " .$result['name_entreprise']. " en attente de traitement";
+			$notif = "Vous bulletin de salaire a été traité";
             
             ?>
-                    <a href="salaire-view.php?num=<?= $result['id_session'] ?>">
+                    <a href="bulletin-consulte.php">
                         <?php
 
+        // si c'est un bilan
+        
+		}else {
+
+			$notif = "Votre bilan a été traité";
+            
+            ?>
+            <a href="bilan.php?5PAx4zf27P=<?= $result['date'] ?>&S3q4EvFDk4QZ95b4v3gz">
+            <?php 
+
 		}
-        
-
-        
-		// affichage de la notification
-
-        $pdoSt = $bdd->prepare('SELECT img_entreprise FROM entreprise WHERE id = :id');
-        $pdoSt->bindValue(':id', $result['id_session']);
-        $pdoSt->execute();
-        $img_entreprise = $pdoSt->fetch();
                
         ?>
 
@@ -88,7 +89,7 @@
                             <div class="media d-flex align-items-center border-0">
                                 <div class="media-left pr-0">
                                     <div class="avatar mr-1 m-0"><img
-                                            src="../../../src/img/<?= $img_entreprise['img_entreprise'] ?>" alt="avatar"
+                                            src="../../../src/img/astro1" alt="avatar"
                                             height="39" width="39"></div>
                                 </div>
                                 <div class="media-body">
@@ -99,14 +100,14 @@
                         </div>
                     </a> <?php
 
-	    
+
 
 	}
 ?>
         </li>
 
         <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center"
-                href="php/delete_notifs.php?delete=back"><span class="text-light">Tout marquer comme lu</span></a></li>
+                href="php/delete_notifs.php?delete=front"><span class="text-light">Tout marquer comme lu</span></a></li>
 
         <?php
         }

@@ -20,7 +20,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Tache compta</title>
+    <title>Tache sociale</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
@@ -222,14 +222,15 @@ require_once 'php/config.php';
                                                 <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; z-index: <?= $index; ?>;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
                                                         <div class="todo-title-area d-flex">
-                                                            <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Par: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
+                                                            <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Pour: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
                                                         </div>
                                                         <div class="todo-item-action d-flex align-items-center">
                                                             <div class="todo-badge-wrapper d-flex"></div>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=sociale&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=sociale&favo=<?= $tasks['favo_task'] ?>" class='icon_fav ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=sociale" class='icon_trash ml-75' ><i class="bx bx-trash"></i></a>
-                                                           
+
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=sociale&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=sociale" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
+
                                                             <!-- Edition de la tâche -->
                                                             <div class="btn-group ml-2">
                                                                 <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

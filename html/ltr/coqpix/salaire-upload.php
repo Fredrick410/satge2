@@ -35,13 +35,19 @@ require_once 'php/config.php';
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE bulletin_salaire SET date_donner=:date_donner, files_bulletin=:files_bulletin, statut_notif_back=:statut_notif_back, statut_bulletin=:statut_bulletin WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE bulletin_salaire SET date_donner=:date_donner, files_bulletin=:files_bulletin, statut_bulletin=:statut_bulletin WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_bulletin', $file_name);
             $pdo->bindValue(':statut_bulletin', "Terminée");
-            $pdo->bindValue(':statut_notif_back',"Inactive");
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
+
+            $pdo = $bdd->prepare('SELECT id_task from bulletin-salaire WHERE id = ?');
+            $pdo->execute(array($_GET['id']));
+            $id_task = ($pdo->fetch())['id_task'];
+
+            $pdoS = $bdd->prepare('UPDATE task_sociale SET statut_task = ? WHERE id = ?');
+            $pdoS->execute(array('valide',$id_task));
             
             header('Location: salaire-view.php?num='.$_GET['num'].'');
             exit();
