@@ -268,8 +268,10 @@ small{
                 document.getElementById("alert-mdp2").style = "display:inline-block;"; //on affiche msg d'erreur
                 $('#btn').prop('disabled', true);
             }
-            else
+            else{
                 document.getElementById("alert-mdp2").style = "display:none;"; //on n'affiche pas le msg
+                $('#btn').prop('disabled', false);
+            }
         });
         
 
@@ -297,11 +299,13 @@ small{
          $("#email").keyup(function(event){
              var email = document.getElementById("email").value;
          
-            if (!checkEmail(email))
+            if (!checkEmail(email)){
                 document.getElementById("alert-email").style = "display:inline-block;"; //on affiche msg d'erreur
-            else
+                $('#btn').prop('disabled', true);
+            }else{
                 document.getElementById("alert-email").style = "display:none;"; //on retire le msg d'erreur
-
+                $('#btn').prop('disabled', false);
+            }
              return false;
          });
   
