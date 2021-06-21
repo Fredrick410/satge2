@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,31 +33,82 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     <!-- END: Custom CSS-->
 
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
 </head>
 <!-- END: Head-->
 
 <style>
+
+@font-face{
+    font-family: "mukta malar bold";
+    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Bold.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar medium";
+    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar light";
+    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Light.ttf");
+}
+
+@media only screen and (max-width: 1000px) {
+  #img_crea {
+    display:none;
+  }
+}
+
+@media screen and (max-width: 500px){
+    #titre{
+     font-size: 20px;
+	}
+}
+
+@media screen and (max-width: 370px){
+    #titre{
+     font-size: 15px;
+	}
+}
+
 .line {
     text-decoration: underline;
 }
 
-label{
+label, button{
     margin-top: 15px;
+    font-family: mukta malar bold;
+    color: #051441;
 }
 
-a{
+h2{
+    font-family: mukta malar bold;
+    color: #051441;
+}
+
+input, option{
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+small{
+    font-family: mukta malar light;
+    color: #051441;
+}
+
+.green-line{
     color: inherit;
     text-decoration: none;
-    background: linear-gradient(to top, rgba(41,254,140,1) 9px, transparent 5px);
+    background: linear-gradient(to bottom, transparent 31px, rgba(41,254,140,1) 45px, white 1px);
 }
 
 
-a:hover{
+.green-line:hover{
     color: inherit;
     text-decoration: none;
 }
@@ -64,43 +116,42 @@ a:hover{
 </style>
 
 <!-- BEGIN: Body-->
-<body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
+<body class="vertical-layout vertical-menu-modern 1-column bg-white navbar-sticky footer-static blank-page blank-page p-0 m-0" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 
     <!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row"></div>
-            <div class="content-body">
+
+            
+            
 
                 <!-- register section starts -->
-                <section class="row flexbox-container">
-                    <div class="col-2"></div>
-                    <div class="col-8">        
-                        <div class="card m-0">
-                            <div class="container-fluid" >
-                            <div class="row m-0">
+                
+                            
+                    
+                        <div class="container-fluid p-0 m-0" style="">
+                            <div class="row p-0 m-0" style="">
 
-
+                                
                                 <!-- image section left -->
                                 <div class="col-lg-6">
                                     <div class="card-header pb-0">
-                                        <div class="p-3" style="text-align: center; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto;">
-                                            <h2 class="mb-5" style="font-family: Noto Sans, sans-serif;"><strong><a href="#">Créez</a> votre société<br> rapidement et <span style="text-decoration: underline wavy rgba(41,254,140,1);">gratuitement</strong></h2>
+                                        <div class="m-3" style="text-align: center; white-space: nowrap;">
+                                            <h2 id="titre" class="mb-5"><a class="green-line" href="#">Créez</a> votre société<br> rapidement et <span style="text-decoration: underline wavy #29fe8c;">gratuitement</h2>
 
                                         </div>
                                     </div>
-                                    <img class="img-fluid pt-5" src="../../../app-assets/images/pages/register2.png" alt="branding logo" style="">
+                                    <img class="img-fluid m-0" id="img_crea" src="../../../app-assets/images/pages/register2.png" alt="branding logo" style="height: 75%; bottom:0; position: absolute;">
                                 </div>
 
                                 <!-- register section right -->
                                 <div class="col-lg-6">
-                                    <div class="card-content">
-                                            <div class="card-body">
+                                    <div class="card-content" >
+                                            <div class="card-body" >
                                                 <form action="php/insert_crea_client.php" method="POST">
+                                                <br>
                                                     <div class="form-group">
                                                         <label class="line">Remplissez le formulaire de contact</label>
                                                     </div>
+                                                    <br>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6 mb-50">
                                                             <label>Nom du dirigeant *</label>
@@ -134,16 +185,19 @@ a:hover{
                                                         </select>
                                                     </div>
                                                     <div class="form-row" >
-                                                        <div class="form-group col-md-6 mb-50">
-                                                            <label class="text-bold-600">Téléphone du dirigeant *</label>
-                                                            <input type="tel" id="tel_diri" name="tel_diri" class="form-control border rounded-pill border-dark" required>
+                                                        <div class="form-group col-md-6 mb-50" >
+                                                            <label class="text-bold-600">Téléphone du dirigeant *</label><br>
+                                                            <input onchange='process(event)' type="number" name="tel_temp" id="tel_temp" class="form-control border rounded-pill border-dark" required>
+                                                            <input type="text" name="tel_diri" id="tel_diri" hidden required>
                                                         </div>
                                                         <div class="form-group col-md-6 mb-50"></div>
                                                     </div>
                                                     <br>
+                                                    <br>
                                                     <div class="form-group">
                                                         <label class="line">Information de connexion</label>
                                                     </div>
+                                                    <br>
                                                     <div class="form-group mb-50">
                                                         <label class="text-bold-600">E-mail (Identifiant de connexion) *</label>
                                                         <input type="text" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="E-mail de contact" required>
@@ -151,44 +205,75 @@ a:hover{
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
 
-                                                        <input type="password" name="password_crea" class="form-control border rounded-pill border-dark" id="mdp" placeholder="Mot de passe" required>
+                                                        <input type="password" id="mdp" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        
                                                     </div>
                                                     <div id="alert-mdp" class="alert alert-danger" style="display: none;">
                                                             erreur mot de passe
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
-                                                        <input type="password" id="mdp_verif" name="password_verif" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        <input type="password" id="mdp-verif" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div id="alert-mdp2" class="alert alert-danger" style="display: none;">
                                                             Les deux mots de passe ne correspondent pas
                                                     </div>
-                                                    
                                                     <div class="form-group">
                                                         <small>*Champ obligatoire</small>
                                                     </div>
-                                                    <button type="submit" style="font-family: Noto Sans, sans-serif; width: 150px; white-space: nowrap; background-color: rgba(41,254,140,1);" class="btn text-dark glow position-relative border rounded-pill"><strong>Créer</strong><i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                    <div class="form-group" style="text-align: center;">
+                                                    <button type="submit" style="width: 150px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Je me lance<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                    </div>
                                                 </form>
                                             </div>
-                                        </div>
+                                    </div>
 
                                 </div>
                          
                             </div>
 
-
-                            </div>
-                         </div>
-                    </div>
-                    <div class="col-2"></div>
-                </div>
+                        </div>
+                            
+                        
+                
+              
                 <!-- register section endss -->
-            
-            </div>
-        </div>
-    </div>
+        
     <!-- END: Content-->
 
+    <script>
+    //mot de passe
+
+        $('#mdp').keyup(function (event) {
+            document.getElementById("alert-mdp").style = "display:inline-block;";
+        });
+
+
+        $('#mdp_verif').keyup(function (event) {
+        if($("#mdp").val() != $("#mdp_verif").val()) //si les 2 mdp ne correspondent pas
+            document.getElementById("alert-mdp2").style = "display:inline-block;"; //on affiche msg d'erreur
+        else
+            document.getElementById("alert-mdp2").style = "display:none;"; //on n'affiche pas le msg
+        });
+        
+
+    //telephone
+        const phoneInputField = document.querySelector("#tel_temp");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function process(event) {
+            event.preventDefault();
+
+            const phoneNumber = phoneInput.getNumber();
+
+           
+            document.getElementById("tel_diri").value=`${phoneNumber}`;
+        }
+  
+    </script>
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
@@ -209,29 +294,6 @@ a:hover{
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script>
-    //mot de passe
-
-    $('#mdp').keyup(function (event) {
-        document.getElementById("alert-mdp").style = "display:inline-block;";
-    });
-
-
-    $('#mdp_verif').keyup(function (event) {
-    if($("#mdp").val() != $("#mdp_verif").val()) //si les 2 mdp ne correspondent pas
-        document.getElementById("alert-mdp2").style = "display:inline-block;"; //on affiche msg d'erreur
-    else
-        document.getElementById("alert-mdp2").style = "display:none;"; //on n'affiche pas le msg
-    });
-        
-
-    //telephone
-   const phoneInputField = document.querySelector("#tel_diri");
-   const phoneInput = window.intlTelInput(phoneInputField, {
-     utilsScript:
-       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-   });
- </script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

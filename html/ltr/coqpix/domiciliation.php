@@ -113,31 +113,8 @@ require_once 'php/verif_session_crea.php';
 
 
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-secondary navbar-brand-center">
-        <div class="navbar-header d-xl-block d-none">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item"><a class="navbar-brand" href="#">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
-                    </a></li>
-            </ul>
-        </div>
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name"><?= $crea['name_crea'] ?></span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    
+    <?php require_once("php/header-crea.php") ?>
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
@@ -160,24 +137,9 @@ require_once 'php/verif_session_crea.php';
             <div class="content-right">
                 <div class="content-overlay"></div>
                 <div class="content-wrapper">
-                    <div class="content-header row">
-                        
-                    </div>
-                    <div class="content-body">
-                    <form method='POST' action="php/recherche-domiciliation.php">
-                        <div class="form-group col-md-6 mb-50">
-                            <label for="inputlastname4">Entrer la ville de domiciliation souhaitée</label>
-                            <input type="text" name="adresse" class="form-control rounded-pill" placeholder="Ville" required>
-                            <br>
-                            <button type="submit" class="btn btn-primary glow position-relative rounded-pill">Rechercher<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
-                        </div>
-                    </form>
-                        <!-- email app overlay -->
-                        <div class="app-content-overlay"></div>
-                        <div class="email-app-area">
-                            
-                        </div>
-                    </div>
+                    <iframe src="https://www.multiburo.com/domiciliation-entreprise"
+                        width="100%"
+                        height="100%"></iframe>  
                 </div>
             </div>
         </div>
