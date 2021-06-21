@@ -163,8 +163,8 @@ require_once 'php/config.php';
                                             <input class="form-control" type="text" name="name_task" placeholder="Nom de la tache" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Tache pour <label class="text-danger">*</label></label>
-                                            <input class="form-control" type="text" name="pour_task" placeholder="Tache pour ..." required>
+                                            <label>Tache par <label class="text-danger">*</label></label>
+                                            <input class="form-control" type="text" name="pour_task" placeholder="Tache par ..." required>
                                         </div>
                                         <label>Date d'échéance <label class="text-danger">*</label></label>
                                         <fieldset class="form-group position-relative has-icon-left">
@@ -219,7 +219,7 @@ require_once 'php/config.php';
                                         <ul class="todo-task-list-wrapper list-unstyled" id="">
                                             <?php $index=98; ?>
                                             <?php foreach($task as $tasks): ?>
-                                                <li class="vertical-align-center todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; position: relative; z-index: <?= $index; ?>;">
+                                                <li class="vertical-align-center todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; z-index: <?= $index; ?>;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
                                                         <div class="todo-title-area d-flex">
                                                             <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Par: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
@@ -247,7 +247,7 @@ require_once 'php/config.php';
                                                                                 <input class="form-control" type="text" name="name_task" value="<?= $tasks['name_task'] ?>" required>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label>Tache pour <label class="text-danger">*</label></label>
+                                                                                <label>Tache par <label class="text-danger">*</label></label>
                                                                                 <input class="form-control" type="text" name="pour_task" value="<?= $tasks['pour_task'] ?>" required>
                                                                             </div>
                                                                             <label>Date d'échéance <label class="text-danger">*</label></label>

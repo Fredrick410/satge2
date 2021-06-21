@@ -163,8 +163,8 @@ require_once 'php/config.php';
                                             <input class="form-control" type="text" name="name_task" placeholder="Nom de la tache" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Tache pour <label class="text-danger">*</label></label>
-                                            <input class="form-control" type="text" name="pour_task" placeholder="Tache pour ..." required>
+                                            <label>Tache par <label class="text-danger">*</label></label>
+                                            <input class="form-control" type="text" name="pour_task" placeholder="Tache par ..." required>
                                         </div>
                                         <label>Date d'échéance <label class="text-danger">*</label></label>
                                         <fieldset class="form-group position-relative has-icon-left">
@@ -246,7 +246,7 @@ require_once 'php/config.php';
                                                                                 <input class="form-control" type="text" name="name_task" value="<?= $tasks['name_task'] ?>" required>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label>Tache pour <label class="text-danger">*</label></label>
+                                                                                <label>Tache par <label class="text-danger">*</label></label>
                                                                                 <input class="form-control" type="text" name="pour_task" value="<?= $tasks['pour_task'] ?>" required>
                                                                             </div>
                                                                             <label>Date d'échéance <label class="text-danger">*</label></label>
