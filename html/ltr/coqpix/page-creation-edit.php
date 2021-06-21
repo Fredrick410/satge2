@@ -69,6 +69,9 @@ require_once 'php/verif_session_crea.php';
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
 </head>
 <!-- END: Head-->
 
@@ -229,7 +232,9 @@ require_once 'php/verif_session_crea.php';
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <label>Téléphone du dirigeant</label>
-                                                                        <input type="number" name="tel_diri" class="form-control" placeholder="06.00.00.00.00" value="<?= $crea['tel_diri'] ?>" required>
+                                                                        <br>
+                                                                        <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
+                                                                        <input type="text" name="tel_diri" id="tel_diri" hidden required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -569,6 +574,27 @@ require_once 'php/verif_session_crea.php';
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+
+
+    <script>
+        const phoneInputField = document.querySelector("#tel_temp");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function process(event) {
+            event.preventDefault();
+
+            const phoneNumber = phoneInput.getNumber();
+
+           
+            document.getElementById("tel_diri").value=`${phoneNumber}`;
+        }
+  
+    </script>
+
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
