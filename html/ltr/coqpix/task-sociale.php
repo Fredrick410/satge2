@@ -230,6 +230,7 @@ require_once 'php/config.php';
 
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=sociale&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=sociale" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
+
                                                             <!-- Edition de la tâche -->
                                                             <div class="btn-group ml-2">
                                                                 <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -229,7 +229,7 @@ require_once 'php/config.php';
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=fisca&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
-                                                            <!-- Edition de la tâche -->
+
                                                             <div class="btn-group ml-2">
                                                                 <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C0C0C0" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -263,6 +263,10 @@ require_once 'php/config.php';
                                                                 </div>
                                                             </div>
                                                             <!-- Fin édition de la tâche -->
+<<<<<<< HEAD
+=======
+
+>>>>>>> indah
                                                         </div>
                                                     </div>
                                                 </li>
