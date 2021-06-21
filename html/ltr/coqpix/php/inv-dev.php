@@ -18,7 +18,7 @@ ini_set('display_startup_errors', TRUE);
     $pdoStaat->bindValue(':id',$_GET['idfac']);
     $pdoStaat->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION 
     $pdoStaat->execute();
-    $art = $pdoStaat->fetch();
+    $art = $pdoStaat->fetchAll();
 
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM bon');
@@ -122,6 +122,7 @@ ini_set('display_startup_errors', TRUE);
         $pdoc->execute();
         
         //delete devis
+    
         $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, refbon, nomproduit, bonpour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_bon, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($numerosinfo),
@@ -144,20 +145,20 @@ ini_set('display_startup_errors', TRUE);
             htmlspecialchars($descrip),
             htmlspecialchars($_SESSION['id_session']) //$_SESSION
         ));
-       
+       foreach ($art as $arts): 
         $pdodd = $bdd->prepare('INSERT INTO articles(article, referencearticle, cout, quantite, umesure, tva, remise, numeros, typ, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');  
         $pdodd->execute(array(
-            htmlspecialchars($art['article']),
-            htmlspecialchars($art['referencearticle']),
-            htmlspecialchars($art['cout']),
-            htmlspecialchars($art['quantite']),
-            htmlspecialchars($art['umesure']),
-            htmlspecialchars($art['tva']),
-            htmlspecialchars($art['remise']),
+            htmlspecialchars($arts['article']),
+            htmlspecialchars($arts['referencearticle']),
+            htmlspecialchars($arts['cout']),
+            htmlspecialchars($arts['quantite']),
+            htmlspecialchars($arts['umesure']),
+            htmlspecialchars($arts['tva']),
+            htmlspecialchars($arts['remise']),
             htmlspecialchars($idfac),
-            htmlspecialchars($art['typ']),
-            htmlspecialchars($art['id_session'])));
-        
+            htmlspecialchars($arts['typ']),
+            htmlspecialchars($arts['id_session'])));
+        endforeach;
         
         header('Location: ../app-bon-list.php');
         exit();

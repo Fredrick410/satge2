@@ -131,7 +131,7 @@ require_once 'php/config.php';
                 <!-- app invoice View Page -->
                 <section class="invoice-view-wrapper">
                     <div class="row" >
-                        <?php if($_GET['st']=="14986548"){?>
+                         <?php if($_GET['st']=="14986548"){?> <!-- Permet d'afficher le mots annulé si st = ... -->
                                         <style>
                                             #test{
                                                 background-image: url(../../../app-assets/images/backgrounds/annulé.png);
@@ -238,7 +238,7 @@ require_once 'php/config.php';
                                                     <td><?= $articless['quantite']; ?></td>
                                                     <td class="text-primary text-right font-weight-bold"><?= $articless['cout'] * $articless['quantite'] ?> <?= $facture['monnaie']; ?></td>
                                                 </tr>
-                                                <?php endforeach; ?>
+                                                <?php endforeach; ?>  <!-- Liste d'articles présent dans la facture -->
                                             </tbody>
                                         </table>
                                     </div>

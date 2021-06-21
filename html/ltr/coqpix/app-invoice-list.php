@@ -203,7 +203,7 @@ require_once 'php/config.php';
                                 $numeros = $factures['id'];
                                
                                 try{
-                                    
+                                    // Somme du prix HT
                                 $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente' ) T";
   
                                 $req = $bdd->prepare($sql);
@@ -238,7 +238,7 @@ require_once 'php/config.php';
                                         <small class="text-muted"><?= $factures['etiquette'] ?></small>
                                     </td>
                                     <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_facture'] ?></span></td>
-                                    <td>
+                                   <td> <!-- Element sur le coté droit poubelle fleche etc ... -->
                                         <div class="invoice-action"><br>
                                             <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=14986548" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
