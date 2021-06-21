@@ -200,7 +200,10 @@ small{
                                                     <br>
                                                     <div class="form-group mb-50">
                                                         <label class="text-bold-600">E-mail (Identifiant de connexion) *</label>
-                                                        <input type="text" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="E-mail de contact" required>
+                                                        <input type="email" name="email_crea" id="email" class="form-control border rounded-pill border-dark" placeholder="E-mail de contact" required>
+                                                    </div>
+                                                    <div id="alert-email" class="alert alert-danger" style="display: none;">
+                                                            Entrez une adresse email valide
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600">Mot de passe (Identifiant de connexion) *</label>
@@ -285,6 +288,22 @@ small{
            
             document.getElementById("tel_diri").value=`${phoneNumber}`;
         }
+
+    //email
+        function checkEmail(email) {
+             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+             return re.test(email);
+         }
+         $("#email").keyup(function(event){
+             var email = document.getElementById("email").value;
+         
+            if (!checkEmail(email))
+                document.getElementById("alert-email").style = "display:inline-block;"; //on affiche msg d'erreur
+            else
+                document.getElementById("alert-email").style = "display:none;"; //on retire le msg d'erreur
+
+             return false;
+         });
   
     </script>
 
