@@ -248,8 +248,6 @@ small{
         var condition = new RegExp("^(?=.{6,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])", "g");
         
         $("#mdp").keyup(function(event){
-            console.log($("#mdp").val());
-            console.log(condition.test($(this).val()));
             if(condition.test($(this).val())){ // mdp valide
                 document.getElementById("alert-mdp1").style = "display: none;";
                 $('#btn').prop('disabled', false);
