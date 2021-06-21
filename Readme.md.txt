@@ -36,3 +36,7 @@ tache réalisé le 18/06/2021
 branch de leo :
 	tache réalisée 21/06/21
 		-page crea societe : le formulaire envoie le telephone sous la bonne forme (+33...) dans la bdd
+
+branch de robin :
+	tache réalisée 21/06/21
+		-verification que les mdp correspondent aux conditions dans creation-societe
