@@ -17,9 +17,9 @@ require_once 'php/config.php';
     $count_attestation = count($attestation);
 
     //désactivation des notifications
-    $pdoSta = $bdd->prepare('UPDATE attestation_sociale SET statut_notif_front = :statut WHERE id_session=:num AND statut_notif_front != "Inactive"');
-    $pdoStat->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
-    $pdoSta->bindValue(':statut', 'Inactive');
+    $pdoSta = $bdd->prepare('UPDATE attestation_sociale SET statut_notif_front=:statut WHERE id_session=:num AND statut_notif_front != "Inactive"');
+    $pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
+    $pdoSta->bindValue(':statut', "Inactive");
     $pdoSta->execute();
 
 ?>
