@@ -195,7 +195,10 @@ require_once 'php/config.php';
                             <?php foreach ($devis as $deviss): 
                                 $ref = $deviss['numerosdevis'];
                                 $numeros = $deviss['id'];
-                                try{
+
+                                // Somme du prix HT
+                                try{ 
+
                                     
                                 $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='devisvente' ) T";
   
@@ -216,6 +219,9 @@ require_once 'php/config.php';
                                     <td></td>
                                     <td>DEV-<?= $deviss['id'] ?></td>
                                     <td>
+
+                                     <!-- pour voir le bon  -->
+
                                         <a href="app-devis-view.php?numdevis=<?= $deviss['id'] ?>"><?= $deviss['refdevis'],$ref ?></a>
                                     </td>
                                     <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $deviss['monnaie'] ?></span></td>
@@ -225,19 +231,24 @@ require_once 'php/config.php';
                                         <span class="bullet bullet-success bullet-sm"></span>
                                         <small class="text-muted"><?= $deviss['etiquette'] ?></small>
                                     </td>
+
                                     <td><span class="<?= $deviss['status_color'] ?>"><?= $deviss['status_devis'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
                                             <a href="app-devis-view.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
+
+                                            <!-- pour edit le bon -->
                                             <a href="app-devis-edit.php?numdevis=<?= $deviss['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp<br>
-                                            <a href="php/inv-dev.php?id=<?= $deviss['id'] ?>"
+                                            <a href="php/envoie_dev.php?id=<?= $deviss['id'] ?>&iddev=<?= $deviss['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
+                                            <!-- pour delete -->
+
                                             <a href="php/delete_dev.php?numdevis=<?= $deviss['numerosdevis'] ?>&id=<?= $deviss['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                

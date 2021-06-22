@@ -3,12 +3,13 @@ require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
     $pdoStat = $bdd->prepare('SELECT * FROM bon WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
     $pdoStat->execute();
-    $facture = $pdoStat->fetchAll();
+    $bon = $pdoStat->fetchAll();
 
     $pdoStatr = $bdd->prepare('SELECT * FROM bon WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
@@ -20,6 +21,12 @@ require_once 'php/config.php';
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
+    
+    $pdoStatr = $bdd->prepare('SELECT refbon,numerosbon FROM bon WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $fu = $pdoStatr->fetch();
+    $nom = $fu['refbon'];
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -32,7 +39,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Liste Bon de livraison</title>
+    <title>Liste bon</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -145,19 +152,12 @@ require_once 'php/config.php';
                         ?>
                         <div class="col">
                             <div class="invoice-create-btn mb-1">
-                                <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "Rt82u";}else{echo "y44vJ";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
+                                <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
                             </div>
                         </div>
-                        <div class="col text-right">
-                            <div class="invoice-create-btn mb-1">
-                                <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
-                                   Auto-incrementation sous la forme FAC-(année)(numéro)<br>
-                                   <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
-                                   <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
-                                </p>
-                            </div>
-                        </div>
+                        
                     </div>
+                    
                     <!-- Options and filter dropdown button-->
                     <div class="action-dropdown-btn d-none">
                         <div class="dropdown invoice-options">
@@ -176,7 +176,10 @@ require_once 'php/config.php';
                                     <th></th>
                                     <th></th>
                                     <th>
-                                        <span class="align-middle">Numéro</span>
+                                       Numéro bon
+                                    </th>
+                                    <th>
+                                        <span class="align-middle">Référence</span>
                                     </th>
                                     <th>Valeur</th>
                                     <th>Date</th>
@@ -184,51 +187,64 @@ require_once 'php/config.php';
                                     <th>Etiquette</th>
                                     <th>Statut</th>
                                     <th>Action</th>
+                                 
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($facture as $factures):
-                            $numeros = $factures['numerosbon'];
+                            
+                            <!-- Afficher les prix  -->
+                            <?php foreach ($bon as $bons): 
+                                $ref = $bons['numerosbon'];
+                                $numeros = $bons['id'];
                                 try{
-  
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
+                                    
+                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonvente' ) T";
   
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-                                $req->bindValue(':numeros',$numeros); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
                                     echo "Erreur " . $e->getMessage();
                                 }
+                                
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
-
-                            ?>
+                                
+                            ?> 
                                 <tr>
                                     <td></td>
-                                    
                                     <td></td>
+                                    <!-- affichage dans le tableau des données -->
+                                    <td>BON-<?= $bons['id'] ?></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numbon=<?= $factures['id'] ?>">BL-<?= $factures['numerosbon'] ?></a>
+                                    <!-- pour voir le bon  -->
+                                        <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>"><?= $bons['refbon'],$ref ?></a>
                                     </td>
-                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
-                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
-                                    <td><span class="invoice-customer"><?= $factures['bonpour'] ?></span></td>
+                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $bons['monnaie'] ?></span></td>
+                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($bons['dte'])); ?></small></td>
+                                    <td><span class="invoice-customer"><?= $bons['bonpour'] ?></span></td>
                                     <td>
                                         <span class="bullet bullet-success bullet-sm"></span>
-                                        <small class="text-muted"><?= $factures['etiquette'] ?></small>
+                                        <small class="text-muted"><?= $bons['etiquette'] ?></small>
                                     </td>
-                                    <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_bon'] ?></span></td>
+                                    <!-- paye en vert non paye en rouge -->
+                                    <td><span class="<?= $bons['status_color'] ?>"><?= $bons['status_bon'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-bon-view.php?numbon=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-bon-edit.php?numbon=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <!-- pour edit le bon -->
+                                            <a href="app-bon-edit.php?numbon=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_bon.php?numbon=<?= $factures['numerosbon'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            </a>&nbsp&nbsp&nbsp&nbsp<br>
+                                            <!-- <a href="php/envoie_dev.php?id=<?= $bons['id'] ?>"
+                                            class="invoice-action-edit cursor-pointer">
+                                                <i class='bx bxs-send'></i>
+                                            </a>&nbsp&nbsp&nbsp&nbsp -->
+                                            <!-- pour delete -->
+                                            <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>
