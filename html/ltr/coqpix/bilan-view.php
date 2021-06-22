@@ -22,10 +22,10 @@ require_once 'php/verif_session_connect_admin.php';
     $bilan = $pdoSt->fetchAll();
     $count_bilan = count($bilan);
 
-     //désactivation des notifications
-     $pdoSta = $bdd->prepare('UPDATE bilan SET statut_notif_back = :statut WHERE id_session=:num AND statut_notif_back != "Inactive"');
+     //désactivation des notifications, delete notif back
+    
+     $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE id_session=:num');
      $pdoSta->bindValue(':num', $_GET['num']);
-     $pdoSta->bindValue(':statut', 'Inactive');
      $pdoSta->execute();
 
 ?>
