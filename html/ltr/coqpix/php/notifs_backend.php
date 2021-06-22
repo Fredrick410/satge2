@@ -37,10 +37,9 @@
             <?php
 
 
-
 	while ($result = $select_notif->fetch()) {
 
-        
+
 
 		// si c'est une demande d'attestation fiscale
 		if ($result['type_demande'] === "attestation_fiscale") {
