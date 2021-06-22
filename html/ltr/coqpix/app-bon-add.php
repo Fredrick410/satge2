@@ -242,7 +242,8 @@ require_once 'php/config.php';
                                 <div class="card-content">
                                     <div class="card-body pb-0 mx-25">
                                         <!-- header section -->
-                                <form autocomplete="off" action="php/insert_bon.php" method="POST">
+										<!-- form qui insert toute la page -->
+                                <form autocomplete="off" action="php/insert_bon.php" method="POST">  
                                         <div class="row mx-0" > 
 
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
@@ -250,6 +251,7 @@ require_once 'php/config.php';
 																		N°
 																	
 																	</h6>
+																	<!-- auto incrémentation du n° avec le max_num plus haut  -->
 																	<input  type="text" name="numeroarticle" id="numeros"  value='<?= $max_num ?>' class="form-control pt-25 w-50" placeholder="FAC-0" attribut readonly="readonly">
 													</div>			
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
@@ -265,6 +267,7 @@ require_once 'php/config.php';
 														<h6 class="invoice-number mr-75">
 														Bon N°
 														</h6>
+														<!-- auto incrémentation du numéro qui peut aussi etre choisi -->
 														<input type="number" name="numerosbon" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
 														<p style='position: relative; top: 7px; display: <?php if($entreprise['incrementation'] == "no"){echo "none";} ?>;'>
 															&nbsp&nbsp&nbsp FAC-
@@ -309,6 +312,7 @@ require_once 'php/config.php';
 																</div>
 															</ul>
 														</div>
+														<!-- LOGO -->
 														<div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
 															<img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
 														</div>
@@ -319,8 +323,9 @@ require_once 'php/config.php';
 														<div class="col-lg-6 col-md-12 mt-25">
 															<div class="form-group">
 																<label>*Client</label>
-																<select name="bonpour" id="facturepour" class="form-control invoice-item-select"> <!--car js prend que facturepour-->
+																<select name="bonpour" id="facturepour" class="form-control invoice-item-select"> <!-- facturepour car js prend que id=facturepour-->
 																	<option value="Pas de clients">Sélectionnez un client</option>
+																	<!-- list de tous les clients prénsents dans la colonne name_client -->
 																	<?php foreach($client as $clientt): ?>
 																	<option value="<?= $clientt['name_client'] ?>"><?= $clientt['name_client'] ?></option>
 																	<?php endforeach; ?>
@@ -382,6 +387,7 @@ require_once 'php/config.php';
 																				<select id="article" class="form-control invoice-item-select">
 																					<option value="Pas d'article">Sélectionnez un article</option>
 																					<optgroup label="Liste des articles"></optgroup>
+																					<!-- list de tous les articles présents dans la table article -->
 																					<?php foreach($article as $articlee): ?>
 																					<option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
 																					<?php endforeach; ?>
@@ -398,6 +404,7 @@ require_once 'php/config.php';
 																			</div>
 																			<div class="col-md-2 col-12 form-group">
 																				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+																				<!-- prix de quantité*prix en js -->
 																				<strong id="demo" class="text-primary align-middle">00.00 €</strong>
 																			</div>
 																			<div class="col-md-4 col-12 form-group">
@@ -561,6 +568,7 @@ require_once 'php/config.php';
 																						color: white;
 																					}
 																				</style>
+																				<!-- Boutons qui envoient le form global. Attention aux div en trop ou mal indentées car il ne fonctionnerait plus. -->
 																				<input name="insert" id="button_save" type="button" value="Vérification" class="btn btn-primary btn-block subtotal-preview-btn" onclick="buttonc()"/>
 																				<input name="insert" id="subbt" type="hidden" value="Sauvegarder" class="btn btn btn-block subtotal-preview-btn green"/>
 																			</li>
@@ -572,6 +580,7 @@ require_once 'php/config.php';
 													</div>
                                     	</div>
                                 </form>
+								<!-- POPUPS en html des création de clients ainsi que d'article -->
 								<!-- DEBUT DES FORMS -->
 											<!-- logo and title -->
 											<div class="card-body">

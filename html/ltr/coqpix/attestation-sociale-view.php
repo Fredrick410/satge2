@@ -23,6 +23,11 @@ require_once 'php/verif_session_connect_admin.php';
     $attestation_valid = $pdoSta->fetchAll();
     $count_valid = count($attestation_valid);
 
+    //désactivation des notifications
+    $pdoSta = $bdd->prepare('UPDATE attestation_sociale SET statut_notif_back = :statut WHERE id_session=:num AND statut_notif_back != "Inactive"');
+    $pdoSta->bindValue(':num', $_GET['num']);
+    $pdoSta->bindValue(':statut', 'Inactive');
+    $pdoSta->execute();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">

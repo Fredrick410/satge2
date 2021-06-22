@@ -388,8 +388,9 @@ require_once 'php/config.php';
 																					<optgroup label="Liste des articles"></optgroup>
 																					<?php foreach($article as $articlee): ?>
 																					<option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
+
 																					<?php endforeach; ?>  <!--Affichage de tout les produits -->
-																					<optgroup label="Autres options">
+											<optgroup label="Autres options">
 																						<option value="Pas d'article">Autres</option>
 																					</optgroup>
 																				</select>
@@ -615,10 +616,7 @@ require_once 'php/config.php';
 																									-->
 																									<!-- users edit media object ends -->
 																									<!-- users edit account form start -->
-
-
-																									<!-- Debut de la liste des popup qui permettent de créer un client et un article -->
-																									<form action="php/insert_popup_clp.php" method="POST">
+									                      				<form action="php/insert_popup_clp.php" method="POST">
 																										<input type="hidden" name="cat" value="Particulier">
 																										<div class="row">
 																											<div class="col-12 col-sm-6">

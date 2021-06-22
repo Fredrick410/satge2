@@ -5,7 +5,6 @@ ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
     $name_task = $_POST['name_task'];
-    $favo_task = "";
     $dte_crea = date('d/m/Y');
     $dte_echeance = $_POST['dte_echeance'];
     $pour_task = $_POST['pour_task'];
@@ -13,10 +12,9 @@ require_once 'config.php';
 
     if($_GET['type'] == "compta"){
         
-        $insert = $bdd->prepare('INSERT INTO task_compta (name_task , favo_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO task_compta (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($name_task),
-            htmlspecialchars($favo_task),
             htmlspecialchars($dte_crea),
             htmlspecialchars($dte_echeance),
             htmlspecialchars($pour_task),
@@ -30,10 +28,9 @@ require_once 'config.php';
 
     if($_GET['type'] == "sociale"){
 
-        $insert = $bdd->prepare('INSERT INTO task_sociale (name_task , favo_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO task_sociale (name_task , dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($name_task),
-            htmlspecialchars($favo_task),
             htmlspecialchars($dte_crea),
             htmlspecialchars($dte_echeance),
             htmlspecialchars($pour_task),
@@ -47,10 +44,9 @@ require_once 'config.php';
 
     if($_GET['type'] == "fisca"){
 
-        $insert = $bdd->prepare('INSERT INTO task_fisca (name_task , favo_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO task_fisca (name_task , dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($name_task),
-            htmlspecialchars($favo_task),
             htmlspecialchars($dte_crea),
             htmlspecialchars($dte_echeance),
             htmlspecialchars($pour_task),
