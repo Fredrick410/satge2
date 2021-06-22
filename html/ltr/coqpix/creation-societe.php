@@ -216,7 +216,7 @@ small{
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
-                                                        <input type="password" id="mdp_verif" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        <input type="password" id="mdp_verif" name="password_verif" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div id="alert-mdp2" class="alert alert-danger" style="display: none;">
                                                             Les deux mots de passe ne correspondent pas

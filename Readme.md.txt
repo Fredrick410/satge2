@@ -42,3 +42,9 @@ branch de robin :
 	tache réalisée 21/06/21
 		-verification que les mdp correspondent aux conditions dans creation-societe
 		-implementation de verif mail
+
+branch de leo :
+	tache réalisée 22/06/21
+		-verif mdp
+		-telephone drapeau france par défaut
+		-cryptage mot de passe (connexion + inscription + edit profil)
