@@ -23,8 +23,8 @@ require_once 'php/config.php';
     $count_finish = count($bulletin_finish);
 
     //désactivation des notifications
-    $pdoSta = $bdd->prepare('DELETE FROM notif_front WHERE id_session=:num');
-    $pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
+    $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE id_session=:num');
+    $pdoSta->bindValue(':num',$_GET['num']); //$_SESSION 
     $pdoSta->execute();
 
 ?>
