@@ -212,7 +212,7 @@ small{
                                                         
                                                     </div>
                                                     <div id="alert-mdp1" class="alert alert-danger" style="display: none;">
-                                                            le mot de passe doit contenir au moins 6 caractères dont minimum une lettre minuscule, une lettre majuscule et un chiffre
+                                                            le mot de passe doit contenir au moins 6 caractères avec un chiffre minimum
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
@@ -248,7 +248,7 @@ small{
     //mot de passe
 
         //MDP ayant lettres majuscules, minuscules et chiffres
-        var condition = new RegExp("^(?=.{6,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])", "g");
+        var condition = new RegExp("^(?=.{6,})(?=.*[0-9])(?=.*[A-z])", "g");
         
         $("#mdp").keyup(function(event){
             if(condition.test($(this).val())){ // mdp valide
@@ -278,6 +278,7 @@ small{
     //telephone
         const phoneInputField = document.querySelector("#tel_temp");
         const phoneInput = window.intlTelInput(phoneInputField, {
+            preferredCountries: ["fr"],
             utilsScript: 
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });

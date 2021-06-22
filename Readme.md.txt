@@ -31,17 +31,14 @@ tache réalisée 18/06/21
 	
 branch de oscar :
 tache réalisé le 18/06/2021
-	- travail sur la page crea societe (passage en full screen, ajout librairie pour l'input de telephone)
+	- travail sur la page crea societe (passage en full screen, ajout librairie pour l'input de telephone)	
 
 branch de leo :
 	tache réalisée 21/06/21
 		-page crea societe : le formulaire envoie le telephone sous la bonne forme (+33...) dans la bdd
-<<<<<<< HEAD
 		-page-creation-edit.php : me formulaire reçoit et envoie le telephone sous la bonne forme (+33...)
-=======
 
 branch de robin :
 	tache réalisée 21/06/21
 		-verification que les mdp correspondent aux conditions dans creation-societe
 		-implementation de verif mail
->>>>>>> cb4d7b595b611edc6c415f4dd43881b74477e73d
