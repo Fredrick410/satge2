@@ -35,11 +35,16 @@ require_once 'php/config.php';
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE attestation_sociale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, statut_notif_front=:statut_notif_front, date_donner=:date_donner WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE attestation_sociale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, date_donner=:date_donner WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_attestation', $file_name);
             $pdo->bindValue(':statut_attestation', "Terminée");
-            $pdo->bindValue(':statut_notif_front', 'Non lue');
+            $pdo->bindValue(':id', $_GET['id']);
+            $pdo->execute();
+
+            $pdo = $bdd->prepare('UPDATE notif_front SET date_donner=:date_donner, type_demande=:type_demande WHERE id=:id LIMIT 1');
+            $pdo->bindValue(':date_donner', $date_donner);
+            $pdo->bindValue(':type_demande', "attestation sociale");
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
 

@@ -17,9 +17,9 @@ require_once 'php/config.php';
     $count_attestation = count($attestation);
 
     //désactivation des notifications
-    $pdoSta = $bdd->prepare('UPDATE attestation_fiscale SET statut_notif_front = :statut WHERE id_session=:num AND statut_notif_front != :statut');
+   
+    $pdoSta = $bdd->prepare('DELETE FROM notif_front WHERE id_session=:num');
     $pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
-    $pdoSta->bindValue(':statut', 'Inactive');
     $pdoSta->execute();
 
 ?>
