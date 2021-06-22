@@ -248,7 +248,7 @@ small{
     //mot de passe
 
         //MDP ayant lettres majuscules, minuscules et chiffres
-        var condition = new RegExp("^(?=.{6,})(?=.*[0-9])(?=.*[A-Za-z])", "g");
+        var condition = new RegExp("^(?=.{6,})(?=.*[A-Za-z])(?=.*[0-9])", "g");
         
         $("#mdp").keyup(function(event){
             if(condition.test($(this).val())){ // mdp valide
