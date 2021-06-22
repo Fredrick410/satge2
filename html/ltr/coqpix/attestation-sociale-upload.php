@@ -10,7 +10,7 @@ require_once 'php/config.php';
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
-    $name_enteprise = $_POST['name_entreprise'];
+    $name_entreprise = $_POST['name_entreprise'];
 
         //1
 
