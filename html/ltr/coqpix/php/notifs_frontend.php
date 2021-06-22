@@ -1,7 +1,7 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-    $select_notif = $bdd->prepare("SELECT id, date_donner, type_demande, id_session FROM notif_front ORDER BY STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10;");
+    $select_notif = $bdd->prepare("SELECT id, date_donner, type_demande, id_session FROM notif_front ORDER BY STR_TO_DATE(date_donner, '%d/%m/%Y') DESC LIMIT 10;");
 	$select_notif->execute();
 
     $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM notif_front');
