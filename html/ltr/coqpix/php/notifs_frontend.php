@@ -1,15 +1,10 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-    $select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_donner, statut_notif_front, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_front != :statut UNION ALL SELECT id, name_entreprise, date_donner, statut_notif_front, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_front != :statut UNION ALL SELECT id, name_entreprise, date_donner, statut_notif_front, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_front != :statut UNION ALL SELECT id, name_entreprise, dte, statut_notif_front, 'bilan' AS type_demande, id_session FROM bilan WHERE statut_notif_front != :statut) AS temp WHERE id_session = :num ORDER BY STR_TO_DATE(date_donner, '%d/%m/%Y') DESC LIMIT 10");
-    $select_notif->bindValue(':statut', 'Inactive');
-    $select_notif->bindValue(':num', $_SESSION['id_session']);
-    $select_notif->execute();
+    $select_notif = $bdd->prepare("SELECT id, date_demande, type_demande, id_session FROM notif_front ORDER BY STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10;");
+	$select_notif->execute();
 
-    $pdoSt= $bdd->prepare('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_front != :statut AND id_session = :num UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_front != :statut AND id_session = :num UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_front != :statut AND id_session = :num UNION ALL SELECT id FROM bilan WHERE statut_notif_front != :statut AND id_session = :num) AS temp');
-    $pdoSt->bindValue(':statut', 'Inactive');
-    $pdoSt->bindValue(':num', $_SESSION['id_session']);
-    $pdoSt->execute();
+    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM notif_front');
     $nb_notif = $pdoSt->fetch();
 
 ?>
@@ -77,12 +72,12 @@
 
         // si c'est un bilan
         
-		}else {
+		}else if ($result['type_demande'] === "bilan"){
 
 			$notif = "Votre bilan a été traité";
             
             ?>
-            <a href="bilan.php?5PAx4zf27P=<?= $result['dte'] ?>&S3q4EvFDk4QZ95b4v3gz">
+            <a href="bilan.php?5PAx4zf27P=<?= $result['date_demande'] ?>&S3q4EvFDk4QZ95b4v3gz">
             <?php 
 
 		}
