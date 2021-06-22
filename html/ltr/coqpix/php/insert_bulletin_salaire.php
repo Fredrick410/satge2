@@ -91,13 +91,13 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($id_session)
     ));
 
-    // zjouter notification
+    // ajouter notification
     $insert_notif = $bdd->prepare('INSERT INTO notif_back (type_demande, date_demande, name_entreprise, id_session) VALUES(?,?,?,?)');
     $insert_notif->execute(array(
-        "bulletin_salaire",
+        htmlspecialchars("bulletin_salaire"),
         htmlspecialchars($date_demande),
         htmlspecialchars($name_entreprise),
-        htmlspecialchars($id_session),
+        htmlspecialchars($id_session)
     ));
         
     header('Location: ../bulletin-choose.php');
