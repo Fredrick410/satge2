@@ -580,6 +580,7 @@ require_once 'php/verif_session_crea.php';
     <script>
         const phoneInputField = document.querySelector("#tel_temp");
         const phoneInput = window.intlTelInput(phoneInputField, {
+            preferredCountries: ["fr"],
             utilsScript: 
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
