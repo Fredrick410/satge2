@@ -23,10 +23,10 @@ require_once 'php/verif_session_connect_admin.php';
     $attestation_valid = $pdoSta->fetchAll();
     $count_valid = count($attestation_valid);
 
-    //désactivation des notifications, delete notif back
-    
-    $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE id_session=:num');
+    //désactivation des notifications
+    $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE type_demande=:type_demande AND id_session=:num');
     $pdoSta->bindValue(':num', $_GET['num']);
+    $pdoSta->bindValue(':type_demande', "attestation_sociale");
     $pdoSta->execute();
     
 ?>
