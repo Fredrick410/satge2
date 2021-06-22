@@ -7,8 +7,9 @@ require_once 'config.php';
 
     $name_crea = $_POST['crea_societe'];
     $email_crea = $_POST['email_crea'];
+    $password_verif = $_POST['password_verif'];
     $password_crea = password_hash($_POST['password_crea'], PASSWORD_DEFAULT);
-    if($password_crea != $password_verif){ //si l'utilisateur a entré 2 mots de passes différents lors de la verif
+    if($_POST['password_crea'] != $password_verif){ //si l'utilisateur a entré 2 mots de passes différents lors de la verif
         header('Location: ../creation-societe.php'); //on revient sur la page de crea
         exit();
     }
