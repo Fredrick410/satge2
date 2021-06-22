@@ -1,7 +1,7 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-    $select_notif = $bdd->prepare("SELECT id, date_demande, type_demande, id_session FROM notif_front ORDER BY STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10;");
+    $select_notif = $bdd->prepare("SELECT id, date_donner, type_demande, id_session FROM notif_front ORDER BY STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10;");
 	$select_notif->execute();
 
     $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM notif_front');
@@ -77,7 +77,7 @@
 			$notif = "Votre bilan a été traité";
             
             ?>
-            <a href="bilan.php?5PAx4zf27P=<?= $result['date_demande'] ?>&S3q4EvFDk4QZ95b4v3gz">
+            <a href="bilan.php?5PAx4zf27P=<?= $result['date_donner'] ?>&S3q4EvFDk4QZ95b4v3gz">
             <?php 
 
 		}
