@@ -289,8 +289,6 @@ small{
            
             document.getElementById("tel_diri").value=`${phoneNumber}`;
         }
-<<<<<<< HEAD
-=======
 
     //email
         function checkEmail(email) {
@@ -310,7 +308,6 @@ small{
              return false;
          });
   
->>>>>>> cb4d7b595b611edc6c415f4dd43881b74477e73d
     </script>
 
     <!-- BEGIN: Vendor JS-->
