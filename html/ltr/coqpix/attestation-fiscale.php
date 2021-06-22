@@ -18,7 +18,7 @@ require_once 'php/config.php';
 
     //désactivation des notifications
    
-    $pdoSta = $bdd->prepare('DELETE FROM notif_front WHERE id_session=:num');
+    $pdoSta = $bdd->prepare('DELETE FROM notif_front WHERE type_demande="attestation_fiscale" AND id_session=:num');
     $pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
     $pdoSta->execute();
 

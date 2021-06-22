@@ -10,6 +10,8 @@ require_once 'php/config.php';
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
+    $name_enteprise = $_POST['name_entreprise'];
+
         //1
 
         if(isset($_FILES['files'])){
@@ -42,11 +44,13 @@ require_once 'php/config.php';
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
 
-            $pdo = $bdd->prepare('UPDATE notif_front SET date_donner=:date_donner, type_demande=:type_demande WHERE id=:id LIMIT 1');
-            $pdo->bindValue(':date_donner', $date_donner);
-            $pdo->bindValue(':type_demande', "attestation sociale");
-            $pdo->bindValue(':id', $_GET['id']);
-            $pdo->execute();
+            //insert notif front
+            $insert_notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+            $insert_notif->execute(array(
+                htmlspecialchars("attestation_sociale"),
+                htmlspecialchars($date_donner),
+                htmlspecialchars($id_session)
+            ));
 
 
             $pdo = $bdd->prepare('SELECT id_task from attestation_sociale WHERE id = ?');
