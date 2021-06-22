@@ -24,8 +24,9 @@ require_once 'php/verif_session_connect_admin.php';
 
      //désactivation des notifications, delete notif back
     
-     $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE id_session=:num');
+     $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE type_demande=:type_demande AND id_session=:num');
      $pdoSta->bindValue(':num', $_GET['num']);
+     $pdoSta->bindValue(':type_demande', "bilan");
      $pdoSta->execute();
 
 ?>
