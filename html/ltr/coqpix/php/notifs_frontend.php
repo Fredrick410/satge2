@@ -85,7 +85,7 @@
 			$notif = "Vous avez été ajouté à une équipe";
             
             ?>
-                    <a href="membres-list.php">
+                    <a href="teams-list.php">
                         <?php
 
         // si c'est un ajout de membre
