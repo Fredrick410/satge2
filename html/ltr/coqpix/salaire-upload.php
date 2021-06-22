@@ -35,13 +35,21 @@ require_once 'php/config.php';
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE bulletin_salaire SET date_donner=:date_donner, files_bulletin=:files_bulletin, statut_bulletin=:statut_bulletin, statut_notif_front=:statut_notif_front WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE bulletin_salaire SET date_donner=:date_donner, files_bulletin=:files_bulletin, statut_bulletin=:statut_bulletin, WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_bulletin', $file_name);
             $pdo->bindValue(':statut_bulletin', "Terminée");
-            $pdo->bindValue(':statut_notif_front', 'Non lue');
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
+
+            //insert notif front
+            $insert_notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+            $insert_notif->execute(array(
+                htmlspecialchars("bulletin_salaire"),
+                htmlspecialchars($date_donner),
+                htmlspecialchars($id_session)
+            ));
+            
 
             $pdo = $bdd->prepare('SELECT id_task from bulletin-salaire WHERE id = ?');
             $pdo->execute(array($_GET['id']));

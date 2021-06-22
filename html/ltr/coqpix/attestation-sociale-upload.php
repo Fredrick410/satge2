@@ -10,6 +10,8 @@ require_once 'php/config.php';
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
+    $name_entreprise = $_POST['name_entreprise'];
+
         //1
 
         if(isset($_FILES['files'])){
@@ -35,13 +37,20 @@ require_once 'php/config.php';
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE attestation_sociale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, statut_notif_front=:statut_notif_front, date_donner=:date_donner WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE attestation_sociale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, date_donner=:date_donner WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_attestation', $file_name);
             $pdo->bindValue(':statut_attestation', "Terminée");
-            $pdo->bindValue(':statut_notif_front', 'Non lue');
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
+
+            //insert notif front
+            $insert_notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+            $insert_notif->execute(array(
+                htmlspecialchars("attestation_sociale"),
+                htmlspecialchars($date_donner),
+                htmlspecialchars($id_session)
+            ));
 
 
             $pdo = $bdd->prepare('SELECT id_task from attestation_sociale WHERE id = ?');

@@ -208,7 +208,7 @@ require_once 'php/config.php';
                                                 <i class="bx bx-filter"></i>
                                                 <span>Action</span>
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
+                                            <div style="z-index: 98;" class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
                                                 <a class="dropdown-item ascending" href="#">Ascending</a>
                                                 <a class="dropdown-item descending" href="#">Descending</a>
                                             </div>
@@ -217,7 +217,7 @@ require_once 'php/config.php';
                                     <div class="todo-task-list list-group">
                                         <!-- task list start -->
                                         <ul class="todo-task-list-wrapper list-unstyled" id="">
-                                            <?php $index=98; ?>
+                                            <?php $index=97; ?>
                                             <?php foreach($task as $tasks): ?>
                                                 <li class="vertical-align-center todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; z-index: <?= $index; ?>;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
@@ -227,8 +227,8 @@ require_once 'php/config.php';
                                                         <div class="todo-item-action d-flex align-items-center">
                                                             <div class="todo-badge-wrapper d-flex"></div>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=fisca&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='icon_fav ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='icon_trash ml-75'><i class="bx bx-trash"></i></a>
 
                                                             <div class="btn-group ml-2">
                                                                 <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

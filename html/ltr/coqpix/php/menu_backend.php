@@ -115,7 +115,7 @@
 
     </div>
     <div class="navbar-container main-menu-content" data-menu="menu-container">
-        <ul class="nav navbar-nav ml-auto" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
+        <ul class="nav navbar-nav">
 
             <?php include('notifs_backend.php'); ?>
         
