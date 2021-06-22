@@ -55,7 +55,7 @@ require_once 'php/config.php';
             $pdo->execute(array($_GET['id']));
             $id_task = ($pdo->fetch())['id_task'];
 
-            $pdoS = $bdd->prepare('UPDATE task_fica SET statut_task = ? WHERE id = ?');
+            $pdoS = $bdd->prepare('UPDATE task_fisca SET statut_task = ? WHERE id = ?');
             $pdoS->execute(array('valide',$id_task));
             
             header('Location: attestation-fiscale-view.php?num='.$_GET['num'].'');
