@@ -212,11 +212,11 @@ small{
                                                         
                                                     </div>
                                                     <div id="alert-mdp1" class="alert alert-danger" style="display: none;">
-                                                            le mot de passe doit contenir au moins 6 caractères dont une lettre et un chiffre
+                                                            Le mot de passe doit contenir au moins 6 caractères dont une lettre et un chiffre
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label class="text-bold-600" style="margin-top:0;">Vérification du mot de passe</label>
-                                                        <input type="password" id="mdp_verif" name="password_crea" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
+                                                        <input type="password" id="mdp_verif" name="password_verif" class="form-control border rounded-pill border-dark" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div id="alert-mdp2" class="alert alert-danger" style="display: none;">
                                                             Les deux mots de passe ne correspondent pas
@@ -249,7 +249,7 @@ small{
     //mot de passe
 
         //MDP ayant lettres majuscules, minuscules et chiffres
-        var condition = new RegExp("^(?=.{6,})(?=.*[0-9])(?=.*[A-z])", "g");
+        var condition = new RegExp("^(?=.{6,})(?=.*[A-Za-z])(?=.*[0-9])", "g");
         
         $("#mdp").keyup(function(event){
             if(condition.test($(this).val())){ // mdp valide

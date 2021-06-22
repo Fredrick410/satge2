@@ -31,7 +31,7 @@ tache réalisée 18/06/21
 	
 branch de oscar :
 tache réalisé le 18/06/2021
-	- travail sur la page crea societe (passage en full screen, ajout librairie pour l'input de telephone)
+	- travail sur la page crea societe (passage en full screen, ajout librairie pour l'input de telephone)	
 
 branch de leo :
 	tache réalisée 21/06/21
@@ -42,3 +42,9 @@ branch de robin :
 	tache réalisée 21/06/21
 		-verification que les mdp correspondent aux conditions dans creation-societe
 		-implementation de verif mail
+
+branch de leo :
+	tache réalisée 22/06/21
+		-verif mdp
+		-telephone drapeau france par défaut
+		-cryptage mot de passe (connexion + inscription + edit profil)
