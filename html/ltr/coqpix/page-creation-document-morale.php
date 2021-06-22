@@ -142,7 +142,7 @@ require_once 'php/verif_session_crea.php';
 .nonedoc {display : none;}
 .esp{color: #828D99; text-decoration: underline;}
 .esp:hover{color: #34465b; text-decoration: underline;}
-    
+
 </style>
 
 
