@@ -45,7 +45,7 @@
 		// si c'est une demande d'attestation fiscale
 		if ($result['type_demande'] === "attestation_fiscale") {
 
-			$notif = "Votre attestation fiscale a été traité";
+			$notif = "Votre demande de attestation fiscale a été traitée";
 
 
             ?>
@@ -55,7 +55,7 @@
 		// si c'est une demande d'attestation sociale
 		} else if ($result['type_demande'] === "attestation_sociale"){
 
-			$notif = "Votre attestation sociale a été traité";
+			$notif = "Votre demande de attestation sociale a été traitée";
 
             ?>
                 <a href="attestation-social.php">
@@ -64,7 +64,7 @@
 		// si c'est un bulletin de salaire
 		} else if ($result['type_demande'] === "bulletin_salaire"){
 
-			$notif = "Vous bulletin de salaire a été traité";
+			$notif = "Vous demande de bulletin de salaire a été traitée";
             
             ?>
                     <a href="bulletin-consulte.php">
@@ -74,12 +74,22 @@
         
 		}else if ($result['type_demande'] === "bilan"){
 
-			$notif = "Votre bilan a été traité";
+			$notif = "Votre demande de bilan a été traitée";
             
             ?>
             <a href="bilan.php?5PAx4zf27P=<?= substr($result['date_donner'],-4) ?>&S3q4EvFDk4QZ95b4v3gz">
             <?php 
 
+		} else if ($result['type_demande'] === "teams_membres"){
+
+			$notif = "Vous avez été ajouté à une équipe";
+            
+            ?>
+                    <a href="membres-list.php">
+                        <?php
+
+        // si c'est un ajout de membre
+        
 		}
                
         ?>

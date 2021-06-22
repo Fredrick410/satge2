@@ -16,6 +16,10 @@ require_once 'php/config.php';
     $pdoS->execute();
     $team = $pdoS->fetchAll();
 
+    // Supression des notifications
+    $pdoS = $bdd->prepare('DELETE FROM notif_front WHERE id_session = ? AND type_demande = ?');
+    $pdoS->execute(array($_SESSION['id_session'],'teams_membres'));
+
 ?>
 
 
