@@ -54,16 +54,13 @@ ini_set('display_startup_errors', TRUE);
     $pdoS = $bdd->query('SELECT LAST_INSERT_ID() as id_task FROM task_sociale');
     $id_task = ($pdoS->fetch()['id_task']);
 
-    $insert = $bdd->prepare('INSERT INTO bulletin_salaire (name_entreprise, name_membre, date_demande, date_donner, statut_bulletin, statut_notif_back, statut_notif_front, message_bulletin, files_bulletin, secteur_activité, heuredebase, heuresupp_tp, heurecompl_tpartiel, heuredenuit, repas, indemnitesdet_1A, indemnitesdet_1B, indemnitesdet_2, indemnitesdet_3, indemnitesdet_4, indemnitesdet_5, indemnitesdetr_1A, indemnitesdetr_1B, indemnitesdetr_2, indemnitesdetr_3, indemnitesdetr_4, indemnitesdetr_5, primes, remboursementtransport, congespayes, congessanssolde, congesmaternite, congespaternite, avantagenature, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO bulletin_salaire (name_entreprise, name_membre, date_demande, date_donner, statut_bulletin, message_bulletin, files_bulletin, secteur_activité, heuredebase, heuresupp_tp, heurecompl_tpartiel, heuredenuit, repas, indemnitesdet_1A, indemnitesdet_1B, indemnitesdet_2, indemnitesdet_3, indemnitesdet_4, indemnitesdet_5, indemnitesdetr_1A, indemnitesdetr_1B, indemnitesdetr_2, indemnitesdetr_3, indemnitesdetr_4, indemnitesdetr_5, primes, remboursementtransport, congespayes, congessanssolde, congesmaternite, congespaternite, avantagenature, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($name_entreprise),
         htmlspecialchars($name_membre),
         htmlspecialchars($date_demande),
         htmlspecialchars($date_donner),
         htmlspecialchars($statut_bulletin),
-        htmlspecialchars($statut_notif_back),
-        htmlspecialchars($statut_notif_front),
-        htmlspecialchars($id_task),
         htmlspecialchars($message_bulletin),
         htmlspecialchars($files_bulletin),
         htmlspecialchars($secteur_activité),
@@ -92,6 +89,15 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($congespaternite),
         htmlspecialchars($avantagenature),
         htmlspecialchars($id_session)
+    ));
+
+    // zjouter notification
+    $insert_notif = $bdd->prepare('INSERT INTO notif_back (type_demande, date_demande, name_entreprise, id_session) VALUES(?,?,?,?)');
+    $insert_notif->execute(array(
+        "bulletin_salaire",
+        htmlspecialchars($date_demande),
+        htmlspecialchars($name_entreprise),
+        htmlspecialchars($id_session),
     ));
         
     header('Location: ../bulletin-choose.php');

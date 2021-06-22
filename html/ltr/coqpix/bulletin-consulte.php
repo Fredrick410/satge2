@@ -22,9 +22,9 @@ require_once 'php/config.php';
     $bulletin_finish = $pdoStat->fetchAll();
     $count_finish = count($bulletin_finish);
 
-    $pdoSta = $bdd->prepare('UPDATE bulletin_salaire SET statut_notif_front = :statut WHERE id_session=:num AND statut_notif_front != "Inactive"');
-    $pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
-    $pdoSta->bindValue(':statut', 'Inactive');
+    //désactivation des notifications
+    $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE id_session=:num');
+    $pdoSta->bindValue(':num',$_GET['num']); //$_SESSION 
     $pdoSta->execute();
 
 ?>

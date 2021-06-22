@@ -9,22 +9,21 @@
     
 ?>
 
-<li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-        data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
+<li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>
         <?php
                     if($nb_notif['nb']){
         ?>
-        <span style="margin-top: 2px; margin-right: 20px;"
+        <span style="margin-top: 2px; margin-right: 5px;"
             class="badge badge-pill badge-danger badge-up"><?= $nb_notif['nb'] ?></span>
         <!--NOTIFICATION-->
         <?php
                      }
                 ?>
     </a>
-    <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+    <ul class="pt-0 pb-0 dropdown-menu dropdown-menu-media dropdown-menu-right">
         <li class="dropdown-menu-header">
             <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span
-                    class="notification-title"><?= $nb_notif['nb'] ?> Notifications</span></div>
+                    class="notification-title" style="margin-top: 3px; margin-bottom: 3px;"><?= $nb_notif['nb'] ?> Notifications</span></div>
 
 
             <?php              if ($nb_notif['nb']){
@@ -115,7 +114,7 @@
         </li>
 
         <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center"
-                href="php/delete_notifs.php?delete=back"><span class="text-light">Tout marquer comme lu</span></a></li>
+                href="php/delete_notifs.php?delete=back"><span style="margin-top: 3px; margin-bottom: 3px;">Tout marquer comme lu</span></a></li>
 
         <?php
         }
