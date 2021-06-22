@@ -1,10 +1,10 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, dte,statut_notif_back, 'bilan' AS type_demande, id_session FROM bilan WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
-	$select_notif->execute(array("Inactive", "Inactive", "Inactive", "Inactive"));
+	$select_notif = $bdd->prepare("SELECT id, name_entreprise, date_demande, type_demande, id_session FROM notif_back ORDER BY STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10;");
+	$select_notif->execute();
 
-    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_back != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_back != "Inactive") AS temp');
+    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM notif_back');
     $nb_notif = $pdoSt->fetch();
     
 ?>
@@ -13,7 +13,7 @@
         data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
         <?php
                     if($nb_notif['nb']){
-                        ?>
+        ?>
         <span style="margin-top: 2px; margin-right: 20px;"
             class="badge badge-pill badge-danger badge-up"><?= $nb_notif['nb'] ?></span>
         <!--NOTIFICATION-->
@@ -63,12 +63,21 @@
                     <?php
 
 		// si c'est un bulletin de salaire
-		} else {
+		} else if ($result['type_demande'] === "bulletin_salaire"){
 
 			$notif = "Vous avez un bulletin de salaire de " .$result['name_entreprise']. " en attente de traitement";
             
             ?>
                     <a href="salaire-view.php?num=<?= $result['id_session'] ?>">
+                        <?php
+
+		}
+        else if ($result['type_demande'] === "bilan"){
+
+			$notif = "Vous avez un bilan de " .$result['name_entreprise']. " en attente de traitement";
+            
+            ?>
+                    <a href="bilan-view.php?num=<?= $result['id_session'] ?>">
                         <?php
 
 		}
@@ -106,7 +115,7 @@
         </li>
 
         <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center"
-                href="php/delete_notifs.php?delete=back"><span>Tout marquer comme lu</span></a></li>
+                href="php/delete_notifs.php?delete=back"><span class="text-light">Tout marquer comme lu</span></a></li>
 
         <?php
         }
