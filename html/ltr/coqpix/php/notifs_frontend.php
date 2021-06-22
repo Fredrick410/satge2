@@ -1,16 +1,20 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, dte,statut_notif_back, 'bilan' AS type_demande, id_session FROM bilan WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
-	$select_notif->execute(array("Inactive", "Inactive", "Inactive", "Inactive"));
+    $select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_donner, statut_notif_front, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_front != :statut UNION ALL SELECT id, name_entreprise, date_donner, statut_notif_front, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_front != :statut UNION ALL SELECT id, name_entreprise, date_donner, statut_notif_front, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_front != :statut UNION ALL SELECT id, name_entreprise, dte, statut_notif_front, 'bilan' AS type_demande, id_session FROM bilan WHERE statut_notif_front != :statut) AS temp WHERE id_session = :num ORDER BY STR_TO_DATE(date_donner, '%d/%m/%Y') DESC LIMIT 10");
+    $select_notif->bindValue(':statut', 'Inactive');
+    $select_notif->bindValue(':num', $_SESSION['id_session']);
+    $select_notif->execute();
 
-    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM bilan WHERE statut_notif_front != "Inactive") AS temp');
+    $pdoSt= $bdd->prepare('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_front != :statut AND id_session = :num UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_front != :statut AND id_session = :num UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_front != :statut AND id_session = :num UNION ALL SELECT id FROM bilan WHERE statut_notif_front != :statut AND id_session = :num) AS temp');
+    $pdoSt->bindValue(':statut', 'Inactive');
+    $pdoSt->bindValue(':num', $_SESSION['id_session']);
+    $pdoSt->execute();
     $nb_notif = $pdoSt->fetch();
 
 ?>
 
-<li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-        data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
+<li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>
         <?php
                     if($nb_notif['nb']){
                         ?>
@@ -78,7 +82,7 @@
 			$notif = "Votre bilan a été traité";
             
             ?>
-            <a href="bilan.php?5PAx4zf27P=<?= $result['date'] ?>&S3q4EvFDk4QZ95b4v3gz">
+            <a href="bilan.php?5PAx4zf27P=<?= $result['dte'] ?>&S3q4EvFDk4QZ95b4v3gz">
             <?php 
 
 		}
@@ -94,7 +98,7 @@
                                 </div>
                                 <div class="media-body">
                                     <h6 class="media-heading"><span class="text-bold-500"><?php echo $notif; ?></span>
-                                    </h6><small class="notification-text"><?= $result['date_demande']; ?></small>
+                                    </h6><small class="notification-text"><?= $result['date_donner']; ?></small>
                                 </div>
                             </div>
                         </div>
