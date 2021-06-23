@@ -10,7 +10,8 @@ ini_set('display_startup_errors', TRUE);
  //On met le résultat pseudo du formulaire dans $pseudo
  $pseudo = htmlspecialchars($_GET["emailentreprise"]) ;
  $pass = htmlspecialchars($_GET["passwordentreprise"]) ;
- 
+ $pass_hash = crypt($_GET['passwordentreprise'], '5c725a26307c3b5170634a7e2b');
+
  //On sélectionne dans la table 'utilisateurs' les pseudo qui sont les mêmes que le pseudo tapé dans le formulaire
  $query = $bdd->query("SELECT * FROM entreprise WHERE emailentreprise = '$pseudo' AND passwordentreprise = '$pass'"); 
  
@@ -142,7 +143,7 @@ ini_set('display_startup_errors', TRUE);
         
       }else{
 
-        $query_crea = $bdd->query("SELECT * FROM crea_societe WHERE email_crea = '$pseudo' AND password_crea = '$pass'");
+        $query_crea = $bdd->query("SELECT * FROM crea_societe WHERE email_crea = '$pseudo' AND password_crea = '$pass_hash'");
         $count_crea = $query_crea->rowCount();
 
         if($count_crea == "1"){
