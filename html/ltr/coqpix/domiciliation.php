@@ -137,9 +137,7 @@ require_once 'php/verif_session_crea.php';
             <div class="content-right">
                 <div class="content-overlay"></div>
                 <div class="content-wrapper">
-                    <iframe src="https://www.multiburo.com/domiciliation-entreprise"
-                        width="100%"
-                        height="100%"></iframe>  
+                        
                 </div>
             </div>
         </div>
