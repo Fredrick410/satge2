@@ -232,6 +232,28 @@ input[type="checkbox"].solu:checked + label {
     border: 1px hidden rgba(5, 20, 65, 0.6);
     background-color: rgba(5, 20, 65, 0.1);
 }
+
+.card-container{
+    margin: 50px;
+}
+
+.card-container ul{
+    padding: 10px;
+    text-align: center;
+}
+
+.card-container ul li{
+    list-style: none;
+    display: inline-block;
+}
+
+.card-body{
+    width: 300px;
+}
+
+.card-body img{
+    width: 200px;
+}
     
 </style>
 
@@ -250,7 +272,7 @@ input[type="checkbox"].solu:checked + label {
                 <div id="titre"><p>Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p></div>
                 <div id="sous-titre"><p>Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p></div>
             </div>
-            <div class="col-6" id="div-titre-droite">
+            <div class="col-6" id="div-titre-droite" style="height: 800px;">
                 <div id="solution" class="col-12">
                     <form>
                     <div>
@@ -294,12 +316,47 @@ input[type="checkbox"].solu:checked + label {
                 </div>
             </div>
         </div>
-        <div class="row" style="height: ;">
+        <div class="row" id="div-carte" style="height: ;">
             <div class="col-6">
-            
+                <div class="card-container">
+                    <ul>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="col-6">
-            <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="930" height="600"></iframe>
+            <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="930" height="800" right=0;></iframe>
             
             </div>
         </div>
