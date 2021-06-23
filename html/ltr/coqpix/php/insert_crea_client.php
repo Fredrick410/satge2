@@ -7,6 +7,7 @@ require_once 'config.php';
 
     $name_crea = $_POST['crea_societe'];
     $email_crea = $_POST['email_crea'];
+
     $password_verif = $_POST['password_verif'];
     $password_temp = $_POST['password_crea'];
     $password_crea = crypt($_POST['password_crea'], '5c725a26307c3b5170634a7e2b');
@@ -14,6 +15,7 @@ require_once 'config.php';
         header('Location: ../creation-societe.php'); //on revient sur la page de crea
         exit();
     };
+
     $img_crea = !empty($_FILES['img_crea']['name']) ? $_FILES['img_crea']['name'] : "crea.png";
     $date_crea = date("d-m-Y");
     $date_crea_j = date("d");
