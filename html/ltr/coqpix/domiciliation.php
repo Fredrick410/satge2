@@ -110,10 +110,45 @@ require_once 'php/verif_session_crea.php';
     src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Light.ttf");
 }
 
+@media screen and (max-width: 1870px) {
+    #titre p{
+        font-size: 65px;
+    }
+    #sous-titre p{
+        font-size: 25px;
+        line-height: 40px;
+    }
+}
+
+@media screen and (max-width: 1278px) {
+    #sous-titre p{
+        margin: 100px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 1020px) {
+    #div-titre-gauche{
+        display: none;
+    }
+    #div-titre-droite{
+        min-width: 100%;
+    }
+}
+
+@media screen and (min-width: 2300px) {
+    #titre p{
+        font-size: 65px;
+    }
+    #sous-titre p{
+        font-size: 25px;
+        line-height: 40px;
+    }
+}
+
 #titre{
     font-family: mukta malar medium;
     color: white;
-    margin: 20% 0 0 10%;
+    margin: 180px 0 0 10%;
     font-size: 60px;
     width: 80%;
 }
@@ -125,7 +160,7 @@ require_once 'php/verif_session_crea.php';
 #sous-titre{
     font-family: mukta malar medium;
     color: white;
-    margin: 20px 0 0 10%;
+    margin: 50px 0 0 10%;
     font-size: 17px;
 }
 
@@ -143,13 +178,18 @@ require_once 'php/verif_session_crea.php';
     
 }
 
+#div-titre-droite{
+    padding: 100px;
+}
+
 #div-titre-droite h1{
-    color: #051441;
+    color: #003783;
     font-family: mukta malar medium;
+    margin: 50px 0 0 20px;
 }
 
 #solution{
-    margin: 10% 0 0 10%;
+    margin: ;
 }
 
 #solution-logo{
@@ -157,24 +197,62 @@ require_once 'php/verif_session_crea.php';
 }
 
 #solution-logo ul{
-    
+    padding: 10px;
+    text-align: center;
 }
 
 #solution-logo ul li{
     list-style: none;
     display: inline-block;
-    margin: 10px;
+    margin: 0 8% 10px 0;
 }
 
 #solution-logo ul li p{
-    margin: 10px;
+    margin-top: 10px;
     text-align: center;
     font-family: mukta malar medium;
     color: #051441;
 }
 
 #localisation{
-    margin-top: 50px;
+    margin: 50px 10% 0 0;
+}
+
+input[type="checkbox"].solu {
+    display: none;
+}
+
+input[type="checkbox"].solu + label {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+input[type="checkbox"].solu:checked + label {
+    border: 1px hidden rgba(5, 20, 65, 0.6);
+    background-color: rgba(5, 20, 65, 0.1);
+}
+
+.card-container{
+    margin: 50px;
+}
+
+.card-container ul{
+    padding: 10px;
+    text-align: center;
+}
+
+.card-container ul li{
+    list-style: none;
+    display: inline-block;
+}
+
+.card-body{
+    width: 300px;
+}
+
+.card-body img{
+    width: 200px;
 }
     
 </style>
@@ -189,28 +267,38 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
     <div class="container-fluid">
-        <div class="row" style="height: 800px;">
+        <div class="row" id="div-titre" style="height: 800px;">
             <div class="col-6 p-0" id="div-titre-gauche" >
                 <div id="titre"><p>Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p></div>
                 <div id="sous-titre"><p>Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p></div>
             </div>
-            <div class="col-6" id="div-titre-droite">
-                <div id="solution" class="col-8">
+            <div class="col-6" id="div-titre-droite" style="height: 800px;">
+                <div id="solution" class="col-12">
+                    <form>
                     <div>
                         <h1>Nos solutions</h1>
                         <div id="solution-logo">
                             <ul>
                                 <li>
-                                    <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
-                                    <p>Bureaux privatifs</p>
+                                    <input type="checkbox" id="bureau" class="solu"></input>
+                                    <label for="bureau" class="">
+                                        <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                                        <p>Bureaux privatifs</p>
+                                    </label>
                                 </li>
                                 <li>
-                                    <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
-                                    <p>Coworking</p>
+                                    <input type="checkbox" id="cowork" class="solu"></input>
+                                    <label for="cowork" class="">
+                                        <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                                        <p>Coworking</p>
+                                    </label>
                                 </li>
                                 <li>
-                                    <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
-                                    <p>Domiciliation</p>
+                                    <input type="checkbox" id="domicilia" class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
+                                        <p>Domiciliation</p>
+                                    </label>
                                 </li>
                             </ul>
                         </div>
@@ -221,10 +309,55 @@ require_once 'php/verif_session_crea.php';
                             <input type="text" id="" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
                         </div>
                         <div class="form-group" style="text-align: center; margin-top: 50px;">
-                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
                         </div>
                     </div>
+                    </form>
                 </div>
+            </div>
+        </div>
+        <div class="row" id="div-carte" style="height: ;">
+            <div class="col-6">
+                <div class="card-container">
+                    <ul>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body">
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p>Salut</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-6">
+            <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="930" height="800" right=0;></iframe>
+            
             </div>
         </div>
     </div>
