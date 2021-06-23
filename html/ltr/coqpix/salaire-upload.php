@@ -29,13 +29,14 @@ require_once 'php/config.php';
             $real_name = substr($name_files, 0, -4);
             $file_name = $real_name . $date_now . $type_files;
             $date_donner = date('d/m/Y');
-            
+            $id_session = $_GET['num'];
+
             $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
             $path = "../../../src/bulletin_salaire/". $file_name;                     // chemin vers le serveur
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE bulletin_salaire SET date_donner=:date_donner, files_bulletin=:files_bulletin, statut_bulletin=:statut_bulletin, WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE bulletin_salaire SET date_donner=:date_donner, files_bulletin=:files_bulletin, statut_bulletin=:statut_bulletin WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_bulletin', $file_name);
             $pdo->bindValue(':statut_bulletin', "Terminée");
@@ -51,7 +52,7 @@ require_once 'php/config.php';
             ));
             
 
-            $pdo = $bdd->prepare('SELECT id_task from bulletin-salaire WHERE id = ?');
+            $pdo = $bdd->prepare('SELECT id_task from bulletin_salaire WHERE id = ?');
             $pdo->execute(array($_GET['id']));
             $id_task = ($pdo->fetch())['id_task'];
 
