@@ -360,6 +360,32 @@ require_once 'php/config.php';
 														</div>
 													</div>
 													<hr>
+													
+													<input type="button" value="+ Ajouter une adresse de livraison (facultatif)" onclick="masquer_div('a_masquer');" class="btn btn-outline-primary col-lg-12 col-md-12 mt-25"/>
+																		<!-- adresse livraison -->
+													<div id="a_masquer" class="row invoice-info" style="display:none;">
+														<div class="col-lg-6 col-md-12 mt-25">												
+															
+															<label for="adresse">Adresse de livraison (facultative) :</label>
+															<fieldset class="invoice-address form-group">
+																<textarea name="adressetwo" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
+															</fieldset>
+														</div>
+														<div class="col-lg-6 col-md-12 mt-25" style="padding-top: 0px;">
+															<div class="form-group">
+																<label for="email">Code postal :</label>
+																<input type="number" name="codePostal2" class=" form-control" placeholder="Code Postal" onkeyup="getCp2($(this))" autocomplete="off">
+																<input type="hidden" name="insee_code" id="insee_code" value="" autocomplete="off">
+															</div>
+															
+															<div class="form-group">
+																<label for="email">Département :</label>
+																<select name="departementtwo" id="ville2" class="form-control " ></select>
+															</div>													
+															
+														</div>
+													</div>
+													<br>
 												</div>									
 											
 													<div class="card-body pt-50 col-lg-12  ">
@@ -1472,6 +1498,10 @@ require_once 'php/config.php';
     <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <!-- END: Page JS-->

@@ -6,9 +6,6 @@ ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
     $email_bilan = $_POST['email_bilan'];
-    $name_entreprise = $_POST['name_entreprise'];
-    $statut_notif_back = "Non lue";
-    $statut_notif_front = "Inactive";
     
     if ($_POST['date_bilan'] == "") {
 
@@ -45,16 +42,13 @@ require_once 'config.php';
 
     if($resultat = move_uploaded_file($target_file, $file_name)){
 
-        $insert = $bdd->prepare('INSERT INTO bilan (name_entreprise, email_bilan , dte, date_j, date_m, date_a, statut_notif_back, statut_notif_front, files_bilan, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO bilan (email_bilan , dte, date_j, date_m, date_a, files_bilan, id_session) VALUES(?,?,?,?,?,?,?)');
             $insert->execute(array(
-                htmlspecialchars($name_entreprise),
                 htmlspecialchars($email_bilan),
                 htmlspecialchars($dte),
                 htmlspecialchars($date_j),
                 htmlspecialchars($date_m),
                 htmlspecialchars($date_a),
-                htmlspecialchars($statut_notif_back),
-                htmlspecialchars($statut_notif_front),
                 htmlspecialchars($real_name . $date_now . $type_files),
                 htmlspecialchars($id_session)
             ));

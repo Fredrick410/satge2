@@ -27,9 +27,7 @@ require_once 'php/config.php';
 
 	$total = $cliet['cout']*$cliet['quantite'];
    
-
 	// Auto incrémentation de l'ID de la facture
-
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM devis');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
@@ -247,9 +245,7 @@ require_once 'php/config.php';
                                         <!-- header section -->
                                 <form autocomplete="off" action="php/insert_devis.php" method="POST">
                                         <div class="row mx-0" > 
-
 													<!-- Contenu du haut de l'ajout de facture DEBUT -->
-
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 																	<h6 class="invoice-number mr-75">
 																		N°
@@ -300,9 +296,7 @@ require_once 'php/config.php';
 															</fieldset>
 														</div>
 													</div>
-
 												<!-- Contenu du haut de l'ajout de facture FIN -->
-
 												<!-- logo and title -->
 												<div class="col-lg-12 col-md-12 mt-25">
 													<div class="row my-2 py-50">
@@ -393,7 +387,6 @@ require_once 'php/config.php';
 																					<option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
 																					<?php endforeach; ?>
 																					<!--Affichage de tout les produits -->
-
 																					<optgroup label="Autres options">
 																						<option value="Pas d'article">Autres</option>
 																					</optgroup>
@@ -581,9 +574,7 @@ require_once 'php/config.php';
 													</div>
                                     	</div>
                                 </form>
-
 																<!-- POPUPS en html des création de clients ainsi que d'article -->
-
 
 								<!-- DEBUT DES FORMS -->
 											<!-- logo and title -->

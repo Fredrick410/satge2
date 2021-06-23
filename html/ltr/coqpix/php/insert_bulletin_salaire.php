@@ -10,8 +10,6 @@ ini_set('display_startup_errors', TRUE);
     $date_demande = date('d/m/Y');
     $date_donner = "";
     $statut_bulletin = "En cours";
-    $statut_notif_back = "Non lue";
-    $statut_notif_front = "Inactive";
     $message_bulletin = "";
     $files_bulletin = "";
     $secteur_activité = $_POST['secteur_activité'] !== "" ? $_POST['secteur_activité'] : "0";
@@ -41,29 +39,13 @@ ini_set('display_startup_errors', TRUE);
     $avantagenature = $_POST['avantagenature'] !== "" ? $_POST['avantagenature'] : "0";
     $id_session = $_SESSION['id_session'];
 
-
-    $insert = $bdd->prepare('INSERT INTO task_sociale (name_task, dte_crea, dte_echeance, pour_task, statut_task) VALUES(?,?,?,?,?)');
-        $insert->execute(array(
-        htmlspecialchars("Demande de bulletin de salaire de ".$name_entreprise),
-        htmlspecialchars($date_demande),
-        htmlspecialchars(date('d/m/y', strtotime('+1 day'))),
-        htmlspecialchars("Non défini"),
-        htmlspecialchars("en cours")
-    ));
-
-    $pdoS = $bdd->query('SELECT LAST_INSERT_ID() as id_task FROM task_sociale');
-    $id_task = ($pdoS->fetch()['id_task']);
-
-    $insert = $bdd->prepare('INSERT INTO bulletin_salaire (name_entreprise, name_membre, date_demande, date_donner, statut_bulletin, statut_notif_back, statut_notif_front, message_bulletin, files_bulletin, secteur_activité, heuredebase, heuresupp_tp, heurecompl_tpartiel, heuredenuit, repas, indemnitesdet_1A, indemnitesdet_1B, indemnitesdet_2, indemnitesdet_3, indemnitesdet_4, indemnitesdet_5, indemnitesdetr_1A, indemnitesdetr_1B, indemnitesdetr_2, indemnitesdetr_3, indemnitesdetr_4, indemnitesdetr_5, primes, remboursementtransport, congespayes, congessanssolde, congesmaternite, congespaternite, avantagenature, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO bulletin_salaire (name_entreprise, name_membre, date_demande, date_donner, statut_bulletin, message_bulletin, files_bulletin, secteur_activité, heuredebase, heuresupp_tp, heurecompl_tpartiel, heuredenuit, repas, indemnitesdet_1A, indemnitesdet_1B, indemnitesdet_2, indemnitesdet_3, indemnitesdet_4, indemnitesdet_5, indemnitesdetr_1A, indemnitesdetr_1B, indemnitesdetr_2, indemnitesdetr_3, indemnitesdetr_4, indemnitesdetr_5, primes, remboursementtransport, congespayes, congessanssolde, congesmaternite, congespaternite, avantagenature, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($name_entreprise),
         htmlspecialchars($name_membre),
         htmlspecialchars($date_demande),
         htmlspecialchars($date_donner),
         htmlspecialchars($statut_bulletin),
-        htmlspecialchars($statut_notif_back),
-        htmlspecialchars($statut_notif_front),
-        htmlspecialchars($id_task),
         htmlspecialchars($message_bulletin),
         htmlspecialchars($files_bulletin),
         htmlspecialchars($secteur_activité),
@@ -93,7 +75,7 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($avantagenature),
         htmlspecialchars($id_session)
     ));
-        
+
     header('Location: ../bulletin-choose.php');
     exit();
 

@@ -240,7 +240,7 @@ require_once 'php/config.php';
                                     <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_facture'] ?></span></td>
                                    <td> <!-- Element sur le coté droit poubelle fleche etc ... -->
                                         <div class="invoice-action"><br>
-                                            <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=14986548" class="invoice-action-view mr-1">
+                                            <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=<?=$numbre?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
                                             <a href="app-invoice-edit.php?numfacture=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
@@ -255,7 +255,7 @@ require_once 'php/config.php';
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-x-square'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_facture.php?numfacture=<?= $factures['numerosfacture'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="php/delete_facture.php?numfacture=<?= $factures['id'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>

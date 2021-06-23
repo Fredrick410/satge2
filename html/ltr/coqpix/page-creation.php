@@ -158,14 +158,11 @@ require_once 'php/verif_session_crea.php';
                                                     $noneform = "block-validation";
                                                 }
                                                 ?>
-                                                 <div class="swiper-slide rounded swiper-shadow <?php echo $noneform; ?>" id="getting-text"><a href="domiciliation.php"><i class="bx bx-home mb-1 font-large-1"></a></i>
-                                                <a href="domiciliation.php"><div class="cent-text1">Se Domicilier</div></a>
-                                                </div>
                                                 <div class="swiper-slide rounded swiper-shadow <?php echo $noneform; ?>" id="getting-text"><a href="creation-view-<?php echo $linkview; ?>-pieceid.php"><i class="bx bx-notepad mb-1 font-large-1"></a></i>
-                                                <a href="creation-view-<?php echo $linkview; ?>-pieceid.php"><div class="cent-text1">Document</div></a>
+                                                    <a href="page-creation-chat.php"><div class="cent-text1">Document</div></a>
                                                 </div>
                                                 <div class="swiper-slide rounded swiper-shadow" id="pricing-text"> <a href="page-creation-edit.php"><i class="bx bxs-user-circle mb-1 font-large-1"></a></i>
-                                                    <a href="page-creation-edit.php"><div class="cent-text1">Profil</div></a>
+                                                    <a href="page-creation-edit.php"><div class="cent-text1">Profile</div></a>
                                                 </div>
                                                 <?php
                                                     if($crea['notification_crea'] > 0){
@@ -175,7 +172,7 @@ require_once 'php/verif_session_crea.php';
                                                     }
                                                 ?>
                                                 <div class="swiper-slide rounded swiper-shadow" id="sales-text"> <a href="page-creation-chat.php"><i class="bx bx-chat mb-1 font-large-1"></a></i>
-                                                    <a href="page-creation-chat.php"><div class="cent-text1">Chat&nbsp&nbsp<small class="red"><?php echo $notification; ?></small></div></a>
+                                                    <a href="page-creation-document.php"><div class="cent-text1">Chat&nbsp&nbsp<small class="red"><?php echo $notification; ?></small></div></a>
                                                 </div>
                                             </div>
                                         </div>

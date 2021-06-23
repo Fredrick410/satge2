@@ -244,7 +244,7 @@ require_once 'php/config.php';
                                                 <i class='bx bxs-send'></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp -->
                                             <!-- pour delete -->
-                                            <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="php/delete_bon.php?numbon=<?= $bons['id'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>

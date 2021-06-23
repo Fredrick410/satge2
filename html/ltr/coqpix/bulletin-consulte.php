@@ -22,11 +22,6 @@ require_once 'php/config.php';
     $bulletin_finish = $pdoStat->fetchAll();
     $count_finish = count($bulletin_finish);
 
-    $pdoSta = $bdd->prepare('UPDATE bulletin_salaire SET statut_notif_front = :statut WHERE id_session=:num AND statut_notif_front != "Inactive"');
-    $pdoSta->bindValue(':num',$_SESSION['id_session']); //$_SESSION 
-    $pdoSta->bindValue(':statut', 'Inactive');
-    $pdoSta->execute();
-
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">

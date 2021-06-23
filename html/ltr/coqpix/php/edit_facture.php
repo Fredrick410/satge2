@@ -61,6 +61,17 @@ ini_set('display_startup_errors', TRUE);
         $accompte = $_POST['modalite'];
     }
 
+    if($_POST['adressetwo'] == ""){
+        $adressetwo = "Adresse";
+    }else{
+        $adressetwo = $_POST['adressetwo'];
+    }
+
+    if($_POST['departementtwo'] == ""){
+        $departementtwo = "31100";
+    }else{
+        $departementtwo = $_POST['departementtwo'];
+    }
     // end vide 
 
     if($_POST['status_facture'] == "NON PAYE"){
@@ -69,7 +80,7 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip WHERE id=:num LIMIT 1');
+    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
     
     $pdo->bindValue(':num', $_POST['numfacture']);
     $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
@@ -90,6 +101,8 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':status_color', $color);
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
     $pdo->bindValue(':descrip', $_POST['descrip']);
+    $pdo->bindValue(':adresselivraison', $_POST['adressetwo']);
+    $pdo->bindValue(':deplivraison', $_POST['departementtwo']);
     
     $pdo->execute();
     

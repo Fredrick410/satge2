@@ -37,6 +37,18 @@ ini_set('display_startup_errors', TRUE);
         $departement = $_POST['departement'];
     }
 
+    if($_POST['adressetwo'] == ""){
+        $adressetwo = "Adresse";
+    }else{
+        $adressetwo = $_POST['adressetwo'];
+    }
+
+    if($_POST['departementtwo'] == ""){
+        $departementtwo = "31100";
+    }else{
+        $departementtwo = $_POST['departementtwo'];
+    }
+
     if($_POST['email'] == ""){
         $email = "email@email.com";
     }else{
@@ -61,7 +73,7 @@ ini_set('display_startup_errors', TRUE);
     }else{
         $color = "badge badge-light-success badge-pill";
     }
-    $pdo = $bdd->prepare('UPDATE bon SET numerosbon=:numerosbon, dte=:dte, refbon=:refbon, dateecheance=:dateecheance, nomproduit=:nomproduit, bonpour=:bonpour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_bon=:status_bon, status_color=:status_color, etiquette=:etiquette, descrip=:descrip WHERE id=:num LIMIT 1');
+    $pdo = $bdd->prepare('UPDATE bon SET numerosbon=:numerosbon, dte=:dte, refbon=:refbon, dateecheance=:dateecheance, nomproduit=:nomproduit, bonpour=:bonpour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_bon=:status_bon, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
     
     $pdo->bindValue(':num', $_POST['numbon']);
     $pdo->bindValue(':numerosbon', $_POST['numerosbon']);
@@ -82,6 +94,9 @@ ini_set('display_startup_errors', TRUE);
     $pdo->bindValue(':status_color', $color);
     $pdo->bindValue(':etiquette', $_POST['etiquette']);
     $pdo->bindValue(':descrip', $_POST['descrip']);
+    $pdo->bindValue(':adresselivraison', $adressetwo);
+    $pdo->bindValue(':deplivraison', $departementtwo);
+
     
     $pdo->execute();
 

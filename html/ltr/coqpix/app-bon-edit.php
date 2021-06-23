@@ -307,7 +307,7 @@ require_once 'php/config.php';
                                                 
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
-                                                    <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
+                                                    <input name="departement" id="departement" type="text" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
                                                 </fieldset>
                                                  <label for="email">Email :</label>
                                                 <fieldset class="invoice-address form-group">
@@ -320,6 +320,29 @@ require_once 'php/config.php';
                                             </div>
                                         </div>
                                         <hr>
+                                        <input type="button" value="+ Modifier l'adresse de livraison (facultatif)" onclick="masquer_div('a_masquer');" class="btn btn-outline-primary col-lg-12 col-md-12 mt-25"/>
+
+                                                            <!-- adresse livraison -->
+                                        <div id="a_masquer" class="row invoice-info" style="display:none;">
+                                            <div class="col-lg-4 col-md-12 mt-25">												
+                                                
+                                                <label for="adresse">Adresse de livraison (facultative) :</label>
+                                                <fieldset class="invoice-address form-group">
+                                                    <input name="adressetwo" id="adresse" class="form-control" rows="4" value="<?= $facture['adresselivraison'] ?>">
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-4 col-md-12 mt-25">
+                                                
+                                                <div class="form-group">
+                                                    <label for="email">Département :</label>
+                                                    <fieldset class="invoice-address form-group">
+                                                    <input name="departementtwo" id="ville2" type="text" class="form-control" placeholder="Département" value="<?= $facture['deplivraison'] ?>">
+                                                </fieldset>
+                                                </div>													
+                                                
+                                            </div>
+                                        </div>
+                                        <br>
                                     </div>
                                     <div class="card-body pt-50">
                                         <!-- product details table-->
@@ -591,6 +614,11 @@ require_once 'php/config.php';
     <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
     <script src="../../../app-assets/js/core/app-menu.js"></script>
     <script src="../../../app-assets/js/core/app.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
     <script src="../../../app-assets/js/scripts/components.js"></script>
     <script src="../../../app-assets/js/scripts/footer.js"></script>
     <!-- END: Theme JS-->

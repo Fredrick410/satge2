@@ -229,9 +229,7 @@ require_once 'php/config.php';
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
 														</h6>
-
                                                          <!-- auto incrémentation du n° avec le max_num plus haut  -->
-
 
 														<input type="number" name="id" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
                                                 <h6 class="invoice-number mr-75">
@@ -243,9 +241,7 @@ require_once 'php/config.php';
                                                             </p>
                                                 <h6 class="invoice-number mr-75">Devis N°</h6>
                                                 <input name="numerosdevis"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosdevis'] ?>" >
-
                                                  <!-- auto incrémentation du numéro qui peut aussi etre choisi -->
-
 
                                             </div>
                                             <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
@@ -404,11 +400,9 @@ require_once 'php/config.php';
                                                                     <input name="quantite" id="quantite" min="1" type="number" value="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
-
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                                                     <strong id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                     <!-- prix de quantité*prix en js -->
-
                                                                 </div>
                                                                 
                                                                 <div class="col-md-3 col-12 form-group">
