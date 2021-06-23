@@ -93,24 +93,94 @@ require_once 'php/verif_session_crea.php';
 </head>
 <!-- END: Head-->
 
-<!-- BEGIN: Body-->
-
-<body class="horizontal-layout horizontal-menu navbar-sticky content-left-sidebar email-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
 <style>
 
-.nofavo{text-decoration: none; color : #c7cfd6;}
-.nofavoh:hover{text-decoration: none; color : #ffcd02;}
-.favo{text-decoration: none; color : #ffcd02;}
-.favoh:hover{text-decoration: none; color : #c7cfd6;}
-.line{text-decoration: underline;}
-.sizeright{font-size: 12px;}
-.nonedoc {display : none;}
-.esp{color: #828D99; text-decoration: underline;}
-.esp:hover{color: #34465b; text-decoration: underline;}
+@font-face{
+    font-family: "mukta malar bold";
+    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Bold.ttf");
+}
 
+@font-face{
+    font-family: "mukta malar medium";
+    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar light";
+    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Light.ttf");
+}
+
+#titre{
+    font-family: mukta malar medium;
+    color: white;
+    margin: 20% 0 0 10%;
+    font-size: 60px;
+    width: 80%;
+}
+
+#titre p{
+    line-height: 70px;
+}
+
+#sous-titre{
+    font-family: mukta malar medium;
+    color: white;
+    margin: 20px 0 0 10%;
+    font-size: 17px;
+}
+
+#sous-titre p{
+    width: 70%;
+}
+
+.container-fluid {
+    padding-top: 68px;
+}
+
+#div-titre-gauche{
+    background-color: #051441;
+    border-radius: 0 400px 400px 0;
+    
+}
+
+#div-titre-droite h1{
+    color: #051441;
+    font-family: mukta malar medium;
+}
+
+#solution{
+    margin: 10% 0 0 10%;
+}
+
+#solution-logo{
+    margin-top: 50px;
+}
+
+#solution-logo ul{
+    
+}
+
+#solution-logo ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 10px;
+}
+
+#solution-logo ul li p{
+    margin: 10px;
+    text-align: center;
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+#localisation{
+    margin-top: 50px;
+}
     
 </style>
 
+<!-- BEGIN: Body-->
+<body class="horizontal-layout horizontal-menu navbar-sticky bg-white content-left-sidebar email-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
 
     <!-- BEGIN: Header-->
     
@@ -118,28 +188,42 @@ require_once 'php/verif_session_crea.php';
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-area-wrapper">
-            <div class="sidebar-left">
-                <div class="sidebar">               
-                    <div class="col-12">  
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb p-0 mb-0">
-                                <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a>
+    <div class="container-fluid">
+        <div class="row" style="height: 800px;">
+            <div class="col-6 p-0" id="div-titre-gauche" >
+                <div id="titre"><p>Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p></div>
+                <div id="sous-titre"><p>Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p></div>
+            </div>
+            <div class="col-6" id="div-titre-droite">
+                <div id="solution" class="col-8">
+                    <div>
+                        <h1>Nos solutions</h1>
+                        <div id="solution-logo">
+                            <ul>
+                                <li>
+                                    <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                                    <p>Bureaux privatifs</p>
                                 </li>
-                                <li class="breadcrumb-item active"> Domiciliation
+                                <li>
+                                    <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                                    <p>Coworking</p>
                                 </li>
-                            </ol>
+                                <li>
+                                    <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
+                                    <p>Domiciliation</p>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="content-right">
-                <div class="content-overlay"></div>
-                <div class="content-wrapper">
-                    <iframe src="https://www.multiburo.com/domiciliation-entreprise"
-                        width="100%"
-                        height="100%"></iframe>  
+                    <div id="localisation">
+                        <div class="form-group">
+                            <label class="" style="font-size: 15px; font-family: mukta malar bold; color: #051441; margin-left: 25px">Localisation</label>
+                            <input type="text" id="" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
+                        </div>
+                        <div class="form-group" style="text-align: center; margin-top: 50px;">
+                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
