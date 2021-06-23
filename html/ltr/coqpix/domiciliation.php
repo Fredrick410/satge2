@@ -268,14 +268,14 @@ input[type="checkbox"].solu:checked + label {
                                     <input type="checkbox" id="cowork" class="solu"></input>
                                     <label for="cowork" class="">
                                         <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
-                                        <p>Bureaux privatifs</p>
+                                        <p>Coworking</p>
                                     </label>
                                 </li>
                                 <li>
                                     <input type="checkbox" id="domicilia" class="solu"></input>
                                     <label for="domicilia" class="">
                                         <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
-                                        <p>Bureaux privatifs</p>
+                                        <p>Domiciliation</p>
                                     </label>
                                 </li>
                             </ul>
@@ -299,7 +299,8 @@ input[type="checkbox"].solu:checked + label {
             
             </div>
             <div class="col-6">
-                
+            <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="930" height="600"></iframe>
+            
             </div>
         </div>
     </div>
