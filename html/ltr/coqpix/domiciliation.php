@@ -299,7 +299,7 @@ input[type="checkbox"].solu:checked + label {
             
             </div>
             <div class="col-6">
-            
+                
             </div>
         </div>
     </div>
