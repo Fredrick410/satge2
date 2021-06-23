@@ -221,10 +221,18 @@ require_once 'php/verif_session_crea.php';
                             <input type="text" id="" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
                         </div>
                         <div class="form-group" style="text-align: center; margin-top: 50px;">
-                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row" style="height: ;">
+            <div class="col-6">
+            
+            </div>
+            <div class="col-6">
+            
             </div>
         </div>
     </div>
