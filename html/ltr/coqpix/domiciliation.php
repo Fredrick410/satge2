@@ -228,6 +228,10 @@ input[type="checkbox"].solu + label {
     border-radius: 15px;
 }
 
+input[type="checkbox"].solu + label:hover{
+    cursor:pointer;
+}
+
 input[type="checkbox"].solu:checked + label {
     border: 1px hidden rgba(5, 20, 65, 0.6);
     background-color: rgba(5, 20, 65, 0.1);
@@ -253,6 +257,17 @@ input[type="checkbox"].solu:checked + label {
 
 .card-body img{
     width: 200px;
+}
+
+.offers{
+    padding: 10px;
+    margin : 20px;
+    border-radius: 15px;
+}
+
+.offers:hover{
+    border: 1px solid black;
+    cursor : pointer;
 }
     
 </style>
@@ -321,7 +336,7 @@ input[type="checkbox"].solu:checked + label {
                 <div class="card-container">
                     <ul>
                         <li>
-                            <div class="card-body">
+                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p>Salut</p>
@@ -329,7 +344,7 @@ input[type="checkbox"].solu:checked + label {
                             </div>
                         </li>
                         <li>
-                            <div class="card-body">
+                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p>Salut</p>
@@ -337,7 +352,7 @@ input[type="checkbox"].solu:checked + label {
                             </div>
                         </li>
                         <li>
-                            <div class="card-body">
+                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p>Salut</p>
@@ -345,7 +360,7 @@ input[type="checkbox"].solu:checked + label {
                             </div>
                         </li>
                         <li>
-                            <div class="card-body">
+                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p>Salut</p>
