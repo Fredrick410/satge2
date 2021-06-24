@@ -5,16 +5,18 @@
 	require_once 'config.php';
 	error_reporting(E_ALL); 
 	ini_set('display_errors', TRUE); 
-	ini_set('display_startup_errors', TRUE);        
-	$delete_notifs = $bdd->prepare('UPDATE attestation_fiscale SET statut_notif_back =:statut_notif_back WHERE statut_notif_back = "Non lue"');
-	$delete_notifs->bindValue(':statut_notif_back', "Inactive");
-	$delete_notifs->execute();
-	$delete_notifs = $bdd->prepare('UPDATE attestation_sociale SET statut_notif_back =:statut_notif_back WHERE statut_notif_back = "Non lue"');
-	$delete_notifs->bindValue(':statut_notif_back', "Inactive");
-	$delete_notifs->execute();
-	$delete_notifs = $bdd->prepare('UPDATE bulletin_salaire SET statut_notif_back =:statut_notif_back WHERE statut_notif_back = "Non lue"');
-	$delete_notifs->bindValue(':statut_notif_back', "Inactive");
-	$delete_notifs->execute();
+	ini_set('display_startup_errors', TRUE);
+	if (isset($_GET['delete'])) {
+		if ($_GET['delete'] == 'back') {
+			$delete_notifs_back = $bdd->prepare('DELETE FROM notif_back');
+			$delete_notifs_back->execute();
+		}
+		if ($_GET['delete'] == 'front') {
+			$delete_notifs_front = $bdd->prepare('DELETE FROM notif_front WHERE id_session=:id_session');
+			$delete_notifs_front->bindValue(':id_session', $_SESSION['id_session']);
+			$delete_notifs_front->execute();
+		}
+	}       
 	sleep(1);
 	$previous_page = $_SERVER['HTTP_REFERER'];  
 	header('Location: '.$previous_page);        

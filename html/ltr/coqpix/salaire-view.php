@@ -24,9 +24,9 @@ require_once 'php/verif_session_connect_admin.php';
     $count_valid = count($bulletin_valid);
 
     //désactivation des notifications
-    $pdoSta = $bdd->prepare('UPDATE bulletin_salaire SET statut_notif_back = :statut WHERE id_session=:num AND statut_notif_back != "Inactive"');
+    $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE type_demande=:type_demande AND id_session=:num');
     $pdoSta->bindValue(':num', $_GET['num']);
-    $pdoSta->bindValue(':statut', 'Inactive');
+    $pdoSta->bindValue(':type_demande', "bulletin_salaire");
     $pdoSta->execute();
 ?>
 <!DOCTYPE html>
@@ -154,7 +154,7 @@ require_once 'php/verif_session_connect_admin.php';
                     <hr>
                 </div>
                 <div class="form-group">
-                    <h4>Attestation(s) sociale(s) de <?= $entreprise['nameentreprise'] ?></h4>
+                    <h4>Bulletin(s) de salaire de <?= $entreprise['nameentreprise'] ?></h4>
                 </div>
                 <div class="form-group <?php if($count_valid !== 0){echo "none-validation";} ?>">
                     <p>Aucune attestation ...</p>

@@ -19,11 +19,11 @@ require_once 'php/config.php';
     $pdoS->bindValue(':num',$_GET['numbon']);
     $pdoS->execute(); 
     $facture = $pdoS->fetch();
-    $numeros = $facture['numerosbon'];
+    
 
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="bonvente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdo->bindValue(':numeros',$numeros);
+    $pdo->bindValue(':numeros',$_GET['numbon']);
     $pdo->execute(); 
     $articles = $pdo->fetchAll();
 
@@ -38,7 +38,7 @@ require_once 'php/config.php';
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$numeros); 
+    $req->bindValue(':numeros',$_GET['numbon']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -54,7 +54,7 @@ require_once 'php/config.php';
   
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$numeros); 
+    $re->bindValue(':numeros',$_GET['numbon']); 
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -69,7 +69,7 @@ require_once 'php/config.php';
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$numeros); 
+    $req->bindValue(':numeros',$_GET['numbon']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -92,7 +92,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Editer bon de livraison</title>
+    <title>Editer bon</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -126,71 +126,13 @@ require_once 'php/config.php';
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
-
+<style>
+.none-validation{display: none;}
+</style>
     <!-- BEGIN: Header-->
-    <div class="header-navbar-shadow"></div>
-    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
-                        </ul>
-                        <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
-                        </ul>
-                        <script>
-                            function retourn() {
-                                window.history.back();
-                            }
-                        </script>
-                        <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul>
-                    </div>
-                    <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us mr-50"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i> Portuguese</a></div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                        </li>
-                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>   <!--NOTIFICATION-->
-                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                                <li class="dropdown-menu-header">
-                                    <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
-                                </li>
-                                <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                                            <!-- CONTENUE ONE -->
-                                    </a>
-                                    <div class="d-flex justify-content-between cursor-pointer">
-                                        <div class="media d-flex align-items-center border-0">
-                                            <div class="media-left pr-0">
-                                                <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="39" width="39"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading"><span class="text-bold-500">Nouveaux compte</span> création du compte</h6><small class="notification-text">Aujourd'hui, 19h30</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                            <div class="user-nav d-sm-flex d-none"><span class="user-name"><?= $entreprise['nameentreprise']; ?></span><span class="user-status text-muted">En ligne</span></div><span><img class="round" src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <?php include('php/header_action.php') ?>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php $btnreturn = true;
+    include('php/menu_header_front.php'); ?>
     <!-- END: Header-->
-
 
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
@@ -212,15 +154,37 @@ require_once 'php/config.php';
                                 <div class="card-content">
                                     <div class="card-body pb-0 mx-25">
                                         <!-- header section -->
+                                    <div class="form-group text-right">
+                                    <style>.line{text-decoration: underline;} .size{font-size: 15px; color: red; position:relative; top: 2px;} .size:hover{color: blue; transition-duration: 1s;}</style>
+                                    <!-- <label class="line">Pour passer le bon en facture</label>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/dev-inv.php?id=<?= $facture['id'] ?>"><i class='bx bxs-send size'></i></a> -->
+                                    </div>
+                                    <div class="form-group">
+                                    <hr>
+                                    </div>
+                                    <!-- form qui insert toute la page -->
                                 <form autocomplete="off" action="php/edit_bon.php" method="POST">
                                     <input type="hidden" name="numbon" value="<?= $facture['id'] ?>">
                                         <div class="row mx-0">
-                                            <div class="col-xl-4 col-md-12 d-flex align-items-center pl-0">
-                                                <h6 class="invoice-number mr-75">Facture N°</h6>
-                                                <input name="numerosbon" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosbon'] ?>" disabled>
-                                                <input type="hidden" name="numerosbon" value="<?= $facture['numerosbon'] ?>">
+                                        
+                                            <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
+                                                        <h6 class="invoice-number mr-75">
+                                                                        N°
+														</h6>
+                                                        <!-- auto incrémentation du n° avec le max_num plus haut  -->
+														<input type="number" name="id" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+                                                <h6 class="invoice-number mr-75">
+                                                                Référence
+                                                            </h6>
+                                                            <input name="refbon" id="refbon" type="text" value="<?= $facture['refbon'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
+                                                            <p style='position: relative; top: 7px;'>
+                                                                &nbsp&nbsp&nbsp 
+                                                            </p>
+                                                <h6 class="invoice-number mr-75">bon N°</h6>
+                                                <!-- auto incrémentation du numéro qui peut aussi etre choisi -->
+                                                <input name="numerosbon"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosbon'] ?>" >
+                                               
                                             </div>
-                                            <div class="col-xl-8 col-md-12 px-0 pt-xl-0 pt-1">
+                                            <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
                                                 <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
                                                     <div class="d-flex align-items-center">
                                                         <small class="text-muted mr-75">*Date : </small>
@@ -238,13 +202,19 @@ require_once 'php/config.php';
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                         <hr>
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
                                             <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
-                                                <h4 class="text-primary">Bon de livraison</h4>
-                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du bon de livraison" value="<?= $facture['nomproduit'] ?>"> 
+                                                <h4 class="text-primary">bon</h4>
+                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du bon" value="<?= $facture['nomproduit'] ?>"> 
+                                                <div class="form-group">
+                                                            <label for="exampleFormControlTextarea1">Description</label>
+                                                            <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $facture['descrip']?></textarea>
+                                                        </div>  
                                             </div>
+                                            <!-- LOGO -->
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
                                             </div>
@@ -255,36 +225,36 @@ require_once 'php/config.php';
                                             <div class="col-lg-6 col-md-12 mt-25">
                                                 <div class="form-group">
                                                     <label>*Client</label>
-                                                    <select name="bonpour" id="facturepour" class="form-control invoice-item-select">
+                                                    <select name="bonpour" id="bonpour" class="form-control invoice-item-select">
+                                                    <!-- facturepour car js prend que id=facturepour-->
                                                         <option value="<?= $facture['bonpour'] ?>"><?= $facture['bonpour'] ?></option>
                                                         <optgroup label="--------------------------------">
                                                         <?php foreach($client as $clientt): ?>
                                                         <option value="<?= $clientt['name_client'] ?>"><?= $clientt['name_client'] ?></option>
                                                         <?php endforeach; ?>
+                                                        <!-- list de tous les clients prénsents dans la colonne name_client -->
                                                         <optgroup label="--------------------------------">
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>
                                                 </div>
-                                                <fieldset class="invoice-address form-group">
-                                                    <input name="bonpour" id="newfacturepour" type="text" class="form-control" placeholder="Nouveau client" disabled>
-                                                </fieldset>
+                                               
                                                 <label for="adress">*Adresse :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="adresse" id="adresse" class="form-control" rows="4" value="<?= $facture['adresse'] ?>">
                                                 </fieldset>
-                                           
-                                            </div>
-											  <div class="col-lg-6 col-md-12 mt-25">
                                              
+                                            </div>
+											 <div class="col-lg-6 col-md-12 mt-25">
+                                                
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
                                                 </fieldset>
-                                                 <label for="email">*Email :</label>
+                                                 <label for="email">Email :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="email" id="email" type="email" class="form-control" placeholder="Email" value="<?= $facture['email'] ?>">
                                                 </fieldset>
-                                                <label for="email">*TEL :</label>
+                                                <label for="email">TEL :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone" value="<?= $facture['tel'] ?>">
                                                 </fieldset>
@@ -298,6 +268,7 @@ require_once 'php/config.php';
                                             
                                                 <div data-repeater-list="group-a">
                                                     <div data-repeater-item>
+                                                    <!-- affiche les articles deja présents -->
                                                         <?php foreach($articles as $articless): ?>
                                                         <div class="invoice-item d-flex border rounded mb-1">
                                                             <div class="invoice-item-filed row pt-1 px-1">
@@ -307,11 +278,11 @@ require_once 'php/config.php';
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label>Cout :</label>
-                                                                    <input name="cout" min="1" type="number" class="form-control" placeholder="0" value="<?= $articless['cout'] ?>" readonly>
+                                                                    <input name="cout" type="number" class="form-control" placeholder="0" value="<?= $articless['cout'] ?>" readonly >
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label>Quantite :</label>    
-                                                                    <input name="quantite" min="1" type="number" class="form-control" placeholder="0" value="<?= $articless['quantite'] ?>" readonly>
+                                                                    <input name="quantite" type="number" class="form-control" placeholder="0" value="<?= $articless['quantite'] ?>" readonly>
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong class="text-primary align-middle"><?= $articless['cout'] * $articless['quantite'] ?> €</strong>
@@ -349,6 +320,7 @@ require_once 'php/config.php';
                                                                     <select id="article" class="form-control invoice-item-select border-black">
                                                                         <option value="Pas d'article">Sélectionnez un article</option>
                                                                         <optgroup label="Liste des articles">
+                                                                        <!-- list de tous les articles présents dans la table article -->
                                                                         </optgroup>
                                                                         <?php foreach($article as $articlee): ?>
                                                                         <option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
@@ -359,18 +331,18 @@ require_once 'php/config.php';
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <input name="cout" id="cout" type="number" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
+                                                                    <input name="cout" id="cout" type="number" min="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <input name="quantite" id="quantite" type="number" value="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
+                                                                    <input name="quantite" id="quantite" min="1" type="number" value="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
-                                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong id="demo" class="text-primary align-middle">00.00 €</strong>
+                                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                                                    <!-- prix de quantité*prix en js -->
+                                                                    <strong 
+                                                                    id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                 </div>
-                                                                <div class="col-md-4 col-12 form-group">
-                                                                    <label for="article">Nouvelle Article :</label>
-                                                                    <input name="article" id="newarticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Nouvelle article">
-                                                                </div>
+                                                                
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label for="ref">REF :</label>
                                                                     <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
@@ -387,7 +359,7 @@ require_once 'php/config.php';
                                                                             </div>
                                                                              <div class="col-12 form-group">
                                                                                 <label for="discount">Tva(%)</label>
-                                                                                <input name="tva" id="tva" value="0" type="number" class="form-control border-black" id="discount" placeholder="0" maxlength="3" min="0" max="100">
+                                                                                <input name="tva" id="tva" value="20" type="number" class="form-control border-black" id="discount" placeholder="0" maxlength="3" min="0" max="100">
                                                                             </div>
                                                                             <div class="col-12 form-group">
                                                                                 <label>Unite de mesure :</label>
@@ -411,7 +383,7 @@ require_once 'php/config.php';
                                             <table id="table" name="table" class="table table-bordered"><style>.red{color: red;} .line{text-decoration: underline;}</style>
                                                 <tbody>
                                                     <tr>
-                                                        <th>Bon</th>
+                                                        <th>bon</th>
                                                         <th>Ref</th>
                                                         <th>Nom</th>
                                                         <th>Ct</th>
@@ -429,13 +401,19 @@ require_once 'php/config.php';
                                             <div class="row">
                                                 <div class="col-md-5 col-12">
                                                     <div class="form-group">
+                                                        <label>Accompte :</label>
+                                                        <input value="<?= $facture['accompte'] ?>" name="accompte" type="number" class="form-control" placeholder="Ajouter un accompte sur la facture">
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label>*Modalité :</label>
                                                             <select name="modalite" class="form-control invoice-item-select">
                                                             <option value="<?= $facture['modalite'] ?>" selected><?= $facture['modalite'] ?></option>
                                                             <optgroup></optgroup>
                                                             <option value="CB">Carte bancaire</option>
                                                             <option value="Chèque">Chèque</option>
-                                                            <option value="Espèce">Especès</option>
+                                                            <option value="Espèce">Espece</option>
+                                                            <option value="Virement">Virement</option>
+															<option value="Prélèvement">Prélèvement</option>
                                                          </select>
                                                     </div>
                                                     <label>*Monnaie :</label>
@@ -462,8 +440,9 @@ require_once 'php/config.php';
                                                             <option value="Autre">Autre</option>
                                                          </select>
                                                     </div>
-                                                    <label >*Statut :</label>
+                                                    <label >*Status :</label>
                                                     <div class="form-group">
+
                                                         <select name="status_bon" class="form-control invoice-item-select">
                                                             <option value="<?= $facture['status_bon'] ?>"><?= $facture['status_bon'] ?></option>
                                                             <option value="NON PAYE">Non payé</option>
@@ -474,15 +453,15 @@ require_once 'php/config.php';
                                                 <div class="col-lg-5 col-md-7 offset-lg-2 col-12">
                                                     <ul class="list-group list-group-flush">
                                                         <hr>
-                                                        <li class="list-group-item d-flex justify-content-between border-0 pb-0">
+                                                        <li class="list-group-item d-flex justify-content-between border-0 py-0">
                                                             <span class="invoice-subtotal-title">Total HT</span>
                                                             <h6 class="invoice-subtotal-value mb-0"><?= $montant_t; ?> <?= $facture['monnaie']; ?></h6>
                                                         </li>
-                                                        <li class="list-group-item d-flex justify-content-between border-0 pb-0">
+                                                        <li class="list-group-item d-flex justify-content-between border-0 py-0">
                                                             <span class="invoice-subtotal-title">Remis sur HT</span>
                                                             <h6 class="invoice-subtotal-value mb-0">- <?= $montant_t - $montant_r ?> <?= $facture['monnaie']; ?></h6>
                                                         </li>
-                                                        <li class="list-group-item d-flex justify-content-between border-0 pb-0">
+                                                        <li class="list-group-item d-flex justify-content-between border-0 py-0">
                                                             <span class="invoice-subtotal-title">Total HT-Remise</span>
                                                             <h6 class="invoice-subtotal-value mb-0"> <?= $montant_t - ($montant_t - $montant_r) ?> <?= $facture['monnaie']; ?></h6>
                                                         </li>
@@ -496,6 +475,15 @@ require_once 'php/config.php';
                                                             <h6 class="invoice-subtotal-value mb-0"><?= $montant_t + ($montant_t - $montant_tva) ?> <?= $facture['monnaie']; ?></h6>
                                                         </li>
                                                         <hr>
+                                                        <li class="list-group-item d-flex justify-content-between border-0 py-0">
+                                                            <span class="invoice-subtotal-title">Accompte</span>
+                                                            <h6 class="invoice-subtotal-value mb-0">- <?= $facture['accompte'] ?> <?= $facture['monnaie']; ?></h6>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between border-0 py-0">
+                                                            <span class="invoice-subtotal-title">Total TTC - Accompte</span>
+                                                            <h6 class="invoice-subtotal-value mb-0"><?= ($montant_t + ($montant_t - $montant_tva)) - $facture['accompte'] ?> <?= $facture['monnaie']; ?></h6>
+                                                        </li>
+                                                        <hr>
                                                         <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                                             <span class="invoice-subtotal-title">Modalite de payement : </span>
                                                             <h6 class="invoice-subtotal-value mb-0">(<?= $facture['modalite'] ?>)</h6>
@@ -505,6 +493,7 @@ require_once 'php/config.php';
                                                             <h6 class="invoice-subtotal-value mb-0"><?= $facture['monnaie']; ?></h6>
                                                         </li>
                                                         <li class="list-group-item border-0 pb-0"><style>.green{background: #43b546; color: white;}  .green:hover{background: #3fff45; color: white;}</style>
+                                                        <!-- Boutons qui envoient le form global. Attention aux div en trop ou mal indentées car il ne fonctionnerait plus. -->
                                                             <input name="insert" id="button_save" type="button" value="Vérification" class="btn btn-primary btn-block subtotal-preview-btn" onclick="buttonc()"/>
                                                             <input name="insert" id="subbt" type="hidden" value="Sauvegarder" class="btn btn btn-block subtotal-preview-btn green"/>
                                                         </li>

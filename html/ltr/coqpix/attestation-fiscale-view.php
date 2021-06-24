@@ -24,10 +24,11 @@ require_once 'php/verif_session_connect_admin.php';
     $count_valid = count($attestation_valid);
 
     //désactivation des notifications
-    $pdoSta = $bdd->prepare('UPDATE attestation_fiscale SET statut_notif_back = :statut WHERE id_session=:num AND statut_notif_back != "Inactive"');
+    $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE type_demande=:type_demande AND id_session=:num');
     $pdoSta->bindValue(':num', $_GET['num']);
-    $pdoSta->bindValue(':statut', 'Inactive');
+    $pdoSta->bindValue(':type_demande', "attestation_fiscale");
     $pdoSta->execute();
+    
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">

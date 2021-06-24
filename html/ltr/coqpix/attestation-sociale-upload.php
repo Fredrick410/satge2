@@ -10,6 +10,7 @@ require_once 'php/config.php';
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
+
         //1
 
         if(isset($_FILES['files'])){
@@ -29,19 +30,35 @@ require_once 'php/config.php';
             $real_name = substr($name_files, 0, -4);
             $file_name = $real_name . $date_now . $type_files;
             $date_donner = date('d/m/Y');
+            $id_session= $_GET['num'];
             
             $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
             $path = "../../../src/attestation_sociale/". $file_name;                     // chemin vers le serveur
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE attestation_sociale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, statut_notif_back=:statut_notif_back, date_donner=:date_donner WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE attestation_sociale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, date_donner=:date_donner WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_attestation', $file_name);
             $pdo->bindValue(':statut_attestation', "Terminée");
-            $pdo->bindValue(':statut_notif_back', "Inactive");
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
+
+            //insert notif front
+            $insert_notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+            $insert_notif->execute(array(
+                htmlspecialchars("attestation_sociale"),
+                htmlspecialchars($date_donner),
+                htmlspecialchars($id_session)
+            ));
+
+
+            $pdo = $bdd->prepare('SELECT id_task from attestation_sociale WHERE id = ?');
+            $pdo->execute(array($_GET['id']));
+            $id_task = ($pdo->fetch())['id_task'];
+
+            $pdoS = $bdd->prepare('UPDATE task_sociale SET statut_task = ? WHERE id = ?');
+            $pdoS->execute(array('valide',$id_task));
             
             header('Location: attestation-sociale-view.php?num='.$_GET['num'].'');
             exit();

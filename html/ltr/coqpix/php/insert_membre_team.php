@@ -66,6 +66,15 @@ function postMessage(){
         htmlspecialchars($_SESSION['id_session'])
     ));
 
+    //Ajout d'une notification front
+    $notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+    $notif->execute(array(
+        htmlspecialchars('teams_membres'),
+        htmlspecialchars($date_add),
+        htmlspecialchars($_SESSION['id_session']),
+    ));
+    
+
     //3- Donner un statut de succes ou d'erreur au format JSON
 
     echo json_encode(["status" => "sucess"]);

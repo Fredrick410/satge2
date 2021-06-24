@@ -356,7 +356,7 @@ input[type="checkbox"].solu:checked + label {
                 </div>
             </div>
             <div class="col-6">
-            <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="930" height="800" right=0;></iframe>
+            <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="100%" height="800px" right=0;></iframe>
             
             </div>
         </div>

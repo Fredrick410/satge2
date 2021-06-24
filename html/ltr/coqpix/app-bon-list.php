@@ -3,12 +3,13 @@ require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
     $pdoStat = $bdd->prepare('SELECT * FROM bon WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
     $pdoStat->execute();
-    $facture = $pdoStat->fetchAll();
+    $bon = $pdoStat->fetchAll();
 
     $pdoStatr = $bdd->prepare('SELECT * FROM bon WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
@@ -20,6 +21,12 @@ require_once 'php/config.php';
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
+    
+    $pdoStatr = $bdd->prepare('SELECT refbon,numerosbon FROM bon WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $fu = $pdoStatr->fetch();
+    $nom = $fu['refbon'];
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -32,7 +39,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Liste Bon de livraison</title>
+    <title>Liste bon</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -70,59 +77,8 @@ require_once 'php/config.php';
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
 
     <!-- BEGIN: Header-->
-    <div class="header-navbar-shadow"></div>
-    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
-                        </ul>
-                        <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul>
-                    </div>
-                    <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us mr-50"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i> Portuguese</a></div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                        </li>
-                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>   <!--NOTIFICATION-->
-                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                                <li class="dropdown-menu-header">
-                                    <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
-                                </li>
-                                <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                                            <!-- CONTENUE ONE -->
-                                    </a>
-                                    <div class="d-flex justify-content-between cursor-pointer">
-                                        <div class="media d-flex align-items-center border-0">
-                                            <div class="media-left pr-0">
-                                                <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="39" width="39"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading"><span class="text-bold-500">Nouveaux compte</span> création du compte</h6><small class="notification-text">Aujourd'hui, 19h30</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                            <div class="user-nav d-sm-flex d-none"><span class="user-name"><?= $entreprise['nameentreprise']; ?></span><span class="user-status text-muted">En ligne</span></div><span><img class="round" src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <?php include('php/header_action.php') ?>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php $btnreturn = false;
+    include('php/menu_header_front.php'); ?>
     <!-- END: Header-->
 
     <!-- BEGIN: Main Menu-->
@@ -145,19 +101,12 @@ require_once 'php/config.php';
                         ?>
                         <div class="col">
                             <div class="invoice-create-btn mb-1">
-                                <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "Rt82u";}else{echo "y44vJ";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
+                                <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
                             </div>
                         </div>
-                        <div class="col text-right">
-                            <div class="invoice-create-btn mb-1">
-                                <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
-                                   Auto-incrementation sous la forme FAC-(année)(numéro)<br>
-                                   <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
-                                   <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
-                                </p>
-                            </div>
-                        </div>
+                        
                     </div>
+                    
                     <!-- Options and filter dropdown button-->
                     <div class="action-dropdown-btn d-none">
                         <div class="dropdown invoice-options">
@@ -176,7 +125,10 @@ require_once 'php/config.php';
                                     <th></th>
                                     <th></th>
                                     <th>
-                                        <span class="align-middle">Numéro</span>
+                                       Numéro bon
+                                    </th>
+                                    <th>
+                                        <span class="align-middle">Référence</span>
                                     </th>
                                     <th>Valeur</th>
                                     <th>Date</th>
@@ -184,51 +136,64 @@ require_once 'php/config.php';
                                     <th>Etiquette</th>
                                     <th>Statut</th>
                                     <th>Action</th>
+                                 
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($facture as $factures):
-                            $numeros = $factures['numerosbon'];
+                            
+                            <!-- Afficher les prix  -->
+                            <?php foreach ($bon as $bons): 
+                                $ref = $bons['numerosbon'];
+                                $numeros = $bons['id'];
                                 try{
-  
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
+                                    
+                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonvente' ) T";
   
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-                                $req->bindValue(':numeros',$numeros); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
                                     echo "Erreur " . $e->getMessage();
                                 }
+                                
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
-
-                            ?>
+                                
+                            ?> 
                                 <tr>
                                     <td></td>
-                                    
                                     <td></td>
+                                    <!-- affichage dans le tableau des données -->
+                                    <td>BON-<?= $bons['id'] ?></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numbon=<?= $factures['id'] ?>">BL-<?= $factures['numerosbon'] ?></a>
+                                    <!-- pour voir le bon  -->
+                                        <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>"><?= $bons['refbon'],$ref ?></a>
                                     </td>
-                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
-                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
-                                    <td><span class="invoice-customer"><?= $factures['bonpour'] ?></span></td>
+                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $bons['monnaie'] ?></span></td>
+                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($bons['dte'])); ?></small></td>
+                                    <td><span class="invoice-customer"><?= $bons['bonpour'] ?></span></td>
                                     <td>
                                         <span class="bullet bullet-success bullet-sm"></span>
-                                        <small class="text-muted"><?= $factures['etiquette'] ?></small>
+                                        <small class="text-muted"><?= $bons['etiquette'] ?></small>
                                     </td>
-                                    <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_bon'] ?></span></td>
+                                    <!-- paye en vert non paye en rouge -->
+                                    <td><span class="<?= $bons['status_color'] ?>"><?= $bons['status_bon'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-bon-view.php?numbon=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-bon-edit.php?numbon=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <!-- pour edit le bon -->
+                                            <a href="app-bon-edit.php?numbon=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_bon.php?numbon=<?= $factures['numerosbon'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            </a>&nbsp&nbsp&nbsp&nbsp<br>
+                                            <!-- <a href="php/envoie_dev.php?id=<?= $bons['id'] ?>"
+                                            class="invoice-action-edit cursor-pointer">
+                                                <i class='bx bxs-send'></i>
+                                            </a>&nbsp&nbsp&nbsp&nbsp -->
+                                            <!-- pour delete -->
+                                            <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>

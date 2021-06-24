@@ -48,3 +48,8 @@ branch de leo :
 		-verif mdp
 		-telephone drapeau france par défaut
 		-cryptage mot de passe (connexion + inscription + edit profil)
+
+branch de oscar :
+	tache réalisée le 23/06/2021
+		-page domiciliation.php ->barre de recherche 
+								->carte
