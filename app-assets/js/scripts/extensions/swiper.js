@@ -97,6 +97,7 @@ $(document).ready(function () {
     var mySwiper8 = new Swiper('.swiper-cube-effect', {
         effect: 'cube',
         grabCursor: true,
+	loop: true,
         cubeEffect: {
             shadow: true,
             slideShadows: true,
@@ -105,6 +106,7 @@ $(document).ready(function () {
         },
         pagination: {
             el: '.swiper-pagination',
+	    clickable: true,
         },
     });
 
@@ -154,6 +156,15 @@ $(document).ready(function () {
     });
     var galleryTop = new Swiper('.gallery-top', {
         spaceBetween: 10,
+	effect: 'cube',
+        grabCursor: true,
+	loop: true,
+        cubeEffect: {
+            shadow: true,
+            slideShadows: true,
+            shadowOffset: 20,
+            shadowScale: 0.94,
+        },
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',

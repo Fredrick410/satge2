@@ -13,3 +13,31 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .none-validation{
 	display: none;
 }
+
+.dash-compta{
+    font-size:200%;
+    font-weight: bold;
+    text-align: center;
+    color: yellow;
+}
+
+.dash-fisca{
+    font-size:200%;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+}
+
+.dash-juri{
+    font-size:200%;
+    font-weight: bold;
+    text-align: center;
+    color: cyan;
+}
+
+.dash-socia{
+    font-size:200%;
+    font-weight: bold;
+    text-align: center;
+    color: blue;
+}

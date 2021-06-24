@@ -8,87 +8,91 @@
 	Author URL: hhttp://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
+
+
+
+
 $(document).ready(function () {
   // tour initialize
   displayTour();
   $(window).resize(displayTour)
-  var tour = new Shepherd.Tour({
+  var tour1 = new Shepherd.Tour({
     classes: 'shadow-md bg-purple-dark',
     scrollTo: true
   })
 
-  // tour step 1
-  tour.addStep('step-1', {
+    // tour step 1
+  tour1.addStep('step-1', {
     text: 'Here is page title.',
-    attachTo: '.breadcrumbs-top .content-header-title bottom',
+    attachTo: '.main-menu bottom',
     buttons: [
 
       {
         text: "Skip",
-        action: tour.complete
+        action: tour1.complete
       },
       {
         text: 'Next',
-        action: tour.next
+        action: tour1.next
       },
     ]
   });
   // tour step 2
-  tour.addStep('step-2', {
+  tour1.addStep('step-2', {
     text: 'Check your notifications from here.',
     attachTo: '.dropdown-notification .bx-bell bottom',
     buttons: [
 
       {
         text: "Skip",
-        action: tour.complete
+        action: tour1.complete
       },
 
       {
         text: "previous",
-        action: tour.back
+        action: tour1.back
       },
       {
         text: 'Next',
-        action: tour.next
+        action: tour1.next
       },
     ]
   });
   // tour step 3
-  tour.addStep('step-3', {
+  tour1.addStep('step-3', {
     text: 'Click here for user options.',
     attachTo: '.dropdown-user-link img bottom',
     buttons: [
 
       {
         text: "Skip",
-        action: tour.complete
+        action: tour1.complete
       },
 
       {
         text: "previous",
-        action: tour.back
+        action: tour1.back
       },
       {
         text: 'Next',
-        action: tour.next
+        action: tour1.next
       },
     ]
   });
   // tour step 4
-  tour.addStep('step-4', {
+  tour1.addStep('step-4', {
     text: 'Buy this awesomeness at affordable price!',
-    attachTo: '.buy-now bottom',
+    attachTo: '.nav-item .menu-title bottom',
     buttons: [
 
       {
         text: "previous",
-        action: tour.back
+        action: tour1.back
       },
 
       {
         text: "Finish",
-        action: tour.complete
+        action: tour1.complete
       },
     ]
   });
@@ -99,7 +103,7 @@ $(document).ready(function () {
     if ($(window).width() > 576) {
       $('#tour').on("click", function () {
         clearTimeout(window.resizeEvt);
-        tour.start();
+        tour1.start();
       })
     }
     else {
@@ -113,3 +117,5 @@ $(document).ready(function () {
     }
   }
 });
+
+

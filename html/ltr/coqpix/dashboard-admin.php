@@ -19,7 +19,7 @@ require_once 'php/verif_session_connect_admin.php';
     <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Dashboard analytics - Frest - Bootstrap HTML admin template</title>
+    <title>Dashboard Admin</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -28,6 +28,7 @@ require_once 'php/verif_session_connect_admin.php';
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/charts/apexcharts.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/dragula.min.css">
+     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/swiper.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -42,6 +43,7 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/dashboard-analytics.css">
+     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/extensions/swiper.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -93,74 +95,45 @@ require_once 'php/verif_session_connect_admin.php';
             </div>
             <div class="content-body">
                 <!-- Dashboard Analytics Start -->
-                <div class="row">
-                    <!-- Activity Card Starts-->
-                    <div class="col-xl-3 col-md-6 col-12 activity-card">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Activity</h4>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-body pt-1">
-                                    <div class="d-flex activity-content">
-                                        <div class="avatar bg-rgba-primary m-0 mr-75">
-                                            <div class="avatar-content">
-                                                <i class="bx bx-bar-chart-alt-2 text-primary"></i>
-                                            </div>
+                     <section id="component-swiper-gallery">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h4 class="card-title">Gallery</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="swiper-container gallery-thumbs">
+                                    <div class="swiper-wrapper mt-25">
+                                        <div class="swiper-slide dash-compta">
+                                            Comptabilité
                                         </div>
-                                        <div class="activity-progress flex-grow-1">
-                                            <small class="text-muted d-inline-block mb-50">Total Sales</small>
-                                            <small class="float-right">$8,125</small>
-                                            <div class="progress progress-bar-primary progress-sm">
-                                                <div class="progress-bar" role="progressbar" aria-valuenow="50" style="width:50%"></div>
-                                            </div>
+                                        <div class="swiper-slide dash-juri">
+                                            Juridique
                                         </div>
-                                    </div>
-                                    <div class="d-flex activity-content">
-                                        <div class="avatar bg-rgba-success m-0 mr-75">
-                                            <div class="avatar-content">
-                                                <i class="bx bx-dollar text-success"></i>
-                                            </div>
+                                        <div class="swiper-slide dash-fisca">
+                                            Fiscalité
                                         </div>
-                                        <div class="activity-progress flex-grow-1">
-                                            <small class="text-muted d-inline-block mb-50">Income Amount</small>
-                                            <small class="float-right">$18,963</small>
-                                            <div class="progress progress-bar-success progress-sm">
-                                                <div class="progress-bar" role="progressbar" aria-valuenow="80" style="width:80%"></div>
-                                            </div>
+                                        <div class="swiper-slide dash-socia">
+                                            Sociale
                                         </div>
                                     </div>
-                                    <div class="d-flex activity-content">
-                                        <div class="avatar bg-rgba-warning m-0 mr-75">
-                                            <div class="avatar-content">
-                                                <i class="bx bx-stats text-warning"></i>
-                                            </div>
+                                </div>
+                                <div class="swiper-gallery swiper-container gallery-top">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-12.jpg" alt="banner">
                                         </div>
-                                        <div class="activity-progress flex-grow-1">
-                                            <small class="text-muted d-inline-block mb-50">Total Budget</small>
-                                            <small class="float-right">$14,150</small>
-                                            <div class="progress progress-bar-warning progress-sm">
-                                                <div class="progress-bar" role="progressbar" aria-valuenow="60" style="width:60%"></div>
-                                            </div>
+                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-13.jpg" alt="banner">
                                         </div>
-                                    </div>
-                                    <div class="d-flex mb-75">
-                                        <div class="avatar bg-rgba-danger m-0 mr-75">
-                                            <div class="avatar-content">
-                                                <i class="bx bx-check text-danger"></i>
-                                            </div>
+                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-14.jpg" alt="banner">
                                         </div>
-                                        <div class="activity-progress flex-grow-1">
-                                            <small class="text-muted d-inline-block mb-50">Completed Tasks</small>
-                                            <small class="float-right">106</small>
-                                            <div class="progress progress-bar-danger progress-sm">
-                                                <div class="progress-bar" role="progressbar" aria-valuenow="30" style="width:30%"></div>
-                                            </div>
+                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-15.jpg" alt="banner">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </section>
                     </div>
                 </div>
                 <!-- Dashboard Analytics end -->
@@ -186,6 +159,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
     <script src="../../../app-assets/vendors/js/charts/apexcharts.min.js"></script>
     <script src="../../../app-assets/vendors/js/extensions/dragula.min.js"></script>
+     <script src="../../../app-assets/vendors/js/extensions/swiper.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -199,6 +173,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <!-- END: Page JS-->
 
 </body>
