@@ -51,6 +51,7 @@ require_once 'php/verif_session_crea.php';
     }else{
         $doc_peirl = "1";
     }
+        
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -313,7 +314,7 @@ input[type="checkbox"].solu:checked + label {
             </div>
             <div class="col-6" id="div-titre-droite" style="min-height: 100%;">
                 <div id="solution" class="col-12">
-                    <form>
+                    <form action="" method="POST">
                     <div>
                         <h1>Nos solutions</h1>
                         <div id="solution-logo">
