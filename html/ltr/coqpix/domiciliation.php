@@ -204,10 +204,6 @@ require_once 'php/verif_session_crea.php';
     margin: 50px 0 0 20px;
 }
 
-#solution{
-    margin: ;
-}
-
 #solution-logo{
     margin-top: 50px;
 }
@@ -240,7 +236,7 @@ input[type="checkbox"].solu {
 
 input[type="checkbox"].solu + label {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 15px;
 }
 

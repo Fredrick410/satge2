@@ -130,7 +130,88 @@ require_once 'php/verif_session_crea.php';
     font-family: mukta malar bold;
     color: #051441;
 }
-    
+
+#div-descrip pre{
+    font-family: mukta malar medium;
+    color: #051441;
+    font-size: 17px;
+    white-space: pre-wrap;
+    background-color: #ffffff;
+}
+
+#div-info{
+    background-color: #051441;
+}
+
+#div-info ul{
+    margin: 50px 15%;
+}
+
+#div-info ul li{
+    list-style-position: inside;
+    list-style-type: ;
+    color: white;
+    font-family: mukta malar medium;
+}
+
+#div-service-dispo{
+    padding: 50px;
+}
+
+#div-service-dispo h2{
+    font-family: mukta malar bold;
+    color: #003783;
+    text-align: center;
+}
+
+#solution-logo{
+    margin: 50px 50px 0 50px;
+}
+
+#solution-logo ul{
+    padding: 10px;
+    text-align: center;
+}
+
+#solution-logo ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 5%;
+}
+
+#solution-logo ul li p{
+    margin-top: 10px;
+    text-align: center;
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+input[type="checkbox"].solu {
+    display: none;
+}
+
+input[type="checkbox"].solu + label {
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+}
+
+input[type="checkbox"].solu:checked + label {
+    border: 1px hidden rgba(5, 20, 65, 0.6);
+    background-color: rgba(5, 20, 65, 0.1);
+}
+
+#div-btn-sol{
+    text-align: center;
+}
+
+#btn-sol{
+    font-family: mukta malar bold; 
+    width: 150px; 
+    white-space: nowrap; 
+    background-color: #29fe8c;
+}
+
 </style>
 
 <!-- BEGIN: Body-->
@@ -143,6 +224,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
+    <div class="row">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; background-color: grey;">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -175,13 +257,65 @@ require_once 'php/verif_session_crea.php';
             <span class="sr-only">Next</span>
         </a>
     </div>
-
+    </div>
     <div class="row">
         <div class="col-2"></div>
-        <div class="col-8">
+        <div class="col-8" id="div-descrip">
             <h1 id="titre">Venez travailler sur un air d'opéra à Paris 9</h1>
+            <br>
+            <pre>
+Offrez une envolée lyrique à votre société ! Installez-vous dans un quartier ultra recherché qui attire depuis longtemps les grands noms de la High Tech et de la Finance. A 2 pas de l'Opéra Garnier et des Galeries Layette, vous êtes au coeur de la capitale bénéficiez d'un position idéale pour votre image de marque.
+            
+Dans un cadre coloré et lumineux, profitez de nos espaces de bureaux et plateaux privatifs pour installer votre société , et recevez vos clients avec calme et confort dans un cadre prestigieux. Besoin d'une belle adresse à Paris 9 ? Venez nous rendre visite !
+            
+Multiburo Paris Opéra, c'est :
+            </pre>
         </div>
         <div class="col-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-12" id="div-info">
+            <ul>
+                <li> 2 300m^2 d'espaces modulables et évolutifs</li>
+                <li> Des bureaux flexibles et personnalisables</li>
+                <li> 6 sales de réunion jusqu'à 30 personnes</li>
+                <li> Un espace de bureaux partagés lumineux</li>
+                <li> Des services de domiciliation et de bureau virtuel</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" id="div-service-dispo">
+            <h2>Les services disponibles à cette adresse</h2>
+            <div id="solution-logo">
+                <ul>
+                    <li>
+                        <input type="checkbox" id="bureau" class="solu"></input>
+                        <label for="bureau" class="">
+                            <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                            <p>Bureaux privatifs</p>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="cowork" class="solu"></input>
+                        <label for="cowork" class="">
+                            <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                            <p>Coworking</p>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="domicilia" class="solu"></input>
+                            <label for="domicilia" class="">
+                                <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
+                                <p>Domiciliation</p>
+                            </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-group" id="div-btn-sol">
+                <button type="submit" id="btn-sol" class="btn text-dark glow position-relative border rounded-pill">Soumettre</button>
+            </div>
+        </div>
     </div>
 </div>
     
