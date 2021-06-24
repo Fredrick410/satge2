@@ -1,0 +1,151 @@
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {    
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 70px;
+  }
+  
+  /* The popup chat - hidden by default */
+  .chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9;
+  }
+  
+  /* Add styles to the form container */
+  .form-container {
+    width: 450px;
+    padding: 10px;
+
+    height: 600px;
+	background-color: #051441;
+  }
+  
+  /* Full-width textarea */
+  .form-container textarea {
+    width: 65%;
+    text-indent: 10px;
+    padding-top: 6px;
+    
+    
+    border: none;
+    background: white;
+    resize: none;
+    height: 35px;
+    position: absolute;
+    left: 5%;
+  }
+  
+  /* When the textarea gets focus, do something */
+  .form-container textarea:focus {
+    background-color: rgb(248, 248, 248);
+    outline: none;
+  }
+  
+  /* Set a style for the submit/send button */
+  .form-container .btn {
+    background-color: #04AA6D;
+    color: white;
+    
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    height: 35px;
+    
+    opacity: 0.8;
+    position: absolute;
+    right : 5%;
+  }
+  
+  /* Add a red background color to the cancel button */
+  .form-container .cancel {
+    background-color: red;
+  }
+  
+  /* Add some hover effects to buttons */
+  .form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+  }
+
+  .profil{
+    height: 100px;   
+  }
+
+  .nom{
+      color: white;
+      position: absolute;
+      top: 40px;
+      left: 50px;
+  }
+
+  .historique{
+      color: white;
+      height: 400px;
+  }
+
+  
+
+  .msgSelf {
+      float: right;
+      padding: 15px;
+      background-color: #3399FF;
+      max-width: 75%;
+  }
+
+  .msgYou {
+      float: left;
+      padding: 15px;
+      background-color: #004CB2;
+      max-width: 75%;
+  }
+
+  .message{
+      color: white;
+      height: 100px;
+  }
+
+  .round{
+    border-radius: 30px;
+      -webkit-border-radius: 30px;
+      -moz-border-radius: 30px;
+  
+  }
+
+  .tri-right.border.btm-left:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: -8px;
+  right: auto;
+  top: auto;
+	bottom: -40px;
+	border: 32px solid;
+	border-color: transparent transparent transparent #666;
+}
+.tri-right.btm-left:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 0px;
+  right: auto;
+  top: auto;
+	bottom: -20px;
+	border: 22px solid;
+	border-color: transparent transparent transparent #051441;
+}
+
+.cross{
+    border: none;
+    cursor: pointer;
+    width: 15px;
+    right: 15px;
+    top: 15px;
+    position: absolute;
+}

@@ -88,6 +88,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/domiciliation_Btn_Chat.css">
     <!-- END: Custom CSS-->
 
 </head>
@@ -360,6 +361,31 @@ input[type="checkbox"].solu:checked + label {
             
             </div>
         </div>
+
+        <img class="open-button" id="icon_chat" src="../../../app-assets/images/ico/chat_icon.png" onclick="openForm()">
+            <div class="chat-popup" id="myForm">
+                <form action="/action_page.php" class="form-container tri-right round btm-left">
+            
+                    <img class="cross" src="../../../app-assets/images/ico/cross.png" onclick="closeForm()"></img>
+                    <div class="profil">
+                        <p class="nom">Nom Prénom</p>
+                    </div>
+
+                    <div class="historique">
+                        <div class="divSelf">
+                            <p class="msgSelf round">Moi Moi Moi Moi Moi Moi Moi Moi Moi Moi Moi Moi Moi Moi </p>
+                        </div>
+                        <div class="divYou">
+                            <p class="msgYou round">Lui Lui Lui Lui Lui Lui Lui Lui Lui Lui Lui Lui Lui Lui </p>
+                        </div>
+                    </div>
+
+                    <div class="message">
+                        <textarea class="round" placeholder="Message" name="msg" required></textarea> 
+                        <button type="submit" class="btn">Send</button>
+                    </div>
+                </form>
+            </div>
     </div>
     <!-- END: Content-->
 
@@ -388,7 +414,7 @@ input[type="checkbox"].solu:checked + label {
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-
+    <script src="../../../assets/js/domiciliation_Btn_Chat.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
