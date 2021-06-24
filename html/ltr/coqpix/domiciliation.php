@@ -126,7 +126,7 @@ require_once 'php/verif_session_crea.php';
     }
 }
 
-@media screen and (max-width: 1020px) {
+@media screen and (max-width: 1785px) {
     #div-titre-gauche{
         display: none;
     }
@@ -136,6 +136,22 @@ require_once 'php/verif_session_crea.php';
 }
 
 @media screen and (min-width: 2300px) {
+    #titre p{
+        font-size: 65px;
+    }
+    #sous-titre p{
+        font-size: 25px;
+        line-height: 40px;
+    }
+}
+
+@media screen and (max-width: 1878px) {
+    #div-carte-droite{
+        display: none;
+    }
+    #div-carte-gauche{
+        min-width: 100%;
+    }
     #titre p{
         font-size: 65px;
     }
@@ -188,10 +204,6 @@ require_once 'php/verif_session_crea.php';
     margin: 50px 0 0 20px;
 }
 
-#solution{
-    margin: ;
-}
-
 #solution-logo{
     margin-top: 50px;
 }
@@ -224,7 +236,7 @@ input[type="checkbox"].solu {
 
 input[type="checkbox"].solu + label {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 15px;
 }
 
@@ -253,10 +265,37 @@ input[type="checkbox"].solu:checked + label {
 
 .card-body{
     width: 300px;
+    border: 1px solid #051441;
+    margin: 20px;
 }
 
 .card-body img{
-    width: 200px;
+    width: 250px;
+    height: 200px;
+}
+
+.card-descrip{
+    margin-top: 5px;
+}
+
+.card-descrip #ville{
+    font-family: mukta malar medium;
+    color: black;
+}
+
+.card-descrip #adresse{
+    font-family: mukta malar medium;
+    color: black;
+}
+
+.card-btn{
+    margin-bottom: 5px;
+}
+
+.card-btn a{
+    font-family: mukta malar medium;
+    color: #003783;
+    text-transform: uppercase;
 }
 
 .offers{
@@ -282,12 +321,12 @@ input[type="checkbox"].solu:checked + label {
 
     <!-- BEGIN: Content-->
     <div class="container-fluid">
-        <div class="row" id="div-titre" style="height: 800px;">
-            <div class="col-6 p-0" id="div-titre-gauche" >
+        <div class="row" id="div-titre" style="min-height: 100%;">
+            <div class="col-6 p-0" id="div-titre-gauche" style="min-height: 100%;">
                 <div id="titre"><p>Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p></div>
                 <div id="sous-titre"><p>Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p></div>
             </div>
-            <div class="col-6" id="div-titre-droite" style="height: 800px;">
+            <div class="col-6" id="div-titre-droite" style="min-height: 100%;">
                 <div id="solution" class="col-12">
                     <form>
                     <div>
@@ -331,16 +370,30 @@ input[type="checkbox"].solu:checked + label {
                 </div>
             </div>
         </div>
-        <div class="row" id="div-carte" style="height: ;">
-            <div class="col-6">
+        <div class="row" id="div-carte" style="height: 100%;">
+            <div class="col-6" id="div-carte-gauche" style="height: 800px;">
                 <div class="card-container">
                     <ul>
                         <li>
+<<<<<<< HEAD
                             <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p>Salut</p>
                                 </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
+=======
+                            <div class="card-body p-0">
+>>>>>>> 346e30ed98acfb993f5192a0d4304130bdb95e75
+                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                                <div class="card-descrip">
+                                    <p id="ville">Multiburo Paris Châtelet, 75003</p>
+                                    <p id="adresse">52 boulevard Sébastopol<br> 75003 Paris</p>
+                                </div>
+<<<<<<< HEAD
                             </div>
                         </li>
                         <li>
@@ -356,21 +409,17 @@ input[type="checkbox"].solu:checked + label {
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p>Salut</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
-                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
-                                <div class="card-descrip">
-                                    <p>Salut</p>
+=======
+                                <div class="card-btn">
+                                    <a href="domiciliation-offre.php">Découvrir cette adresse</a>
+>>>>>>> 346e30ed98acfb993f5192a0d4304130bdb95e75
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-6" id="div-carte-droite" style="height: 800px;">
             <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="100%" height="800px" right=0;></iframe>
             
             </div>
