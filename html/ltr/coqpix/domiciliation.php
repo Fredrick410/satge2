@@ -51,7 +51,7 @@ require_once 'php/verif_session_crea.php';
     }else{
         $doc_peirl = "1";
     }
-        
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -263,6 +263,7 @@ input[type="checkbox"].solu:checked + label {
 .card-body{
     width: 300px;
     border: 1px solid #051441;
+    border-radius: 10px;
     margin: 20px;
 }
 
