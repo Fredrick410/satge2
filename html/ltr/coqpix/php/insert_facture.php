@@ -89,31 +89,60 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $insert = $bdd->prepare('INSERT INTO facture (numerosfacture, dte, dateecheance, nomproduit, reffacture, facturepour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_facture, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-    $insert->execute(array(
-        htmlspecialchars($numerosfacture),
-        htmlspecialchars($dte),
-        htmlspecialchars($_POST['dateecheance']),
-        htmlspecialchars($nomproduit),
-        htmlspecialchars($_POST['reffacture']),
-        htmlspecialchars($facturepour),
-        htmlspecialchars($adresse),
-        htmlspecialchars($email),
-        htmlspecialchars($tel),
-        htmlspecialchars($departement),
-        htmlspecialchars($_POST['modalite']),
-        htmlspecialchars($_POST['monnaie']),
-        htmlspecialchars($accompte),
-        htmlspecialchars($note),
-        htmlspecialchars($_POST['statut']),
-        htmlspecialchars($color),
-        htmlspecialchars($_POST['etiquette']),
-        htmlspecialchars($_SESSION['id_session']),//$_SESSION
-        htmlspecialchars($_POST['descrip']), 
-        htmlspecialchars($adresse2),
-        htmlspecialchars($departement2)
-    ));
+    if($_POST['departementtwo'] == "" || $_POST['adressetwo'] == ""){
+        $insert = $bdd->prepare('INSERT INTO facture (numerosfacture, dte, dateecheance, nomproduit, reffacture, facturepour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_facture, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars($numerosfacture),
+            htmlspecialchars($dte),
+            htmlspecialchars($_POST['dateecheance']),
+            htmlspecialchars($nomproduit),
+            htmlspecialchars($_POST['reffacture']),
+            htmlspecialchars($facturepour),
+            htmlspecialchars($adresse),
+            htmlspecialchars($email),
+            htmlspecialchars($tel),
+            htmlspecialchars($departement),
+            htmlspecialchars($_POST['modalite']),
+            htmlspecialchars($_POST['monnaie']),
+            htmlspecialchars($accompte),
+            htmlspecialchars($note),
+            htmlspecialchars($_POST['statut']),
+            htmlspecialchars($color),
+            htmlspecialchars($_POST['etiquette']),
+            htmlspecialchars($_SESSION['id_session']),//$_SESSION
+            htmlspecialchars($_POST['descrip']), 
+            htmlspecialchars($adresse),
+            htmlspecialchars($departement)
+        ));
 
+    }else{
+        $insert = $bdd->prepare('INSERT INTO facture (numerosfacture, dte, dateecheance, nomproduit, reffacture, facturepour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_facture, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars($numerosfacture),
+            htmlspecialchars($dte),
+            htmlspecialchars($_POST['dateecheance']),
+            htmlspecialchars($nomproduit),
+            htmlspecialchars($_POST['reffacture']),
+            htmlspecialchars($facturepour),
+            htmlspecialchars($adresse),
+            htmlspecialchars($email),
+            htmlspecialchars($tel),
+            htmlspecialchars($departement),
+            htmlspecialchars($_POST['modalite']),
+            htmlspecialchars($_POST['monnaie']),
+            htmlspecialchars($accompte),
+            htmlspecialchars($note),
+            htmlspecialchars($_POST['statut']),
+            htmlspecialchars($color),
+            htmlspecialchars($_POST['etiquette']),
+            htmlspecialchars($_SESSION['id_session']),//$_SESSION
+            htmlspecialchars($_POST['descrip']), 
+            htmlspecialchars($adresse2),
+            htmlspecialchars($departement2)
+        ));
+
+    }
+    
         $pdoA = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdoA->bindValue(':numeros', $numeroarticle);

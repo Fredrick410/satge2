@@ -73,32 +73,62 @@ ini_set('display_startup_errors', TRUE);
     }else{
         $color = "badge badge-light-success badge-pill";
     }
-    $pdo = $bdd->prepare('UPDATE bon SET numerosbon=:numerosbon, dte=:dte, refbon=:refbon, dateecheance=:dateecheance, nomproduit=:nomproduit, bonpour=:bonpour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_bon=:status_bon, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
+    if($_POST['departementtwo'] == "" || $_POST['adressetwo'] == ""){
+        $pdo = $bdd->prepare('UPDATE bon SET numerosbon=:numerosbon, dte=:dte, refbon=:refbon, dateecheance=:dateecheance, nomproduit=:nomproduit, bonpour=:bonpour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_bon=:status_bon, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
     
-    $pdo->bindValue(':num', $_POST['numbon']);
-    $pdo->bindValue(':numerosbon', $_POST['numerosbon']);
-    $pdo->bindValue(':dte', $dte);
-    $pdo->bindValue(':refbon', $_POST['refbon']);
-    $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
-    $pdo->bindValue(':nomproduit', $nomproduit);
-    $pdo->bindValue(':bonpour', $facturepour);
-    $pdo->bindValue(':adresse', $adresse);
-    $pdo->bindValue(':email', $email);
-    $pdo->bindValue(':tel', $tel);
-    $pdo->bindValue(':departement', $departement);
-    $pdo->bindValue(':modalite', $_POST['modalite']);
-    $pdo->bindValue(':monnaie', $_POST['monnaie']);
-    $pdo->bindValue(':accompte', $_POST['accompte']);
-    $pdo->bindValue(':note', $note);
-    $pdo->bindValue(':status_bon', $_POST['status_bon']);
-    $pdo->bindValue(':status_color', $color);
-    $pdo->bindValue(':etiquette', $_POST['etiquette']);
-    $pdo->bindValue(':descrip', $_POST['descrip']);
-    $pdo->bindValue(':adresselivraison', $adressetwo);
-    $pdo->bindValue(':deplivraison', $departementtwo);
+        $pdo->bindValue(':num', $_POST['numbon']);
+        $pdo->bindValue(':numerosbon', $_POST['numerosbon']);
+        $pdo->bindValue(':dte', $dte);
+        $pdo->bindValue(':refbon', $_POST['refbon']);
+        $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+        $pdo->bindValue(':nomproduit', $nomproduit);
+        $pdo->bindValue(':bonpour', $facturepour);
+        $pdo->bindValue(':adresse', $adresse);
+        $pdo->bindValue(':email', $email);
+        $pdo->bindValue(':tel', $tel);
+        $pdo->bindValue(':departement', $departement);
+        $pdo->bindValue(':modalite', $_POST['modalite']);
+        $pdo->bindValue(':monnaie', $_POST['monnaie']);
+        $pdo->bindValue(':accompte', $_POST['accompte']);
+        $pdo->bindValue(':note', $note);
+        $pdo->bindValue(':status_bon', $_POST['status_bon']);
+        $pdo->bindValue(':status_color', $color);
+        $pdo->bindValue(':etiquette', $_POST['etiquette']);
+        $pdo->bindValue(':descrip', $_POST['descrip']);
+        $pdo->bindValue(':adresselivraison', $adresse);
+        $pdo->bindValue(':deplivraison', $departement);
 
+        
+        $pdo->execute();
+    }else{
+        $pdo = $bdd->prepare('UPDATE bon SET numerosbon=:numerosbon, dte=:dte, refbon=:refbon, dateecheance=:dateecheance, nomproduit=:nomproduit, bonpour=:bonpour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_bon=:status_bon, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
     
-    $pdo->execute();
+        $pdo->bindValue(':num', $_POST['numbon']);
+        $pdo->bindValue(':numerosbon', $_POST['numerosbon']);
+        $pdo->bindValue(':dte', $dte);
+        $pdo->bindValue(':refbon', $_POST['refbon']);
+        $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+        $pdo->bindValue(':nomproduit', $nomproduit);
+        $pdo->bindValue(':bonpour', $facturepour);
+        $pdo->bindValue(':adresse', $adresse);
+        $pdo->bindValue(':email', $email);
+        $pdo->bindValue(':tel', $tel);
+        $pdo->bindValue(':departement', $departement);
+        $pdo->bindValue(':modalite', $_POST['modalite']);
+        $pdo->bindValue(':monnaie', $_POST['monnaie']);
+        $pdo->bindValue(':accompte', $_POST['accompte']);
+        $pdo->bindValue(':note', $note);
+        $pdo->bindValue(':status_bon', $_POST['status_bon']);
+        $pdo->bindValue(':status_color', $color);
+        $pdo->bindValue(':etiquette', $_POST['etiquette']);
+        $pdo->bindValue(':descrip', $_POST['descrip']);
+        $pdo->bindValue(':adresselivraison', $adressetwo);
+        $pdo->bindValue(':deplivraison', $departementtwo);
+
+        
+        $pdo->execute();
+    }
+    
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="bonvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION

@@ -88,31 +88,58 @@ ini_set('display_startup_errors', TRUE);
     }else{
         $color = "badge badge-light-success badge-pill";
     }
-
-    $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, nomproduit, refbon, bonpour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_bon, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-    $insert->execute(array(
-        htmlspecialchars($numerosbon),
-        htmlspecialchars($dte),
-        htmlspecialchars($_POST['dateecheance']),
-        htmlspecialchars($nomproduit),
-        htmlspecialchars($_POST['refbon']),
-        htmlspecialchars($bonpour),
-        htmlspecialchars($adresse),
-        htmlspecialchars($email),
-        htmlspecialchars($tel),
-        htmlspecialchars($departement),
-        htmlspecialchars($_POST['modalite']),
-        htmlspecialchars($_POST['monnaie']),
-        htmlspecialchars($accompte),
-        htmlspecialchars($note),
-        htmlspecialchars($_POST['statut']),
-        htmlspecialchars($color),
-        htmlspecialchars($_POST['etiquette']),
-        htmlspecialchars($_SESSION['id_session']),//$_SESSION
-        htmlspecialchars($_POST['descrip']),
-        htmlspecialchars($adressetwo),
-        htmlspecialchars($departementtwo)
-    ));
+    if($_POST['departementtwo'] == "" || $_POST['adressetwo'] == ""){
+        $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, nomproduit, refbon, bonpour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_bon, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars($numerosbon),
+            htmlspecialchars($dte),
+            htmlspecialchars($_POST['dateecheance']),
+            htmlspecialchars($nomproduit),
+            htmlspecialchars($_POST['refbon']),
+            htmlspecialchars($bonpour),
+            htmlspecialchars($adresse),
+            htmlspecialchars($email),
+            htmlspecialchars($tel),
+            htmlspecialchars($departement),
+            htmlspecialchars($_POST['modalite']),
+            htmlspecialchars($_POST['monnaie']),
+            htmlspecialchars($accompte),
+            htmlspecialchars($note),
+            htmlspecialchars($_POST['statut']),
+            htmlspecialchars($color),
+            htmlspecialchars($_POST['etiquette']),
+            htmlspecialchars($_SESSION['id_session']),//$_SESSION
+            htmlspecialchars($_POST['descrip']),
+            htmlspecialchars($adresse),
+            htmlspecialchars($departement)
+        ));
+    }else{
+        $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, nomproduit, refbon, bonpour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_bon, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(array(
+            htmlspecialchars($numerosbon),
+            htmlspecialchars($dte),
+            htmlspecialchars($_POST['dateecheance']),
+            htmlspecialchars($nomproduit),
+            htmlspecialchars($_POST['refbon']),
+            htmlspecialchars($bonpour),
+            htmlspecialchars($adresse),
+            htmlspecialchars($email),
+            htmlspecialchars($tel),
+            htmlspecialchars($departement),
+            htmlspecialchars($_POST['modalite']),
+            htmlspecialchars($_POST['monnaie']),
+            htmlspecialchars($accompte),
+            htmlspecialchars($note),
+            htmlspecialchars($_POST['statut']),
+            htmlspecialchars($color),
+            htmlspecialchars($_POST['etiquette']),
+            htmlspecialchars($_SESSION['id_session']),//$_SESSION
+            htmlspecialchars($_POST['descrip']),
+            htmlspecialchars($adressetwo),
+            htmlspecialchars($departementtwo)
+        ));
+    }
+    
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="bonvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
