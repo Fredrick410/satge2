@@ -14,10 +14,10 @@ if(!empty($result)) {
 <ul id="city-list">
 <li onClick="selectCity('<?php echo $result['ville']; ?>');"><?php echo $result['ville']; ?></li>
 </ul>
-<?php } else {
+<?php }else{
 ?>
 <ul id="city-list"> 
     <li> Aucun résultat </li>
 </ul>
-    <?php } }
+    <?php }} 
 ?>

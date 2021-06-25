@@ -116,7 +116,6 @@ require_once 'php/verif_session_crea.php';
             </div>
             <div class="col-6" id="div-titre-droite">
                 <div id="solution" class="col-12">
-                    <form action="" method="POST">
                     <div>
                         <h1>Nos solutions</h1>
                         <div id="solution-logo">
@@ -158,17 +157,17 @@ require_once 'php/verif_session_crea.php';
                             <div id="suggestion-box"></div>
                         </div>
                         <div class="form-group" id="div-btn">
-                            <button type="submit" id='' class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
+                            <button type="submit" id='btn-recherche' class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
                         </div>
                     </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
         <div class="row" id="div-carte" style="height: 100%;">
             <div class="col-6" id="div-carte-gauche" >
-                <div class="card-container">
-                    <ul>
+                <div class="card-container" id="offre-conteneur">
+                    <!--<ul>
                         <li>
                             <div class="card-body p-0">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
@@ -181,7 +180,7 @@ require_once 'php/verif_session_crea.php';
                                 </div>
                             </div>
                         </li>
-                    </ul>
+                    </ul>-->
                 </div>
             </div>
             <div class="col-6" id="div-carte-droite" >
@@ -256,12 +255,23 @@ require_once 'php/verif_session_crea.php';
             url: "php/readCity.php",
             data:'keyword='+$(this).val(),
             beforeSend: function(){
-                $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+                $("#search-box").css("background","#FFF url(../../../app-assets/images/ico/ajax-loader.gif) no-repeat 165px");
             },
             success: function(data){
                 $("#suggestion-box").show();
                 $("#suggestion-box").html(data);
                 $("#search-box").css("background","#FFF");
+            }
+            });
+        });
+        $("#btn-recherche").on('click',function(){
+            $.ajax({
+            type: "POST",
+            url: "php/display-offers.php",
+            data:'ville='+$("#search-box").val(),
+            success: function(data){
+                console.log("affichage des offres");
+                $("#offre-conteneur").html(data);
             }
             });
         });
