@@ -808,183 +808,292 @@ $(window).on("load", function() {
             labels: ['Growth'],
         }
 
-        var growthChart = new ApexCharts(
-            document.querySelector("#growth-Chart"),
-            growthChartOptions
-        );
+    },
+    stroke: {
+        lineCap: "round",
+    }
+};
+var profitInfoChart = new ApexCharts(
+    document.querySelector("#profit-info-chart"),
+    profitInfoOptions
+);
 
-        growthChart.render();
+profitInfoChart.render();
 
-        var bilan_annuel = document.getElementById("bilan_annuel").value;
-
-        var growthChartOptions2 = {
-            chart: {
-                height: 200,
-                type: 'radialBar',
-                sparkline: {
-                    show: true
-                }
-            },
-            grid: {
-                show: false,
-            },
-            plotOptions: {
-                radialBar: {
-                    size: 100,
-                    startAngle: -135,
-                    endAngle: 135,
-                    offsetY: 40,
-                    hollow: {
-                        size: '60%',
-                    },
-                    track: {
-                        strokeWidth: '90%',
-                        background: '#fff'
-                    },
-                    dataLabels: {
-                        value: {
-                            offsetY: -10,
-                            color: '#475f7b',
-                            fontSize: '26px'
-                        },
-                        name: {
-                            fontSize: '15px',
-                            color: "#596778",
-                            offsetY: 30
-                        },
-                    }
-                },
-            },
-            colors: [$danger],
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shade: 'dark',
-                    type: 'horizontal',
-                    shadeIntensity: 0.5,
-                    gradientToColors: [$primary],
-                    inverseColors: true,
-                    opacityFrom: 1,
-                    opacityTo: 1,
-                    stops: [0, 100]
-                },
-            },
-            stroke: {
-                dashArray: 3
-            },
-            series: [bilan_annuel],
-            labels: ['Growth'],
+// Registration Chart
+// -------------------
+var registrationChartoptions = {
+    chart: {
+        type: 'bar',
+        height: 60,
+        width: 120,
+        sparkline: { enabled: true },
+        toolbar: { show: false },
+    },
+    states: {
+        hover: {
+            filter: 'none'
         }
+    },
+    colors: [$danger_light, $danger_light, $danger_light, $danger_light, $warning, $danger_light],
+    series: [{
+        name: 'Sessions',
+        data: [3, 7, 5, 15, 9, 8, 12]
+    }],
+    grid: {
+        show: false,
+        padding: {
+            left: 0,
+            right: 0
+        }
+    },
 
-        var growthChart2 = new ApexCharts(
-            document.querySelector("#growth-Chart2"),
-            growthChartOptions2
-        );
+    plotOptions: {
+        bar: {
+            columnWidth: '80%',
+            distributed: true,
+        }
+    },
+    tooltip: {
+        x: { show: false }
+    },
+    xaxis: {
+        type: 'numeric',
+    }
+}
 
-        growthChart2.render();
+var registrationChart = new ApexCharts(
+    document.querySelector("#registration-chart"),
+    registrationChartoptions
+);
 
+registrationChart.render();
 
-        // Widget Todo List
-        // ------------------
-        // Task List Widget - for completed todo item
-        $(document).on('click', '.widget-todo-item input', function() {
-            $(this).closest('.widget-todo-item').toggleClass("completed");
-        });
+// Sales Chart
+// ---------------------
+var salesChartOptions = {
+    chart: {
+        height: 100,
+        type: 'bar',
+        stacked: true,
+        toolbar: {
+            show: false
+        }
+    },
+    grid: {
+        show: false,
+        padding: {
+            left: 0,
+            right: 0,
+            top: -20,
+            bottom: -15
+        }
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '20%',
+            endingShape: 'rounded'
+        },
+    },
+    legend: {
+        show: false
+    },
+    dataLabels: {
+        enabled: false
+    },
+    colors: [$primary, $primary_light],
+    series: [{
+        name: '2019',
+        data: [80, 40, 30, 90, 20, 50, 95]
+    }, {
+        name: '2018',
+        data: [20, 60, 70, 10, 80, 50, 5]
+    }],
+    xaxis: {
+        categories: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+        axisBorder: {
+            show: false
+        },
+        axisTicks: {
+            show: false
+        },
+        labels: {
+            style: {
+                colors: $gray_light
+            },
+            offsetY: -5
+        }
+    },
+    yaxis: {
+        show: false,
+        floating: true,
+    },
+    tooltip: {
+        x: {
+            show: false,
+        },
+    }
+}
 
-        // Drag the task
-        dragula([document.getElementById("widget-todo-list")], {
-            moves: function(el, container, handle) {
-                return handle.classList.contains("cursor-move");
+var salesChart = new ApexCharts(
+    document.querySelector("#sales-chart"),
+    salesChartOptions
+);
+
+salesChart.render();
+
+// Growth Radial Chart
+// --------------------
+var taux_prelevement = document.getElementById("taux_prelevement").value;
+
+var growthChartOptions = {
+    chart: {
+        height: 200,
+        type: 'radialBar',
+        sparkline: {
+            show: true
+        }
+    },
+    grid: {
+        show: false,
+    },
+    plotOptions: {
+        radialBar: {
+            size: 100,
+            startAngle: -135,
+            endAngle: 135,
+            offsetY: 40,
+            hollow: {
+                size: '60%',
+            },
+            track: {
+                strokeWidth: '90%',
+                background: '#fff'
+            },
+            dataLabels: {
+                value: {
+                    offsetY: -10,
+                    color: '#475f7b',
+                    fontSize: '26px'
+                },
+                name: {
+                    fontSize: '15px',
+                    color: "#596778",
+                    offsetY: 30
+                },
             }
+        },
+    },
+    colors: [$danger],
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: [$primary],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+        },
+    },
+    stroke: {
+        dashArray: 3
+    },
+    series: [taux_prelevement],
+    labels: ['Growth'],
+}
 
-                var salesChart = new ApexCharts(
-                document.querySelector("#sales-chart"),
-                salesChartOptions
-            );
+var growthChart = new ApexCharts(
+    document.querySelector("#growth-Chart"),
+    growthChartOptions
+);
 
-            salesChart.render();
+growthChart.render();
 
-            // Growth Radial Chart
-            // --------------------
-            var growthChartOptions = {
-                chart: {
-                    height: 200,
-                    type: 'radialBar',
-                    sparkline: {
-                        show: true
-                    }
+var bilan_annuel = document.getElementById("bilan_annuel").value;
+
+var growthChartOptions2 = {
+    chart: {
+        height: 200,
+        type: 'radialBar',
+        sparkline: {
+            show: true
+        }
+    },
+    grid: {
+        show: false,
+    },
+    plotOptions: {
+        radialBar: {
+            size: 100,
+            startAngle: -135,
+            endAngle: 135,
+            offsetY: 40,
+            hollow: {
+                size: '60%',
+            },
+            track: {
+                strokeWidth: '90%',
+                background: '#fff'
+            },
+            dataLabels: {
+                value: {
+                    offsetY: -10,
+                    color: '#475f7b',
+                    fontSize: '26px'
                 },
-                grid: {
-                    show: false,
+                name: {
+                    fontSize: '15px',
+                    color: "#596778",
+                    offsetY: 30
                 },
-                plotOptions: {
-                    radialBar: {
-                        size: 100,
-                        startAngle: -135,
-                        endAngle: 135,
-                        offsetY: 40,
-                        hollow: {
-                            size: '60%',
-                        },
-                        track: {
-                            strokeWidth: '90%',
-                            background: '#fff'
-                        },
-                        dataLabels: {
-                            value: {
-                                offsetY: -10,
-                                color: '#475f7b',
-                                fontSize: '26px'
-                            },
-                            name: {
-                                fontSize: '15px',
-                                color: "#596778",
-                                offsetY: 30
-                            },
-                        }
-                    },
-                },
-                colors: [$danger],
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shade: 'dark',
-                        type: 'horizontal',
-                        shadeIntensity: 0.5,
-                        gradientToColors: [$primary],
-                        inverseColors: true,
-                        opacityFrom: 1,
-                        opacityTo: 1,
-                        stops: [0, 100]
-                    },
-                },
-                stroke: {
-                    dashArray: 3
-                },
-                series: [78],
-                labels: ['Growth'],
             }
+        },
+    },
+    colors: [$danger],
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: [$primary],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+        },
+    },
+    stroke: {
+        dashArray: 3
+    },
+    series: [bilan_annuel],
+    labels: ['Growth'],
+}
 
-            var growthChart = new ApexCharts(
-                document.querySelector("#growth-Chart"),
-                growthChartOptions
-            );
+var growthChart2 = new ApexCharts(
+    document.querySelector("#growth-Chart2"),
+    growthChartOptions2
+);
 
-            growthChart.render();
+growthChart2.render();
 
 
-            // Widget Todo List
-            // ------------------
-            // Task List Widget - for completed todo item
-            $(document).on('click', '.widget-todo-item input', function() {
-                $(this).closest('.widget-todo-item').toggleClass("completed");
-            });
+// Widget Todo List
+// ------------------
+// Task List Widget - for completed todo item
+$(document).on('click', '.widget-todo-item input', function() {
+    $(this).closest('.widget-todo-item').toggleClass("completed");
+});
 
-            // Drag the task
-            dragula([document.getElementById("widget-todo-list")], {
-                moves: function(el, container, handle) {
-                    return handle.classList.contains("cursor-move");
-                }
-            });
+// Drag the task
+dragula([document.getElementById("widget-todo-list")], {
+moves: function(el, container, handle) {
+    return handle.classList.contains("cursor-move");
+}
+});
 
-        });
+});
