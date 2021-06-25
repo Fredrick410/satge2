@@ -110,7 +110,7 @@ require_once 'php/verif_session_crea.php';
         <div class="row" id="div-titre">
             <div class="col-6 p-0" id="div-titre-gauche">
                 <div id="longueur-titre">
-                    <p id="titre">Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p>
+                    <p id="titre">Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> au meilleur <span style="color: #29fe8c;">PRIX !!!</span> </p>
                     <p id="sous-titre">Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p>
                 </div>
             </div>

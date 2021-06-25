@@ -158,11 +158,12 @@ require_once 'php/verif_session_crea.php';
         <div class="col-2"></div>
         <div class="col-8" id="div-descrip">
             <h1 id="titre"><?php echo $result['titre']; ?></h1>
-            <br>
             <pre>
-            <?php 
-            echo $result['description'];
-            ?>
+
+<?php 
+echo $result['description'];
+?>
+
             </pre>
         </div>
         <div class="col-2"></div>
