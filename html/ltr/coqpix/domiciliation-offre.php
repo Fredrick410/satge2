@@ -51,6 +51,7 @@ require_once 'php/verif_session_crea.php';
     }else{
         $doc_peirl = "1";
     }
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -116,13 +117,11 @@ require_once 'php/verif_session_crea.php';
 
 .carousel{
     margin: 50px;
-    border-radius: 10px;
 }
 
 .carousel-item img{
     height: 600px; 
-    width: 100%; 
-    border-radius: 10px;
+    width: 100%;
 }
 
 #titre{
@@ -212,6 +211,7 @@ input[type="checkbox"].solu:checked + label {
     background-color: #29fe8c;
 }
 
+
 </style>
 
 <!-- BEGIN: Body-->
@@ -224,8 +224,17 @@ input[type="checkbox"].solu:checked + label {
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
+    <br>
+    <div class="breadcrumb-wrapper col-12" ">
+        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
+            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
+            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
+            <li class="breadcrumb-item active"> Offre de domiciliation </li>
+        </ol>
+    </div>
+
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; background-color: grey;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -286,6 +295,7 @@ Multiburo Paris Opéra, c'est :
     </div>
     <div class="row">
         <div class="col-12" id="div-service-dispo">
+            <form action="" method="POST">
             <h2>Les services disponibles à cette adresse</h2>
             <div id="solution-logo">
                 <ul>
@@ -315,6 +325,7 @@ Multiburo Paris Opéra, c'est :
             <div class="form-group" id="div-btn-sol">
                 <button type="submit" id="btn-sol" class="btn text-dark glow position-relative border rounded-pill">Soumettre</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
