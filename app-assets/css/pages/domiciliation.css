@@ -13,88 +13,65 @@
     src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
 }
 
-@media screen and (max-width: 1870px) {
-    #titre p{
-        font-size: 65px;
-    }
-    #sous-titre p{
-        font-size: 25px;
-        line-height: 40px;
+
+
+@media screen and (max-width: 900px) {
+    #solution-logo ul li{
+        margin: 9%;
     }
 }
 
-@media screen and (max-width: 1278px) {
-    #sous-titre p{
-        margin: 100px 0 0 0;
+@media screen and (max-width: 900px) {
+    #div-carte-droite{
+        min-width: 100%;
+    }
+    #div-carte-gauche{
+        min-width: 100%;
     }
 }
 
 @media screen and (max-width: 1785px) {
     #div-titre-gauche{
-        display: none;
+        min-width: 100%;
     }
     #div-titre-droite{
         min-width: 100%;
     }
 }
 
-@media screen and (min-width: 2300px) {
-    #titre p{
-        font-size: 65px;
-    }
-    #sous-titre p{
-        font-size: 25px;
-        line-height: 40px;
-    }
+
+.container-fluid {
+    padding-top: 68px;
 }
 
-@media screen and (max-width: 1878px) {
-    #div-carte-droite{
-        display: none;
-    }
-    #div-carte-gauche{
-        min-width: 100%;
-    }
-    #titre p{
-        font-size: 65px;
-    }
-    #sous-titre p{
-        font-size: 25px;
-        line-height: 40px;
-    }
+#div-titre{
+    min-height: 100%;
+}
+
+#div-titre-gauche{
+    background-color: #051441;
+    border-radius: 0 400px 400px 0;
+    min-height: 100%;
 }
 
 #titre{
     font-family: mukta malar medium;
     color: white;
-    margin: 180px 0 0 10%;
     font-size: 60px;
-    width: 80%;
-}
-
-#titre p{
     line-height: 70px;
 }
 
 #sous-titre{
     font-family: mukta malar medium;
     color: white;
-    margin: 50px 0 0 10%;
-    font-size: 17px;
+    margin-top: 10%;
+    font-size: 20px;
 }
 
-#sous-titre p{
+#longueur-titre{
     width: 70%;
-}
-
-.container-fluid {
-    padding-top: 68px;
-}
-
-#div-titre-gauche{
-    background-color: #051441;
-    border-radius: 0 400px 400px 0;
-    
+    margin: 15% 10% 15% 10%;
+    min-height: 100%;
 }
 
 #div-titre-droite{
@@ -104,22 +81,26 @@
 #div-titre-droite h1{
     color: #003783;
     font-family: mukta malar medium;
-    margin: 50px 0 0 20px;
 }
 
 #solution-logo{
     margin-top: 50px;
+    min-width: 100%;
 }
 
 #solution-logo ul{
-    padding: 10px;
     text-align: center;
 }
 
 #solution-logo ul li{
     list-style: none;
     display: inline-block;
-    margin: 0 8% 10px 0;
+    margin-bottom: 10px;
+    padding: 3%;
+}
+
+#solution-logo ul li img{
+    width: 150px;
 }
 
 #solution-logo ul li p{
@@ -130,7 +111,32 @@
 }
 
 #localisation{
-    margin: 50px 10% 0 0;
+    margin: 50px 0 0 0;
+}
+
+#div-btn{
+    margin-top: 50px;
+}
+
+#localisation label{
+    font-size: 15px; 
+    font-family: mukta malar bold; 
+    color: #051441; 
+    margin-left: 25px;
+}
+
+#localisation input{
+    font-family: mukta malar medium; 
+    color: #051441; 
+    margin-top: 20px;
+}
+
+#localisation button{
+    font-family: mukta malar bold; 
+    width: 200px; 
+    white-space: nowrap; 
+    background-color: #29fe8c;
+    margin-left: 25px;
 }
 
 input[type="checkbox"].solu {
@@ -140,16 +146,27 @@ input[type="checkbox"].solu {
 input[type="checkbox"].solu + label {
     padding: 10px;
     border: none;
-    border-radius: 15px;
 }
 
 input[type="checkbox"].solu + label:hover{
     cursor:pointer;
 }
 
-input[type="checkbox"].solu:checked + label {
-    border: 1px hidden rgba(5, 20, 65, 0.6);
-    background-color: rgba(5, 20, 65, 0.1);
+input[type="checkbox"].solu:checked + label{
+    filter: invert(100%);
+}
+
+#div-carte-droite{
+
+}
+
+#div-carte-droite iframe{
+    width:100%; 
+    right: 0;
+}
+
+#div-carte-gauche{
+
 }
 
 .card-container{

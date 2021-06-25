@@ -106,12 +106,14 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
     <div class="container-fluid">
-        <div class="row" id="div-titre" style="min-height: 100%;">
-            <div class="col-6 p-0" id="div-titre-gauche" style="min-height: 100%;">
-                <div id="titre"><p>Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p></div>
-                <div id="sous-titre"><p>Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p></div>
+        <div class="row" id="div-titre">
+            <div class="col-6 p-0" id="div-titre-gauche">
+                <div id="longueur-titre">
+                    <p id="titre">Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p>
+                    <p id="sous-titre">Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p>
+                </div>
             </div>
-            <div class="col-6" id="div-titre-droite" style="min-height: 100%;">
+            <div class="col-6" id="div-titre-droite">
                 <div id="solution" class="col-12">
                     <form action="" method="POST">
                     <div>
@@ -119,24 +121,30 @@ require_once 'php/verif_session_crea.php';
                         <div id="solution-logo">
                             <ul>
                                 <li>
+                                    <input type="checkbox" id="domicilia" class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img src="../../../app-assets/images/pages/domiciliation.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Domiciliation</p>
+                                    </label>
+                                </li>
+                                <li>
                                     <input type="checkbox" id="bureau" class="solu"></input>
                                     <label for="bureau" class="">
-                                        <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                                        <img src="../../../app-assets/images/pages/bureau.png">
+                                    </label><br>
+                                    <label>
                                         <p>Bureaux privatifs</p>
                                     </label>
                                 </li>
                                 <li>
                                     <input type="checkbox" id="cowork" class="solu"></input>
                                     <label for="cowork" class="">
-                                        <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                                        <img src="../../../app-assets/images/pages/coworking.png">
+                                    </label><br>
+                                    <label>
                                         <p>Coworking</p>
-                                    </label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="domicilia" class="solu"></input>
-                                    <label for="domicilia" class="">
-                                        <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
-                                        <p>Domiciliation</p>
                                     </label>
                                 </li>
                             </ul>
@@ -144,12 +152,12 @@ require_once 'php/verif_session_crea.php';
                     </div>
                     <div id="localisation">
                         <div class="form-group">
-                            <label class="" style="font-size: 15px; font-family: mukta malar bold; color: #051441; margin-left: 25px">Localisation</label>
-                            <input type="text" id="search-box" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
+                            <label class="">Localisation</label>
+                            <input type="text" id="search-box" name="" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
                             <div id="suggestion-box"></div>
                         </div>
-                        <div class="form-group" style="text-align: center; margin-top: 50px;">
-                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
+                        <div class="form-group" id="div-btn">
+                            <button type="submit" id='' class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
                         </div>
                     </div>
                     </form>
@@ -157,7 +165,7 @@ require_once 'php/verif_session_crea.php';
             </div>
         </div>
         <div class="row" id="div-carte" style="height: 100%;">
-            <div class="col-6" id="div-carte-gauche" style="height: 800px;">
+            <div class="col-6" id="div-carte-gauche" >
                 <div class="card-container">
                     <ul>
                         <li>
@@ -175,7 +183,7 @@ require_once 'php/verif_session_crea.php';
                     </ul>
                 </div>
             </div>
-            <div class="col-6" id="div-carte-droite" style="height: 800px;">
+            <div class="col-6" id="div-carte-droite" >
             <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="100%" height="800px" right=0;></iframe>
             
             </div>
