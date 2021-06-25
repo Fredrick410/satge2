@@ -30,6 +30,118 @@ require_once 'php/verif_session_connect_admin.php';
     $pdoSt->execute();
     $facture_retard = $pdoSt->fetchAll();
 
+    $count_retard = count($facture_retard);
+
+    // COLOUMN CHART PASSIF
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "01");
+    $pdoSta->execute();
+    $portefeuille_janv = $pdoSta->fetchAll();
+    $count_janv = count($portefeuille_janv);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "02");
+    $pdoSta->execute();
+    $portefeuille_fevr = $pdoSta->fetchAll();
+    $count_fevr = count($portefeuille_fevr);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "03");
+    $pdoSta->execute();
+    $portefeuille_mars = $pdoSta->fetchAll();
+    $count_mars = count($portefeuille_mars);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "04");
+    $pdoSta->execute();
+    $portefeuille_avr = $pdoSta->fetchAll();
+    $count_avr = count($portefeuille_avr);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "05");
+    $pdoSta->execute();
+    $portefeuille_mai = $pdoSta->fetchAll();
+    $count_mai = count($portefeuille_mai);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "06");
+    $pdoSta->execute();
+    $portefeuille_juin = $pdoSta->fetchAll();
+    $count_juin = count($portefeuille_juin);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "07");
+    $pdoSta->execute();
+    $portefeuille_juillet = $pdoSta->fetchAll();
+    $count_juillet = count($portefeuille_juillet);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "08");
+    $pdoSta->execute();
+    $portefeuille_aout = $pdoSta->fetchAll();
+    $count_aout = count($portefeuille_aout);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
+    $pdoSta->bindValue(':date_crea_m', "09");
+    $pdoSta->execute();
+    $portefeuille_sept = $pdoSta->fetchAll();
+    $count_sept = count($portefeuille_sept);
+
+     // COLOUMN CHART ACTIF
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "01");
+     $pdoSta->execute();
+     $portefeuille_janv = $pdoSta->fetchAll();
+     $actif_janv = count($portefeuille_janv);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "02");
+     $pdoSta->execute();
+     $portefeuille_fevr = $pdoSta->fetchAll();
+     $actif_fevr = count($portefeuille_fevr);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "03");
+     $pdoSta->execute();
+     $portefeuille_mars = $pdoSta->fetchAll();
+     $actif_mars = count($portefeuille_mars);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "04");
+     $pdoSta->execute();
+     $portefeuille_avr = $pdoSta->fetchAll();
+     $actif_avr = count($portefeuille_avr);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "05");
+     $pdoSta->execute();
+     $portefeuille_mai = $pdoSta->fetchAll();
+     $actif_mai = count($portefeuille_mai);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "06");
+     $pdoSta->execute();
+     $portefeuille_juin = $pdoSta->fetchAll();
+     $actif_juin = count($portefeuille_juin);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "07");
+     $pdoSta->execute();
+     $portefeuille_juillet = $pdoSta->fetchAll();
+     $actif_juillet = count($portefeuille_juillet);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "08");
+     $pdoSta->execute();
+     $portefeuille_aout = $pdoSta->fetchAll();
+     $actift_aout = count($portefeuille_aout);
+
+     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
+     $pdoSta->bindValue(':date_crea_m', "09");
+     $pdoSta->execute();
+     $portefeuille_sept = $pdoSta->fetchAll();
+     $actif_sept = count($portefeuille_sept);
+
    
 
 ?>
@@ -161,29 +273,34 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
                                                                 <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                    <div class="user-analytics">
-                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                    <div class="user-analytics">                                                                        
                                                                         <span class="align-middle text-muted">Prospect</span>
                                                                         <div class="d-flex">
-                                                                            <div id="radial-success-chart"></div>
-                                                                            <h3 class="mt-1 ml-50"><?= $count_prospect ?></h3>
-                                                                        </div>
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-primary mx-auto my-1">
+                                                                                <i class='bx bxs-save icon_size'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h3 class="text-center"><?= $count_prospect ?></h3>
+                                                                        
                                                                     </div>
-                                                                    <div class="sessions-analytics">
-                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                    <div class="sessions-analytics">                                                                    
                                                                         <span class="align-middle text-muted">En cours</span>
                                                                         <div class="d-flex">
-                                                                            <div id="radial-warning-chart"></div>
-                                                                            <h3 class="mt-1 ml-50"><?= $count_encours ?></h3>
-                                                                        </div>
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto my-1">
+                                                                                <i class='bx bx-badge-check icon_size'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h3 class="text-center"><?= $count_encours ?></h3>
+                                                                        
                                                                     </div>
-                                                                    <div class="bounce-rate-analytics">
-                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                    <div class="bounce-rate-analytics">                                                                       
                                                                         <span class="align-middle text-muted">Actif</span>
                                                                         <div class="d-flex">
-                                                                            <div id="radial-danger-chart"></div>
-                                                                            <h3 class="mt-1 ml-50"><?= $count_actif ?></h3>
-                                                                        </div>
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-warning mx-auto my-1">
+                                                                                <i class='bx bx-loader-circle icon_size'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h3 class="text-center"><?= $count_actif ?></h3>                                                                        
                                                                     </div>
                                                                 </div>
                                                                 <div id="analytics-bar-chart"></div>
@@ -192,18 +309,19 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                 </div>
                                             </div>
+                                            <section id="horizontal-vertical">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
                                                             <h4 class="card-title">Rappel facutres retard</h4>
-                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                            <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
                                                                  <!-- table with no border -->
                                                                 <div class="table-responsive">
-                                                                    <table id="table-extended-transactions" class="table mb-0">
+                                                                    <table class="table table-borderless nowrap scroll-horizontal-vertical">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th class="text-center">NAME</th>
@@ -226,39 +344,13 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </tbody>
                                                                     </table>
                                                                 </div>    
-
-                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                    <div class="user-analytics">
-                                                                        <i class="bx bx-user mr-25 align-middle"></i>
-                                                                        <span class="align-middle text-muted">Users</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-success-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">61K</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="sessions-analytics">
-                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Sessions</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-warning-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">92K</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="bounce-rate-analytics">
-                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Bounce Rate</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-danger-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="analytics-bar-chart"></div>
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            </section>
                                         </div>
                                         <!-- FIN COLONNE GAUCHE -->
                                         <!-- DEBUT COLONNE DROITE -->
@@ -959,7 +1051,7 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/table-extended.js"></script>
+    <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
 
 </body>
