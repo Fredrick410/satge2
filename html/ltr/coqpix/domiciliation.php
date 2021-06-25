@@ -338,7 +338,6 @@ input[type="checkbox"].solu:checked + label {
             </div>
             <div class="col-6" id="div-titre-droite" style="min-height: 100%;">
                 <div id="solution" class="col-12">
-                    <form action="" method="POST">
                     <div>
                         <h1>Nos solutions</h1>
                         <div id="solution-logo">
@@ -374,18 +373,18 @@ input[type="checkbox"].solu:checked + label {
                             <div id="suggestion-box"></div>
                         </div>
                         <div class="form-group" style="text-align: center; margin-top: 50px;">
-                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
+                            <button type="submit" id='btn-recherche' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
                         </div>
                     </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
         <div class="row" id="div-carte" style="height: 100%;">
             <div class="col-6" id="div-carte-gauche" style="height: 800px;">
-                <div class="card-container">
-                    <ul>
-                        <li>
+                <div class="card-container" id="offre-conteneur">
+                    <!--<ul>
+                       <li>
                             <div class="card-body p-0">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
@@ -397,7 +396,7 @@ input[type="checkbox"].solu:checked + label {
                                 </div>
                             </div>
                         </li>
-                    </ul>
+                    </ul>-->
                 </div>
             </div>
             <div class="col-6" id="div-carte-droite" style="height: 800px;">
@@ -424,12 +423,23 @@ input[type="checkbox"].solu:checked + label {
             url: "php/readCity.php",
             data:'keyword='+$(this).val(),
             beforeSend: function(){
-                $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+                $("#search-box").css("background","#FFF url(../../../app-assets/images/ico/ajax-loader.gif) no-repeat 165px");
             },
             success: function(data){
                 $("#suggestion-box").show();
                 $("#suggestion-box").html(data);
                 $("#search-box").css("background","#FFF");
+            }
+            });
+        });
+        $("#btn-recherche").on('click',function(){
+            $.ajax({
+            type: "POST",
+            url: "php/display-offers.php",
+            data:'ville='+$("#search-box").val(),
+            success: function(data){
+                console.log("affichage des offres");
+                $("#offre-conteneur").html(data);
             }
             });
         });
