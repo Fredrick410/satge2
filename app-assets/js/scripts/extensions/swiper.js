@@ -97,7 +97,6 @@ $(document).ready(function () {
     var mySwiper8 = new Swiper('.swiper-cube-effect', {
         effect: 'cube',
         grabCursor: true,
-	loop: true,
         cubeEffect: {
             shadow: true,
             slideShadows: true,

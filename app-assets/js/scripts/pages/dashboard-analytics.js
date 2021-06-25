@@ -797,6 +797,8 @@ $(window).on("load", function () {
 
   // Growth Radial Chart
   // --------------------
+  var taux_prelevement = document.getElementById("taux_prelevement").value;
+
   var growthChartOptions = {
     chart: {
       height: 200,
@@ -852,7 +854,7 @@ $(window).on("load", function () {
     stroke: {
       dashArray: 3
     },
-    series: [78],
+    series: [taux_prelevement],
     labels: ['Growth'],
   }
 
@@ -862,6 +864,74 @@ $(window).on("load", function () {
   );
 
   growthChart.render();
+
+  var bilan_annuel = document.getElementById("bilan_annuel").value;
+
+  var growthChartOptions2 = {
+    chart: {
+      height: 200,
+      type: 'radialBar',
+      sparkline: {
+        show: true
+      }
+    },
+    grid: {
+      show: false,
+    },
+    plotOptions: {
+      radialBar: {
+        size: 100,
+        startAngle: -135,
+        endAngle: 135,
+        offsetY: 40,
+        hollow: {
+          size: '60%',
+        },
+        track: {
+          strokeWidth: '90%',
+          background: '#fff'
+        },
+        dataLabels: {
+          value: {
+            offsetY: -10,
+            color: '#475f7b',
+            fontSize: '26px'
+          },
+          name: {
+            fontSize: '15px',
+            color: "#596778",
+            offsetY: 30
+          },
+        }
+      },
+    },
+    colors: [$danger],
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: [$primary],
+        inverseColors: true,
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100]
+      },
+    },
+    stroke: {
+      dashArray: 3
+    },
+    series: [bilan_annuel],
+    labels: ['Growth'],
+  }
+
+  var growthChart2 = new ApexCharts(
+    document.querySelector("#growth-Chart2"),
+    growthChartOptions2
+  );
+
+  growthChart2.render();
 
 
   // Widget Todo List
