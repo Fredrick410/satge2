@@ -57,3 +57,8 @@ branch de oscar :
 	tache réalisée le24/06/2021
 		-page domiciliation.php ->affichage des offres des adresses a gauche de la carte
 		- création page domiciliation-offre.php ->carousel, description de l'adresse/offre
+
+
+branch de robin :
+	tache réalisée 25/06/21
+		-suggestion de villes sur domiciliation.php

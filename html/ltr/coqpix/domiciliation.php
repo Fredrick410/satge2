@@ -310,6 +310,14 @@ input[type="checkbox"].solu:checked + label {
     border: 1px solid black;
     cursor : pointer;
 }
+
+#city-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+
+#city-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+
+#city-list li:hover{background:#ece3d2;cursor: pointer;}
+
+#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
     
 </style>
 
@@ -362,7 +370,8 @@ input[type="checkbox"].solu:checked + label {
                     <div id="localisation">
                         <div class="form-group">
                             <label class="" style="font-size: 15px; font-family: mukta malar bold; color: #051441; margin-left: 25px">Localisation</label>
-                            <input type="text" id="" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
+                            <input type="text" id="search-box" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
+                            <div id="suggestion-box"></div>
                         </div>
                         <div class="form-group" style="text-align: center; margin-top: 50px;">
                             <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
@@ -377,44 +386,14 @@ input[type="checkbox"].solu:checked + label {
                 <div class="card-container">
                     <ul>
                         <li>
-<<<<<<< HEAD
-                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
-                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
-                                <div class="card-descrip">
-                                    <p>Salut</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
-=======
                             <div class="card-body p-0">
->>>>>>> 346e30ed98acfb993f5192a0d4304130bdb95e75
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
                                 <div class="card-descrip">
                                     <p id="ville">Multiburo Paris Châtelet, 75003</p>
                                     <p id="adresse">52 boulevard Sébastopol<br> 75003 Paris</p>
                                 </div>
-<<<<<<< HEAD
-                            </div>
-                        </li>
-                        <li>
-                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
-                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
-                                <div class="card-descrip">
-                                    <p>Salut</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="card-body offers" onclick="window.location='page-coming-soon.html';">
-                                <img src="../../../app-assets/images/profile/pages/page-09.jpg">
-                                <div class="card-descrip">
-                                    <p>Salut</p>
-=======
                                 <div class="card-btn">
                                     <a href="domiciliation-offre.php">Découvrir cette adresse</a>
->>>>>>> 346e30ed98acfb993f5192a0d4304130bdb95e75
                                 </div>
                             </div>
                         </li>
@@ -432,6 +411,36 @@ input[type="checkbox"].solu:checked + label {
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>    
+
+<script>
+    //suggest adresse
+    $(document).ready(function(){
+        $("#search-box").keyup(function(){
+            $.ajax({
+            type: "POST",
+            url: "php/readCity.php",
+            data:'keyword='+$(this).val(),
+            beforeSend: function(){
+                $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+            },
+            success: function(data){
+                $("#suggestion-box").show();
+                $("#suggestion-box").html(data);
+                $("#search-box").css("background","#FFF");
+            }
+            });
+        });
+    });
+
+    function selectCity(val) {
+    $("#search-box").val(val);
+    $("#suggestion-box").hide();
+    }
+</script>
+
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
