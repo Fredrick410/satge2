@@ -18,7 +18,7 @@ if(!empty($tab)){
 
 <?php 
 foreach($tab as $offre){
-
+    
 ?>
 
     <li>
@@ -29,7 +29,7 @@ foreach($tab as $offre){
                             <p id="adresse"><?php echo $offre['adresse']; ?></p>
                     </div>
                     <div class="card-btn">
-                            <a href="domiciliation-offre.php">Découvrir cette adresse</a>
+                            <a href="domiciliation-offre.php?id=<?php echo $offre['id']; ?>">Découvrir cette adresse</a>
                     </div>
         </div>
     </li>
