@@ -158,7 +158,6 @@ $(document).ready(function () {
         spaceBetween: 10,
 	effect: 'cube',
         grabCursor: true,
-	loop: true,
         cubeEffect: {
             shadow: false,
             slideShadows: false,
