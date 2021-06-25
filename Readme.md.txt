@@ -52,4 +52,8 @@ branch de leo :
 branch de oscar :
 	tache réalisée le 23/06/2021
 		-page domiciliation.php ->barre de recherche 
-								->carte
+								->carte avec les adresses
+
+	tache réalisée le24/06/2021
+		-page domiciliation.php ->affichage des offres des adresses a gauche de la carte
+		- création page domiciliation-offre.php ->carousel, description de l'adresse/offre

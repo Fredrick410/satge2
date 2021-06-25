@@ -226,7 +226,7 @@ input[type="checkbox"].solu:checked + label {
     <br>
     <div class="breadcrumb-wrapper col-12" ">
         <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
-            <li class="breadcrumb-item"><a href="domiciliation.php"><i class="bx bx-home-alt"></i></a></li>
+            <li class="breadcrumb-item"><a href="domiciliation.php"><i class="livicon-evo" data-options=" name: arrow-left.svg; size: 26px " style="cursor: pointer; position: relative; top: 0px;"></i></a></li>
             <li class="breadcrumb-item active"> Offre de domiciliation </li>
         </ol>
     </div>
