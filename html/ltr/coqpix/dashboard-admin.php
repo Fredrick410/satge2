@@ -28,7 +28,7 @@ require_once 'php/verif_session_connect_admin.php';
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/charts/apexcharts.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/dragula.min.css">
-     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/swiper.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -42,8 +42,9 @@ require_once 'php/verif_session_connect_admin.php';
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/dashboard-ecommerce.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/dashboard-analytics.css">
-     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/extensions/swiper.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/extensions/swiper.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -94,7 +95,7 @@ require_once 'php/verif_session_connect_admin.php';
             <div class="content-header row">
             </div>
             <div class="content-body row">
-                 <!-- DEBUT MENU GAUCHE -->
+                <!-- DEBUT MENU GAUCHE -->
                 <div class="col-3">
 
                 </div>
@@ -104,17 +105,17 @@ require_once 'php/verif_session_connect_admin.php';
                     <section id="component-swiper-gallery dashboard-analytics">
                         <div class="swiper-container gallery-thumbs">
                             <div class="swiper-wrapper mt-25">
-                                <div class="swiper-slide dash-compta">
-                                    Comptabilité
+                                <div class="swiper-slide dash">
+                                    <button type="button" class="btn btn-warning btn-lg btn-block"><strong>Comptabilité</strong></button>
                                 </div>
-                                <div class="swiper-slide dash-juri">
-                                    Juridique
+                                <div class="swiper-slide dash">
+                                    <button type="button" class="btn btn-info btn-lg btn-block"><strong>Juridique</strong></button>
                                 </div>
-                                <div class="swiper-slide dash-fisca">
-                                    Fiscalité
+                                <div class="swiper-slide dash">
+                                    <button type="button" class="btn btn-danger btn-lg btn-block"><strong>Fiscalité</strong></button>
                                 </div>
-                                <div class="swiper-slide dash-socia">
-                                    Sociale
+                                <div class="swiper-slide dash">
+                                    <button type="button" class="btn btn-primary btn-lg btn-block"><strong>Sociale</strong></button>
                                 </div>
                             </div>
                         </div>
@@ -130,6 +131,452 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
                                                             <h4 class="card-title">Compta</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- FIN COLONNE GAUCHE -->
+                                        <!-- DEBUT COLONNE DROITE -->
+                                        <div class="col-xl-6 col-md-12">
+                                            <div class="row">
+                                                <div class="col-12 dashboard-earning-swiper" id="widget-earnings">
+                                                    <div class="card">
+                                                        <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+                                                            <h5 class="card-title"><i class="bx bx-group font-medium-5 align-middle"></i> <span class="align-middle">Comptables</span></h5>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body py-1 px-0">
+                                                                <!-- earnings swiper starts -->
+                                                                <div class="widget-earnings-swiper swiper-container p-1">
+                                                                    <div class="swiper-wrapper">
+                                                                        <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="admin-theme">
+                                                                            <i class="bx bx-dollar mr-50 font-large-1"></i>
+                                                                            <div class="swiper-text">
+                                                                                <div class="swiper-heading">Ventes</div>
+                                                                                <small class="d-block">Entrées d'argent</small>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="ux-devloper">
+                                                                            <i class="bx bx-wallet mr-50 font-large-1"></i>
+                                                                            <div class="swiper-text">
+                                                                                <div class="swiper-heading">Achats</div>
+                                                                                <small class="d-block">Sorties d'argent</small>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="marketing-guide">
+                                                                            <i class="bx bx-diamond mr-50 font-large-1"></i>
+                                                                            <div class="swiper-text">
+                                                                                <div class="swiper-heading">Trésorerie</div>
+                                                                                <small class="d-block">État des finances</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- earnings swiper ends -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="main-wrapper-content">
+                                                            <div class="wrapper-content" data-earnings="admin-theme">
+                                                                <div class="widget-earnings-scroll table-responsive">
+                                                                    <table class="table table-borderless widget-earnings-width mb-0">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Mera Lter</h6>
+                                                                                            <span class="font-small-2">Designer</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-info progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Pauly Dez</h6>
+                                                                                            <span class="font-small-2">Devloper</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-success progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-success">+ $553</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">jini mara</h6>
+                                                                                            <span class="font-small-2">Marketing</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-primary progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-12.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Lula Taylor</h6>
+                                                                                            <span class="font-small-2">UX</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-danger progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="80" aria-valuemax="100" style="width:35%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-danger">- $150</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="wrapper-content" data-earnings="ux-devloper">
+                                                                <div class="widget-earnings-scroll table-responsive">
+                                                                    <table class="table table-borderless widget-earnings-width mb-0">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-16.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Drako Lter</h6>
+                                                                                            <span class="font-small-2">Designer</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-info progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="38" aria-valuemin="80" aria-valuemax="100" style="width:38%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-danger">- $280</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-1.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Pauly Dez</h6>
+                                                                                            <span class="font-small-2">Devloper</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-success progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-success">+ $853</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Lary Masey</h6>
+                                                                                            <span class="font-small-2">Marketing</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-primary progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-2.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Lvia Taylor</h6>
+                                                                                            <span class="font-small-2">Devloper</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-danger progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="80" aria-valuemax="100" style="width:75%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-danger">- $360</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="wrapper-content" data-earnings="marketing-guide">
+                                                                <div class="widget-earnings-scroll table-responsive">
+                                                                    <table class="table table-borderless widget-earnings-width mb-0">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-19.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">yono Lter</h6>
+                                                                                            <span class="font-small-2">Designer</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-info progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="28" aria-valuemin="80" aria-valuemax="100" style="width:28%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-primary">- $270</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Pauly Dez</h6>
+                                                                                            <span class="font-small-2">Devloper</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-success progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-success">+ $853</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-12.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Lary Masey</h6>
+                                                                                            <span class="font-small-2">Marketing</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-primary progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-primary">+ $225</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <a class="media-left mr-50" href="#">
+                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                        </a>
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0">Lula Taylor</h6>
+                                                                                            <span class="font-small-2">Devloper</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-danger progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="80" aria-valuemax="100" style="width:35%;"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-danger">- $350</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- DEBUT CROISSANCE -->
+                                            <div class="row">
+                                                <!-- Croissance 1 -->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    2019
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+                                                                    <a class="dropdown-item" href="#">2019</a>
+                                                                    <a class="dropdown-item" href="#">2018</a>
+                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                </div>
+                                                            </div>
+                                                            <div id="growth-Chart"></div>
+                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Croissance 2-->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    2019
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+                                                                    <a class="dropdown-item" href="#">2019</a>
+                                                                    <a class="dropdown-item" href="#">2018</a>
+                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                </div>
+                                                            </div>
+                                                            <div id="growth-Chart"></div>
+                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FIN CROISSANCE -->
+                                        </div>
+                                    </div>
+                                    <!-- FIN COMPTA -->
+                                </div>
+                                <div class="swiper-slide">
+                                    <!-- DEBUT COMPTA -->
+                                    <div class="row">
+                                        <!-- DEBUT COLONNE GAUCHE -->
+                                        <div class="col-xl-6 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Juridique</h4>
                                                             <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
                                                         </div>
                                                         <div class="card-content">
@@ -306,574 +753,390 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>
                                     </div>
                                     <!-- FIN COMPTA -->
-                        </div>
-                                <div class="swiper-slide"><!-- DEBUT COMPTA -->
-                                <div class="row">
-                                    <!-- DEBUT COLONNE GAUCHE -->
-                                    <div class="col-xl-6 col-sm-12">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <h4 class="card-title">Juridique</h4>
-                                                        <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                    </div>
-                                                    <div class="card-content">
-                                                        <div class="card-body pb-1">
-                                                            <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                <div class="user-analytics">
-                                                                    <i class="bx bx-user mr-25 align-middle"></i>
-                                                                    <span class="align-middle text-muted">Users</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-success-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">61K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sessions-analytics">
-                                                                    <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Sessions</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-warning-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">92K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="bounce-rate-analytics">
-                                                                    <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Bounce Rate</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-danger-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div id="analytics-bar-chart"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <h4 class="card-title">Website Analytics</h4>
-                                                        <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                    </div>
-                                                    <div class="card-content">
-                                                        <div class="card-body pb-1">
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                <div class="user-analytics">
-                                                                    <i class="bx bx-user mr-25 align-middle"></i>
-                                                                    <span class="align-middle text-muted">Users</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-success-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">61K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sessions-analytics">
-                                                                    <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Sessions</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-warning-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">92K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="bounce-rate-analytics">
-                                                                    <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Bounce Rate</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-danger-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div id="analytics-bar-chart"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- FIN COLONNE GAUCHE -->
-                                    <!-- DEBUT COLONNE DROITE -->
-                                    <div class="col-xl-6 col-md-12">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <h4 class="card-title">Website Analytics</h4>
-                                                        <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                    </div>
-                                                    <div class="card-content">
-                                                        <div class="card-body pb-1">
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                <div class="user-analytics">
-                                                                    <i class="bx bx-user mr-25 align-middle"></i>
-                                                                    <span class="align-middle text-muted">Users</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-success-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">61K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sessions-analytics">
-                                                                    <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Sessions</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-warning-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">92K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="bounce-rate-analytics">
-                                                                    <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Bounce Rate</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-danger-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div id="analytics-bar-chart"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- DEBUT CROISSANCE -->
-                                        <div class="row">
-                                            <!-- Croissance 1 -->
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body text-center">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                2019
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                <a class="dropdown-item" href="#">2019</a>
-                                                                <a class="dropdown-item" href="#">2018</a>
-                                                                <a class="dropdown-item" href="#">2017</a>
-                                                            </div>
-                                                        </div>
-                                                        <div id="growth-Chart"></div>
-                                                        <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Croissance 2-->
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body text-center">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                2019
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                <a class="dropdown-item" href="#">2019</a>
-                                                                <a class="dropdown-item" href="#">2018</a>
-                                                                <a class="dropdown-item" href="#">2017</a>
-                                                            </div>
-                                                        </div>
-                                                        <div id="growth-Chart"></div>
-                                                        <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- FIN CROISSANCE -->
-                                    </div>
                                 </div>
-                        <!-- FIN COMPTA -->
-                                                </div>
-                                                <div class="swiper-slide">  <!-- DEBUT COMPTA -->
-                                <div class="row">
-                                    <!-- DEBUT COLONNE GAUCHE -->
-                                    <div class="col-xl-6 col-sm-12">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <h4 class="card-title">Fiscalité</h4>
-                                                        <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                    </div>
-                                                    <div class="card-content">
-                                                        <div class="card-body pb-1">
-                                                            <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                <div class="user-analytics">
-                                                                    <i class="bx bx-user mr-25 align-middle"></i>
-                                                                    <span class="align-middle text-muted">Users</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-success-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">61K</h3>
+                                <div class="swiper-slide">
+                                    <!-- DEBUT COMPTA -->
+                                    <div class="row">
+                                        <!-- DEBUT COLONNE GAUCHE -->
+                                        <div class="col-xl-6 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Fiscalité</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="sessions-analytics">
-                                                                    <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Sessions</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-warning-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">92K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="bounce-rate-analytics">
-                                                                    <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Bounce Rate</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-danger-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                    </div>
-                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
                                                             </div>
-                                                            <div id="analytics-bar-chart"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <h4 class="card-title">Website Analytics</h4>
-                                                        <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                    </div>
-                                                    <div class="card-content">
-                                                        <div class="card-body pb-1">
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                <div class="user-analytics">
-                                                                    <i class="bx bx-user mr-25 align-middle"></i>
-                                                                    <span class="align-middle text-muted">Users</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-success-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">61K</h3>
+                                        <!-- FIN COLONNE GAUCHE -->
+                                        <!-- DEBUT COLONNE DROITE -->
+                                        <div class="col-xl-6 col-md-12">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="sessions-analytics">
-                                                                    <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Sessions</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-warning-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">92K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="bounce-rate-analytics">
-                                                                    <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Bounce Rate</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-danger-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                    </div>
-                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
                                                             </div>
-                                                            <div id="analytics-bar-chart"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- DEBUT CROISSANCE -->
+                                            <div class="row">
+                                                <!-- Croissance 1 -->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    2019
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+                                                                    <a class="dropdown-item" href="#">2019</a>
+                                                                    <a class="dropdown-item" href="#">2018</a>
+                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                </div>
+                                                            </div>
+                                                            <div id="growth-Chart"></div>
+                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Croissance 2-->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    2019
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+                                                                    <a class="dropdown-item" href="#">2019</a>
+                                                                    <a class="dropdown-item" href="#">2018</a>
+                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                </div>
+                                                            </div>
+                                                            <div id="growth-Chart"></div>
+                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FIN CROISSANCE -->
                                         </div>
                                     </div>
-                                    <!-- FIN COLONNE GAUCHE -->
-                                    <!-- DEBUT COLONNE DROITE -->
-                                    <div class="col-xl-6 col-md-12">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <h4 class="card-title">Website Analytics</h4>
-                                                        <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                    </div>
-                                                    <div class="card-content">
-                                                        <div class="card-body pb-1">
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <p>hello</p>
-                                                            <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                <div class="user-analytics">
-                                                                    <i class="bx bx-user mr-25 align-middle"></i>
-                                                                    <span class="align-middle text-muted">Users</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-success-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">61K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sessions-analytics">
-                                                                    <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Sessions</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-warning-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">92K</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="bounce-rate-analytics">
-                                                                    <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                    <span class="align-middle text-muted">Bounce Rate</span>
-                                                                    <div class="d-flex">
-                                                                        <div id="radial-danger-chart"></div>
-                                                                        <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div id="analytics-bar-chart"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- DEBUT CROISSANCE -->
-                                        <div class="row">
-                                            <!-- Croissance 1 -->
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body text-center">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                2019
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                <a class="dropdown-item" href="#">2019</a>
-                                                                <a class="dropdown-item" href="#">2018</a>
-                                                                <a class="dropdown-item" href="#">2017</a>
-                                                            </div>
-                                                        </div>
-                                                        <div id="growth-Chart"></div>
-                                                        <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Croissance 2-->
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body text-center">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                2019
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                <a class="dropdown-item" href="#">2019</a>
-                                                                <a class="dropdown-item" href="#">2018</a>
-                                                                <a class="dropdown-item" href="#">2017</a>
-                                                            </div>
-                                                        </div>
-                                                        <div id="growth-Chart"></div>
-                                                        <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- FIN CROISSANCE -->
-                                    </div>
+                                    <!-- FIN COMPTA -->
                                 </div>
-                        <!-- FIN COMPTA -->
-                                        </div>
-                                        <div class="swiper-slide">  <!-- DEBUT COMPTA -->
-                        <div class="row">
-                            <!-- DEBUT COLONNE GAUCHE -->
-                            <div class="col-xl-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title">Sociale</h4>
-                                                <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                            </div>
-                                            <div class="card-content">
-                                                <div class="card-body pb-1">
-                                                    <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                        <div class="user-analytics">
-                                                            <i class="bx bx-user mr-25 align-middle"></i>
-                                                            <span class="align-middle text-muted">Users</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-success-chart"></div>
-                                                                <h3 class="mt-1 ml-50">61K</h3>
-                                                            </div>
+                                <div class="swiper-slide">
+                                    <!-- DEBUT COMPTA -->
+                                    <div class="row">
+                                        <!-- DEBUT COLONNE GAUCHE -->
+                                        <div class="col-xl-6 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Sociale</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
                                                         </div>
-                                                        <div class="sessions-analytics">
-                                                            <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                            <span class="align-middle text-muted">Sessions</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-warning-chart"></div>
-                                                                <h3 class="mt-1 ml-50">92K</h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="bounce-rate-analytics">
-                                                            <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                            <span class="align-middle text-muted">Bounce Rate</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-danger-chart"></div>
-                                                                <h3 class="mt-1 ml-50">72.6%</h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="analytics-bar-chart"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title">Website Analytics</h4>
-                                                <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                            </div>
-                                            <div class="card-content">
-                                                <div class="card-body pb-1">
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                        <div class="user-analytics">
-                                                            <i class="bx bx-user mr-25 align-middle"></i>
-                                                            <span class="align-middle text-muted">Users</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-success-chart"></div>
-                                                                <h3 class="mt-1 ml-50">61K</h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="sessions-analytics">
-                                                            <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                            <span class="align-middle text-muted">Sessions</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-warning-chart"></div>
-                                                                <h3 class="mt-1 ml-50">92K</h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="bounce-rate-analytics">
-                                                            <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                            <span class="align-middle text-muted">Bounce Rate</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-danger-chart"></div>
-                                                                <h3 class="mt-1 ml-50">72.6%</h3>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="analytics-bar-chart"></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- FIN COLONNE GAUCHE -->
+                                        <!-- DEBUT COLONNE DROITE -->
+                                        <div class="col-xl-6 col-md-12">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <div class="card-body pb-1">
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <p>hello</p>
+                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
+                                                                    <div class="user-analytics">
+                                                                        <i class="bx bx-user mr-25 align-middle"></i>
+                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-success-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sessions-analytics">
+                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-warning-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">
+                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <div class="d-flex">
+                                                                            <div id="radial-danger-chart"></div>
+                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="analytics-bar-chart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- DEBUT CROISSANCE -->
+                                            <div class="row">
+                                                <!-- Croissance 1 -->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    2019
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+                                                                    <a class="dropdown-item" href="#">2019</a>
+                                                                    <a class="dropdown-item" href="#">2018</a>
+                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                </div>
+                                                            </div>
+                                                            <div id="growth-Chart"></div>
+                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Croissance 2-->
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body text-center">
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    2019
+                                                                </button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+                                                                    <a class="dropdown-item" href="#">2019</a>
+                                                                    <a class="dropdown-item" href="#">2018</a>
+                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                </div>
+                                                            </div>
+                                                            <div id="growth-Chart"></div>
+                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FIN CROISSANCE -->
+                                        </div>
                                     </div>
+                                    <!-- FIN COMPTA -->
                                 </div>
                             </div>
-                            <!-- FIN COLONNE GAUCHE -->
-                            <!-- DEBUT COLONNE DROITE -->
-                            <div class="col-xl-6 col-md-12">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header d-flex justify-content-between align-items-center">
-                                                <h4 class="card-title">Website Analytics</h4>
-                                                <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                            </div>
-                                            <div class="card-content">
-                                                <div class="card-body pb-1">
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <p>hello</p>
-                                                    <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                        <div class="user-analytics">
-                                                            <i class="bx bx-user mr-25 align-middle"></i>
-                                                            <span class="align-middle text-muted">Users</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-success-chart"></div>
-                                                                <h3 class="mt-1 ml-50">61K</h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="sessions-analytics">
-                                                            <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                            <span class="align-middle text-muted">Sessions</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-warning-chart"></div>
-                                                                <h3 class="mt-1 ml-50">92K</h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="bounce-rate-analytics">
-                                                            <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                            <span class="align-middle text-muted">Bounce Rate</span>
-                                                            <div class="d-flex">
-                                                                <div id="radial-danger-chart"></div>
-                                                                <h3 class="mt-1 ml-50">72.6%</h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="analytics-bar-chart"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- DEBUT CROISSANCE -->
-                                <div class="row">
-                                    <!-- Croissance 1 -->
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        2019
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                        <a class="dropdown-item" href="#">2019</a>
-                                                        <a class="dropdown-item" href="#">2018</a>
-                                                        <a class="dropdown-item" href="#">2017</a>
-                                                    </div>
-                                                </div>
-                                                <div id="growth-Chart"></div>
-                                                <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Croissance 2-->
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        2019
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                        <a class="dropdown-item" href="#">2019</a>
-                                                        <a class="dropdown-item" href="#">2018</a>
-                                                        <a class="dropdown-item" href="#">2017</a>
-                                                    </div>
-                                                </div>
-                                                <div id="growth-Chart"></div>
-                                                <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FIN CROISSANCE -->
-                            </div>
                         </div>
-                <!-- FIN COMPTA -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
+                    </section>
                 </div>
-                <!-- Dashboard Analytics end -->
             </div>
         </div>
+        <!-- Dashboard Analytics end -->
+    </div>
+    </div>
     </div>
     <!-- END: Content-->
 
@@ -892,7 +1155,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
     <script src="../../../app-assets/vendors/js/charts/apexcharts.min.js"></script>
     <script src="../../../app-assets/vendors/js/extensions/dragula.min.js"></script>
-     <script src="../../../app-assets/vendors/js/extensions/swiper.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/swiper.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -906,6 +1169,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <!-- END: Page JS-->
 
