@@ -6,6 +6,32 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "prospect" || statut = "prospect!validation"');
+    $pdoSta->execute();
+    $portefeuille_prospect = $pdoSta->fetchAll();
+    $count_prospect = count($portefeuille_prospect);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif"');
+    $pdoSta->execute();
+    $portefeuille_actif = $pdoSta->fetchAll();
+    $count_actif = count($portefeuille_actif);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "encours"');
+    $pdoSta->execute();
+    $portefeuille_encours = $pdoSta->fetchAll();
+    $count_encours = count($portefeuille_encours);
+
+    // rappel facture retard 
+    $pdoSt= $bdd->query('SELECT * FROM facture');
+    $facture = $pdoSt->fetch();
+
+    $pdoSt= $bdd->prepare('SELECT * FROM (SELECT nameentreprise, reffacture, dateecheance, numerosfacture from facture, entreprise where status_facture = "NON PAYE" AND dateecheance < NOW() AND entreprise.id=:id) as temp ORDER BY dateecheance DESC LIMIT 10');
+    $pdoSt->bindValue(':id', $facture['id_session']);
+    $pdoSt->execute();
+    $facture_retard = $pdoSt->fetchAll();
+
+   
+
 ?>
 
 <!DOCTYPE html>
@@ -137,26 +163,26 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <div class="d-flex justify-content-around align-items-center flex-wrap">
                                                                     <div class="user-analytics">
                                                                         <i class="bx bx-user mr-25 align-middle"></i>
-                                                                        <span class="align-middle text-muted">Users</span>
+                                                                        <span class="align-middle text-muted">Prospect</span>
                                                                         <div class="d-flex">
                                                                             <div id="radial-success-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">61K</h3>
+                                                                            <h3 class="mt-1 ml-50"><?= $count_prospect ?></h3>
                                                                         </div>
                                                                     </div>
                                                                     <div class="sessions-analytics">
                                                                         <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                        <span class="align-middle text-muted">En cours</span>
                                                                         <div class="d-flex">
                                                                             <div id="radial-warning-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">92K</h3>
+                                                                            <h3 class="mt-1 ml-50"><?= $count_encours ?></h3>
                                                                         </div>
                                                                     </div>
                                                                     <div class="bounce-rate-analytics">
                                                                         <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                        <span class="align-middle text-muted">Actif</span>
                                                                         <div class="d-flex">
                                                                             <div id="radial-danger-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
+                                                                            <h3 class="mt-1 ml-50"><?= $count_actif ?></h3>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -170,14 +196,37 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <h4 class="card-title">Rappel facutres retard</h4>
                                                             <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <p>hello</p>
+                                                                 <!-- table with no border -->
+                                                                <div class="table-responsive">
+                                                                    <table id="table-extended-transactions" class="table mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center">NAME</th>
+                                                                                <th class="text-center">REFF</th>
+                                                                                <th class="text-center">DATE</th>
+                                                                                <th class="text-center">NUMEROS</th>
+                                                                                
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <?php foreach($facture_retard as $factures): ?>
+                                                                            <tr>
+                                                                                <td class="text-center"><?= $factures['nameentreprise'] ?></td>
+                                                                                <td class="text-center"><?= $factures['reffacture'] ?></td>
+                                                                                <td class="text-center"><?= $factures['dateecheance'] ?>&nbsp <i class="bx bxs-circle danger font-small-1 mr-50"></i></td>
+                                                                                <td class="text-center"><?= $factures['numerosfacture'] ?></td>
+                                                                                
+                                                                            </tr>
+                                                                        <?php endforeach; ?> 
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>    
+
                                                                 <div class="d-flex justify-content-around align-items-center flex-wrap">
                                                                     <div class="user-analytics">
                                                                         <i class="bx bx-user mr-25 align-middle"></i>
@@ -218,7 +267,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Website Analytics</h4>
+                                                            <h4 class="card-title">Comptable</h4>
                                                             <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
                                                         </div>
                                                         <div class="card-content">
@@ -907,6 +956,7 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/table-extended.js"></script>
     <!-- END: Page JS-->
 
 </body>
