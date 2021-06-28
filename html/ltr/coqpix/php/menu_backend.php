@@ -19,7 +19,7 @@
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Analytique</a>
                     </li>
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>eCommerce</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="utilisateurs.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
                     </li>
                 </ul>
             </li>
@@ -115,7 +115,7 @@
 
     </div>
     <div class="navbar-container main-menu-content" data-menu="menu-container">
-        <ul class="nav navbar-nav ml-auto" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
+        <ul class="nav navbar-nav">
 
             <?php include('notifs_backend.php'); ?>
         

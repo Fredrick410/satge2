@@ -1,16 +1,18 @@
 <?php
 
 	// requete qui trouve les 10 dernières notifications de la plus récente à la plus ancienne et en priorités les notifications non lues
-	$select_notif = $bdd->prepare("SELECT * FROM (SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_fiscale' AS type_demande, id_session FROM attestation_fiscale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'attestation_sociale' AS type_demande, id_session FROM attestation_sociale WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, date_demande, statut_notif_back, 'bulletin_salaire' AS type_demande, id_session FROM bulletin_salaire WHERE statut_notif_back != ? UNION ALL SELECT id, name_entreprise, dte,statut_notif_back, 'bilan' AS type_demande, id_session FROM bilan WHERE statut_notif_back != ?) AS temp ORDER BY statut_notif_back DESC, STR_TO_DATE(date_demande, '%d/%m/%Y') DESC LIMIT 10");
-	$select_notif->execute(array("Inactive", "Inactive", "Inactive", "Inactive"));
+    $select_notif = $bdd->prepare("SELECT id, date_donner, type_demande, id_session FROM notif_front WHERE id_session=:id_session ORDER BY STR_TO_DATE(date_donner, '%d/%m/%Y') DESC LIMIT 10;");
+	$select_notif->bindValue(':id_session', $_SESSION['id_session']);
+    $select_notif->execute();
 
-    $pdoSt= $bdd->query('SELECT COUNT(*) AS nb FROM (SELECT id FROM attestation_fiscale WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM attestation_sociale WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM bulletin_salaire WHERE statut_notif_front != "Inactive" UNION ALL SELECT id FROM bilan WHERE statut_notif_front != "Inactive") AS temp');
+    $pdoSt= $bdd->prepare('SELECT COUNT(*) AS nb FROM notif_front WHERE id_session=:id_session');
+    $pdoSt->bindValue(':id_session', $_SESSION['id_session']);
+    $pdoSt->execute();
     $nb_notif = $pdoSt->fetch();
 
 ?>
 
-<li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#"
-        data-toggle="dropdown"><i class="menu-livicon" data-icon="bell"></i>
+<li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>
         <?php
                     if($nb_notif['nb']){
                         ?>
@@ -46,7 +48,7 @@
 		// si c'est une demande d'attestation fiscale
 		if ($result['type_demande'] === "attestation_fiscale") {
 
-			$notif = "Votre attestation fiscale a été traité";
+			$notif = "Votre demande de attestation fiscale a été traitée";
 
 
             ?>
@@ -56,7 +58,7 @@
 		// si c'est une demande d'attestation sociale
 		} else if ($result['type_demande'] === "attestation_sociale"){
 
-			$notif = "Votre attestation sociale a été traité";
+			$notif = "Votre demande de attestation sociale a été traitée";
 
             ?>
                 <a href="attestation-social.php">
@@ -65,7 +67,7 @@
 		// si c'est un bulletin de salaire
 		} else if ($result['type_demande'] === "bulletin_salaire"){
 
-			$notif = "Vous bulletin de salaire a été traité";
+			$notif = "Vous demande de bulletin de salaire a été traitée";
             
             ?>
                     <a href="bulletin-consulte.php">
@@ -73,14 +75,24 @@
 
         // si c'est un bilan
         
-		}else {
+		}else if ($result['type_demande'] === "bilan"){
 
-			$notif = "Votre bilan a été traité";
+			$notif = "Votre demande de bilan a été traitée";
             
             ?>
-            <a href="bilan.php?5PAx4zf27P=<?= $result['date'] ?>&S3q4EvFDk4QZ95b4v3gz">
+            <a href="bilan.php?5PAx4zf27P=<?= substr($result['date_donner'],-4) ?>&S3q4EvFDk4QZ95b4v3gz">
             <?php 
 
+		} else if ($result['type_demande'] === "teams_membres"){
+
+			$notif = "Vous avez été ajouté à une équipe";
+            
+            ?>
+                    <a href="teams-list.php">
+                        <?php
+
+        // si c'est un ajout de membre
+        
 		}
                
         ?>
@@ -94,7 +106,7 @@
                                 </div>
                                 <div class="media-body">
                                     <h6 class="media-heading"><span class="text-bold-500"><?php echo $notif; ?></span>
-                                    </h6><small class="notification-text"><?= $result['date_demande']; ?></small>
+                                    </h6><small class="notification-text"><?= $result['date_donner']; ?></small>
                                 </div>
                             </div>
                         </div>

@@ -136,6 +136,8 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </nav>
+    <?php $btnreturn = true;
+    include('php/menu_header_front.php'); ?>
     <!-- END: Header-->
 
     <!-- BEGIN: Main Menu-->

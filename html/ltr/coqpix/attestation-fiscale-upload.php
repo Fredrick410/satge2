@@ -29,25 +29,34 @@ require_once 'php/config.php';
             $real_name = substr($name_files, 0, -4);
             $file_name = $real_name . $date_now . $type_files;
             $date_donner = date('d/m/Y');
+            $id_session= $_GET['num'];
             
             $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
             $path = "../../../src/attestation_fiscale/". $file_name;                     // chemin vers le serveur
 
             $resultat = move_uploaded_file($tmpName, $path);
 
-            $pdo = $bdd->prepare('UPDATE attestation_fiscale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, satut_notif_front=:statut_notif_front, date_donner=:date_donner, WHERE id=:id LIMIT 1');
+            $pdo = $bdd->prepare('UPDATE attestation_fiscale SET files_attestation=:files_attestation, statut_attestation=:statut_attestation, date_donner=:date_donner WHERE id=:id LIMIT 1');
             $pdo->bindValue(':date_donner', $date_donner);
             $pdo->bindValue(':files_attestation', $file_name);
             $pdo->bindValue(':statut_attestation', "Terminée");
-            $pdo->bindValue(':statut_notif_front', 'Non lue');
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
+
+             //insert notif front
+             $insert_notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+             $insert_notif->execute(array(
+                 htmlspecialchars("attestation_fiscale"),
+                 htmlspecialchars($date_donner),
+                 htmlspecialchars($id_session)
+             ));
+
 
             $pdo = $bdd->prepare('SELECT id_task from attestation_fiscale WHERE id = ?');
             $pdo->execute(array($_GET['id']));
             $id_task = ($pdo->fetch())['id_task'];
 
-            $pdoS = $bdd->prepare('UPDATE task_fica SET statut_task = ? WHERE id = ?');
+            $pdoS = $bdd->prepare('UPDATE task_fisca SET statut_task = ? WHERE id = ?');
             $pdoS->execute(array('valide',$id_task));
             
             header('Location: attestation-fiscale-view.php?num='.$_GET['num'].'');
