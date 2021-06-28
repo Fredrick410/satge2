@@ -13,10 +13,12 @@ ini_set('display_startup_errors', TRUE);
  $pass_hash = crypt($_GET['passwordentreprise'], '5c725a26307c3b5170634a7e2b');
 
  //On sélectionne dans la table 'utilisateurs' les pseudo qui sont les mêmes que le pseudo tapé dans le formulaire
+
  $query = $bdd->prepare("SELECT * FROM entreprise WHERE emailentreprise = :pseudo AND passwordentreprise = :pass"); 
  $query->bindValue(':pseudo', $pseudo);
- $query->bindValue(':pass',$pass);
+ $query->bindValue(':pass',$pass_hash);
  $query->execute();
+
  
  //On compte le nombre de réponse
  $count = $query->rowCount();
