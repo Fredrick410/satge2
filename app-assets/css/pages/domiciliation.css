@@ -144,7 +144,6 @@ input[type="checkbox"].solu {
 }
 
 input[type="checkbox"].solu + label {
-    padding: 10px;
     border: none;
 }
 
@@ -152,22 +151,12 @@ input[type="checkbox"].solu + label:hover{
     cursor:pointer;
 }
 
-input[type="checkbox"].solu:checked + label{
-    filter: invert(40%);
-}
-
-#div-carte-droite{
-
-}
-
 #div-carte-droite iframe{
     width:100%; 
     right: 0;
 }
 
-#div-carte-gauche{
 
-}
 
 .card-container{
     margin: 50px;
