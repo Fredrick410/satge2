@@ -14,6 +14,7 @@ ini_set('display_startup_errors', TRUE);
             $query = $bdd->prepare("SELECT * FROM crea_societe WHERE password_crea = :password_crea AND id = :id"); 
             $query->bindValue(':password_crea', $password);
             $query->bindValue(':id', $id);
+            $query->execute();
             $count = $query->rowCount();
 
             if($count == "1"){

@@ -155,6 +155,7 @@ ini_set('display_startup_errors', TRUE);
 
     $query = $bdd->prepare("SELECT * FROM acte_doc WHERE code = :num");
     $query->bindValue(':num', $num); 
+    $query->execute();
     $count = $query->rowCount();
 
     if($count >= 1){
