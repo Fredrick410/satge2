@@ -153,7 +153,7 @@ input[type="checkbox"].solu + label:hover{
 }
 
 input[type="checkbox"].solu:checked + label{
-    
+    filter: invert(40%);
 }
 
 #div-carte-droite{

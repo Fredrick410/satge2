@@ -111,17 +111,9 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
-    <br>
-    <div class="breadcrumb-wrapper col-12" ">
-        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
-            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
-            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
-            <li class="breadcrumb-item active"> Offre de domiciliation </li>
-        </ol>
-    </div>
 
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -186,25 +178,31 @@ echo $result['description'];
             <div id="solution-logo">
                 <ul>
                     <li>
+                        <input type="checkbox" id="domicilia" class="solu"></input>
+                        <label for="domicilia" class="">
+                            <img src="../../../app-assets/images/pages/domiciliation.png">
+                        </label><br>
+                        <label>
+                            <p>Domiciliation</p>
+                        </label>
+                    </li>
+                    <li>
                         <input type="checkbox" id="bureau" class="solu"></input>
                         <label for="bureau" class="">
-                            <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                            <img src="../../../app-assets/images/pages/bureau.png">
+                        </label><br>
+                        <label>
                             <p>Bureaux privatifs</p>
                         </label>
                     </li>
                     <li>
                         <input type="checkbox" id="cowork" class="solu"></input>
                         <label for="cowork" class="">
-                            <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                            <img src="../../../app-assets/images/pages/coworking.png">
+                        </label><br>
+                        <label>
                             <p>Coworking</p>
                         </label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="domicilia" class="solu"></input>
-                            <label for="domicilia" class="">
-                                <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
-                                <p>Domiciliation</p>
-                            </label>
                     </li>
                 </ul>
             </div>

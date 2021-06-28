@@ -79,6 +79,10 @@
     margin: 0 5%;
 }
 
+#solution-logo ul li img{
+    width: 150px;
+}
+
 #solution-logo ul li p{
     margin-top: 10px;
     text-align: center;
@@ -95,8 +99,12 @@ input[type="checkbox"].solu + label {
     border: none;
 }
 
-input[type="checkbox"].solu:checked + label {
+input[type="checkbox"].solu + label:hover{
+    cursor:pointer;
+}
 
+input[type="checkbox"].solu:checked + label{
+    filter: invert(100%);
 }
 
 #div-btn-sol{
