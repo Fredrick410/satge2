@@ -49,6 +49,9 @@ branch de leo :
 		-telephone drapeau france par défaut
 		-cryptage mot de passe (connexion + inscription + edit profil)
 
+	tache réalisée 25/06/21
+		-visuel du chat popup domiciliation terminé
+
 branch de oscar :
 	tache réalisée le 23/06/2021
 		-page domiciliation.php ->barre de recherche 
@@ -62,3 +65,7 @@ branch de oscar :
 branch de robin :
 	tache réalisée 25/06/21
 		-suggestion de villes sur domiciliation.php
+
+branche de leo :
+	tache réalisée 28/06/21
+		-factorisation du chat

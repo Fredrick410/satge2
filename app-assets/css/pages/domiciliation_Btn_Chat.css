@@ -1,0 +1,220 @@
+*{font-family: mukta malar medium;}
+*{font-size: 1em;}
+
+/* Works on Firefox */
+.chat-popup {
+  scrollbar-width: thin;
+  scrollbar-color: #29fe8c #051441;
+}
+
+/* Works on Chrome, Edge, and Safari */
+.historique::-webkit-scrollbar {
+  width: 12px;
+}
+
+.historique::-webkit-scrollbar-track {
+  background: #051441;
+}
+
+.historique::-webkit-scrollbar-thumb {
+  background-color: #29fe8c;
+  border-radius: 50px;
+  border: solid #051441;
+}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {    
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 7%;
+    right: 7%;
+    width: 50px;
+  }
+  
+  /* The popup chat - hidden by default */
+  .chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 7%;
+    right: 7%;
+    height: 60%;
+    width: 25%;
+    min-width: 300px;
+  }
+  
+  /* Add styles to the form container */
+  .form-container {
+    
+    padding: 5%;
+    height: 100%;
+    width: 100%;
+    
+	background-color: #051441;
+  }
+  
+  /* Full-width textarea */
+  .form-container textarea {
+    width: 65%;
+    text-indent: 5%;
+    padding: 5px;
+    
+    height: 7%;
+    
+    border: none;
+    background: white;
+    resize: none;
+   
+    position: absolute;
+    left: 10%;
+    bottom: 5%;
+  }
+  
+  /* When the textarea gets focus, do something */
+  .form-container textarea:focus {
+    background-color: rgb(248, 248, 248);
+    outline: none;
+  }
+  
+  /* Set a style for the submit/send button */
+  .form-container .btn {
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right : 5%;
+    bottom: 5%;
+  }
+  
+  /* Add a red background color to the cancel button */
+  .form-container .cancel {
+    background-color: red;
+  }
+  
+
+  .profil{
+    height: 16.67%;   
+  }
+
+  .img-profil{
+    width: 15%;
+    position: absolute;
+    left: 10%;
+    top: 3%;
+  }
+
+
+  .nom{
+      color: white;
+      position: absolute;
+      top: 5%;
+      left: 30%;
+  }
+
+  .dispo{
+    color: #29fe8c;
+    position: absolute;
+    left: 30%;
+    top: 9%;
+  }
+
+  .historique{
+      color: white;
+      height: 66.67%;
+      overflow: auto;
+      width: 100%;
+  }
+
+
+
+  .msgSelf {
+      float: right;
+      padding: 15px;
+      background-color: #3399FF;
+      max-width: 75%;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      clear: both;
+      margin-right: 2%;
+  }
+
+  .msgYou {
+      float: left;
+      padding: 15px;
+      background-color: #004CB2;
+      max-width: 75%;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      clear: both;
+      margin-left: 2%;
+  }
+
+  .chat-time {
+    color: rgb(207, 207, 207);
+    font-size: 0.8em;
+    margin-top: -2%;
+    margin-bottom: 4%;
+  }
+
+  .right{
+    float: right;
+    clear: both;
+    margin-right: 10%;
+  }
+
+  .left{
+    float: left;
+    clear: both;
+    margin-left: 10%;
+  }
+
+  .message{
+      color: white;
+      height: 16.66%;
+  }
+
+  .round{
+    border-radius: 30px;
+      -webkit-border-radius: 30px;
+      -moz-border-radius: 30px;
+  
+  }
+
+  .tri-right.border.btm-left:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: -8px;
+  right: auto;
+  top: auto;
+	bottom: -40px;
+	border: 32px solid;
+	border-color: transparent transparent transparent #666;
+  pointer-events: none;
+}
+.tri-right.btm-left:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 0px;
+  right: auto;
+  top: auto;
+	bottom: -50px;
+	border: 55px solid;
+	border-color: transparent transparent transparent #051441;
+  pointer-events: none;
+}
+
+.cross{
+    border: none;
+    cursor: pointer;
+    width: 15px;
+    right: 6.5%;
+    top: 5%;
+    position: absolute;
+}
