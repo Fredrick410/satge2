@@ -50,6 +50,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    
     <!-- END: Custom CSS-->
 
 </head>
