@@ -91,7 +91,7 @@
         htmlspecialchars("0")
     ));
 
-        header('Location: ../dashboard-admin.php');
+        header('Location: ../utilisateurs.php');
         exit();
 
 
