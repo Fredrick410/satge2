@@ -797,9 +797,10 @@ $(window).on("load", function () {
 
   // Growth Radial Chart
   // --------------------
-  var taux_prelevement = document.getElementById("taux_prelevement").value;
 
-  var growthChartOptions = {
+  function growthChartOptions(pourcentage) {
+
+    var growthChartOptions = {
     chart: {
       height: 200,
       type: 'radialBar',
@@ -854,84 +855,81 @@ $(window).on("load", function () {
     stroke: {
       dashArray: 3
     },
-    series: [taux_prelevement],
+    series: [pourcentage],
     labels: ['Growth'],
+    }
+
+    return growthChartOptions
+
   }
 
+  // DEBUT TAUX DE PRELEVEMENT
+
+  var taux_prelevement = document.getElementById("taux_prelevement_2021").value;
+
+  $("#growth-Chart-prelevement").empty();
+
   var growthChart = new ApexCharts(
-    document.querySelector("#growth-Chart"),
-    growthChartOptions
+    document.querySelector("#growth-Chart-prelevement"),
+    growthChartOptions(taux_prelevement)
   );
 
   growthChart.render();
 
-  var bilan_annuel = document.getElementById("bilan_annuel").value;
+  $("#id_select_prelevement").change(function() {
 
-  var growthChartOptions2 = {
-    chart: {
-      height: 200,
-      type: 'radialBar',
-      sparkline: {
-        show: true
-      }
-    },
-    grid: {
-      show: false,
-    },
-    plotOptions: {
-      radialBar: {
-        size: 100,
-        startAngle: -135,
-        endAngle: 135,
-        offsetY: 40,
-        hollow: {
-          size: '60%',
-        },
-        track: {
-          strokeWidth: '90%',
-          background: '#fff'
-        },
-        dataLabels: {
-          value: {
-            offsetY: -10,
-            color: '#475f7b',
-            fontSize: '26px'
-          },
-          name: {
-            fontSize: '15px',
-            color: "#596778",
-            offsetY: 30
-          },
-        }
-      },
-    },
-    colors: [$danger],
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'dark',
-        type: 'horizontal',
-        shadeIntensity: 0.5,
-        gradientToColors: [$primary],
-        inverseColors: true,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100]
-      },
-    },
-    stroke: {
-      dashArray: 3
-    },
-    series: [bilan_annuel],
-    labels: ['Growth'],
-  }
+    var annee = $(this).children("option:selected").val();
+    document.getElementById("id_span_prelevement").innerText = annee;
 
-  var growthChart2 = new ApexCharts(
-    document.querySelector("#growth-Chart2"),
-    growthChartOptions2
+    var id_taux_prelevement = "taux_prelevement_" + annee;
+    var taux_prelevement = document.getElementById(id_taux_prelevement).value;
+
+    $("#growth-Chart-prelevement").empty();
+
+    var growthChart = new ApexCharts(
+      document.querySelector("#growth-Chart-prelevement"),
+      growthChartOptions(taux_prelevement)
+    );
+
+    growthChart.render();
+
+  });
+
+  // FIN TAUX DE PRELEVEMENT
+
+  // DEBUT BILAN ANNUEL
+
+  var bilan_annuel = document.getElementById("bilan_annuel_2020").value;
+
+  $("#growth-Chart-bilan").empty();
+
+  var growthChart = new ApexCharts(
+    document.querySelector("#growth-Chart-bilan"),
+    growthChartOptions(bilan_annuel)
   );
 
-  growthChart2.render();
+  growthChart.render();
+
+  $("#id_select_bilan").change(function() {
+
+    var annee = $(this).children("option:selected").val();
+    document.getElementById("id_span_bilan").innerText = annee;
+
+    var id_bilan_annuel = "bilan_annuel_" + annee;
+    var bilan_annuel = document.getElementById(id_bilan_annuel).value;
+
+    $("#growth-Chart-bilan").empty();
+
+    var growthChart = new ApexCharts(
+      document.querySelector("#growth-Chart-bilan"),
+      growthChartOptions(bilan_annuel)
+    );
+
+    growthChart.render();
+
+  });
+
+  // FIN BILAN ANNUEL
 
 
   // Widget Todo List

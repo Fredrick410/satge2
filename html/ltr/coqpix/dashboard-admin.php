@@ -6,6 +6,27 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
+    // Taux de prelevement
+    $annee_actuelle = date("Y");
+
+    for ($i=0 ; $i<5 ; $i++) {
+
+        // Requete SQL permettant de recuperer le taux de prélevement
+        ${'select_taux_prelevement_n_'.$i} = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee');
+        ${'select_taux_prelevement_n_'.$i}->bindValue(':annee', $annee_actuelle - $i);
+        ${'select_taux_prelevement_n_'.$i}->execute();
+        ${'result_taux_prelevement_n_'.$i} = ${'select_taux_prelevement_n_'.$i}->fetch();
+
+    } for ($j=1 ; $j<6 ; $j++) {
+
+        // Requete SQL permettant de recuperer le bilan annuel
+        ${'select_bilan_annuel_n_'.$j} = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
+        ${'select_bilan_annuel_n_'.$j}->bindValue(':annee', $annee_actuelle - $j);
+        ${'select_bilan_annuel_n_'.$j}->execute();
+        ${'result_bilan_annuel_n_'.$j} = ${'select_bilan_annuel_n_'.$j}->fetch();
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -523,57 +544,41 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                             <!-- DEBUT PRELEVEMENT ET BILAN -->
                                             <div class="row">
-                                                <!-- Taux de prelevement -->
-                                                <?php
-                                                    // Requete SQL permettant de recuperer le taux de prélevement
-                                                    $select_taux_prelevement = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee');
-                                                    if (isset($_POST['annee_prelevement'])) {
-                                                        $select_taux_prelevement->bindValue(':annee', $_POST['annee_prelevement']);
-                                                    } else {
-                                                        $select_taux_prelevement->bindValue(':annee', 2021);
-                                                    }
-                                                    $select_taux_prelevement->execute();
-                                                    $result_taux_prelevement = $select_taux_prelevement->fetch();
-
-                                                    // Requete SQL permettant de recuperer le taux de prélevement
-                                                    $select_bilan_annuel = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
-                                                    if (isset($_POST['annee_bilan'])) {
-                                                        $select_bilan_annuel->bindValue(':annee', $_POST['annee_bilan']);
-                                                    } else {
-                                                        $select_bilan_annuel->bindValue(':annee', 2020);
-                                                    }
-                                                    $select_bilan_annuel->execute();
-                                                    $result_bilan_annuel = $select_bilan_annuel->fetch();
-                                                ?>
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-body text-center">
                                                             <div class="row">
                                                                 <div class="col-md-6 col-12">
-                                                                    <input type="hidden" id="taux_prelevement" value="<?= $result_taux_prelevement['taux_prelevement'] ?>">
-                                                                    <h6 class="mb-2"> Taux de prélèvement réussis en <?php if (isset($_POST['annee_bilan'])) { echo $_POST['annee_bilan']; } else { echo 2021; } ?></h6>
-                                                                    <form method="POST">
-                                                                        <select class="form-control" onchange="submit()" class="form-select" name="annee_prelevement">
-                                                                            <option selected><?php if (isset($_POST['annee_prelevement'])) { echo $_POST['annee_prelevement']; } else { echo 2021; } ?></option>
-                                                                            <option value="2021">2021</option>
-                                                                            <option value="2020">2020</option>
-                                                                            <option value="2019">2019</option>
-                                                                        </select>
-                                                                        <div id="growth-Chart"></div>
-                                                                    </form>
+                                                                    <input type="hidden" id="taux_prelevement_2021" value="<?= $result_taux_prelevement_n_0['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2020" value="<?= $result_taux_prelevement_n_1['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2019" value="<?= $result_taux_prelevement_n_2['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2018" value="<?= $result_taux_prelevement_n_3['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2017" value="<?= $result_taux_prelevement_n_4['taux_prelevement'] ?>">
+                                                                    <h6 class="text-white mb-2"> Taux de prélèvement réussis en <span class="text-white" id="id_span_prelevement">2021</span> </h6>
+                                                                    <select class="form-control" id="id_select_prelevement">
+                                                                        <option value="2021">2021</option>
+                                                                        <option value="2020">2020</option>
+                                                                        <option value="2019">2019</option>
+                                                                        <option value="2018">2018</option>
+                                                                        <option value="2017">2017</option>
+                                                                    </select>
+                                                                    <div id="growth-Chart-prelevement"></div>
                                                                 </div>
                                                                 <div class="col-md-6 col-12">
-                                                                    <input type="hidden" id="bilan_annuel" value="<?= $result_bilan_annuel['bilan_annuel'] ?>">
-                                                                    <h6 class="mb-2"> Bilans annuels réalisés en <?php if (isset($_POST['annee_bilan'])) { echo $_POST['annee_bilan']; } else { echo 2020; } ?></h6>
-                                                                    <form method="POST">
-                                                                        <select class="form-control" onchange="submit()" class="form-select" name="annee_bilan">
-                                                                            <option selected><?php if (isset($_POST['annee_bilan'])) { echo $_POST['annee_bilan']; } else { echo 2020; } ?></option>
-                                                                            <option value="2020">2020</option>
-                                                                            <option value="2019">2019</option>
-                                                                            <option value="2018">2018</option>
-                                                                        </select>
-                                                                        <div id="growth-Chart2"></div>
-                                                                    </form>
+                                                                    <input type="hidden" id="bilan_annuel_2020" value="<?= $result_bilan_annuel_n_1['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2019" value="<?= $result_bilan_annuel_n_2['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2018" value="<?= $result_bilan_annuel_n_3['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2017" value="<?= $result_bilan_annuel_n_4['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2016" value="<?= $result_bilan_annuel_n_5['bilan_annuel'] ?>">
+                                                                    <h6 class="text-white mb-2"> Bilans annuels réalisés en <span class="text-white" id="id_span_bilan">2021</span> </h6>
+                                                                    <select class="form-control" id="id_select_bilan">
+                                                                        <option value="2020">2020</option>
+                                                                        <option value="2019">2019</option>
+                                                                        <option value="2018">2018</option>
+                                                                        <option value="2017">2017</option>
+                                                                        <option value="2016">2016</option>
+                                                                    </select>
+                                                                    <div id="growth-Chart-bilan"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1189,6 +1194,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
     <!-- END: Page JS-->
 
 </body>
