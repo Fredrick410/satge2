@@ -31,6 +31,22 @@
     right: 7%;
     width: 50px;
   }
+
+  .notification {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background: red;
+    position: absolute;
+    top: -65px;
+    right: -5px;
+    height: 20px;
+    width: 20px;
+    font-size: 1em;
+    color: white;
+    text-align: center;
+    z-index: 10;
+  }
   
   /* The popup chat - hidden by default */
   .chat-popup {

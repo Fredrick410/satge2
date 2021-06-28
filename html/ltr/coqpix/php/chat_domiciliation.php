@@ -2,7 +2,21 @@
 <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/domiciliation_Btn_Chat.css">
 
 <!-- HTML -->
-<img class="open-button" id="icon_chat" src="../../../app-assets/images/ico/chat_icon.png" onclick="openForm(), updateScroll()">
+<div id="notification" onclick="notif()" class="d-flex align-items-center">
+    <?php
+        if($crea['notification_crea'] > 0){
+            $notification = '';
+            $numero = '1'; 
+        }else{
+            $notification = "hidden"; 
+        }
+    ?>
+    <div class="open-button">
+        <div class="notification" id="notif" <?php echo $notification ?>><?php echo $numero ?></div>
+        <img class="open-button" id="icon_chat" src="../../../app-assets/images/ico/chat_icon.png" onclick="openForm(), updateScroll()">
+    </div>
+</div>
+
     <div class="chat-popup" id="myForm">
         <div class="form-container tri-right round btm-left">
             
