@@ -216,7 +216,7 @@ require_once 'php/config.php';
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Candidature N°<?= $candidature['num_candidat'] ?> - <?php if($candidature['sexe_candidat'] == "Homme"){echo "Mr";}else{echo "Mme";} ?> HADDOU - <?= $candidature['name_annonce'] ?></h4>
+                                    <h4 class="card-title">Candidature N°<?= $candidature['num_candidat'] ?> - <?php if($candidature['sexe_candidat'] == "homme"){echo "Mr";}else{echo "Mme";} ?> <?=$candidature['nom_candidat']?> - <?= $candidature['name_annonce'] ?></h4>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">

@@ -176,7 +176,7 @@ require_once 'php/config.php';
 
                                 </script>
                                 <div class="card">
-                                    <div class="card-content">
+                                    <div class="card-content" onclick="tprecrutement_entretient()">
                                         <img class="card-img-top img-fluid" src="../../../app-assets/images/pages/content-img-1.jpg" alt="Card image cap">
                                         <div class="card-body">
                                             <h4 class="card-title">Entretient</h4>
@@ -186,6 +186,13 @@ require_once 'php/config.php';
                                         </div>
                                     </div>
                                 </div>
+                                <script>
+
+                                function tprecrutement_entretient(){
+                                    document.location.href="rh-recrutement-entretient.php"; 
+                                }
+
+                                </script>
                             </div>
                         </div>
                     </div>
