@@ -120,27 +120,30 @@ require_once 'php/verif_session_crea.php';
                         <div id="solution-logo">
                             <ul>
                                 <li>
-                                    <input type="checkbox" id="domicilia" class="solu"></input>
+                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
                                     <label for="domicilia" class="">
-                                        <img src="../../../app-assets/images/pages/domiciliation.png">
+                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
                                     </label><br>
                                     <label>
                                         <p>Domiciliation</p>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="checkbox" id="bureau" class="solu"></input>
+                                    <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
                                     <label for="bureau" class="">
-                                        <img src="../../../app-assets/images/pages/bureau.png">
+                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
                                     </label><br>
                                     <label>
                                         <p>Bureaux privatifs</p>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="checkbox" id="cowork" class="solu"></input>
+                                    <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
                                     <label for="cowork" class="">
-                                        <img src="../../../app-assets/images/pages/coworking.png">
+                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
                                     </label><br>
                                     <label>
                                         <p>Coworking</p>
@@ -199,6 +202,21 @@ require_once 'php/verif_session_crea.php';
 <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>    
 
 <script>
+
+    //changement image
+    function openGreen(element1,element2) {
+        if (document.getElementById(element1).style.display == "none" ){
+            document.getElementById(element1).style.display = "block";
+            document.getElementById(element2).style.display = "none";
+        } else {
+            document.getElementById(element1).style.display = "none";
+            document.getElementById(element2).style.display = "block";
+        }
+    }
+
+    /*function closeGreen(element1,element2) {
+    }*/
+    
     //suggest adresse
     $(document).ready(function(){
         $("#search-box").keyup(function(){

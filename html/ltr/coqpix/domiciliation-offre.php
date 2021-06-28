@@ -111,17 +111,9 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
-    <br>
-    <div class="breadcrumb-wrapper col-12" ">
-        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
-            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
-            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
-            <li class="breadcrumb-item active"> Offre de domiciliation </li>
-        </ol>
-    </div>
 
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -185,27 +177,36 @@ echo $result['description'];
             <h2>Les services disponibles à cette adresse</h2>
             <div id="solution-logo">
                 <ul>
-                    <li>
-                        <input type="checkbox" id="bureau" class="solu"></input>
-                        <label for="bureau" class="">
-                            <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
-                            <p>Bureaux privatifs</p>
-                        </label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="cowork" class="solu"></input>
-                        <label for="cowork" class="">
-                            <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
-                            <p>Coworking</p>
-                        </label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="domicilia" class="solu"></input>
-                            <label for="domicilia" class="">
-                                <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
-                                <p>Domiciliation</p>
-                            </label>
-                    </li>
+                <li>
+                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
+                    <label for="domicilia" class="">
+                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                    </label><br>
+                    <label>
+                        <p>Domiciliation</p>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
+                    <label for="bureau" class="">
+                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                    </label><br>
+                    <label>
+                        <p>Bureaux privatifs</p>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
+                    <label for="cowork" class="">
+                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                    </label><br>
+                    <label>
+                        <p>Coworking</p>
+                    </label>
+                </li>
                 </ul>
             </div>
             <div class="form-group" id="div-btn-sol">
@@ -221,6 +222,21 @@ echo $result['description'];
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+<script>
+
+    //changement image
+    function openGreen(element1,element2) {
+        if (document.getElementById(element1).style.display == "none" ){
+            document.getElementById(element1).style.display = "block";
+            document.getElementById(element2).style.display = "none";
+        } else {
+            document.getElementById(element1).style.display = "none";
+            document.getElementById(element2).style.display = "block";
+        }
+    }
+
+</script>
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
