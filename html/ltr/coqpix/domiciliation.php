@@ -89,214 +89,12 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/domiciliation.css">
     <!-- END: Custom CSS-->
 
 </head>
 <!-- END: Head-->
 
-<style>
-
-@font-face{
-    font-family: "mukta malar bold";
-    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Bold.ttf");
-}
-
-@font-face{
-    font-family: "mukta malar medium";
-    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Medium.ttf");
-}
-
-@font-face{
-    font-family: "mukta malar light";
-    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Light.ttf");
-}
-
-@media screen and (max-width: 1870px) {
-    #titre p{
-        font-size: 65px;
-    }
-    #sous-titre p{
-        font-size: 25px;
-        line-height: 40px;
-    }
-}
-
-@media screen and (max-width: 1278px) {
-    #sous-titre p{
-        margin: 100px 0 0 0;
-    }
-}
-
-@media screen and (max-width: 1785px) {
-    #div-titre-gauche{
-        display: none;
-    }
-    #div-titre-droite{
-        min-width: 100%;
-    }
-}
-
-@media screen and (min-width: 2300px) {
-    #titre p{
-        font-size: 65px;
-    }
-    #sous-titre p{
-        font-size: 25px;
-        line-height: 40px;
-    }
-}
-
-@media screen and (max-width: 1878px) {
-    #div-carte-droite{
-        display: none;
-    }
-    #div-carte-gauche{
-        min-width: 100%;
-    }
-    #titre p{
-        font-size: 65px;
-    }
-    #sous-titre p{
-        font-size: 25px;
-        line-height: 40px;
-    }
-}
-
-#titre{
-    font-family: mukta malar medium;
-    color: white;
-    margin: 180px 0 0 10%;
-    font-size: 60px;
-    width: 80%;
-}
-
-#titre p{
-    line-height: 70px;
-}
-
-#sous-titre{
-    font-family: mukta malar medium;
-    color: white;
-    margin: 50px 0 0 10%;
-    font-size: 17px;
-}
-
-#sous-titre p{
-    width: 70%;
-}
-
-.container-fluid {
-    padding-top: 68px;
-}
-
-#div-titre-gauche{
-    background-color: #051441;
-    border-radius: 0 400px 400px 0;
-    
-}
-
-#div-titre-droite{
-    padding: 100px;
-}
-
-#div-titre-droite h1{
-    color: #003783;
-    font-family: mukta malar medium;
-    margin: 50px 0 0 20px;
-}
-
-#solution-logo{
-    margin-top: 50px;
-}
-
-#solution-logo ul{
-    padding: 10px;
-    text-align: center;
-}
-
-#solution-logo ul li{
-    list-style: none;
-    display: inline-block;
-    margin: 0 8% 10px 0;
-}
-
-#solution-logo ul li p{
-    margin-top: 10px;
-    text-align: center;
-    font-family: mukta malar medium;
-    color: #051441;
-}
-
-#localisation{
-    margin: 50px 10% 0 0;
-}
-
-input[type="checkbox"].solu {
-    display: none;
-}
-
-input[type="checkbox"].solu + label {
-    padding: 10px;
-    border: none;
-    border-radius: 15px;
-}
-
-input[type="checkbox"].solu:checked + label {
-    border: 1px hidden rgba(5, 20, 65, 0.6);
-    background-color: rgba(5, 20, 65, 0.1);
-}
-
-.card-container{
-    margin: 50px;
-}
-
-.card-container ul{
-    padding: 10px;
-    text-align: center;
-}
-
-.card-container ul li{
-    list-style: none;
-    display: inline-block;
-}
-
-.card-body{
-    width: 300px;
-    border: 1px solid #051441;
-    border-radius: 10px;
-    margin: 20px;
-}
-
-.card-body img{
-    width: 250px;
-    height: 200px;
-}
-
-.card-descrip{
-    margin-top: 5px;
-}
-
-.card-descrip #ville{
-    font-family: mukta malar medium;
-    color: black;
-}
-
-.card-descrip #adresse{
-    font-family: mukta malar medium;
-    color: black;
-}
-
-.card-btn{
-    margin-bottom: 5px;
-}
-
-.card-btn a{
-    font-family: mukta malar medium;
-    color: #003783;
-    text-transform: uppercase;
-}
-    
-</style>
 
 <!-- BEGIN: Body-->
 <body class="horizontal-layout horizontal-menu navbar-sticky bg-white content-left-sidebar email-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
@@ -308,37 +106,44 @@ input[type="checkbox"].solu:checked + label {
 
     <!-- BEGIN: Content-->
     <div class="container-fluid">
-        <div class="row" id="div-titre" style="min-height: 100%;">
-            <div class="col-6 p-0" id="div-titre-gauche" style="min-height: 100%;">
-                <div id="titre"><p>Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> </p></div>
-                <div id="sous-titre"><p>Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p></div>
+        <div class="row" id="div-titre">
+            <div class="col-6 p-0" id="div-titre-gauche">
+                <div id="longueur-titre">
+                    <p id="titre">Grâce à COQPIX et nos partenaires.<br> Domiciliez-vous <span style="color: #29fe8c;">rapidement</span> et <span style="color: #29fe8c;">facilement</span> au meilleur <span style="color: #29fe8c;">PRIX !!!</span> </p>
+                    <p id="sous-titre">Bureaux privatifs modulables, Spots de coworking, salles de réunion, domiciliation d'entreprise...<br> Que vous soyez entrepreneur, start-up, PME ou grande entreprise, trouvez la solution de travail flexible qui vous convient.</p>
+                </div>
             </div>
-            <div class="col-6" id="div-titre-droite" style="min-height: 100%;">
+            <div class="col-6" id="div-titre-droite">
                 <div id="solution" class="col-12">
-                    <form action="" method="POST">
                     <div>
                         <h1>Nos solutions</h1>
                         <div id="solution-logo">
                             <ul>
                                 <li>
+                                    <input type="checkbox" id="domicilia" class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img src="../../../app-assets/images/pages/domiciliation.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Domiciliation</p>
+                                    </label>
+                                </li>
+                                <li>
                                     <input type="checkbox" id="bureau" class="solu"></input>
                                     <label for="bureau" class="">
-                                        <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                                        <img src="../../../app-assets/images/pages/bureau.png">
+                                    </label><br>
+                                    <label>
                                         <p>Bureaux privatifs</p>
                                     </label>
                                 </li>
                                 <li>
                                     <input type="checkbox" id="cowork" class="solu"></input>
                                     <label for="cowork" class="">
-                                        <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                                        <img src="../../../app-assets/images/pages/coworking.png">
+                                    </label><br>
+                                    <label>
                                         <p>Coworking</p>
-                                    </label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="domicilia" class="solu"></input>
-                                    <label for="domicilia" class="">
-                                        <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
-                                        <p>Domiciliation</p>
                                     </label>
                                 </li>
                             </ul>
@@ -346,21 +151,22 @@ input[type="checkbox"].solu:checked + label {
                     </div>
                     <div id="localisation">
                         <div class="form-group">
-                            <label class="" style="font-size: 15px; font-family: mukta malar bold; color: #051441; margin-left: 25px">Localisation</label>
-                            <input type="text" id="" name="" style="font-family: mukta malar medium; color: #051441; margin-top: 20px;" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
+                            <label class="">Localisation</label>
+                            <input type="text" id="search-box" name="" class="form-control border rounded-pill border-dark" placeholder="Entrez une ville..." required>
+                            <div id="suggestion-box"></div>
                         </div>
-                        <div class="form-group" style="text-align: center; margin-top: 50px;">
-                            <button type="submit" id='' style="font-family: mukta malar bold; width: 200px; white-space: nowrap; background-color: #29fe8c;" class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
+                        <div class="form-group" id="div-btn">
+                            <button type="submit" id='btn-recherche' class="btn text-dark glow position-relative border rounded-pill">Rechercher<img src="../../../app-assets/fonts/LivIconsEvo/svg/search.svg" id="icon-search" class="" style="width: 20px; float: right;"></button>
                         </div>
                     </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>
         <div class="row" id="div-carte" style="height: 100%;">
-            <div class="col-6" id="div-carte-gauche" style="height: 800px;">
-                <div class="card-container">
-                    <ul>
+            <div class="col-6" id="div-carte-gauche" >
+                <div class="card-container" id="offre-conteneur">
+                    <!--<ul>
                         <li>
                             <div class="card-body p-0">
                                 <img src="../../../app-assets/images/profile/pages/page-09.jpg">
@@ -373,10 +179,10 @@ input[type="checkbox"].solu:checked + label {
                                 </div>
                             </div>
                         </li>
-                    </ul>
+                    </ul>-->
                 </div>
             </div>
-            <div class="col-6" id="div-carte-droite" style="height: 800px;">
+            <div class="col-6" id="div-carte-droite" >
             <iframe src="https://www.google.com/maps/d/embed?mid=1d4qkN6nzCX93ftELMhFaubmUOlWgDF7q" width="100%" height="800px" right=0;></iframe>
             
             </div>
@@ -388,6 +194,47 @@ input[type="checkbox"].solu:checked + label {
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>    
+
+<script>
+    //suggest adresse
+    $(document).ready(function(){
+        $("#search-box").keyup(function(){
+            $.ajax({
+            type: "POST",
+            url: "php/readCity.php",
+            data:'keyword='+$(this).val(),
+            beforeSend: function(){
+                $("#search-box").css("background","#FFF url(../../../app-assets/images/ico/ajax-loader.gif) no-repeat 165px");
+            },
+            success: function(data){
+                $("#suggestion-box").show();
+                $("#suggestion-box").html(data);
+                $("#search-box").css("background","#FFF");
+            }
+            });
+        });
+        $("#btn-recherche").on('click',function(){
+            $.ajax({
+            type: "POST",
+            url: "php/display-offers.php",
+            data:'ville='+$("#search-box").val(),
+            success: function(data){
+                console.log("affichage des offres");
+                $("#offre-conteneur").html(data);
+            }
+            });
+        });
+    });
+
+    function selectCity(val) {
+    $("#search-box").val(val);
+    $("#suggestion-box").hide();
+    }
+</script>
+
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>

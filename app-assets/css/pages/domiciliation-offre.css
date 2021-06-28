@@ -1,0 +1,113 @@
+@font-face{
+    font-family: "mukta malar bold";
+    src: url("../Mukta_Malar/MuktaMalar-Bold.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar medium";
+    src: url("../Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar light";
+    src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
+}
+
+.container-fluid {
+    padding-top: 68px;
+}
+
+.carousel{
+    margin: 50px;
+}
+
+.carousel-item img{
+    height: 600px; 
+    width: 100%;
+}
+
+#titre{
+    text-transform: uppercase;
+    font-family: mukta malar bold;
+    color: #051441;
+}
+
+#div-descrip pre{
+    font-family: mukta malar medium;
+    color: #051441;
+    font-size: 17px;
+    white-space: pre-wrap;
+    background-color: #ffffff;
+}
+
+#div-info{
+    background-color: #051441;
+}
+
+#div-info ul{
+    margin: 50px 15%;
+}
+
+#div-info ul li{
+    list-style-position: inside;
+    color: white;
+    font-family: mukta malar medium;
+}
+
+#div-service-dispo{
+    padding: 50px;
+}
+
+#div-service-dispo h2{
+    font-family: mukta malar bold;
+    color: #003783;
+    text-align: center;
+}
+
+#solution-logo{
+    margin: 50px 50px 0 50px;
+}
+
+#solution-logo ul{
+    padding: 10px;
+    text-align: center;
+}
+
+#solution-logo ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 5%;
+}
+
+#solution-logo ul li p{
+    margin-top: 10px;
+    text-align: center;
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+input[type="checkbox"].solu {
+    display: none;
+}
+
+input[type="checkbox"].solu + label {
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+}
+
+input[type="checkbox"].solu:checked + label {
+    border: 1px hidden rgba(5, 20, 65, 0.6);
+    background-color: rgba(5, 20, 65, 0.1);
+}
+
+#div-btn-sol{
+    text-align: center;
+}
+
+#btn-sol{
+    font-family: mukta malar bold; 
+    width: 150px; 
+    white-space: nowrap; 
+    background-color: #29fe8c;
+}

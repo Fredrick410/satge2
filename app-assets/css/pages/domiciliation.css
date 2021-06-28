@@ -1,0 +1,253 @@
+@font-face{
+    font-family: "mukta malar bold";
+    src: url("../Mukta_Malar/MuktaMalar-Bold.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar medium";
+    src: url("../Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar light";
+    src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
+}
+
+
+
+@media screen and (max-width: 900px) {
+    #solution-logo ul li{
+        margin: 9%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    #div-carte-droite{
+        min-width: 100%;
+    }
+    #div-carte-gauche{
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width: 1785px) {
+    #div-titre-gauche{
+        min-width: 100%;
+    }
+    #div-titre-droite{
+        min-width: 100%;
+    }
+}
+
+
+.container-fluid {
+    padding-top: 68px;
+}
+
+#div-titre{
+    min-height: 100%;
+}
+
+#div-titre-gauche{
+    background-color: #051441;
+    border-radius: 0 400px 400px 0;
+    min-height: 100%;
+}
+
+#titre{
+    font-family: mukta malar medium;
+    color: white;
+    font-size: 60px;
+    line-height: 70px;
+}
+
+#sous-titre{
+    font-family: mukta malar medium;
+    color: white;
+    margin-top: 10%;
+    font-size: 20px;
+}
+
+#longueur-titre{
+    width: 70%;
+    margin: 15% 10% 15% 10%;
+    min-height: 100%;
+}
+
+#div-titre-droite{
+    padding: 100px;
+}
+
+#div-titre-droite h1{
+    color: #003783;
+    font-family: mukta malar medium;
+}
+
+#solution-logo{
+    margin-top: 50px;
+    min-width: 100%;
+}
+
+#solution-logo ul{
+    text-align: center;
+}
+
+#solution-logo ul li{
+    list-style: none;
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 3%;
+}
+
+#solution-logo ul li img{
+    width: 150px;
+}
+
+#solution-logo ul li p{
+    margin-top: 10px;
+    text-align: center;
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+#localisation{
+    margin: 50px 0 0 0;
+}
+
+#div-btn{
+    margin-top: 50px;
+}
+
+#localisation label{
+    font-size: 15px; 
+    font-family: mukta malar bold; 
+    color: #051441; 
+    margin-left: 25px;
+}
+
+#localisation input{
+    font-family: mukta malar medium; 
+    color: #051441; 
+    margin-top: 20px;
+}
+
+#localisation button{
+    font-family: mukta malar bold; 
+    width: 200px; 
+    white-space: nowrap; 
+    background-color: #29fe8c;
+    margin-left: 25px;
+}
+
+input[type="checkbox"].solu {
+    display: none;
+}
+
+input[type="checkbox"].solu + label {
+    padding: 10px;
+    border: none;
+}
+
+input[type="checkbox"].solu + label:hover{
+    cursor:pointer;
+}
+
+input[type="checkbox"].solu:checked + label{
+    filter: invert(100%);
+}
+
+#div-carte-droite{
+
+}
+
+#div-carte-droite iframe{
+    width:100%; 
+    right: 0;
+}
+
+#div-carte-gauche{
+
+}
+
+.card-container{
+    margin: 50px;
+}
+
+.card-container ul{
+    padding: 10px;
+    text-align: center;
+}
+
+.card-container ul li{
+    list-style: none;
+    display: inline-block;
+}
+
+.card-body{
+    width: 300px;
+    border: 1px solid #051441;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.card-body img{
+    width: 250px;
+    height: 200px;
+}
+
+.card-descrip{
+    margin-top: 5px;
+}
+
+.card-descrip #ville{
+    font-family: mukta malar medium;
+    color: black;
+}
+
+.card-descrip #adresse{
+    font-family: mukta malar medium;
+    color: black;
+}
+
+.card-btn{
+    margin-bottom: 5px;
+}
+
+.card-btn a{
+    font-family: mukta malar medium;
+    color: #003783;
+    text-transform: uppercase;
+}
+
+#city-list{
+    float:left;
+    list-style:none;
+    margin-top:-3px;
+    padding:0;
+    width:190px;
+    position: absolute;
+}
+
+#city-list li{
+    padding: 10px; 
+    background: white; 
+    color: #051441;
+    font-family: mukta malar light;
+    border-bottom: #051441 1px solid; 
+    border-radius: 10px; 
+}
+
+#city-list li:hover{
+    background: rgba(5, 20, 65, 0.1);
+    cursor: pointer;
+}
+
+#search-box{
+    padding: 10px;
+    border: #a8d4b1 1px solid;
+    border-radius:4px;
+}
+
+#suggestion-box{
+    margin-top: 3px;
+}
