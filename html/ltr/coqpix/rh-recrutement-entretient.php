@@ -296,6 +296,23 @@ $entreprise = $pdoStt->fetch();
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <?php
+                                                if ($nbquestion[$i][0]['nbquestion'] >= 2) {
+                                                    if ($qcms[$i]['publiee'] == "non") {
+                                                    ?>
+                                                        <a href="php/publier_qcm.php?id=<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1">
+                                                            <i class="bx bxs-send"></i>
+                                                        </a>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <a href="php/retirer_publication_qcm.php?id=<?= $qcms[$i]['id']?>" class="invoice-action-view mr-1">
+                                                            <i class="bx bxs-send" style="color: red;"></i>
+                                                        </a>
+                                                    <?php
+                                                    }
+                                                }
+                                                ?>
                                                 <a href="php/delete_qcm.php?id=<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1">
                                                     <i class="bx bxs-trash"></i>
                                                 </a>

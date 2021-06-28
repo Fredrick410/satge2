@@ -184,7 +184,7 @@ $entreprise = $pdoStt->fetch();
 
                         <div class="col">
                             <div class="invoice-create-btn mb-1">
-                                <a href="qcm-add.php?id=<?= $qcms[0]['id'] ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Ajouter une question</a>
+                                <a href="question-add.php?id=<?= $qcms[0]['id'] ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Ajouter une question</a>
                             </div>
                         </div>
 
@@ -256,7 +256,7 @@ $entreprise = $pdoStt->fetch();
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="qcm-edit.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $qcms[0]['id'] ?>"" class=" invoice-action-edit cursor-pointer">
+                                                <a href="question-edit.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $qcms[0]['id'] ?>"" class=" invoice-action-edit cursor-pointer">
                                                     <i class="bx bx-edit"></i>
                                                 </a>&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <a href="php/delete_question.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $questions[$i]['idqcm'] ?>" class="invoice-action-view mr-1">

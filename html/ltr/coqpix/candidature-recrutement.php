@@ -191,7 +191,7 @@ require_once 'php/config.php';
                             </div>
                             <div class="form-group" style="margin-left: 40px;"> 
                                 <p>L'interface recrutement de Coqpix permet aux deux partis (Candidat et Employeur) d'être plus organisé. <br>
-                                   Avec cette fonctionnalité de Coqpix dits adieux aux pertes de temps suite au démarchage pour trouver votre <br>
+                                   Avec cette fonctionnalité de Coqpix dits adieux aux pertes de temps suite au démarchage pour trouver votre
                                    employeur ou votre candidat.
                                 </p>
                             </div>
@@ -209,7 +209,7 @@ require_once 'php/config.php';
                 <div class="form-group">
                     <div class="card-content mt-2">
                         <div class="card-body">
-                            <form method="POST" action="php/insert_candidat.php?num=<?= $_GET['num'] ?>" class="wizard-horizontal">
+                            <form method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" class="wizard-horizontal">
                                 <input type="hidden" name="id_session" value="<?= $annonce['id_session'] ?>">
                                 <!-- Step 1 -->
                                 <h6>
@@ -322,13 +322,13 @@ require_once 'php/config.php';
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Mes qualitées</label>
-                                                <input name="qualite" type="text" class="form-control" placeholder="Mes qualitées" required>
+                                                <input name="qualite" type="text" class="form-control" placeholder="Mes qualités" required>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Mes defaults</label>
-                                                <input name="default" type="text" class="form-control" placeholder="Mes defaults" required>
+                                                <input name="default" type="text" class="form-control" placeholder="Mes defauts" required>
                                             </div>
                                         </div>
                                     </div>

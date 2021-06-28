@@ -83,7 +83,7 @@ $(document).ready(function() {
                 points: points
             },
             success:function(data){
-                window.location.href = data;
+                console.log('ok');
             }
         });
     });

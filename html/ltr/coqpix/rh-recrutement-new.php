@@ -11,9 +11,14 @@ $pdoS->bindValue(':numentreprise', $_SESSION['id']);
 $true = $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
-$pdoS = $bdd->prepare('SELECT * FROM qcm');
+$pdoS = $bdd->prepare('SELECT * FROM qcm WHERE publiee = "oui" AND auteur="Auditactionplus"');
 $true = $pdoS->execute();
-$qcms = $pdoS->fetchAll(PDO::FETCH_ASSOC);
+$qcms_back = $pdoS->fetchAll(PDO::FETCH_ASSOC);
+
+$pdoS = $bdd->prepare('SELECT * FROM qcm WHERE publiee = "oui" AND auteur=(SELECT nameentreprise FROM entreprise WHERE id = :id)');
+$pdoS->bindValue(':id', $_SESSION['id']);
+$true = $pdoS->execute();
+$qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -328,7 +333,7 @@ $qcms = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         <i class="livicon-evo" data-options="name:notebook.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
                                     </span>
                                     <span class="icon-title">
-                                        <span class="d-block">Nos qcm (Bientot disponible)</span>
+                                        <span class="d-block">Qcm RH</span>
                                         <small class="text-muted">Sélectionnez un ou plusieurs qcm pour tester vos candidats.</small>
                                     </span>
                                 </h3>
@@ -339,13 +344,18 @@ $qcms = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="card-title">NOS QCM</h4>
+                                                    <h4 class="card-title">QCM RH</h4>
                                                 </div>
                                                 <div class="card-content">
                                                     <div class="card-body text-center">
                                                         <div class="d-flex justify-content-start flex-wrap">
                                                             <?php
-                                                            foreach ($qcms as $key => $value) {
+                                                            if (count($qcms_back) == 0) {
+                                                                ?>
+                                                                <p>Aucun pour le moment</p>
+                                                                <?php
+                                                            }
+                                                            foreach ($qcms_back as $key => $value) {
                                                             ?>
                                                                 <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
                                                                     <p class="mb-0"><?= $value['libelle']?></p>
@@ -377,6 +387,57 @@ $qcms = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         color: white;
                                     }
                                 </style>
+                                <div class="form-group">
+                                    <hr>
+                                </div>
+                                <!-- section 3 -->
+                                <h3>
+                                    <span class="fonticon-wrap mr-1">
+                                        <i class="livicon-evo" data-options="name:notebook.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
+                                    </span>
+                                    <span class="icon-title">
+                                        <span class="d-block">Nos qcm</span>
+                                        <small class="text-muted">Sélectionnez un ou plusieurs qcm pour tester vos candidats.</small>
+                                    </span>
+                                </h3>
+                                <!-- section 3 end-->
+                                <!-- Switch Icons Starts -->
+                                <section id="switch-icons">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">NOS QCM</h4>
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="card-body text-center">
+                                                        <div class="d-flex justify-content-start flex-wrap">
+                                                            <?php
+                                                            if (count($qcms_front) == 0) {
+                                                                ?>
+                                                                <p>Aucun pour le moment</p>
+                                                                <?php
+                                                            }
+                                                            foreach ($qcms_front as $key => $value) {
+                                                            ?>
+                                                                <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
+                                                                    <p class="mb-0"><?= $value['libelle']?></p>
+                                                                    <input type="checkbox" name="qcms[]" class="custom-control-input" id="customSwitch<?= $value['id']?>" value="<?= $value['id']?>">
+                                                                    <label class="custom-control-label" for="customSwitch<?= $value['id']?>">
+                                                                        <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                                        <span class="switch-icon-right"><i class="bx bx-check"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
                                 <div class="form-group">
                                     <button type="submit" class="btn col-12 btconf">Confirmation de l'annonce</button>
                                 </div>
