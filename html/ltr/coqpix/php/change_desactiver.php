@@ -13,6 +13,6 @@ ini_set('display_startup_errors', TRUE);
     $pdo->execute();
         
         sleep(2);
-        header('Location: ../dashboard-admin.php');
+        header('Location: ../utilisateurs.php');
         
 ?>

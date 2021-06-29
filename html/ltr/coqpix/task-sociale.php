@@ -198,7 +198,7 @@ require_once 'php/config.php';
                                                 <i class="bx bx-filter"></i>
                                                 <span>Action</span>
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
+                                            <div style="z-index: 98;" class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
                                                 <a class="dropdown-item ascending" href="#">Ascending</a>
                                                 <a class="dropdown-item descending" href="#">Descending</a>
                                             </div>

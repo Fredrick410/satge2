@@ -10,6 +10,7 @@ require_once 'php/config.php';
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
+
         //1
 
         if(isset($_FILES['files'])){
@@ -29,6 +30,7 @@ require_once 'php/config.php';
             $real_name = substr($name_files, 0, -4);
             $file_name = $real_name . $date_now . $type_files;
             $date_donner = date('d/m/Y');
+            $id_session= $_GET['num'];
             
             $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
             $path = "../../../src/attestation_sociale/". $file_name;                     // chemin vers le serveur
