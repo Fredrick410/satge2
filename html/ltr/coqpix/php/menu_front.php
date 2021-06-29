@@ -74,7 +74,7 @@
                     </li>
                 </ul>
             </li>
-            <li class=" nav-item"><a href="rh-home.php"><i class="menu-livicon" data-icon="diagram"></i><span class="menu-title" data-i18n="Stockage">RH</span><span class="badge badge-light-warning badge-pill badge-round float-right">VIP</span></a>
+            <li class=" nav-item"><a href="#rh-home.php"><i class="menu-livicon" data-icon="diagram"></i><span class="menu-title" data-i18n="Stockage">RH</span><span class="badge badge-light-warning badge-pill badge-round float-right">VIP</span></a>
             </li>
             <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="sky-dish"></i><span class="menu-title" data-i18n="Veille">Veille</span></a>
                 <ul class="menu-content">

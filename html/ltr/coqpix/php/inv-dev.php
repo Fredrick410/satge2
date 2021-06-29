@@ -70,6 +70,9 @@ ini_set('display_startup_errors', TRUE);
       $color = "badge badge-light-danger badge-pill";
       $descrip = $info['descrip'];
       $etiquette = $info['etiquette'];
+      $adressel = $info['adresselivraison'];
+      $depl = $info['deplivraison'];
+
         //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
@@ -123,7 +126,7 @@ ini_set('display_startup_errors', TRUE);
         
         //delete devis
     
-        $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, refbon, nomproduit, bonpour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_bon, status_color, etiquette, descrip, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, refbon, nomproduit, bonpour, adresse, email, tel, departement, modalite, monnaie, note, accompte, status_bon, status_color, etiquette, descrip, id_session, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($numerosinfo),
             htmlspecialchars($dte),
@@ -143,8 +146,11 @@ ini_set('display_startup_errors', TRUE);
             htmlspecialchars($color),
             htmlspecialchars($etiquette),
             htmlspecialchars($descrip),
-            htmlspecialchars($_SESSION['id_session']) //$_SESSION
+            htmlspecialchars($_SESSION['id_session']), //$_SESSION
+            htmlspecialchars($adressel),
+            htmlspecialchars($depl)
         ));
+        
        foreach ($art as $arts): 
         $pdodd = $bdd->prepare('INSERT INTO articles(article, referencearticle, cout, quantite, umesure, tva, remise, numeros, typ, id_session) VALUES(?,?,?,?,?,?,?,?,?,?)');  
         $pdodd->execute(array(

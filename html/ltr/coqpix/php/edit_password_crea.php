@@ -8,18 +8,15 @@ ini_set('display_startup_errors', TRUE);
 
         if($_POST['password'] == $_POST['con-password']){
 
-            $password = crypt($_POST['lastpassword'], '5c725a26307c3b5170634a7e2b');
+            $password = $_POST['lastpassword'];
             $id = $_SESSION['id_crea'];
 
-            $query = $bdd->prepare("SELECT * FROM crea_societe WHERE password_crea = :password_crea AND id = :id"); 
-            $query->bindValue(':password_crea', $password);
-            $query->bindValue(':id', $id);
-            $query->execute();
+            $query = $bdd->query("SELECT * FROM crea_societe WHERE password_crea = '$password' AND id = '$id'"); 
             $count = $query->rowCount();
 
             if($count == "1"){
 
-                    $passwordnew = crypt($_POST['password'], '5c725a26307c3b5170634a7e2b');
+                    $passwordnew = $_POST['password'];
 
                     $update = $bdd->prepare('UPDATE crea_societe SET password_crea = ? WHERE id = ?');
                     $update->execute(array(

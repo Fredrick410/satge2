@@ -61,6 +61,17 @@ ini_set('display_startup_errors', TRUE);
         $accompte = $_POST['modalite'];
     }
 
+    if($_POST['adressetwo'] == ""){
+        $adressetwo = "Adresse";
+    }else{
+        $adressetwo = $_POST['adressetwo'];
+    }
+
+    if($_POST['departementtwo'] == ""){
+        $departementtwo = "31100";
+    }else{
+        $departementtwo = $_POST['departementtwo'];
+    }
     // end vide 
 
     if($_POST['status_facture'] == "NON PAYE"){
@@ -68,30 +79,61 @@ ini_set('display_startup_errors', TRUE);
     }else{
         $color = "badge badge-light-success badge-pill";
     }
+    if($_POST['departementtwo'] == "" || $_POST['adressetwo'] == ""){
+        $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
+        
+        $pdo->bindValue(':num', $_POST['numfacture']);
+        $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
+        $pdo->bindValue(':reffacture', $_POST['reffacture']);
+        $pdo->bindValue(':dte', $dte);
+        $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+        $pdo->bindValue(':nomproduit', $nomproduit);
+        $pdo->bindValue(':facturepour', $facturepour);
+        $pdo->bindValue(':adresse', $adresse);
+        $pdo->bindValue(':email', $email);
+        $pdo->bindValue(':tel', $tel);
+        $pdo->bindValue(':departement', $departement);
+        $pdo->bindValue(':modalite', $accompte);
+        $pdo->bindValue(':monnaie', $_POST['monnaie']);
+        $pdo->bindValue(':accompte', $_POST['accompte']);
+        $pdo->bindValue(':note', $note);
+        $pdo->bindValue(':status_facture', $_POST['status_facture']);
+        $pdo->bindValue(':status_color', $color);
+        $pdo->bindValue(':etiquette', $_POST['etiquette']);
+        $pdo->bindValue(':descrip', $_POST['descrip']);
+        $pdo->bindValue(':adresselivraison',  $adresse);
+        $pdo->bindValue(':deplivraison', $departement);
+        
+        $pdo->execute();
 
-    $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip WHERE id=:num LIMIT 1');
+    }else{
+        $pdo = $bdd->prepare('UPDATE facture SET numerosfacture=:numerosfacture, reffacture=:reffacture, dte=:dte, dateecheance=:dateecheance, nomproduit=:nomproduit, facturepour=:facturepour, adresse=:adresse, email=:email, tel=:tel, departement=:departement, modalite=:modalite, monnaie=:monnaie, accompte=:accompte, note=:note, status_facture=:status_facture, status_color=:status_color, etiquette=:etiquette, descrip=:descrip, adresselivraison=:adresselivraison, deplivraison=:deplivraison WHERE id=:num LIMIT 1');
     
-    $pdo->bindValue(':num', $_POST['numfacture']);
-    $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
-    $pdo->bindValue(':reffacture', $_POST['reffacture']);
-    $pdo->bindValue(':dte', $dte);
-    $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
-    $pdo->bindValue(':nomproduit', $nomproduit);
-    $pdo->bindValue(':facturepour', $facturepour);
-    $pdo->bindValue(':adresse', $adresse);
-    $pdo->bindValue(':email', $email);
-    $pdo->bindValue(':tel', $tel);
-    $pdo->bindValue(':departement', $departement);
-    $pdo->bindValue(':modalite', $accompte);
-    $pdo->bindValue(':monnaie', $_POST['monnaie']);
-    $pdo->bindValue(':accompte', $_POST['accompte']);
-    $pdo->bindValue(':note', $note);
-    $pdo->bindValue(':status_facture', $_POST['status_facture']);
-    $pdo->bindValue(':status_color', $color);
-    $pdo->bindValue(':etiquette', $_POST['etiquette']);
-    $pdo->bindValue(':descrip', $_POST['descrip']);
+        $pdo->bindValue(':num', $_POST['numfacture']);
+        $pdo->bindValue(':numerosfacture', $_POST['numerosfacture']);
+        $pdo->bindValue(':reffacture', $_POST['reffacture']);
+        $pdo->bindValue(':dte', $dte);
+        $pdo->bindValue(':dateecheance', $_POST['dateecheance']);
+        $pdo->bindValue(':nomproduit', $nomproduit);
+        $pdo->bindValue(':facturepour', $facturepour);
+        $pdo->bindValue(':adresse', $adresse);
+        $pdo->bindValue(':email', $email);
+        $pdo->bindValue(':tel', $tel);
+        $pdo->bindValue(':departement', $departement);
+        $pdo->bindValue(':modalite', $accompte);
+        $pdo->bindValue(':monnaie', $_POST['monnaie']);
+        $pdo->bindValue(':accompte', $_POST['accompte']);
+        $pdo->bindValue(':note', $note);
+        $pdo->bindValue(':status_facture', $_POST['status_facture']);
+        $pdo->bindValue(':status_color', $color);
+        $pdo->bindValue(':etiquette', $_POST['etiquette']);
+        $pdo->bindValue(':descrip', $_POST['descrip']);
+        $pdo->bindValue(':adresselivraison', $_POST['adressetwo']);
+        $pdo->bindValue(':deplivraison', $_POST['departementtwo']);
+        
+        $pdo->execute();
+    }
     
-    $pdo->execute();
     
         $pdot = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdot->bindValue(':num', $_SESSION['id_session']); //$_SESSION

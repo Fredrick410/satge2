@@ -12,6 +12,16 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel->execute();
 
         //calculs
+        $pdoae = $bdd->prepare('SELECT * FROM devis WHERE id=:id AND id_session = :num');
+        $pdoae->bindValue(':id', $_GET['id']);
+        $pdoae->bindValue(':num',$_SESSION['id_session']); // $_SESSION
+        $pdoae->execute();
+        $devis = $pdoae->fetch();
+
+        $incre = $bdd->prepare('SELECT MAX(id) FROM devis ');
+        $incre->execute();
+        $test = $incre->fetch();
+        $maxid = $test['MAX(id)'] ;
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
         $pdoS->bindValue(':num',$_SESSION['id_session']); // $_SESSION
@@ -48,8 +58,26 @@ ini_set('display_startup_errors', TRUE);
         $pdo->execute();
 
         //end calculs
-
-        $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="devisvente"');
+        if( $_GET['id'] == $maxid){ 
+            $vide="Veuillez créer un autre devis </br> pour pouvoir supprimer celui-ci";
+            $rien="";
+            $pdoez = $bdd->prepare('UPDATE devis SET numerosdevis=:numerosdevis, dte=:dte, refdevis=:refdevis, devispour=:devispour, monnaie=:monnaie, status_devis=:status_devis, etiquette=:etiquette WHERE id=:id AND id_session=:id_session');
+            $pdoez->bindValue(':id', $_GET['id']);
+            $pdoez->bindValue(':numerosdevis', $rien);
+            $pdoez->bindValue(':dte', $rien);
+            $pdoez->bindValue(':refdevis', $vide);
+            $pdoez->bindValue(':devispour', $rien);
+            $pdoez->bindValue(':monnaie', $rien);
+            $pdoez->bindValue(':status_devis', $rien);
+            $pdoez->bindValue(':etiquette', $rien);
+            $pdoez->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION
+            $pdoez->execute();
+            $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="devisvente"');
+        $pdoDel->bindValue(':num', $_GET['numdevis']);
+        $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
+        $pdoDel->execute();
+        }else {
+            $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="devisvente"');
         $pdoDel->bindValue(':num', $_GET['numdevis']);
         $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
         $pdoDel->execute();
@@ -58,6 +86,9 @@ ini_set('display_startup_errors', TRUE);
         $pdoDe->bindValue(':id', $_GET['id']);
         $pdoDe->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION
         $pdoDe->execute();
+        }
+
+        
 
         sleep(1);
         header('Location: ../app-devis-list.php');
