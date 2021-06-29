@@ -73,3 +73,9 @@ branche de leo :
 	tache réalisée 29/06/2021
 		-chat present sur offre domiciliation
 		-inclusion du 'type' (domiciliation, coworking...) lors de la recherche (boutons fonctionnels)
+
+branch de robin :
+	tache réalisée 29/06/21
+		-affichage des boutons correspondant sur offre domiciliation
+		-affichage de la description de l'offre sur offre domiciliation
+
