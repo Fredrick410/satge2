@@ -65,7 +65,31 @@ require_once 'php/verif_session_crea.php';
 </style>
 
     <!-- BEGIN: Header-->
-    <?php require_once("php/header-crea.php") ?>
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-secondary navbar-brand-center">
+        <div class="navbar-header d-xl-block d-none">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item"><a class="navbar-brand" href="#">
+                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
+                    </a></li>
+            </ul>
+        </div>
+        <div class="navbar-wrapper">
+            <div class="navbar-container content">
+                <div class="navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
+                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <div class="user-nav d-lg-flex d-none"><span class="user-name"><?= $crea['name_crea'] ?></span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right pb-0">
+                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
+                            </div>
+                        </li>
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
@@ -134,14 +158,11 @@ require_once 'php/verif_session_crea.php';
                                                     $noneform = "block-validation";
                                                 }
                                                 ?>
-                                                 <div class="swiper-slide rounded swiper-shadow <?php echo $noneform; ?>" id="getting-text"><a href="domiciliation.php"><i class="bx bx-home mb-1 font-large-1"></a></i>
-                                                <a href="domiciliation.php"><div class="cent-text1">Se Domicilier</div></a>
-                                                </div>
                                                 <div class="swiper-slide rounded swiper-shadow <?php echo $noneform; ?>" id="getting-text"><a href="creation-view-<?php echo $linkview; ?>-pieceid.php"><i class="bx bx-notepad mb-1 font-large-1"></a></i>
-                                                <a href="creation-view-<?php echo $linkview; ?>-pieceid.php"><div class="cent-text1">Document</div></a>
+                                                    <a href="page-creation-chat.php"><div class="cent-text1">Document</div></a>
                                                 </div>
                                                 <div class="swiper-slide rounded swiper-shadow" id="pricing-text"> <a href="page-creation-edit.php"><i class="bx bxs-user-circle mb-1 font-large-1"></a></i>
-                                                    <a href="page-creation-edit.php"><div class="cent-text1">Profil</div></a>
+                                                    <a href="page-creation-edit.php"><div class="cent-text1">Profile</div></a>
                                                 </div>
                                                 <?php
                                                     if($crea['notification_crea'] > 0){
@@ -151,7 +172,7 @@ require_once 'php/verif_session_crea.php';
                                                     }
                                                 ?>
                                                 <div class="swiper-slide rounded swiper-shadow" id="sales-text"> <a href="page-creation-chat.php"><i class="bx bx-chat mb-1 font-large-1"></a></i>
-                                                    <a href="page-creation-chat.php"><div class="cent-text1">Chat&nbsp&nbsp<small class="red"><?php echo $notification; ?></small></div></a>
+                                                    <a href="page-creation-document.php"><div class="cent-text1">Chat&nbsp&nbsp<small class="red"><?php echo $notification; ?></small></div></a>
                                                 </div>
                                             </div>
                                         </div>

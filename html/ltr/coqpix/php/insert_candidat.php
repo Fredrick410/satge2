@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
-    $name_annonce =  $_POST['name_annonce'];
+    $name_annonce = $_POST['name_annonce'];
     $nom_candidat = $_POST['nom_candidat'];
     $prenom_candidat = $_POST['prenom_candidat'];
     $sexe_candidat = $_POST['sexe_candidat'];
@@ -81,7 +81,8 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($code),
         htmlspecialchars($id_session)
     ));
-    header('Location: ../test-qcm.php?key='.$code.'');
+
+    header('Location: ../candidature-recrutement-files.php?key='.$code.'');
     exit();
 
 ?>

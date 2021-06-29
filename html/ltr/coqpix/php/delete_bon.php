@@ -11,6 +11,17 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
         $pdoDel->execute();
 
+        $pdoae = $bdd->prepare('SELECT * FROM bon WHERE id=:id AND id_session = :num');
+        $pdoae->bindValue(':id', $_GET['id']);
+        $pdoae->bindValue(':num',$_SESSION['id_session']); // $_SESSION
+        $pdoae->execute();
+        $bon = $pdoae->fetch();
+
+        $incre = $bdd->prepare('SELECT MAX(id) FROM bon ');
+        $incre->execute();
+        $test = $incre->fetch();
+        $maxid = $test['MAX(id)'] ;
+
         //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
@@ -47,9 +58,28 @@ ini_set('display_startup_errors', TRUE);
         $pdo->bindValue(':lastdte', $lastdte);
         $pdo->execute();
 
-        //end calculs
+        
+        if( $_GET['id'] == $maxid){ 
+            $vide="Veuillez créer un autre bon </br> pour pouvoir supprimer celui-ci";
+            $rien="";
+            $pdoez = $bdd->prepare('UPDATE bon SET numerosbon=:numerosbon, dte=:dte, refbon=:refbon, bonpour=:bonpour, monnaie=:monnaie, status_bon=:status_bon, etiquette=:etiquette WHERE id=:id AND id_session=:id_session');
+            $pdoez->bindValue(':id', $_GET['id']);
+            $pdoez->bindValue(':numerosbon', $rien);
+            $pdoez->bindValue(':dte', $rien);
+            $pdoez->bindValue(':refbon', $vide);
+            $pdoez->bindValue(':bonpour', $rien);
+            $pdoez->bindValue(':monnaie', $rien);
+            $pdoez->bindValue(':status_bon', $rien);
+            $pdoez->bindValue(':etiquette', $rien);
+            $pdoez->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION
+            $pdoez->execute();
 
-        $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="bonvente"');
+            $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="bonvente"'); //pour supprimer la valeur
+        $pdoDel->bindValue(':num', $_GET['numbon']);
+        $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
+        $pdoDel->execute();
+        }else {
+            $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="bonvente"');
         $pdoDel->bindValue(':num', $_GET['numbon']);
         $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
         $pdoDel->execute();
@@ -58,6 +88,12 @@ ini_set('display_startup_errors', TRUE);
         $pdoDe->bindValue(':id', $_GET['id']);
         $pdoDe->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION
         $pdoDe->execute();
+        }
+        
+
+        //end calculs
+
+        
 
         sleep(1);
         header('Location: ../app-bon-list.php');

@@ -338,6 +338,14 @@ require_once 'php/config.php';
                                                 <div class="mb-1">
                                                     <span><?= $facture['tel']; ?></span>
                                                 </div>
+                                                <hr>
+                                                <h6 class="invoice-to">Adresse de livraison:</h6>
+                                                <div class="mb-1">
+                                                    <span><?= $facture['adresselivraison']; ?></span>
+                                                </div>
+                                                <div class="mb-1">
+                                                    <span><?= $facture['deplivraison']; ?></span>
+                                                </div>
                                             </div>
                                         </div>
                                         <hr>

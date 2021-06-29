@@ -9,7 +9,7 @@ if(!empty($_SESSION['id_admin']))
 else
 {  
    sleep(2);
-   header('Location: ../auth-login-admin.html');
+   header('Location: auth-login-admin.html');
    exit;
 }
 

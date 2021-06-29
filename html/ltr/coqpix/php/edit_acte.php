@@ -153,9 +153,7 @@ ini_set('display_startup_errors', TRUE);
 
     $num = $_POST['num'];
 
-    $query = $bdd->prepare("SELECT * FROM acte_doc WHERE code = :num");
-    $query->bindValue(':num', $num); 
-    $query->execute();
+    $query = $bdd->query("SELECT * FROM acte_doc WHERE code = '$num'"); 
     $count = $query->rowCount();
 
     if($count >= 1){
