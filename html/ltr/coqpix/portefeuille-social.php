@@ -156,7 +156,7 @@ require_once 'php/verif_session_connect_admin.php';
     .icon_check:hover{color: green;}
     .icon_send_c{color: grey; cursor: pointer;}
     .icon_send_c:hover{color: orange;}
-    .icon_verif{position: relative; color: grey; font-size: 20px;}
+    .icon_verif{position: ; color: grey; font-size: 20px;}
     .icon_verif:hover{color: green;}
     .icon_files{position: relative; color: grey; font-size: 20px;}
     .icon_files:hover{opacity: 0.5;}

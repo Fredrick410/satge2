@@ -7,15 +7,7 @@ require_once 'config.php';
 
     $name_crea = $_POST['crea_societe'];
     $email_crea = $_POST['email_crea'];
-
-    $password_verif = $_POST['password_verif'];
-    $password_temp = $_POST['password_crea'];
-    $password_crea = crypt($_POST['password_crea'], '5c725a26307c3b5170634a7e2b');
-    if($password_temp != $password_verif){ //si l'utilisateur a entré 2 mots de passes différents lors de la verif
-        header('Location: ../creation-societe.php'); //on revient sur la page de crea
-        exit();
-    };
-
+    $password_crea = $_POST['password_crea'];
     $img_crea = !empty($_FILES['img_crea']['name']) ? $_FILES['img_crea']['name'] : "crea.png";
     $date_crea = date("d-m-Y");
     $date_crea_j = date("d");
@@ -31,7 +23,7 @@ require_once 'config.php';
     $status_crea = $_POST['status_crea'];
     $new_user = "crea_societe";
     $notification_crea = "0";
-    $notification_admin = "1";
+    $notification_crea = "1";
     
     $insert = $bdd->prepare('INSERT INTO crea_societe (name_crea, email_crea, password_crea, img_crea, date_crea, date_crea_j, date_crea_j_lettre, date_crea_d, date_crea_a, date_crea_h, date_crea_m, nom_diri, prenom_diri, tel_diri, email_diri, status_crea, favorite_crea, new_user, message_crea, note_crea, notification_crea, notification_admin, doc_statuts, doc_nomination, doc_depot, doc_pouvoir, doc_pieceid, doc_cerfaM0, doc_annonce, doc_cerfaMBE, doc_attestation, doc_justificatifss, doc_xp, doc_peirl, doc_affectation, frais, honoraire, depo_greffe, depo_cfe, article_three) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(

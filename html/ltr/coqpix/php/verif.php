@@ -10,15 +10,9 @@ ini_set('display_startup_errors', TRUE);
  //On met le résultat pseudo du formulaire dans $pseudo
  $pseudo = htmlspecialchars($_GET["emailentreprise"]) ;
  $pass = htmlspecialchars($_GET["passwordentreprise"]) ;
- $pass_hash = crypt($_GET['passwordentreprise'], '5c725a26307c3b5170634a7e2b');
-
+ 
  //On sélectionne dans la table 'utilisateurs' les pseudo qui sont les mêmes que le pseudo tapé dans le formulaire
-
- $query = $bdd->prepare("SELECT * FROM entreprise WHERE emailentreprise = :pseudo AND passwordentreprise = :pass"); 
- $query->bindValue(':pseudo', $pseudo);
- $query->bindValue(':pass',$pass_hash);
- $query->execute();
-
+ $query = $bdd->query("SELECT * FROM entreprise WHERE emailentreprise = '$pseudo' AND passwordentreprise = '$pass'"); 
  
  //On compte le nombre de réponse
  $count = $query->rowCount();
@@ -27,9 +21,7 @@ ini_set('display_startup_errors', TRUE);
  if($count == 1) 
  {
   
-      $pdopass = $bdd->prepare("SELECT new_user FROM entreprise WHERE emailentreprise =:pseudo");
-      $pdopass->bindValue(':pseudo', $pseudo);
-      $pdopass->execute();
+      $pdopass = $bdd->query("SELECT new_user FROM entreprise WHERE emailentreprise ='$pseudo'");
       $verife = $pdopass->fetch();
 
       $non = "Activé";
@@ -41,9 +33,7 @@ ini_set('display_startup_errors', TRUE);
       if($verife['new_user'] == $video){
         
 
-        $selectid = $bdd->prepare("SELECT id FROM entreprise WHERE emailentreprise =:pseudo");
-        $selectid->bindValue(':pseudo', $pseudo);
-        $selectid->execute();
+        $selectid = $bdd->query("SELECT id FROM entreprise WHERE emailentreprise ='$pseudo'");
         $viewid = $selectid->fetch();
 
 
@@ -60,9 +50,7 @@ ini_set('display_startup_errors', TRUE);
       if($verife['new_user'] == $oui){
         
 
-        $selectid = $bdd->prepare("SELECT id FROM entreprise WHERE emailentreprise =:pseudo");
-        $selectid->bindValue(':pseudo', $pseudo);
-        $selectid->execute();
+        $selectid = $bdd->query("SELECT id FROM entreprise WHERE emailentreprise ='$pseudo'");
         $viewid = $selectid->fetch();
 
 
@@ -78,9 +66,7 @@ ini_set('display_startup_errors', TRUE);
       
       if($verife['new_user'] == $non){
 
-        $selectid = $bdd->prepare("SELECT id FROM entreprise WHERE emailentreprise =:pseudo");
-        $selectid->bindValue(':pseudo', $pseudo);
-        $selectid->execute();
+        $selectid = $bdd->query("SELECT id FROM entreprise WHERE emailentreprise ='$pseudo'");
         $viewid = $selectid->fetch();
 
         session_start();
@@ -108,10 +94,7 @@ ini_set('display_startup_errors', TRUE);
       } 
  }else{
 
-      $query_c = $bdd->prepare("SELECT * FROM comptable WHERE email = :pseudo AND password_comptable = :pass");
-      $query_c->bindValue(':pseudo', $pseudo);
-      $query_c->bindValue(':pass',$pass);
-      $query_c->execute();
+      $query_c = $bdd->query("SELECT * FROM comptable WHERE email = '$pseudo' AND password_comptable = '$pass'");
       $count_c = $query_c->rowCount();
 
       if($count_c == "1"){
@@ -122,18 +105,14 @@ ini_set('display_startup_errors', TRUE);
         $ban = "Bloqué"; 
         $block = "Supprimé";
 
-        $pdopass = $bdd->prepare("SELECT new_user FROM comptable WHERE email =:pseudo");
-        $pdopass->bindValue(':pseudo', $pseudo);
-        $pdopass->execute();
+        $pdopass = $bdd->query("SELECT new_user FROM comptable WHERE email ='$pseudo'");
         $verife_c = $pdopass->fetch();
 
 
         if($verife_c['new_user'] == $video){
         
 
-        $selectid = $bdd->prepare("SELECT id FROM comptable WHERE email =:pseudo");
-        $selectid->bindValue(':pseudo', $pseudo);
-        $selectid->execute();
+        $selectid = $bdd->query("SELECT id FROM comptable WHERE email ='$pseudo'");
         $viewid = $selectid->fetch();
 
 
@@ -148,9 +127,7 @@ ini_set('display_startup_errors', TRUE);
         if($verife_c['new_user'] == $non){
         
 
-        $selectid = $bdd->prepare("SELECT id FROM comptable WHERE email =:pseudo");
-        $selectid->bindValue(':pseudo', $pseudo);
-        $selectid->execute();
+        $selectid = $bdd->query("SELECT id FROM comptable WHERE email ='$pseudo'");
         $viewid = $selectid->fetch();
 
 
@@ -165,17 +142,12 @@ ini_set('display_startup_errors', TRUE);
         
       }else{
 
-        $query_crea = $bdd->prepare("SELECT * FROM crea_societe WHERE email_crea = :pseudo AND password_crea = :pass_hash");
-        $query_crea->bindValue(':pseudo', $pseudo);
-        $query_crea->bindValue(':pass_hash',$pass_hash);
-        $query_crea->execute();
+        $query_crea = $bdd->query("SELECT * FROM crea_societe WHERE email_crea = '$pseudo' AND password_crea = '$pass'");
         $count_crea = $query_crea->rowCount();
 
         if($count_crea == "1"){
 
-          $selectid = $bdd->prepare("SELECT id FROM crea_societe WHERE email_crea =:pseudo");
-          $selectid->bindValue(':pseudo', $pseudo);
-          $selectid->execute();
+          $selectid = $bdd->query("SELECT id FROM crea_societe WHERE email_crea ='$pseudo'");
           $viewid = $selectid->fetch();
 
           session_start();
