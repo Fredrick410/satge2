@@ -183,8 +183,81 @@ echo $result['description'];
         <div class="col-12" id="div-service-dispo">
             <form action="" method="POST">
             <h2>Les services disponibles à cette adresse</h2>
-            <div id="solution-logo">
-                <ul>
+
+    <div id="solution-logo">
+        <ul>
+<?php 
+if($result['type']=='1'){ //bureau disponible
+?>
+
+
+                    <li>
+                        <input type="checkbox" id="bureau" class="solu"></input>
+                        <label for="bureau" class="">
+                            <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                            <p>Bureaux privatifs</p>
+                        </label>
+                    </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='2'){ //coworking disponible
+?>
+
+
+                    <li>    
+                        <input type="checkbox" id="cowork" class="solu"></input>
+                        <label for="cowork" class="">
+                            <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                            <p>Coworking</p>
+                        </label>
+                    </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='3'){ //bureau et coworking disponible
+?>
+
+                    <li>
+                        <input type="checkbox" id="bureau" class="solu"></input>
+                        <label for="bureau" class="">
+                            <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                            <p>Bureaux privatifs</p>
+                        </label>
+                    </li>
+
+                    <li>    
+                        <input type="checkbox" id="cowork" class="solu"></input>
+                        <label for="cowork" class="">
+                            <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                            <p>Coworking</p>
+                        </label>
+                    </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='4'){ //domiciliation disponible
+?>
+
+
+                    <li>
+                        <input type="checkbox" id="domicilia" class="solu"></input>
+                            <label for="domicilia" class="">
+                                <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
+                                <p>Domiciliation</p>
+                            </label>
+                    </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='5'){ //domiciliation et bureau disponible
+?>
+
+
                     <li>
                         <input type="checkbox" id="bureau" class="solu"></input>
                         <label for="bureau" class="">
@@ -193,6 +266,47 @@ echo $result['description'];
                         </label>
                     </li>
                     <li>
+                        <input type="checkbox" id="domicilia" class="solu"></input>
+                            <label for="domicilia" class="">
+                                <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
+                                <p>Domiciliation</p>
+                            </label>
+                    </li>                   
+            
+<?php }?>
+<?php 
+if($result['type']=='6'){ //domiciliation et coworking disponible
+?>
+
+
+                    <li>    
+                        <input type="checkbox" id="cowork" class="solu"></input>
+                        <label for="cowork" class="">
+                            <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
+                            <p>Coworking</p>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="domicilia" class="solu"></input>
+                            <label for="domicilia" class="">
+                                <img src="../../../app-assets/images/pages/domiciliation.png" width= 150px; >
+                                <p>Domiciliation</p>
+                            </label>
+                    </li>                   
+            
+<?php }?>
+<?php 
+if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
+?>
+
+                    <li>
+                        <input type="checkbox" id="bureau" class="solu"></input>
+                        <label for="bureau" class="">
+                            <img src="../../../app-assets/images/pages/bureau.png" width= 150px; >
+                            <p>Bureaux privatifs</p>
+                        </label>
+                    </li>
+                    <li>    
                         <input type="checkbox" id="cowork" class="solu"></input>
                         <label for="cowork" class="">
                             <img src="../../../app-assets/images/pages/coworking.png" width= 150px; >
@@ -206,8 +320,15 @@ echo $result['description'];
                                 <p>Domiciliation</p>
                             </label>
                     </li>
-                </ul>
-            </div>
+                   
+            
+<?php }?>
+        </ul>
+    </div>
+    
+                   
+
+
             <div class="form-group" id="div-btn-sol">
                 <button type="submit" id="btn-sol" class="btn text-dark glow position-relative border rounded-pill">Soumettre</button>
             </div>
