@@ -134,16 +134,16 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                         <div class="swiper-container gallery-thumbs">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-warning btn-lg btn-block py-1 py-md-0 px-0" ><strong class="d-none d-md-block">Comptabilité</strong></button>
+                                    <button type="button" class="btn btn-yellow btn-lg btn-block py-1 py-md-0 px-0" ><strong class="d-none d-md-block">Comptabilité</strong></button>
                                 </div>
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-info btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
+                                    <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
                                 </div>
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Fiscalité</strong></button>
+                                    <button type="button" class="btn btn-warning btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Fiscalité</strong></button>
                                 </div>
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-primary btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Sociale</strong></button>
+                                    <button type="button" class="btn btn-info btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Sociale</strong></button>
                                 </div>
                             </div>
                         </div>
@@ -298,27 +298,26 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
 
                                                             </div>
                                                         </div>
-                                                        <div class="main-wrapper-content">
-                                                            <div class="wrapper-content" data-earnings="admin-theme">
-                                                                <div class="widget-earnings-scroll table-responsive">
-                                                                    <table class="table table-borderless widget-earnings-width mb-0">
-                                                                        <tbody>
-                                                                            <?php foreach ($comptables as $comptable) :
-                                                                                $pdoSt = $bdd->prepare('SELECT COUNT(*) AS nb FROM comptable_list WHERE id_comptable = :id');
-                                                                                $pdoSt->bindValue(':id', $comptable['id']);
-                                                                                $pdoSt->execute();
-                                                                                $nb_assigne_perso = ($pdoSt->fetch())['nb'];
+                                                        <div id="id_table_ventes" style="display:block;">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-borderless mb-0">
+                                                                    <tbody>
+                                                                        <?php foreach ($comptables as $comptable) :
+                                                                            $pdoSt = $bdd->prepare('SELECT COUNT(*) as nb FROM stockage_admin WHERE name_entreprise IN (SELECT name_societe FROM comptable_list WHERE id_comptable=:id) AND (type_files_fac_achat = "fac_achat" OR type_files_avoir = "avoir") AND send_files="nonvalide"');
+                                                                            $pdoSt->bindValue(':id', $comptable['id']);
+                                                                            $pdoSt->execute();
+                                                                            $nb_assigne_perso = ($pdoSt->fetch())['nb'];
 
-                                                                                $pourcent_perso = 100*$nb_assigne_perso / $nb_assigne_max;
-                                                                                if ($pourcent_perso <26){
-                                                                                    $color_bar = "danger";
-                                                                                } else if ($pourcent_perso <51){
-                                                                                    $color_bar = "warning";
-                                                                                } else if ($pourcent_perso <76){
-                                                                                    $color_bar = "info";
-                                                                                } else {
-                                                                                    $color_bar = "success";
-                                                                                }
+                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($pourcent_perso <34){
+                                                                                $color_bar = "danger";
+                                                                            } else if ($pourcent_perso <67){
+                                                                                $color_bar = "warning";
+                                                                            } else if ($pourcent_perso <100){
+                                                                                $color_bar = "info";
+                                                                            } else {
+                                                                                $color_bar = "success";
+                                                                            }
                                                                             ?>
                                                                             <tr>
                                                                                 <td class="pr-75">
@@ -334,14 +333,12 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                                                                                         <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Clients</span>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
                                                                                 </td>
                                                                             </tr>
-                                                                            <?php endforeach ?>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-
+                                                                        <?php endforeach ?>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                         <!-- FIN TABLE VENTES -->
@@ -350,65 +347,41 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
-                                                                                        <span class="font-small-2">Designer</span>
+                                                                        <?php foreach ($comptables as $comptable) :
+                                                                            $pdoSt = $bdd->prepare('SELECT COUNT(*) as nb FROM stockage_admin WHERE name_entreprise IN (SELECT name_societe FROM comptable_list WHERE id_comptable=:id) AND (type_files_fac_ventes = "fac_ventes" OR type_files_note = "note") AND send_files="nonvalide"');
+                                                                            $pdoSt->bindValue(':id', $comptable['id']);
+                                                                            $pdoSt->execute();
+                                                                            $nb_assigne_perso = ($pdoSt->fetch())['nb'];
+
+                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($pourcent_perso <34){
+                                                                                $color_bar = "danger";
+                                                                            } else if ($pourcent_perso <67){
+                                                                                $color_bar = "warning";
+                                                                            } else if ($pourcent_perso <100){
+                                                                                $color_bar = "info";
+                                                                            } else {
+                                                                                $color_bar = "success";
+                                                                            }
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">jini mara</h6>
-                                                                                        <span class="font-small-2">Marketing</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-primary progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -419,45 +392,41 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
-                                                                                        <span class="font-small-2">Designer</span>
+                                                                        <?php foreach ($comptables as $comptable) :
+                                                                            $pdoSt = $bdd->prepare('SELECT COUNT(*) as nb FROM stockage_admin WHERE name_entreprise IN (SELECT name_societe FROM comptable_list WHERE id_comptable=:id) AND (type_files_caisse_ventes = "caisse_ventes" OR banque = "banque") AND send_files="nonvalide"');
+                                                                            $pdoSt->bindValue(':id', $comptable['id']);
+                                                                            $pdoSt->execute();
+                                                                            $nb_assigne_perso = ($pdoSt->fetch())['nb'];
+
+                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($pourcent_perso <34){
+                                                                                $color_bar = "danger";
+                                                                            } else if ($pourcent_perso <67){
+                                                                                $color_bar = "warning";
+                                                                            } else if ($pourcent_perso <100){
+                                                                                $color_bar = "info";
+                                                                            } else {
+                                                                                $color_bar = "success";
+                                                                            }
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>

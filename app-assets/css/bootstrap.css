@@ -2390,6 +2390,40 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(223, 156, 68, 0.5);
 }
 
+.btn-yellow {
+  color: #324356;
+  background-color: #FFEB3B;
+  border-color: #FFEB3B;
+}
+
+.btn-yellow:hover {
+  color: #324356;
+  background-color: #FDD835;
+  border-color: #FDD835;
+}
+
+.btn-yellow:focus, .btn-yellow.focus {
+  box-shadow: 0 0 0 0.2rem rgba(223, 156, 68, 0.5);
+}
+
+.btn-yellow.disabled, .btn-yellow:disabled {
+  color: #324356;
+  background-color: #FFEB3B;
+  border-color: #FFEB3B;
+}
+
+.btn-yellow:not(:disabled):not(.disabled):active, .btn-yellow:not(:disabled):not(.disabled).active,
+.show > .btn-yellow.dropdown-toggle {
+  color: #324356;
+  background-color: #FDD835;
+  border-color: #FDD835;
+}
+
+.btn-yellow:not(:disabled):not(.disabled):active:focus, .btn-yellow:not(:disabled):not(.disabled).active:focus,
+.show > .btn-yellow.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(223, 156, 68, 0.5);
+}
+
 .btn-danger {
   color: #FFFFFF;
   background-color: #FF5B5C;
