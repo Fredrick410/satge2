@@ -69,3 +69,9 @@ branche de leo :
 	tache réalisée 28/06/21
 		-factorisation du chat
 
+branche de oscar:
+	tache réalisée le 28/06/2021:
+		-création page accueil crea
+
+	tache réalisée le 29/06/2021:
+		-partie domiciliation ajouté à la page accueil crea
