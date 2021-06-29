@@ -10,7 +10,7 @@
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
     <title>Création de société</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -35,9 +35,6 @@
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-
 </head>
 <!-- END: Head-->
 
@@ -45,40 +42,6 @@
 
 <body class="vertical-layout vertical-menu-modern 1-column  navbar-sticky footer-static bg-full-screen-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
 <style>
-
-@font-face{
-    font-family: "mukta malar bold";
-    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Bold.ttf");
-}
-
-@font-face{
-    font-family: "mukta malar medium";
-    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Medium.ttf");
-}
-
-@font-face{
-    font-family: "mukta malar light";
-    src: url("../../../app-assets/css/Mukta_Malar/MuktaMalar-Light.ttf");
-}
-
-@media only screen and (max-width: 1000px) {
-  #img_crea {
-    display:none;
-  }
-}
-
-@media screen and (max-width: 500px){
-    #titre{
-     font-size: 20px;
-	}
-}
-
-@media screen and (max-width: 370px){
-    #titre{
-     font-size: 15px;
-	}
-}
-
 .line {
     text-decoration: underline;
 }
@@ -148,7 +111,6 @@
                                                     <div class="form-group">
                                                         <label class="line">Information de connexion</label>
                                                     </div>
-                                                    <br>
                                                     <div class="form-group mb-50">
                                                         <label class="text-bold-600">E-mail (Identifiant de connexion) *</label>
                                                         <input type="text" name="email_crea" class="form-control"placeholder="E-mail de contact" required></div>
@@ -178,74 +140,7 @@
         </div>
     </div>
     <!-- END: Content-->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script>
 
-    //mot de passe
-
-        //MDP ayant lettres majuscules, minuscules et chiffres
-        var condition = new RegExp("^(?=.{6,})(?=.*[A-Za-z])(?=.*[0-9])", "g");
-        
-        $("#mdp").keyup(function(event){
-            if(condition.test($(this).val())){ // mdp valide
-                document.getElementById("alert-mdp1").style = "display: none;";
-                $('#btn').prop('disabled', false);
-            }
-            else if(!condition.test($(this).val())){//mdp non valide
-                document.getElementById("alert-mdp1").style = "display:inline-block;";
-                $('#btn').prop('disabled', true);
-            }
-               
-        });
-
-
-        $('#mdp_verif').keyup(function (event) {
-            if($("#mdp").val() != $("#mdp_verif").val()){ //si les 2 mdp ne correspondent pas
-                document.getElementById("alert-mdp2").style = "display:inline-block;"; //on affiche msg d'erreur
-                $('#btn').prop('disabled', true);
-            }
-            else{
-                document.getElementById("alert-mdp2").style = "display:none;"; //on n'affiche pas le msg
-                $('#btn').prop('disabled', false);
-            }
-        });
-        
-
-    //telephone
-        const phoneInputField = document.querySelector("#tel_temp");
-        const phoneInput = window.intlTelInput(phoneInputField, {
-            preferredCountries: ["fr"],
-            utilsScript: 
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-        function process(event) {
-            event.preventDefault();
-
-            const phoneNumber = phoneInput.getNumber();
-
-           
-            document.getElementById("tel_diri").value=`${phoneNumber}`;
-        }
-
-    //email
-        function checkEmail(email) {
-             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-             return re.test(email);
-         }
-         $("#email").keyup(function(event){
-             var email = document.getElementById("email").value;
-         
-            if (!checkEmail(email)){
-                document.getElementById("alert-email").style = "display:inline-block;"; //on affiche msg d'erreur
-                $('#btn').prop('disabled', true);
-            }else{
-                document.getElementById("alert-email").style = "display:none;"; //on retire le msg d'erreur
-                $('#btn').prop('disabled', false);
-            }
-             return false;
-         });
-  
-    </script>
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>

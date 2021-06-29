@@ -30,7 +30,7 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel->execute();
 
         sleep(1);
-        header('Location: ../utilisateurs.php');
+        header('Location: ../dashboard-admin.php');
         exit();
     
 ?>

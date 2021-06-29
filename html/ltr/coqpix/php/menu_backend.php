@@ -18,11 +18,7 @@
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateur</a>
                     </li>
-<<<<<<< HEAD
                     <li data-menu=""><a class="dropdown-item align-items-center" href="statistique.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Statistique</a>
-=======
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="utilisateurs.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
->>>>>>> 6f1911ef5aed13068443f2acacba0518479933eb
                     </li>
                 </ul>
             </li>
@@ -115,18 +111,6 @@
                 </ul>
             </li>
         </ul>
-<<<<<<< HEAD
-=======
-
-    </div>
-    <div class="navbar-container main-menu-content" data-menu="menu-container">
-        <ul class="nav navbar-nav">
-
-            <?php include('notifs_backend.php'); ?>
-        
-        </ul>
-    </div>
->>>>>>> 6f1911ef5aed13068443f2acacba0518479933eb
     </div>
     <!-- /horizontal menu content-->
 </div>

@@ -12,10 +12,7 @@ ini_set('display_startup_errors', TRUE);
  $pass = htmlspecialchars($_GET["passwordentreprise"]) ;
  
  //On sélectionne dans la table 'utilisateurs' les pseudo qui sont les mêmes que le pseudo tapé dans le formulaire
- $query = $bdd->prepare("SELECT * FROM admin WHERE emailentreprise = :pseudo AND passwordentreprise = :pass"); 
- $query->bindValue(':pseudo', $pseudo);
- $query->bindValue(':pass',$pass);
- $query->execute();
+ $query = $bdd->query("SELECT * FROM admin WHERE emailentreprise = '$pseudo' AND passwordentreprise = '$pass'"); 
  
  //On compte le nombre de réponse
  $count = $query->rowCount();
@@ -24,9 +21,7 @@ ini_set('display_startup_errors', TRUE);
  if($count == 1) 
  { 
 
-        $selectid = $bdd->prepare("SELECT id FROM admin WHERE emailentreprise =:pseudo");
-        $selectid->bindValue(':pseudo', $pseudo);
-        $selectid->execute();
+        $selectid = $bdd->query("SELECT id FROM admin WHERE emailentreprise ='$pseudo'");
         $viewid = $selectid->fetch();
 
         session_start();
