@@ -12,7 +12,8 @@
 			$delete_notifs_back->execute();
 		}
 		if ($_GET['delete'] == 'front') {
-			$delete_notifs_front = $bdd->prepare('DELETE FROM notif_front');
+			$delete_notifs_front = $bdd->prepare('DELETE FROM notif_front WHERE id_session=:id_session');
+			$delete_notifs_front->bindValue(':id_session', $_SESSION['id_session']);
 			$delete_notifs_front->execute();
 		}
 	}       

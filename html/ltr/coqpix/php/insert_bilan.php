@@ -6,6 +6,11 @@ ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
     $email_bilan = $_POST['email_bilan'];
+    // recuperer name_entreprise 
+    $pdoSt = $bdd->prepare('SELECT nameentreprise FROM entreprise WHERE id = :id');
+    $pdoSt->bindValue(':id', $_GET['num']);
+    $pdoSt->execute();
+    $name_entreprise = $pdoSt->fetch();
     
     if ($_POST['date_bilan'] == "") {
 
@@ -42,7 +47,7 @@ require_once 'config.php';
 
     if($resultat = move_uploaded_file($target_file, $file_name)){
 
-        $insert = $bdd->prepare('INSERT INTO bilan (email_bilan , dte, date_j, date_m, date_a, files_bilan, id_session) VALUES(?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO bilan (email_bilan, dte, date_j, date_m, date_a, files_bilan, id_session) VALUES(?,?,?,?,?,?,?)');
             $insert->execute(array(
                 htmlspecialchars($email_bilan),
                 htmlspecialchars($dte),
@@ -50,6 +55,15 @@ require_once 'config.php';
                 htmlspecialchars($date_m),
                 htmlspecialchars($date_a),
                 htmlspecialchars($real_name . $date_now . $type_files),
+                htmlspecialchars($id_session)
+            ));
+
+        // ajouter notification
+        $insert_notif = $bdd->prepare('INSERT INTO notif_back (type_demande, date_demande, name_entreprise, id_session) VALUES(?,?,?,?)');
+            $insert_notif->execute(array(
+                htmlspecialchars("bilan"),
+                htmlspecialchars($dte),
+                htmlspecialchars($name_entreprise),
                 htmlspecialchars($id_session)
             ));
 
