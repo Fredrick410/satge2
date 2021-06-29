@@ -13,6 +13,27 @@ $comptables = $pdoSt->fetchAll();
 $pdoSt = $bdd->prepare('SELECT MAX(nb) AS nb FROM (SELECT COUNT(*) AS nb FROM comptable_list GROUP BY id_comptable) AS temp');
 $pdoSt->execute();
 $nb_assigne_max = ($pdoSt->fetch())['nb'];
+    // Taux de prelevement
+    $annee_actuelle = date("Y");
+
+    for ($i=0 ; $i<5 ; $i++) {
+
+        // Requete SQL permettant de recuperer le taux de prélevement
+        ${'select_taux_prelevement_n_'.$i} = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee');
+        ${'select_taux_prelevement_n_'.$i}->bindValue(':annee', $annee_actuelle - $i);
+        ${'select_taux_prelevement_n_'.$i}->execute();
+        ${'result_taux_prelevement_n_'.$i} = ${'select_taux_prelevement_n_'.$i}->fetch();
+
+    } for ($j=1 ; $j<6 ; $j++) {
+
+        // Requete SQL permettant de recuperer le bilan annuel
+        ${'select_bilan_annuel_n_'.$j} = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
+        ${'select_bilan_annuel_n_'.$j}->bindValue(':annee', $annee_actuelle - $j);
+        ${'select_bilan_annuel_n_'.$j}->execute();
+        ${'result_bilan_annuel_n_'.$j} = ${'select_bilan_annuel_n_'.$j}->fetch();
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -98,7 +119,7 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
-        <div class="content-wrapper">
+        <div class="content-wrapper pt-0">
             <div class="content-header row">
             </div>
             <div class="content-body row">
@@ -111,18 +132,18 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                 <div class="col-9">
                     <section id="component-swiper-gallery dashboard-analytics">
                         <div class="swiper-container gallery-thumbs">
-                            <div class="swiper-wrapper mt-25">
-                                <div class="swiper-slide dash">
-                                    <button type="button" class="btn btn-warning btn-lg btn-block"><strong>Comptabilité</strong></button>
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <button type="button" class="btn btn-warning btn-lg btn-block py-1 py-md-0 px-0" ><strong class="d-none d-md-block">Comptabilité</strong></button>
                                 </div>
-                                <div class="swiper-slide dash">
-                                    <button type="button" class="btn btn-info btn-lg btn-block"><strong>Juridique</strong></button>
+                                <div class="swiper-slide">
+                                    <button type="button" class="btn btn-info btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
                                 </div>
-                                <div class="swiper-slide dash">
-                                    <button type="button" class="btn btn-danger btn-lg btn-block"><strong>Fiscalité</strong></button>
+                                <div class="swiper-slide">
+                                    <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Fiscalité</strong></button>
                                 </div>
-                                <div class="swiper-slide dash">
-                                    <button type="button" class="btn btn-primary btn-lg btn-block"><strong>Sociale</strong></button>
+                                <div class="swiper-slide">
+                                    <button type="button" class="btn btn-primary btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Sociale</strong></button>
                                 </div>
                             </div>
                         </div>
@@ -221,9 +242,10 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                                         </div>
                                         <!-- FIN COLONNE GAUCHE -->
                                         <!-- DEBUT COLONNE DROITE -->
+                                        <!-- FIN TABLE TRESORERIE -->
                                         <div class="col-xl-6 col-md-12">
                                             <div class="row">
-                                                <div class="col-12 dashboard-earning-swiper" id="widget-earnings">
+                                                <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                                                             <h5 class="card-title"><i class="bx bx-group font-medium-5 align-middle"></i> <span class="align-middle">Comptables</span></h5>
@@ -231,33 +253,49 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body py-1 px-0">
-                                                                <!-- earnings swiper starts -->
-                                                                <div class="widget-earnings-swiper swiper-container p-1">
-                                                                    <div class="swiper-wrapper">
-                                                                        <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="admin-theme">
-                                                                            <i class="bx bx-dollar mr-50 font-large-1"></i>
-                                                                            <div class="swiper-text">
-                                                                                <div class="swiper-heading">Ventes</div>
-                                                                                <small class="d-block">Entrées d'argent</small>
-                                                                            </div>
+                                                                <div class="d-flex justify-content-around">
+
+                                                                    <a href="#" id="id_bouton_ventes" style="
+                                                                        font-family: Rubik, Helvetica, Arial, serif;
+                                                                        color: #FFFFFF;
+                                                                        background-color: #5A8DEE;
+                                                                        box-shadow: 0 0 3px 3px rgba(92,111,140,0.7);
+                                                                        border-radius: 8px;">
+                                                                        <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_ventes">
+                                                                        <i class="bx bx-dollar mr-50 font-large-1"></i>
+                                                                        <div class="d-none d-md-block">
+                                                                            <div>Ventes</div>
+                                                                            <div class="d-block " style="font-size: 0.8rem;">Entrées d'argent</div>
                                                                         </div>
-                                                                        <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="ux-devloper">
-                                                                            <i class="bx bx-wallet mr-50 font-large-1"></i>
-                                                                            <div class="swiper-text">
-                                                                                <div class="swiper-heading">Achats</div>
-                                                                                <small class="d-block">Sorties d'argent</small>
-                                                                            </div>
+                                                                    </div></a>
+                                                                    <a href="#" id="id_bouton_achats" style="
+                                                                        font-family: Rubik, Helvetica, Arial, serif;
+                                                                        color: #FFFFFF;
+                                                                        background-color: none;
+                                                                        box-shadow: 0 0 3px 3px rgba(92,111,140,0.7);
+                                                                        border-radius: 8px;">
+                                                                        <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_achats">
+                                                                        <i class="bx bx-wallet mr-50 font-large-1"></i>
+                                                                        <div class="d-none d-md-block">
+                                                                            <div>Achats</div>
+                                                                            <div class="d-block" style="font-size: 0.8rem;">Sorties d'argent</div>
                                                                         </div>
-                                                                        <div class="swiper-slide rounded swiper-shadow py-50 px-2 d-flex align-items-center" id="marketing-guide">
-                                                                            <i class="bx bx-diamond mr-50 font-large-1"></i>
-                                                                            <div class="swiper-text">
-                                                                                <div class="swiper-heading">Trésorerie</div>
-                                                                                <small class="d-block">État des finances</small>
-                                                                            </div>
+                                                                    </div></a>
+                                                                    <a href="#" id="id_bouton_tresorerie" style="
+                                                                        font-family: Rubik, Helvetica, Arial, serif;
+                                                                        color: #FFFFFF;
+                                                                        background-color: none;
+                                                                        box-shadow: 0 0 3px 3px rgba(92,111,140,0.7);
+                                                                        border-radius: 8px;">
+                                                                        <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_tresorerie">
+                                                                        <i class="bx bx-diamond mr-50 font-large-1"></i>
+                                                                        <div class="d-none d-md-block">
+                                                                            <div>Trésorerie</div>
+                                                                            <div class="d-block" style="font-size: 0.8rem;">État des finance</div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div></a>
                                                                 </div>
-                                                                <!-- earnings swiper ends -->
+
                                                             </div>
                                                         </div>
                                                         <div class="main-wrapper-content">
@@ -303,240 +341,169 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
-                                                            </div>
-                                                            <div class="wrapper-content" data-earnings="ux-devloper">
-                                                                <div class="widget-earnings-scroll table-responsive">
-                                                                    <table class="table table-borderless widget-earnings-width mb-0">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-16.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Drako Lter</h6>
-                                                                                            <span class="font-small-2">Designer</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="38" aria-valuemin="80" aria-valuemax="100" style="width:38%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-danger">- $280</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-1.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                            <span class="font-small-2">Devloper</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-success">+ $853</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Lary Masey</h6>
-                                                                                            <span class="font-small-2">Marketing</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-primary progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-2.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Lvia Taylor</h6>
-                                                                                            <span class="font-small-2">Devloper</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-danger progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="80" aria-valuemax="100" style="width:75%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-danger">- $360</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                            <div class="wrapper-content" data-earnings="marketing-guide">
-                                                                <div class="widget-earnings-scroll table-responsive">
-                                                                    <table class="table table-borderless widget-earnings-width mb-0">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-19.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">yono Lter</h6>
-                                                                                            <span class="font-small-2">Designer</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="28" aria-valuemin="80" aria-valuemax="100" style="width:28%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-primary">- $270</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                            <span class="font-small-2">Devloper</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-success">+ $853</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-12.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Lary Masey</h6>
-                                                                                            <span class="font-small-2">Marketing</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-primary progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-primary">+ $225</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td class="pr-75">
-                                                                                    <div class="media align-items-center">
-                                                                                        <a class="media-left mr-50" href="#">
-                                                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                        </a>
-                                                                                        <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0">Lula Taylor</h6>
-                                                                                            <span class="font-small-2">Devloper</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-danger progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="80" aria-valuemax="100" style="width:35%;"></div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td class="text-center"><span class="badge badge-light-danger">- $350</span>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
+
                                                             </div>
                                                         </div>
+                                                        <!-- FIN TABLE VENTES -->
+                                                        <!-- DEBUT TABLE ACHATS -->
+                                                        <div id="id_table_achats" style="display:none;"> 
+                                                            <div class="table-responsive">
+                                                                <table class="table table-borderless mb-0">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="pr-75">
+                                                                                <div class="media align-items-center">
+                                                                                    <a class="media-left mr-50" href="#">
+                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                    </a>
+                                                                                    <div class="media-body">
+                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
+                                                                                        <span class="font-small-2">Designer</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="px-0 w-25">
+                                                                                <div class="progress progress-bar-info progress-sm mb-0">
+                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="pr-75">
+                                                                                <div class="media align-items-center">
+                                                                                    <a class="media-left mr-50" href="#">
+                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                    </a>
+                                                                                    <div class="media-body">
+                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
+                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="px-0 w-25">
+                                                                                <div class="progress progress-bar-success progress-sm mb-0">
+                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="pr-75">
+                                                                                <div class="media align-items-center">
+                                                                                    <a class="media-left mr-50" href="#">
+                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                    </a>
+                                                                                    <div class="media-body">
+                                                                                        <h6 class="media-heading mb-0">jini mara</h6>
+                                                                                        <span class="font-small-2">Marketing</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="px-0 w-25">
+                                                                                <div class="progress progress-bar-primary progress-sm mb-0">
+                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <!-- FIN TABLE ACHATS -->
+                                                        <!-- DEBUT TABLE TRESORERIE -->
+                                                        <div id="id_table_tresorerie" style="display:none;"> 
+                                                            <div class="table-responsive">
+                                                                <table class="table table-borderless mb-0">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="pr-75">
+                                                                                <div class="media align-items-center">
+                                                                                    <a class="media-left mr-50" href="#">
+                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                    </a>
+                                                                                    <div class="media-body">
+                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
+                                                                                        <span class="font-small-2">Designer</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="px-0 w-25">
+                                                                                <div class="progress progress-bar-info progress-sm mb-0">
+                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="pr-75">
+                                                                                <div class="media align-items-center">
+                                                                                    <a class="media-left mr-50" href="#">
+                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
+                                                                                    </a>
+                                                                                    <div class="media-body">
+                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
+                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="px-0 w-25">
+                                                                                <div class="progress progress-bar-success progress-sm mb-0">
+                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <!-- FIN TABLE TRESORERIE -->
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- FIN COMPTABLES -->
                                             <!-- DEBUT PRELEVEMENT ET BILAN -->
                                             <div class="row">
-                                                <!-- Taux de prelevement -->
-                                                <?php
-                                                    // Requete SQL permettant de recuperer le taux de prélevement
-                                                    $select_taux_prelevement = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee');
-                                                    if (isset($_POST['annee_prelevement'])) {
-                                                        $select_taux_prelevement->bindValue(':annee', $_POST['annee_prelevement']);
-                                                    } else {
-                                                        $select_taux_prelevement->bindValue(':annee', 2021);
-                                                    }
-                                                    $select_taux_prelevement->execute();
-                                                    $result_taux_prelevement = $select_taux_prelevement->fetch();
-
-                                                    // Requete SQL permettant de recuperer le taux de prélevement
-                                                    $select_bilan_annuel = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
-                                                    if (isset($_POST['annee_bilan'])) {
-                                                        $select_bilan_annuel->bindValue(':annee', $_POST['annee_bilan']);
-                                                    } else {
-                                                        $select_bilan_annuel->bindValue(':annee', 2020);
-                                                    }
-                                                    $select_bilan_annuel->execute();
-                                                    $result_bilan_annuel = $select_bilan_annuel->fetch();
-                                                ?>
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-body text-center">
                                                             <div class="row">
                                                                 <div class="col-md-6 col-12">
-                                                                    <input type="hidden" id="taux_prelevement" value="<?= $result_taux_prelevement['taux_prelevement'] ?>">
-                                                                    <h6 class="mb-2"> Taux de prélèvement réussis en <?php if (isset($_POST['annee_bilan'])) { echo $_POST['annee_bilan']; } else { echo 2021; } ?></h6>
-                                                                    <form method="POST">
-                                                                        <select class="form-control" onchange="submit()" class="form-select" name="annee_prelevement">
-                                                                            <option selected><?php if (isset($_POST['annee_prelevement'])) { echo $_POST['annee_prelevement']; } else { echo 2021; } ?></option>
-                                                                            <option value="2021">2021</option>
-                                                                            <option value="2020">2020</option>
-                                                                            <option value="2019">2019</option>
-                                                                        </select>
-                                                                        <div id="growth-Chart"></div>
-                                                                    </form>
+                                                                    <input type="hidden" id="taux_prelevement_2021" value="<?= $result_taux_prelevement_n_0['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2020" value="<?= $result_taux_prelevement_n_1['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2019" value="<?= $result_taux_prelevement_n_2['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2018" value="<?= $result_taux_prelevement_n_3['taux_prelevement'] ?>">
+                                                                    <input type="hidden" id="taux_prelevement_2017" value="<?= $result_taux_prelevement_n_4['taux_prelevement'] ?>">
+                                                                    <h6 class="text-white mb-2"> Taux de prélèvement réussis en <span class="text-white" id="id_span_prelevement">2021</span> </h6>
+                                                                    <select class="form-control" id="id_select_prelevement">
+                                                                        <option value="2021">2021</option>
+                                                                        <option value="2020">2020</option>
+                                                                        <option value="2019">2019</option>
+                                                                        <option value="2018">2018</option>
+                                                                        <option value="2017">2017</option>
+                                                                    </select>
+                                                                    <div id="growth-Chart-prelevement"></div>
                                                                 </div>
                                                                 <div class="col-md-6 col-12">
-                                                                    <input type="hidden" id="bilan_annuel" value="<?= $result_bilan_annuel['bilan_annuel'] ?>">
-                                                                    <h6 class="mb-2"> Bilans annuels réalisés en <?php if (isset($_POST['annee_bilan'])) { echo $_POST['annee_bilan']; } else { echo 2020; } ?></h6>
-                                                                    <form method="POST">
-                                                                        <select class="form-control" onchange="submit()" class="form-select" name="annee_bilan">
-                                                                            <option selected><?php if (isset($_POST['annee_bilan'])) { echo $_POST['annee_bilan']; } else { echo 2020; } ?></option>
-                                                                            <option value="2020">2020</option>
-                                                                            <option value="2019">2019</option>
-                                                                            <option value="2018">2018</option>
-                                                                        </select>
-                                                                        <div id="growth-Chart2"></div>
-                                                                    </form>
+                                                                    <input type="hidden" id="bilan_annuel_2020" value="<?= $result_bilan_annuel_n_1['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2019" value="<?= $result_bilan_annuel_n_2['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2018" value="<?= $result_bilan_annuel_n_3['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2017" value="<?= $result_bilan_annuel_n_4['bilan_annuel'] ?>">
+                                                                    <input type="hidden" id="bilan_annuel_2016" value="<?= $result_bilan_annuel_n_5['bilan_annuel'] ?>">
+                                                                    <h6 class="text-white mb-2"> Bilans annuels réalisés en <span class="text-white" id="id_span_bilan">2021</span> </h6>
+                                                                    <select class="form-control" id="id_select_bilan">
+                                                                        <option value="2020">2020</option>
+                                                                        <option value="2019">2019</option>
+                                                                        <option value="2018">2018</option>
+                                                                        <option value="2017">2017</option>
+                                                                        <option value="2016">2016</option>
+                                                                    </select>
+                                                                    <div id="growth-Chart-bilan"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1152,7 +1119,47 @@ $nb_assigne_max = ($pdoSt->fetch())['nb'];
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
     <!-- END: Page JS-->
+    <script>
+        $(document).ready(function() {
+
+            $("#id_bouton_ventes").click(function(e) {
+                e.preventDefault();
+                // changer la couleur de fond du bouton
+                document.getElementById("id_bouton_ventes").style.backgroundColor="#5A8DEE";
+                document.getElementById("id_bouton_achats").style.backgroundColor="";
+                document.getElementById("id_bouton_tresorerie").style.backgroundColor="";
+                // afficher la table correspondant aux ventes et masquer les autres
+                document.getElementById("id_table_ventes").style.display = "block";
+                document.getElementById("id_table_achats").style.display = "none";
+                document.getElementById("id_table_tresorerie").style.display = "none";
+            });
+            $("#id_bouton_achats").click(function(e) {
+                e.preventDefault();
+                // changer la couleur de fond du bouton
+                document.getElementById("id_bouton_ventes").style.backgroundColor="";
+                document.getElementById("id_bouton_achats").style.backgroundColor="#5A8DEE";
+                document.getElementById("id_bouton_tresorerie").style.backgroundColor="";
+                // afficher la table correspondant aux achats et masquer les autres
+                document.getElementById("id_table_ventes").style.display = "none";
+                document.getElementById("id_table_achats").style.display = "block";
+                document.getElementById("id_table_tresorerie").style.display = "none";
+            });
+            $("#id_bouton_tresorerie").click(function(e) {
+                e.preventDefault();
+                // changer la couleur de fond du bouton
+                document.getElementById("id_bouton_ventes").style.backgroundColor="";
+                document.getElementById("id_bouton_achats").style.backgroundColor="";
+                document.getElementById("id_bouton_tresorerie").style.backgroundColor="#5A8DEE";
+                // afficher la table correspondant à la trésorerie et masquer les autres
+                document.getElementById("id_table_ventes").style.display = "none";
+                document.getElementById("id_table_achats").style.display = "none";
+                document.getElementById("id_table_tresorerie").style.display = "block";
+            });
+
+        });   
+    </script>
 
 </body>
 <!-- END: Body-->
