@@ -15,7 +15,7 @@
         htmlspecialchars($_POST['nameentreprise']),
         htmlspecialchars($_POST['emailentreprise']),
         htmlspecialchars($dte),
-        htmlspecialchars($_POST['passwordentreprise'])
+        htmlspecialchars(crypt($_POST['passwordentreprise'], '5c725a26307c3b5170634a7e2b'))
     ));
 
 
@@ -91,7 +91,7 @@
         htmlspecialchars("0")
     ));
 
-        header('Location: ../dashboard-admin.php');
+        header('Location: ../utilisateurs.php');
         exit();
 
 
