@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
-        //effacer tout les articles pas définit
+        //delete des articles pas définie
 
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
         $pdoDel->execute();
@@ -33,9 +33,9 @@ ini_set('display_startup_errors', TRUE);
 
         $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;       
 
-        $facture_nb = $calculs['facture_nb'];
-        $facture_all = $calculs['facture_all'];
-        $devis_all = $calculs['devis_all']  - $montant_t;
+        $facture_nb = $calculs['facture_nb'] - 1;
+        $facture_all = $calculs['facture_all'] - $montant_t;
+        $devis_all = $calculs['facture_all'];
         $lastdte = date('d-m-Y');  // $calculs['lastdte'] pour autre de facture
 
         $pdo = $bdd->prepare('UPDATE calculs SET facture_nb=:facture_nb, facture_all=:facture_all, devis_all=:devis_all, lastdte=:lastdte WHERE id_session=:num LIMIT 1');

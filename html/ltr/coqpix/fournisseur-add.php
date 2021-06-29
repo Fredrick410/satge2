@@ -123,7 +123,7 @@ require_once 'php/config.php';
     <!-- END: Main Menu-->
     
     <!-- BEGIN: Content-->
-    <?php foreach ($entreprise as $entreprisee): ?>
+   
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
@@ -500,7 +500,7 @@ require_once 'php/config.php';
                                                                     <!-- PUBLICITER -->
                                                     
                                                 </div>
-                                                <input name="numentreprise" type="hidden" value="<?= $entreprisee['id'] ?>">
+                                                <input name="numentreprise" type="hidden" value="<?= $entreprise['id'] ?>">
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
                                                     <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
                                                 </div>
@@ -517,8 +517,7 @@ require_once 'php/config.php';
             </div>
         </div>
     </div>
-    <?php endforeach; ?>
-
+   
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>

@@ -307,6 +307,7 @@ require_once 'php/config.php';
                                         </div>
                                         <hr>
                                         <!-- invoice address and contact -->
+                                           <!-- pour afficher les info du client qui appartient au bon -->
                                         <div class="row invoice-info">
                                             <div class="col-6 mt-1">
                                                 <h5 class="invoice-from">Devis de</h5>
@@ -355,6 +356,7 @@ require_once 'php/config.php';
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                              <!-- afficher les infos des articles qui appartiennent au bon -->
                                                 <?php foreach($articles as $articless): ?>
                                                 <tr>
                                                     <td><?= $articless['article']; ?></td>
@@ -384,7 +386,8 @@ require_once 'php/config.php';
                                         <hr>
                                         <div class="row">
                                             <div class="col-4 col-sm-6 mt-75">
-                                                <div class="form-group">    
+                                                <div class="form-group">   
+                                                 <!-- commentaire --> 
                                                     <span class="invoice-title"><?php if($facture['note'] == "Pas de commentaire"){$noteresult = "";}else{$noteresult = $facture['note'];} ?><?= $noteresult ?></span>
                                                 </div><br>
                                                 <div class="form-group"><style>.size{font-size: 12px;}  .display{display: none;} .aucun{text-transform:none;} .greyy{color:#aeaeae;} .bluee{color: #aed8ff;}</style>  
@@ -394,6 +397,7 @@ require_once 'php/config.php';
                                             </div>
                                             <div class="col-8 col-sm-6 d-flex justify-content-end mt-75">
                                                 <div class="invoice-subtotal">
+                                                <!-- calculs pour TVA, accompte, HT -->
                                                     <div class="invoice-calc d-flex justify-content-between">
                                                         <span class="invoice-title">Total HT</span>
                                                         <span class="invoice-value"> <?= $montant_t; ?> <?= $facture['monnaie']; ?></span>
