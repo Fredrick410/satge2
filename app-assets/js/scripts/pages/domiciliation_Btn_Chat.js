@@ -12,3 +12,10 @@ function updateScroll(){
   var element = document.getElementById("historique");
   element.scrollTop = element.scrollHeight;
 }
+
+function notif(){
+  const notification_crea = '0';
+  const requeteAjax = new XMLHttpRequest();
+  requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_notif.php');
+  requeteAjax.send(notification_crea);
+}

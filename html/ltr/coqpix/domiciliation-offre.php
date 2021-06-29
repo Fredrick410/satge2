@@ -111,17 +111,9 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
-    <br>
-    <div class="breadcrumb-wrapper col-12" ">
-        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
-            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
-            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
-            <li class="breadcrumb-item active"> Offre de domiciliation </li>
-        </ol>
-    </div>
 
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -335,6 +327,7 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
             </form>
         </div>
     </div>
+    <?php require_once('php/chat_domiciliation.php')?>
 </div>
     
     <!-- END: Content-->
@@ -342,6 +335,21 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+<script>
+
+    //changement image
+    function openGreen(element1,element2) {
+        if (document.getElementById(element1).style.display == "none" ){
+            document.getElementById(element1).style.display = "block";
+            document.getElementById(element2).style.display = "none";
+        } else {
+            document.getElementById(element1).style.display = "none";
+            document.getElementById(element2).style.display = "block";
+        }
+    }
+
+</script>
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
