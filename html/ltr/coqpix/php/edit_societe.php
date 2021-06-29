@@ -34,7 +34,7 @@ ini_set('display_startup_errors', TRUE);
     $pdo->execute();
         
         sleep(2);
-        header('Location: ../utilisateurs.php');
+        header('Location: ../dashboard-admin.php');
         
     
 

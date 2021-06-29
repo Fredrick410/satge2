@@ -43,6 +43,18 @@ ini_set('display_startup_errors', TRUE);
         $departement = $_POST['departementfirst'];
     }
 
+    if($_POST['adressetwo']== ""){
+        $adressetwo = "Adresse";
+    }else{
+        $adressetwo = $_POST['adressetwo'];
+    }
+
+    if($_POST['departementtwo'] == ""){
+        $departementtwo = "31100";
+    }else{
+        $departementtwo = $_POST['departementtwo'];
+    }
+
     if($_POST['emailfirst']== ""){
         $email = "email@email.com";
     }else{
@@ -77,7 +89,7 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, nomproduit, refbon, bonpour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_bon, status_color, etiquette, id_session, descrip) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO bon (numerosbon, dte, dateecheance, nomproduit, refbon, bonpour, adresse, email, tel, departement, modalite, monnaie, accompte, note, status_bon, status_color, etiquette, id_session, descrip, adresselivraison, deplivraison) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($numerosbon),
         htmlspecialchars($dte),
@@ -97,7 +109,9 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($color),
         htmlspecialchars($_POST['etiquette']),
         htmlspecialchars($_SESSION['id_session']),//$_SESSION
-        htmlspecialchars($_POST['descrip']) 
+        htmlspecialchars($_POST['descrip']),
+        htmlspecialchars($adressetwo),
+        htmlspecialchars($departementtwo)
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="bonvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
