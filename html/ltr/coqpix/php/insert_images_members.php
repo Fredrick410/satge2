@@ -15,8 +15,8 @@ ini_set('display_startup_errors', TRUE);
     $update = $bdd->prepare('UPDATE images SET images = ? WHERE name_entreprise = ?');
     $update->execute(array(
 
-        ($_FILES['images']['name']),
-        ($_POST['name_entreprise'])
+        htmlspecialchars($_FILES['images']['name']),
+        htmlspecialchars($_POST['name_entreprise'])
             
     ));
 

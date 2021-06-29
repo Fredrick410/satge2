@@ -26,16 +26,16 @@ if(!empty($artArr)){
 
     if((!empty($artArr[$i]))) {
 
-      $datas = array($artArr[$i],
-                     $refArr[$i],
-                     $coutArr[$i],
-                     $quantArr[$i],
-                     $umesureArr[$i],
-                     $tvaArr[$i],
-                     $remiseArr[$i],
-                     $numArr[$i],
-                     $typ,
-                     $id_session
+      $datas = array(htmlspecialchars($artArr[$i]),
+                    htmlspecialchars($refArr[$i]),
+                    htmlspecialchars($coutArr[$i]),
+                    htmlspecialchars($quantArr[$i]),
+                    htmlspecialchars($umesureArr[$i]),
+                    htmlspecialchars($tvaArr[$i]),
+                    htmlspecialchars($remiseArr[$i]),
+                    htmlspecialchars($numArr[$i]),
+                    htmlspecialchars($typ),
+                    htmlspecialchars($id_session)
                     );
 
       try {

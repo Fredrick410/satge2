@@ -6,7 +6,9 @@ ini_set('display_startup_errors', TRUE);
 
 //Affichage des offres associés    
 $ville = $_POST["ville"];
-$query = $bdd->query("SELECT * FROM offre_domiciliation WHERE ville like '$ville'"); //on recupère les offres de la ville correspondante
+$query = $bdd->prepare("SELECT * FROM offre_domiciliation WHERE ville = :ville"); //on recupère les offres de la ville correspondante
+$query->bindValue(':ville', $ville);
+$query->execute();
 $query->setFetchMode(PDO::FETCH_ASSOC);
 while ($ligne = $query->fetch()) 
     $tab[]= $ligne; //on recupere le tableau des offres

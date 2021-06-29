@@ -53,13 +53,13 @@ session_start();
 
                 $insert = $bdd->prepare('INSERT INTO stockage (name_files, size_files, dte_files, dte_j, dte_m, dte_a, img_files, type_files_note, type_files_avoir, type_files_fac_achat, type_files_fac_ventes, type_files_caisse_ventes, banque, send_files, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
                 $insert->execute(array(
-                    ($name_final),
-                    ($size_files),
-                    ($dte),
-                    ($date_j),
-                    ($date_m),
-                    ($date_a),
-                    ($type_files),
+                    htmlspecialchars(($name_final)),
+                    htmlspecialchars(($size_files)),
+                    htmlspecialchars(($dte)),
+                    htmlspecialchars(($date_j)),
+                    htmlspecialchars(($date_m)),
+                    htmlspecialchars(($date_a)),
+                    htmlspecialchars(($type_files)),
                     (""),
                     (""),
                     ("fac_achat"),
@@ -67,7 +67,7 @@ session_start();
                     (""),
                     (""),
                     ("#FF0000"),
-                    ($_SESSION['id_session'])
+                    htmlspecialchars(($_SESSION['id_session']))
                 ));
 
                 header('Location: ../app-invoice-achat-list.php');
