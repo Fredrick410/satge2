@@ -69,3 +69,7 @@ branche de leo :
 	tache réalisée 28/06/21
 		-factorisation du chat
 		-liaison du chat (chat censé être fonctionnel, à tester en ligne car le chat ne fonctionne pas en local)
+
+	tache réalisée 29/06/2021
+		-chat present sur offre domiciliation
+		-inclusion du 'type' (domiciliation, coworking...) lors de la recherche (boutons fonctionnels)

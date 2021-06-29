@@ -215,6 +215,7 @@ echo $result['description'];
             </form>
         </div>
     </div>
+    <?php require_once('php/chat_domiciliation.php')?>
 </div>
     
     <!-- END: Content-->
