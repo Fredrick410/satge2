@@ -92,10 +92,11 @@ body{
 #div-dodo{
     min-width: 100%;
     padding: 0 10%;
+    height: ;
 }
 
 #div-domiciliation{
-
+    height: 400px;
 }
 
 #div-domiciliation h2{
@@ -107,6 +108,7 @@ body{
     background-color: #051441;
     border-radius: 40px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+    height: 50%;
 }
 
 #se-domicilier h3{
@@ -119,11 +121,10 @@ body{
     font-family: mukta malar bold;
     background-color: #29fe8c;
     color: #051441;
-    border-radius: 20px;
-    height: auto;
-    padding: auto;
-    margin-top: 20px;
-    float: left;
+    border-radius: 10px;
+    height: 30px;
+    padding: 5px 10px;
+    margin: 10% 0 0 0;
 }
 
 #solution{
@@ -149,7 +150,7 @@ body{
     width: 80px;
 }
 
-@media screen and (max-width: 2055px) {
+@media screen and (max-width: 2165px) {
     #solution ul li{
         margin: 10px 1% 0 1%;
     }
@@ -175,21 +176,74 @@ input[type="checkbox"].solu + label:hover{
 }
 
 #div-document{
-     
+    height: ;
 }
 
 #div-document h2{
     color: #051441;
     font-family: mukta malar bold;
+    white-space: nowrap;
 }
 
 #doc-manquant{
     background-color: white;
     border-radius: 40px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);   
+    height: 410px;
 }
 
 #doc-manquant h4{
     color: #051441;
     font-family: mukta malar medium;
+}
+
+#scroll-doc{
+    overflow: auto; 
+    width: 100%; 
+    height: 300px;
+}
+
+#scroll-doc::-webkit-scrollbar {
+    width: 10px;
+}
+  
+  /* Track */
+#scroll-doc::-webkit-scrollbar-track {
+    background-color: #DCDCDC; 
+    box-shadow: 0 0 2px grey;
+    border-radius: 10px;
+}
+   
+  /* Handle */
+#scroll-doc::-webkit-scrollbar-thumb {
+    background: #C0C0C0; 
+    border-radius: 10px;
+}
+  
+  /* Handle on hover */
+#scroll-doc::-webkit-scrollbar-thumb:hover {
+    background: #FFFFF0; 
+}
+
+#img-doc{
+    height: 30px;
+}
+
+#scroll-doc a{
+    border-radius: 10px;
+    margin: 10px;
+    color: #051441;
+    font-family: mukta malar medium;
+}
+
+#scroll-doc a #vx{
+    float: right;
+}
+
+#av{
+    background-color: #29fe8c;
+}
+
+#ax{
+    background-color: #C0C0C0;
 }

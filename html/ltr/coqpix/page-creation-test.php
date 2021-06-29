@@ -11,6 +11,151 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
 
+    if($crea['doc_pieceid'] == ""){
+        $doc_pieceid = "0";
+    }else{
+        $doc_pieceid = "1";
+    }
+    if($crea['doc_cerfaM0'] == ""){
+        $doc_cerfaM0 = "0";
+    }else{
+        $doc_cerfaM0 = "1";
+    }
+    if($crea['doc_cerfaMBE'] == ""){
+        $doc_cerfaMBE = "0";
+    }else{
+        $doc_cerfaMBE = "1";
+    }
+    if($crea['doc_justificatifss'] == ""){
+        $doc_justificatifss = "0";
+    }else{
+        $doc_justificatifss = "1";
+    }
+    if($crea['doc_statuts'] == ""){
+        $doc_statuts = "0";
+    }else{
+        $doc_statuts = "1";
+    }
+    if($crea['doc_nomination'] == ""){
+        $doc_nomination = "0";
+    }else{
+        $doc_nomination = "1";
+    }
+    if($crea['doc_pouvoir'] == ""){
+        $doc_pouvoir = "0";
+    }else{
+        $doc_pouvoir = "1";
+    }
+    if($crea['doc_attestation'] == ""){
+        $doc_attestation = "0";
+    }else{
+        $doc_attestation = "1";
+    }
+    if($crea['doc_xp'] == ""){
+        $doc_xp = "0";
+    }else{
+        $doc_xp = "1";
+    }
+    if($crea['doc_peirl'] == ""){
+        $doc_peirl = "0";
+    }else{
+        $doc_peirl = "1";
+    }
+    if($crea['doc_depot'] == ""){
+        $doc_depot = "0";
+    }else{
+        $doc_depot = "1";
+    }
+    if($crea['doc_annonce'] == ""){
+        $doc_annonce = "0";
+    }else{
+        $doc_annonce = "1";
+    }
+
+    //insertion piece id
+
+    if(!empty($_POST['id_doc'])){
+
+        $num = !empty($_SESSION['id_crea']) ? $_SESSION['id_crea'] : NULL;
+
+    if (is_uploaded_file($_FILES['pieceid']['tmp_name'])) {
+    echo "File ". $_FILES['pieceid']['name'] ." téléchargé avec succès.\n";
+    $dir = '../../../src/crea_societe/pieceid/';
+  
+    if(!is_dir($dir)){
+        echo " Le répertoire de destination n'existe pas !";
+    exit;
+    }
+  
+    $name_files = $_FILES['pieceid']['name'];                         
+    $date_now = '-'.date("H-i-s");
+    $type_files = "." . strtolower(substr(strrchr($name_files, '.'), 1));
+    $target_file = $_FILES['pieceid']['tmp_name'];                                     
+    $real_name = substr($name_files, 0, -4);
+    $file_name = $dir. $real_name . $date_now . $type_files;
+
+    if($type_files == ".png"){
+
+    if($resultat = move_uploaded_file($target_file, $file_name)){
+        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
+        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
+
+        header('Location: creation-view-morale-pieceid.php?upload=1');
+        exit();
+
+    }else{
+        header('Location: creation-view-morale-pieceid.php?upload=2');
+        exit();
+    }
+}elseif($type_files == ".jpg"){
+    if($resultat = move_uploaded_file($target_file, $file_name)){
+        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
+        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
+
+        header('Location: creation-view-morale-pieceid.php?upload=1');
+        exit();
+
+    }else{
+        header('Location: creation-view-morale-pieceid.php?upload=2');
+        exit();
+    }
+}elseif($type_files == ".jpeg"){
+    if($resultat = move_uploaded_file($target_file, $file_name)){
+        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
+        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
+
+        header('Location: creation-view-morale-pieceid.php?upload=1');
+        exit();
+
+    }else{
+        header('Location: creation-view-morale-pieceid.php?upload=2');
+        exit();
+    }
+}elseif($type_files == ".pdf"){
+    if($resultat = move_uploaded_file($target_file, $file_name)){
+        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
+        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
+
+        header('Location: creation-view-morale-pieceid.php?upload=1');
+        exit();
+
+    }else{
+        header('Location: creation-view-morale-pieceid.php?upload=2');
+        exit();
+    }
+}else{
+       header('Location: creation-view-morale-pieceid.php?upload=3');
+       exit(); 
+}
+
+  
+} else {
+   echo "Erreur lors de l'upload du fichier : ";
+   echo "Nom du fichier : '". $_FILES['pieceid']['tmp_name'] . "'.";
+}
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -112,14 +257,14 @@ require_once 'php/verif_session_crea.php';
             </div>
         </div>
 
-        <div class="row" id="div-dodo">
+        <div class="row pt-2 pb-5" id="div-dodo">
             <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
                     <h3>Pas encore d'adresse ? Je me <span style="color: #29fe8c;" >domicilie</span></h3>
-                    <a href="domiciliation.php" class="btn">Se Domicilier</a>
+                    <a href="domiciliation.php" type="button">Se Domicilier</a>
                 </div>
-                <div class="row p-0" id="solution">
+                <div class="row p-2" id="solution">
                     <ul class="col-12">
                         <li class="col-3">
                             <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
@@ -158,6 +303,125 @@ require_once 'php/verif_session_crea.php';
                 <h2>Mes documents</h2>
                 <div class="row p-2" id="doc-manquant">
                     <h4>Document manquant</h4>
+                        <div class="col-12" id="scroll-doc">
+                            <div class="form-group">
+                                <label class="line">Administration</label>
+                            </div>  
+                            <?php 
+                                if($doc_pieceid == "1"){ ?>
+                                <a href="creation-view-morale-pieceid.php" id="av" class="list-group-item" >
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div>
+                                    Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-pieceid.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div>
+                                    Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } 
+                                if($doc_cerfaM0 == "1"){ ?>
+                                <a href="creation-view-morale-cerfaM0.php" id="av" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-cerfaM0.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } 
+                                if($doc_cerfaMBE == "1"){ ?>
+                                <a href="creation-view-morale-cerfaMBE.php" id="av" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Cerfa MBE <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-cerfaMBE.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Cerfa MBE <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } 
+                                if($doc_justificatifss == "1"){ ?>
+                                <a href="creation-view-morale-justificatifss.php" id="av" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Justificatif siège social <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-justificatifss.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Justificatif siège social <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } ?>
+                            <div class="form-group">
+                                <label class="line">Rédaction</label>
+                            </div>                                       
+                            <?php 
+                                if($doc_pouvoir == "1"){ ?>
+                                <a href="creation-view-morale-pouvoir.php" id="av" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Pouvoir <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-pouvoir.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Pouvoir <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } 
+                                if($doc_attestation == "1"){ ?>
+                                <a href="creation-view-morale-attestation.php" id="av" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Attestation de non condamnation <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-attestation.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Attestation de non condamnation <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } ?>
+                            <div class="form-group">
+                                <label class="line">Banque et Publication</label>
+                            </div>
+                            <?php 
+                                if($doc_depot == "1"){ ?>
+                                <a href="creation-view-morale-depot.php" id="av" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Dépôt de capital <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                </a>
+                            <?php }else{ ?>
+                                <a href="creation-view-morale-depot.php" id="ax" class="list-group-item">
+                                    <div class="fonticon-wrap d-inline mr-25">
+                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                    </div> 
+                                    Dépôt de capital <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                </a>
+                            <?php } ?>                                    
+                        </div>
                 </div>
             </div>
         </div>
