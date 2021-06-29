@@ -22,14 +22,15 @@ require_once 'php/config.php';
             }
 
             $name_files = $_FILES['files']['name'];   
-            $date_h = date("H") + 1;                      
+            $date_h = date("H") + 1;
             $date_now = '-'.$date_h.'-'.date("i-s").'';
             $type_files = "." . strtolower(substr(strrchr($name_files, '.'), 1));
             $target_file = $_FILES['files']['tmp_name'];                                     
             $real_name = substr($name_files, 0, -4);
             $file_name = $real_name . $date_now . $type_files;
             $date_donner = date('d/m/Y');
-            
+            $id_session = $_GET['num'];
+
             $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
             $path = "../../../src/bulletin_salaire/". $file_name;                     // chemin vers le serveur
 
@@ -41,6 +42,22 @@ require_once 'php/config.php';
             $pdo->bindValue(':statut_bulletin', "Terminée");
             $pdo->bindValue(':id', $_GET['id']);
             $pdo->execute();
+
+            //insert notif front
+            $insert_notif = $bdd->prepare('INSERT INTO notif_front (type_demande, date_donner, id_session) VALUES(?,?,?)');
+            $insert_notif->execute(array(
+                htmlspecialchars("bulletin_salaire"),
+                htmlspecialchars($date_donner),
+                htmlspecialchars($id_session)
+            ));
+            
+
+            $pdo = $bdd->prepare('SELECT id_task from bulletin_salaire WHERE id = ?');
+            $pdo->execute(array($_GET['id']));
+            $id_task = ($pdo->fetch())['id_task'];
+
+            $pdoS = $bdd->prepare('UPDATE task_sociale SET statut_task = ? WHERE id = ?');
+            $pdoS->execute(array('valide',$id_task));
             
             header('Location: salaire-view.php?num='.$_GET['num'].'');
             exit();
