@@ -78,27 +78,86 @@ require_once 'php/verif_session_crea.php';
                 <h3> <?= $crea['name_crea'] ?> </h3>
             </div>
             <div class="col-8 m-0 p-2" id="div-info">
-                <div class="form-row m-0 p-1" id="info-haut">
-                    <div class="form-group col-6">
-                        <h4>Prénom du dirigeant</h4>
-                        <input type="text" name="nom_diri" class="form-control" placeholder="Name" value="<?= $crea['nom_diri'] ?>" required>
+                <form action="php/edit_crea_client.php" method="POST">
+                    <input type="hidden" name="id" value="<?= $crea['id'] ?>">
+                    
+                    <div class="form-row m-0 p-1" id="info-haut">
+                        <div class="form-group col-4">
+                            <label>Prénom du dirigeant</label>
+                            <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" required>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Nom du dirigeant</label>
+                            <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
+                        </div>
                     </div>
-                    <div class="form-group col-6">
-                        <h4>Nom du dirigeant</h4>
-                        <input type="text" name="prenom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['prenom_diri'] ?>" required>
+                    <div class="form-row m-0 p-1" id="info-bas">
+                        <div class="form-group col-4">
+                            <label>E-mail</label>
+                            <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Téléphone du dirigeant</label>
+                            <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
+                            <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                        </div>                        
+                        <div class="form group col-4 d-flex flex-sm-row flex-column justify-content-center">
+                            <button type="submit" class="btn mr-sm-1 mb-1">Sauvegarder</button>
+                        </div>
                     </div>
+                
+                    
+                    
+                </form>
+            </div>
+        </div>
+
+        <div class="row" id="div-dodo">
+            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
+                <h2>Domiciliation</h2>
+                <div class="row p-2" id="se-domicilier">
+                    <h3>Pas encore d'adresse ? Je me <span style="color: #29fe8c;" >domicilie</span></h3>
+                    <a href="domiciliation.php" class="btn">Se Domicilier</a>
                 </div>
-                <div class="col-2"></div>
-                <div class="form-row m-0 p-1" id="info-bas">
-                    <div class="form-group col-6">
-                        <h4>E-mail</h4>
-                        <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
-                    </div>
-                    <div class="form-group col-6">
-                        <h4>Téléphone du dirigeant</h4>
-                        <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
-                        <input type="text" name="tel_diri" id="tel_diri" hidden required>
-                    </div>
+                <div class="row p-0" id="solution">
+                    <ul class="col-12">
+                        <li class="col-3">
+                            <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
+                            <label for="domicilia" class="">
+                                <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                            </label><br>
+                            <label>
+                                <p>Domiciliation</p>
+                            </label>
+                        </li>
+                        <li class="col-3">
+                            <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
+                            <label for="bureau" class="">
+                                <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                            </label><br>
+                            <label>
+                                <p>Bureaux privatifs</p>
+                            </label>
+                        </li>
+                        <li class="col-3">
+                            <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
+                            <label for="cowork" class="">
+                                <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                            </label><br>
+                            <label>
+                                <p>Coworking</p>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-6 m-0 px-3 pt-2" id="div-document">
+                <h2>Mes documents</h2>
+                <div class="row p-2" id="doc-manquant">
+                    <h4>Document manquant</h4>
                 </div>
             </div>
         </div>
@@ -110,6 +169,19 @@ require_once 'php/verif_session_crea.php';
     <div class="drag-target"></div>
 
     <script>
+
+        //changement image
+        function openGreen(element1,element2) {
+            if (document.getElementById(element1).style.display == "none" ){
+                document.getElementById(element1).style.display = "block";
+                document.getElementById(element2).style.display = "none";
+            } else {
+                document.getElementById(element1).style.display = "none";
+                document.getElementById(element2).style.display = "block";
+            }
+        }
+
+        //telephone
         const phoneInputField = document.querySelector("#tel_temp");
         const phoneInput = window.intlTelInput(phoneInputField, {
             preferredCountries: ["fr"],

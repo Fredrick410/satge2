@@ -23,9 +23,9 @@ body{
 }
 
 #div-entreprise{
-    margin: 50px 0 0 0;
-    position: absolute;
-    left: 0;
+    margin: 30px 0 0 0;
+    position: relative;
+    left: -1%;
     background-color: white;
     width: 90%;
     border-radius: 40px;
@@ -41,39 +41,155 @@ body{
 }
 
 #div-nom img{
-    width: 120px;
-    height: 120px;
-    border-radius: 60px
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
 }
 
 #div-nom h3{
     margin-top: 20px;
-    font-family: mukta malar medium;
+    font-family: mukta malar bold;
     color: white;
 }
-
+/*
 #div-info{
     
-    width: 100%;
 }
-
-#div-info h4{
+*/
+#div-info label{
     color: #051441;
-    font-family: mukta malar medium;
+    font-family: mukta malar bold;
 }
 
 #div-info input{
-    width: 300px;
+    width: 200px;
+    height: 30px;
     background-color: #EDF1FF;
+    color: #051441;
+    font-family: mukta malar light;
     border: none;
     border-radius: 10px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
 }
 
+#div-info button{
+    height: 40px;
+    width: 200px;
+    background-color: #29fe8c;
+    color: #051441;
+    font-family: mukta malar medium;
+}
+/*
 #info-haut{
 
 }
 
 #info-bas{
     
+}
+*/
+
+#div-dodo{
+    min-width: 100%;
+    padding: 0 10%;
+}
+
+#div-domiciliation{
+
+}
+
+#div-domiciliation h2{
+    color: #051441;
+    font-family: mukta malar bold;
+}
+
+#se-domicilier{
+    background-color: #051441;
+    border-radius: 40px;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+}
+
+#se-domicilier h3{
+    font-family: mukta malar bold;    
+    color: white;
+}
+
+#se-domicilier a{
+    text-decoration: none;
+    font-family: mukta malar bold;
+    background-color: #29fe8c;
+    color: #051441;
+    border-radius: 20px;
+    height: auto;
+    padding: auto;
+    margin-top: 20px;
+    float: left;
+}
+
+#solution{
+    border-radius: 40px;
+    background-color: white;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+    margin-top: 20px;
+}
+
+#solution ul{
+    padding: ;
+    text-align: center;
+}
+
+#solution ul li{
+    list-style: none;
+    display: inline-block;
+    text-align: center;
+    margin: 10px 4% 0 4%;
+}
+
+#solution ul li img{
+    width: 80px;
+}
+
+@media screen and (max-width: 2055px) {
+    #solution ul li{
+        margin: 10px 1% 0 1%;
+    }
+}
+
+#solution ul li p{
+    margin-top: 10px;
+    font-family: mukta malar bold;
+    color: #051441;
+    white-space: nowrap;
+}
+
+input[type="checkbox"].solu {
+    display: none;
+}
+
+input[type="checkbox"].solu + label {
+    border: none;
+}
+
+input[type="checkbox"].solu + label:hover{
+    cursor:pointer;
+}
+
+#div-document{
+     
+}
+
+#div-document h2{
+    color: #051441;
+    font-family: mukta malar bold;
+}
+
+#doc-manquant{
+    background-color: white;
+    border-radius: 40px;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.2);   
+}
+
+#doc-manquant h4{
+    color: #051441;
+    font-family: mukta malar medium;
 }
