@@ -16,6 +16,10 @@ require_once 'php/config.php';
     $true = $pdoStat->execute();
     $article = $pdoStat->fetch();
 
+    $pdoStast = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
+    $pdoStast->bindValue(':num',$_SESSION['id_session']);
+    $pdoStast->execute();
+    $fournisseur = $pdoStast->fetchAll();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -132,7 +136,6 @@ require_once 'php/config.php';
     <!-- END: Main Menu-->
     
     <!-- BEGIN: Content-->
-    <?php foreach ($entreprise as $entreprisee): ?>
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
@@ -178,7 +181,7 @@ require_once 'php/config.php';
 
 
                                         <!-- users edit account form start -->
-                            <form action="php/edit_article.php" method="POST">
+                            <form action="php/edit_article.php" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="id" value="<?= $article['id'] ?>">
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
@@ -189,18 +192,48 @@ require_once 'php/config.php';
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                        <div class="controls">
-                                                            <label>Unités de mesure :</label>
-                                                            <input name="umesure" type="text" class="form-control" placeholder="Unités de mesure" value="<?= $article['umesure'] ?>">
-                                                        </div>
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                            <div class="controls">
+                                                                <label>Unités de mesure :</label>
+                                                                <input name="umesure" type="text" class="form-control" placeholder="Unités de mesure" value="<?= $article['umesure'] ?>">
+                                                            </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-12 col-sm-6">
+                                                    <br>
+                                                    <div class="form-group">
+                                                            <div class="controls">
+                                                            <input type="file" id="file" name="img" style="display:none"/>
+                                                            <a onclick="file.click()" class="btn btn-outline-primary">Modifier l'image</a>
+                                                                <img src="../../../app-assets/images/article/<?= $article['img']; ?>" alt="" width="150">
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                               
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
                                                         <label>Référence de l'article :</label>
                                                         <input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article" value="<?= $article['referencearticle'] ?>">
                                                     </div>
                                                 </div>
+                                                <div class="col-12">
+                                                 <hr><style>.line{text-decoration: underline;}</style>
+                                                </div>
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Fournisseur</label>
+                                                        <select name="nom_fournisseur" id="fourour" class="form-control invoice-item-select">
+                                                            <option value="<?= $article['nom_fournisseur'] ?>"><?= $article['nom_fournisseur'] ?></option>
+                                                            <optgroup label="--------------------------------">
+                                                            <?php foreach($fournisseur as $fournisseurt): ?>
+                                                            <option value="<?= $fournisseurt['name_fournisseur'] ?>"><?= $fournisseurt['name_fournisseur'] ?></option>
+                                                            <?php endforeach; ?> <!--Affiche la liste de fournisseur -->
+                                                            <optgroup label="--------------------------------">
+                                                            <option value="Pas de Fournisseur">Autres</option>
+                                                        </select>
+                                                    </div>
+                                                </div> 
                                                 <div class="col-12">
                                                  <hr><style>.line{text-decoration: underline;}</style>
                                                 </div>
@@ -244,6 +277,10 @@ require_once 'php/config.php';
                                                 <div class="col-12 col-sm-6 border">
                                                     <div class="form-group">
                                                         <div class="controls">
+                                                            <label>Quantité :</label>
+                                                            <input name="stock"  type="number" value="<?= $article['stock'] ?>" class="form-control" placeholder="Quantité acheté pour le stock" onkeyup="myFunction()" step="any" >
+                                                        </div>
+                                                        <div class="controls">
                                                             <label>Cout d'achat HT :</label>
                                                             <input name="coutachat" type="number" class="form-control" placeholder="Cout d'achat de l'article" value="<?= $article['coutachat'] ?>">
                                                         </div>
@@ -285,7 +322,7 @@ require_once 'php/config.php';
             </div>
         </div>
     </div>
-    <?php endforeach; ?>
+    
 
 
     <!-- BEGIN: Vendor JS-->

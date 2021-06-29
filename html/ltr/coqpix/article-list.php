@@ -169,6 +169,7 @@ require_once 'php/config.php';
                                         <table id="users-list-datatable" class="table">
                                             <thead class="text-center">
                                                 <tr>
+                                                    <th>Image</th>
                                                     <th>Article</th>
                                                     <th>Référence</th>
                                                     <th>Prix ou Cout U</th>
@@ -189,6 +190,8 @@ require_once 'php/config.php';
 
                                             ?>
                                                 <tr>
+                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100">
+                                                    </td>
                                                     <td><a><?= $articlee['article'] ?></a>
                                                     </td>
                                                     <td><?= $articlee['referencearticle'] ?></td>
