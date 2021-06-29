@@ -118,182 +118,36 @@ require_once 'php/verif_session_crea.php';
                     <div>
                         <h1>Nos solutions</h1>
                         <div id="solution-logo">
-        <ul>
-<?php 
-if($result['type']=='1'){ //bureau disponible
-?>
-
-
+                            <ul>
                                 <li>
-                                    <input type="checkbox" onclick='openGreen("green2","blue2"), countType()' id="bureau" class="solu"></input>
-                                    <label for="bureau" class="">
-                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
-                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Bureaux privatifs</p>
-                                    </label>
-                                </li>
-                   
-            
-<?php }?>
-<?php 
-if($result['type']=='2'){ //coworking disponible
-?>
-
-
-                                <li>
-                                    <input type="checkbox" onclick='openGreen("green3","blue3"), countType()' id="cowork" class="solu"></input>
-                                    <label for="cowork" class="">
-                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
-                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Coworking</p>
-                                    </label>
-                                </li>
-                   
-            
-<?php }?>
-<?php 
-if($result['type']=='3'){ //bureau et coworking disponible
-?>
-
-                                <li>
-                                    <input type="checkbox" onclick='openGreen("green2","blue2"), countType()' id="bureau" class="solu"></input>
-                                    <label for="bureau" class="">
-                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
-                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Bureaux privatifs</p>
-                                    </label>
-                                </li>
-
-                                <li>
-                                    <input type="checkbox" onclick='openGreen("green3","blue3"), countType()' id="cowork" class="solu"></input>
-                                    <label for="cowork" class="">
-                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
-                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Coworking</p>
-                                    </label>
-                                </li>
-                   
-            
-<?php }?>
-<?php 
-if($result['type']=='4'){ //domiciliation disponible
-?>
-
-
-                                <li>
-                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1"), countType()' class="solu"></input>
+                                    <input type="checkbox" id="domicilia" class="solu"></input>
                                     <label for="domicilia" class="">
-                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
-                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                                        <img src="../../../app-assets/images/pages/domiciliation.png">
                                     </label><br>
                                     <label>
                                         <p>Domiciliation</p>
                                     </label>
                                 </li>
-                   
-            
-<?php }?>
-<?php 
-if($result['type']=='5'){ //domiciliation et bureau disponible
-?>
-
-
                                 <li>
-                                    <input type="checkbox" onclick='openGreen("green2","blue2"), countType()' id="bureau" class="solu"></input>
+                                    <input type="checkbox" id="bureau" class="solu"></input>
                                     <label for="bureau" class="">
-                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
-                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                                        <img src="../../../app-assets/images/pages/bureau.png">
                                     </label><br>
                                     <label>
                                         <p>Bureaux privatifs</p>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1"), countType()' class="solu"></input>
-                                    <label for="domicilia" class="">
-                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
-                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Domiciliation</p>
-                                    </label>
-                                </li>                   
-            
-<?php }?>
-<?php 
-if($result['type']=='6'){ //domiciliation et coworking disponible
-?>
-
-
-                                <li>
-                                    <input type="checkbox" onclick='openGreen("green3","blue3"), countType()' id="cowork" class="solu"></input>
+                                    <input type="checkbox" id="cowork" class="solu"></input>
                                     <label for="cowork" class="">
-                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
-                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                                        <img src="../../../app-assets/images/pages/coworking.png">
                                     </label><br>
                                     <label>
                                         <p>Coworking</p>
                                     </label>
                                 </li>
-                                <li>
-                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1"), countType()' class="solu"></input>
-                                    <label for="domicilia" class="">
-                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
-                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Domiciliation</p>
-                                    </label>
-                                </li>                 
-            
-<?php }?>
-<?php 
-if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
-?>
-
-                                <li>
-                                    <input type="checkbox" onclick='openGreen("green2","blue2"), countType()' id="bureau" class="solu"></input>
-                                    <label for="bureau" class="">
-                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
-                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Bureaux privatifs</p>
-                                    </label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" onclick='openGreen("green3","blue3"), countType()' id="cowork" class="solu"></input>
-                                    <label for="cowork" class="">
-                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
-                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Coworking</p>
-                                    </label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1"), countType()' class="solu"></input>
-                                    <label for="domicilia" class="">
-                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
-                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
-                                    </label><br>
-                                    <label>
-                                        <p>Domiciliation</p>
-                                    </label>
-                                </li>
-                   
-            
-<?php }?>
-        </ul>
-    </div>
+                            </ul>
+                        </div>
                     </div>
                     <div id="localisation">
                         <div class="form-group">
@@ -345,38 +199,6 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
 <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>    
 
 <script>
-
-    //changement image
-    function openGreen(element1,element2) {
-        if (document.getElementById(element1).style.display == "none" ){
-            document.getElementById(element1).style.display = "block";
-            document.getElementById(element2).style.display = "none";
-        } else {
-            document.getElementById(element1).style.display = "none";
-            document.getElementById(element2).style.display = "block";
-        }
-    }
-
-    function countType() {
-        var bureau = document.getElementById("bureau");
-        var cowork = document.getElementById("cowork");
-        var domicilia = document.getElementById("domicilia");
-
-        var i = 0;
-
-        if (bureau.checked) {
-            i = i+1;
-        }
-        if (cowork.checked) {
-            i = i+2;
-        }
-        if (domicilia.checked) {
-            i = i+4;
-        }
-        console.log(i);
-        return i;
-    };
-    
     //suggest adresse
     $(document).ready(function(){
         $("#search-box").keyup(function(){
@@ -398,7 +220,7 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
             $.ajax({
             type: "POST",
             url: "php/display-offers.php",
-            data:'ville='+$("#search-box").val() + "&type=" + countType(),
+            data:'ville='+$("#search-box").val(),
             success: function(data){
                 console.log("affichage des offres");
                 $("#offre-conteneur").html(data);
