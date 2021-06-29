@@ -1,5 +1,5 @@
 <?php 
-require_once 'php/verif_session_connect.php';
+require_once 'php/verif_session_connect_admin.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
@@ -20,7 +20,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Tache compta</title>
+    <title>Tache sociale</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
@@ -62,6 +62,16 @@ require_once 'php/config.php';
         color: #c7cfd6;
     }
     .icon_check:hover{color: green;}
+    .icon_fav {
+        font-size: 1.2rem;
+        color: #c7cfd6;
+    }
+    .icon_fav:hover{color:orange;}
+    .icon_trash{
+        font-size: 1.2rem;
+        color: #c7cfd6;
+    }
+    .icon_trash:hover{color:red;}
 </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: #3c91d5;">
@@ -153,8 +163,8 @@ require_once 'php/config.php';
                                             <input class="form-control" type="text" name="name_task" placeholder="Nom de la tache" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Tache pour <label class="text-danger">*</label></label>
-                                            <input class="form-control" type="text" name="pour_task" placeholder="Tache pour ..." required>
+                                            <label>Tache par <label class="text-danger">*</label></label>
+                                            <input class="form-control" type="text" name="pour_task" placeholder="Tache par ..." required>
                                         </div>
                                         <label>Date d'échéance <label class="text-danger">*</label></label>
                                         <fieldset class="form-group position-relative has-icon-left">
@@ -198,7 +208,7 @@ require_once 'php/config.php';
                                                 <i class="bx bx-filter"></i>
                                                 <span>Action</span>
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
+                                            <div style="z-index: 98;" class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown">
                                                 <a class="dropdown-item ascending" href="#">Ascending</a>
                                                 <a class="dropdown-item descending" href="#">Descending</a>
                                             </div>
@@ -207,21 +217,58 @@ require_once 'php/config.php';
                                     <div class="todo-task-list list-group">
                                         <!-- task list start -->
                                         <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                            <?php $index=97; ?>
                                             <?php foreach($task as $tasks): ?>
-                                                <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px;">
+                                                <li class="todo-item <?php if($tasks['statut_task'] == "valide"){echo "table-success";}else{echo "table-warning";} ?>" style="height: 50px; z-index: <?= $index; ?>;">
                                                     <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
                                                         <div class="todo-title-area d-flex">
-                                                            <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Par: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
+                                                            <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | Pour: <?= $tasks['pour_task'] ?> | Pour le: <?= $tasks['dte_echeance'] ?></p>
                                                         </div>
                                                         <div class="todo-item-action d-flex align-items-center">
                                                             <div class="todo-badge-wrapper d-flex"></div>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=sociale&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=sociale&favo=<?= $tasks['favo_task'] ?>" class='todo-item-favorite ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
-                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=sociale" class='todo-item-delete ml-75'><i class="bx bx-trash"></i></a>
+
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=sociale&favo=<?= $tasks['favo_task'] ?>" class='icon_fav ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
+                                                            <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=sociale" class='icon_trash ml-75'><i class="bx bx-trash"></i></a>
+
+                                                            <!-- Edition de la tâche -->
+                                                            <div class="btn-group ml-2">
+                                                                <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C0C0C0" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="dropdown-menu dropdown-menu-right pt-1 px-1" style="min-width: 250px;">
+                                                                    <div class="form-group">
+                                                                        <form method="POST" action="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=editer_task&categorie=sociale">
+                                                                            <div class="form-group">
+                                                                                <label>Nom de la tache <label class="text-danger">*</label></label>
+                                                                                <input class="form-control" type="text" name="name_task" value="<?= $tasks['name_task'] ?>" required>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Tache par <label class="text-danger">*</label></label>
+                                                                                <input class="form-control" type="text" name="pour_task" value="<?= $tasks['pour_task'] ?>" required>
+                                                                            </div>
+                                                                            <label>Date d'échéance <label class="text-danger">*</label></label>
+                                                                            <fieldset class="form-group position-relative has-icon-left">
+                                                                                <input name="dte_echeance" type="text" class="form-control pickadate" value="<?= $tasks['dte_echeance'] ?>" required>
+                                                                                <div class="form-control-position">
+                                                                                    <i class='bx bx-calendar'></i>
+                                                                                </div>
+                                                                            </fieldset>
+                                                                            <button class="btn btn-success glow" type="submit" name="editer_task_sociale">
+                                                                                Enregister
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Fin édition de la tâche -->
                                                         </div>
                                                     </div>
                                                 </li>
-                                            <?php endforeach; ?>
+                                            <?php $index = $index - 1; endforeach; ?>
                                         </ul>
                                         <!-- task list end -->
                                         <div class="no-results">
