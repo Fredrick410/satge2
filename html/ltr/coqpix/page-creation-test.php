@@ -425,6 +425,7 @@ require_once 'php/verif_session_crea.php';
                 </div>
             </div>
         </div>
+        <?php require_once('php/chat_domiciliation.php')?>
     </div>
 
     <!-- END: Content -->

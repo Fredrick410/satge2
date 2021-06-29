@@ -85,3 +85,5 @@ branche de oscar:
 
 	tache réalisée le 29/06/2021:
 		-partie domiciliation ajouté à la page accueil crea
+		-partie documents ajouté à la page accueil crea
+		-tchat ajouté à la page d'accueil crea
