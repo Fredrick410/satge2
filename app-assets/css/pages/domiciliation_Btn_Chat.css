@@ -31,6 +31,22 @@
     right: 7%;
     width: 50px;
   }
+
+  .notification {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background: red;
+    position: absolute;
+    top: -65px;
+    right: -5px;
+    height: 20px;
+    width: 20px;
+    font-size: 1em;
+    color: white;
+    text-align: center;
+    z-index: 10;
+  }
   
   /* The popup chat - hidden by default */
   .chat-popup {
@@ -54,7 +70,7 @@
   }
   
   /* Full-width textarea */
-  .form-container textarea {
+  .form-container input#content {
     width: 65%;
     text-indent: 5%;
     padding: 5px;
@@ -68,10 +84,14 @@
     position: absolute;
     left: 10%;
     bottom: 5%;
+
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
   }
   
   /* When the textarea gets focus, do something */
-  .form-container textarea:focus {
+  .form-container input#content:focus {
     background-color: rgb(248, 248, 248);
     outline: none;
   }
@@ -126,7 +146,7 @@
 
 
 
-  .msgSelf {
+  .chat .chat-body .chat-message p {
       float: right;
       padding: 15px;
       background-color: #3399FF;
@@ -137,9 +157,12 @@
       overflow-wrap: break-word;
       clear: both;
       margin-right: 2%;
+      border-radius: 20px;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
   }
 
-  .msgYou {
+  .chat.chat-left .chat-body .chat-message p {
       float: left;
       padding: 15px;
       background-color: #004CB2;
@@ -150,6 +173,9 @@
       overflow-wrap: break-word;
       clear: both;
       margin-left: 2%;
+      border-radius: 20px;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
   }
 
   .chat-time {
@@ -159,13 +185,13 @@
     margin-bottom: 4%;
   }
 
-  .right{
+  .chat .chat-body .chat-message .chat-time {
     float: right;
     clear: both;
     margin-right: 10%;
   }
 
-  .left{
+  .chat.chat-left .chat-body .chat-message .chat-time {
     float: left;
     clear: both;
     margin-left: 10%;
@@ -217,4 +243,8 @@
     right: 6.5%;
     top: 5%;
     position: absolute;
+}
+
+.chat-avatar {
+  display: none;
 }
