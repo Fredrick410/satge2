@@ -21,6 +21,7 @@ $(window).on("load", function () {
   var $gray_light = '#828D99';
   var $sub_label_color = "#596778";
   var $radial_bg = "#e7edf3";
+    var $black = "#000000";
 
 
   // Radial-Success-chart
@@ -333,23 +334,23 @@ $(window).on("load", function () {
   // ---------------------
   var donutChartOption = {
     chart: {
-      width: 200,
+      width: 300,
       type: 'donut',
     },
     dataLabels: {
       enabled: false
     },
-    series: [80, 30, 60],
-    labels: ["Social", "Email", "Search"],
+      series: [60, 14, 30, 17, 65, 82, 8],
+    labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
     stroke: {
       width: 0,
       lineCap: 'round',
     },
-    colors: [$primary, $info, $warning],
+    colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
     plotOptions: {
       pie: {
         donut: {
-          size: '90%',
+          size: '80%',
           labels: {
             show: true,
             name: {
@@ -361,7 +362,7 @@ $(window).on("load", function () {
             },
             value: {
               show: true,
-              fontSize: '26px',
+              fontSize: '35px',
               fontFamily: 'Rubik',
               color: $label_color,
               offsetY: -20,
@@ -371,7 +372,7 @@ $(window).on("load", function () {
             },
             total: {
               show: true,
-              label: 'Impression',
+              label: 'Entreprises',
               color: $gray_light,
               formatter: function (w) {
                 return w.globals.seriesTotals.reduce(function (a, b) {
