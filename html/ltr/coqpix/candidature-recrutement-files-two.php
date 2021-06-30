@@ -19,7 +19,9 @@ require_once 'php/config.php';
         $code = $_POST['code_annonce'];
         $name = $_GET['annonce'];
 
-        $query = $bdd->query("SELECT * FROM rh_annonce WHERE code_annonce = '$code'"); 
+        $query = $bdd->prepare("SELECT * FROM rh_annonce WHERE code_annonce = :code"); 
+        $query->bindValue(':code',$code);
+        $query->execute();
         $count = $query->rowCount();
 
         if($count >= 1) 

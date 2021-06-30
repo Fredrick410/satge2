@@ -112,7 +112,7 @@ require_once 'php/config.php';
                                     $pdoS->execute();
                                     $candidature_candidature = $pdoS->fetchAll();
                                     $count_candidature = count($candidature_candidature); 
-
+                                    $link = $annonces['link'];
                                 ?>
                                     <div class="card text-center bg-transparent" style="border-right: none; border-bottom: none; border-top: none; border-left: 5px solid <?= $annonces['color_annonce'] ?>;" >
                                         <div class="card-content">
@@ -122,7 +122,7 @@ require_once 'php/config.php';
                                                 </div>
                                                 <div class="form-group">
                                                     <span>Nombre de candidature : <?= $count_candidature ?> candidats</span><br>
-                                                    <textarea id="to-copy" >www.coqpix.com/html/ltr/coqpix/candidature-recrutement.php?<?= $annonces['link'] ?></textarea>
+                                                    <textarea id="to-copy"><?= str_replace("rh-recrutement-list.php", "candidature-recrutement.php?$link", "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]")?></textarea>
                                                     <button id="copy" type="button" style="border: none;"><span style="color: <?= $annonces['color_annonce'] ?>; cursor: pointer;">Cliquez pour copier le lien de partage <i class='bx bxs-copy-alt' style="position: relative; top: 2px;"></i></span></button>
                                                 </div>
                                                 <div class="row">
