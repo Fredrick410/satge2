@@ -18,7 +18,7 @@ body{
 }
 
 .container-fluid {
-    padding-top: 68px;
+    padding-top: 1px;
     background-color: #EDF1FF;
     min-height: 100%;
 }
@@ -52,18 +52,27 @@ body{
     font-family: mukta malar bold;
     color: white;
 }
-/*
-#div-info{
-    
+
+#div-nom span{
+    margin-top: px;
+    font-family: mukta malar medium;
+    color: white;
 }
-*/
+
+#div-info ul li{
+    display: inline-block;    
+    list-style: none;
+}
+
 #div-info label{
     color: #051441;
     font-family: mukta malar bold;
+    white-space: nowrap;
+    width: 100%;
 }
 
 #div-info input{
-    width: 200px;
+    width: 180px;
     height: 30px;
     background-color: #EDF1FF;
     color: #051441;
@@ -75,20 +84,32 @@ body{
 
 #div-info button{
     height: 40px;
-    width: 200px;
+    width: 150px;
     background-color: #29fe8c;
     color: #051441;
     font-family: mukta malar medium;
 }
+
+#div-info button:hover{
+    /*border: groove;*/
+}
+
 /*
-#info-haut{
+#info-gauche{
 
 }
 
-#info-bas{
+#info-droite{
     
 }
 */
+
+#info-btn{
+    text-align: center;
+    top: 40%;
+    left: 15%;
+    position: absolute;
+}
 
 #div-dodo{
     min-width: 100%;
@@ -117,7 +138,15 @@ body{
     color: white;
 }
 
-#se-domicilier a{
+#domicilie{
+    color: #29fe8c;
+}
+
+#domicilie:hover{
+    text-decoration: underline;
+}
+
+#se-domicilier a[type=button]{
     text-decoration: none;
     font-family: mukta malar bold;
     background-color: #29fe8c;
@@ -125,7 +154,9 @@ body{
     border-radius: 10px;
     height: 30px;
     padding: 5px 10px;
-    margin: 10% 0 0 0;
+    top: 50%;
+    
+    position:absolute;
 }
 
 #solution{

@@ -72,88 +72,10 @@ require_once 'php/verif_session_crea.php';
         $doc_annonce = "1";
     }
 
-    //insertion piece id
-
-    if(!empty($_POST['id_doc'])){
-
-        $num = !empty($_SESSION['id_crea']) ? $_SESSION['id_crea'] : NULL;
-
-    if (is_uploaded_file($_FILES['pieceid']['tmp_name'])) {
-    echo "File ". $_FILES['pieceid']['name'] ." téléchargé avec succès.\n";
-    $dir = '../../../src/crea_societe/pieceid/';
-  
-    if(!is_dir($dir)){
-        echo " Le répertoire de destination n'existe pas !";
-    exit;
-    }
-  
-    $name_files = $_FILES['pieceid']['name'];                         
-    $date_now = '-'.date("H-i-s");
-    $type_files = "." . strtolower(substr(strrchr($name_files, '.'), 1));
-    $target_file = $_FILES['pieceid']['tmp_name'];                                     
-    $real_name = substr($name_files, 0, -4);
-    $file_name = $dir. $real_name . $date_now . $type_files;
-
-    if($type_files == ".png"){
-
-    if($resultat = move_uploaded_file($target_file, $file_name)){
-        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
-        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
-
-        header('Location: creation-view-morale-pieceid.php?upload=1');
-        exit();
-
+    if(!empty($_GET['suppression'])){
+        $disparition = "harrypottergood";
     }else{
-        header('Location: creation-view-morale-pieceid.php?upload=2');
-        exit();
-    }
-}elseif($type_files == ".jpg"){
-    if($resultat = move_uploaded_file($target_file, $file_name)){
-        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
-        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
-
-        header('Location: creation-view-morale-pieceid.php?upload=1');
-        exit();
-
-    }else{
-        header('Location: creation-view-morale-pieceid.php?upload=2');
-        exit();
-    }
-}elseif($type_files == ".jpeg"){
-    if($resultat = move_uploaded_file($target_file, $file_name)){
-        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
-        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
-
-        header('Location: creation-view-morale-pieceid.php?upload=1');
-        exit();
-
-    }else{
-        header('Location: creation-view-morale-pieceid.php?upload=2');
-        exit();
-    }
-}elseif($type_files == ".pdf"){
-    if($resultat = move_uploaded_file($target_file, $file_name)){
-        $update = $bdd->prepare('UPDATE crea_societe SET doc_pieceid = ? WHERE id = ?');
-        $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
-
-        header('Location: creation-view-morale-pieceid.php?upload=1');
-        exit();
-
-    }else{
-        header('Location: creation-view-morale-pieceid.php?upload=2');
-        exit();
-    }
-}else{
-       header('Location: creation-view-morale-pieceid.php?upload=3');
-       exit(); 
-}
-
-  
-} else {
-   echo "Erreur lors de l'upload du fichier : ";
-   echo "Nom du fichier : '". $_FILES['pieceid']['tmp_name'] . "'.";
-}
-
+        $disparition = "harrypotter";
     }
 
 ?>
@@ -198,12 +120,15 @@ require_once 'php/verif_session_crea.php';
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-creation.css">
     <!-- END: Custom CSS-->
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
 </head>
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns footer-static" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 <style>
 .none-validation{display: none;}
 .block-validation{display: block;}
@@ -211,7 +136,7 @@ require_once 'php/verif_session_crea.php';
 </style>
 
     <!-- BEGIN: Header-->
-    <?php require_once("php/header-crea.php") ?>
+    <?php //require_once("php/header-crea.php") ?> 
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
@@ -221,35 +146,70 @@ require_once 'php/verif_session_crea.php';
             <div class="col-4 m-0" id="div-nom">
                 <img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar"><br>
                 <h3> <?= $crea['name_crea'] ?> </h3>
+                <span class="user-status">En ligne</span>
             </div>
             <div class="col-8 m-0 p-2" id="div-info">
                 <form action="php/edit_crea_client.php" method="POST">
                     <input type="hidden" name="id" value="<?= $crea['id'] ?>">
+
+                    <?php 
+                        if($crea['status_crea'] == ""){
+                            $validation = "harrypottergood";
+                        }else{
+                            $validation = "harrypotter";
+                        }
+                    ?>
+                    <ul class="row">
+                        <li class="col-4">
+                            <div class="form-group" id="info-gauche">
+                                <div class="form-row m-0 p-2">
+                                    <label>Prénom du dirigeant</label>
+                                    <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" required>
+                                </div>
+                                <div class="form-row m-0 p-2">
+                                    <label>Nom du dirigeant</label>
+                                    <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="col-4">
+                            <div class="form-group" id="info-droite">
+                                <div class="form-row m-0 p-2">
+                                    <label>E-mail</label>
+                                    <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
+                                </div>
+                                <div class="form-row m-0 p-2">
+                                    <label>Téléphone du dirigeant</label>
+                                    <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
+                                    <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                                </div> 
+                            </div> 
+                        </li>
+
+                                <?php
+                                    if(!empty($_GET['enregister'])){
+                                        if($_GET['enregister'] == "1"){
+                                            $good = "harrypottergood";
+                                        }else{
+                                            $good = "";
+                                        }
+                                    }else{
+                                        $good = "harrypotter";
+                                    }
+                                ?>
+                               <!-- <div class="col-12 <?php echo $good; ?>">
+                                    <div class="form-group">
+                                        <label>Enregistrement effectué 👍🏽</label>
+                                    </div>
+                                </div> -->
+                                
+                        <li class="col-4">
+                            <div class="form group" id="info-btn">
+                                <button type="submit" class="btn mr-sm-1 mb-1">Sauvegarder</button>
+                            </div>
+                        </li>
+                    </ul>
                     
-                    <div class="form-row m-0 p-1" id="info-haut">
-                        <div class="form-group col-4">
-                            <label>Prénom du dirigeant</label>
-                            <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" required>
-                        </div>
-                        <div class="form-group col-4">
-                            <label>Nom du dirigeant</label>
-                            <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
-                        </div>
-                    </div>
-                    <div class="form-row m-0 p-1" id="info-bas">
-                        <div class="form-group col-4">
-                            <label>E-mail</label>
-                            <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
-                        </div>
-                        <div class="form-group col-4">
-                            <label>Téléphone du dirigeant</label>
-                            <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
-                            <input type="text" name="tel_diri" id="tel_diri" hidden required>
-                        </div>                        
-                        <div class="form group col-4 d-flex flex-sm-row flex-column justify-content-center">
-                            <button type="submit" class="btn mr-sm-1 mb-1">Sauvegarder</button>
-                        </div>
-                    </div>
                 
                     
                     
@@ -261,7 +221,7 @@ require_once 'php/verif_session_crea.php';
             <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
-                    <h3>Pas encore d'adresse ? Je me <span style="color: #29fe8c;" >domicilie</span></h3>
+                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3>
                     <a href="domiciliation.php" type="button">Se Domicilier</a>
                 </div>
                 <div class="row p-2" id="solution">
