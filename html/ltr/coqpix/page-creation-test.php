@@ -199,8 +199,8 @@ require_once 'php/verif_session_crea.php';
             <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
-                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3>
-                    <a href="domiciliation.php" type="button">Se Domicilier</a>
+                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a><br><a href="domiciliation.php" type="button">Se Domicilier</a></h3>
+                    
                 </div>
                 <div class="row p-0" id="solution">
                     <ul>
