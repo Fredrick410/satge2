@@ -26,6 +26,11 @@ require_once 'php/verif_session_crea.php';
     }else{
         $doc_cerfaMBE = "1";
     }
+    if($crea['doc_justificatifd'] == ""){
+        $doc_justificatifd = "0";
+    }else{
+        $doc_justificatifd = "1";
+    }
     if($crea['doc_justificatifss'] == ""){
         $doc_justificatifss = "0";
     }else{
@@ -40,6 +45,11 @@ require_once 'php/verif_session_crea.php';
         $doc_nomination = "0";
     }else{
         $doc_nomination = "1";
+    }
+    if($crea['doc_affectation'] == ""){
+        $doc_affectation = "0";
+    }else{
+        $doc_affectation = "1";
     }
     if($crea['doc_pouvoir'] == ""){
         $doc_pouvoir = "0";
@@ -259,131 +269,7 @@ require_once 'php/verif_session_crea.php';
                     </ul>
                 </div>
             </div>
-            <div class="col-6 m-0 px-3 pt-2" id="div-document">
-                <h2>Mes documents</h2>
-                <div class="row p-2" id="doc-manquant">
-                    <h4>Document manquant</h4>
-                        <div class="col-12" id="scroll-doc">
-                            <div class="form-group">
-                                <label class="line">Administration</label>
-                            </div>  
-                            <?php 
-                                if($doc_pieceid == "1"){ ?>
-                                <a href="creation-view-morale-pieceid.php" id="av" class="list-group-item" >
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div>
-                                    Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-pieceid.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div>
-                                    Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } 
-                                if($doc_cerfaM0 == "1"){ ?>
-                                <a href="creation-view-morale-cerfaM0.php" id="av" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-cerfaM0.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } 
-                                if($doc_cerfaMBE == "1"){ ?>
-                                <a href="creation-view-morale-cerfaMBE.php" id="av" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Cerfa MBE <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-cerfaMBE.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Cerfa MBE <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } 
-                                if($doc_justificatifss == "1"){ ?>
-                                <a href="creation-view-morale-justificatifss.php" id="av" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Justificatif siège social <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-justificatifss.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Justificatif siège social <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } ?>
-                            <div class="form-group">
-                                <label class="line">Rédaction</label>
-                            </div>                                       
-                            <?php 
-                                if($doc_pouvoir == "1"){ ?>
-                                <a href="creation-view-morale-pouvoir.php" id="av" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Pouvoir <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-pouvoir.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Pouvoir <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } 
-                                if($doc_attestation == "1"){ ?>
-                                <a href="creation-view-morale-attestation.php" id="av" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Attestation de non condamnation <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-attestation.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Attestation de non condamnation <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } ?>
-                            <div class="form-group">
-                                <label class="line">Banque et Publication</label>
-                            </div>
-                            <?php 
-                                if($doc_depot == "1"){ ?>
-                                <a href="creation-view-morale-depot.php" id="av" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Dépôt de capital <img id="vx" src="../../../app-assets/images/pages/v.png">
-                                </a>
-                            <?php }else{ ?>
-                                <a href="creation-view-morale-depot.php" id="ax" class="list-group-item">
-                                    <div class="fonticon-wrap d-inline mr-25">
-                                        <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
-                                    </div> 
-                                    Dépôt de capital <img id="vx" src="../../../app-assets/images/pages/x.png">
-                                </a>
-                            <?php } ?>                                    
-                        </div>
-                </div>
-            </div>
+            <?php require_once('php/page-creation-document.php') ?>
         </div>
         <?php require_once('php/chat_domiciliation.php')?>
     </div>
