@@ -19,7 +19,7 @@
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Analytique</a>
                     </li>
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-admin.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>eCommerce</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="utilisateurs.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
                     </li>
                 </ul>
             </li>

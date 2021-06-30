@@ -49,7 +49,23 @@ branch de leo :
 		-telephone drapeau france par défaut
 		-cryptage mot de passe (connexion + inscription + edit profil)
 
+	tache réalisée 25/06/21
+		-visuel du chat popup domiciliation terminé
+
 branch de oscar :
 	tache réalisée le 23/06/2021
 		-page domiciliation.php ->barre de recherche 
-								->carte
+								->carte avec les adresses
+
+	tache réalisée le 24/06/2021
+		-page domiciliation.php ->affichage des offres des adresses a gauche de la carte
+		- création page domiciliation-offre.php ->carousel, description de l'adresse/offre
+
+branch de robin :
+	tache réalisée 25/06/21
+		-suggestion de villes sur domiciliation.php
+
+branche de leo :
+	tache réalisée 28/06/21
+		-factorisation du chat
+		-liaison du chat (chat censé être fonctionnel, à tester en ligne car le chat ne fonctionne pas en local)

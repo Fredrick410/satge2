@@ -42,30 +42,68 @@ require_once 'php/verif_session_connect_admin.php';
     // FIN REQUETES CHART BAS DROITE
 
     // requête pour récupérer le data chart 
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "prospect" || statut = "prospect!validation"');
+    $pdoSta->execute();
+    $portefeuille_prospect = $pdoSta->fetchAll();
+    $count_prospect = count($portefeuille_prospect);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif"');
+    $pdoSta->execute();
+    $portefeuille_actif = $pdoSta->fetchAll();
+    $count_actif = count($portefeuille_actif);
+
+    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "encours"');
+    $pdoSta->execute();
+    $portefeuille_encours = $pdoSta->fetchAll();
+    $count_encours = count($portefeuille_encours);
+
+    // rappel facture retard 
+    $pdoSt= $bdd->query('SELECT * FROM facture');
+    $facture = $pdoSt->fetch();
+
+    $pdoSt= $bdd->prepare('SELECT * FROM (SELECT nameentreprise, reffacture, dateecheance, numerosfacture from facture, entreprise where status_facture = "NON PAYE" AND dateecheance < NOW() AND entreprise.id=:id) as temp ORDER BY dateecheance DESC LIMIT 10');
+    $pdoSt->bindValue(':id', $facture['id_session']);
+    $pdoSt->execute();
+    $facture_retard = $pdoSt->fetchAll();
+
+    $count_retard = count($facture_retard);
+    
     // recup l'année 
     $pdoSt=$bdd->query('SELECT substr(date_crea, 7) AS annee FROM portefeuille');
     $pdoSt->execute();
     $annee = $pdoSt->fetch();
     
+    // requête pour récupérer le data chart 
     $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
     $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "ACTIF"));
     $actif = array();
     while ($result_actif = $pdoSt->fetch()) {
         $actif[$result_actif['mois']] = $result_actif['nb'];
     }
-
+ 
     $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
-    $pdoSt->bindValue(':annee', $annee['annee']);
-    $pdoSt->bindValue(':statut', "PASSIF");
-    $pdoSt->execute();
-    $passif = $pdoSt->fetchAll();
+    $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "PASSIF"));
+    $passif = array();
+    while ($result_passif = $pdoSt->fetch()) {
+        $passif[$result_passif['mois']] = $result_passif['nb'];
+    }
 
+    $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
     for($i=0; $i<12; $i++) {
         if (array_key_exists($mois[$i], $actif)) {
             ${'nb_actif_'.$mois[$i]} = $actif[$mois[$i]];
         }
         else {
             ${'nb_actif_'.$mois[$i]} = 0;
+        }
+    }
+
+    for($i=0; $i<12; $i++) {
+        if (array_key_exists($mois[$i], $passif)) {
+            ${'nb_passif_'.$mois[$i]} = $passif[$mois[$i]];
+        }
+        else {
+            ${'nb_passif_'.$mois[$i]} = 0;
         }
     }
 
@@ -199,81 +237,111 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
                                                                 <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                    <div class="user-analytics">
-                                                                        <i class="bx bx-user mr-25 align-middle"></i>
-                                                                        <span class="align-middle text-muted">Users</span>
+                                                                    <div class="user-analytics">                                                                        
+                                                                        <span class="align-middle text-muted">Prospect</span>
                                                                         <div class="d-flex">
-                                                                            <div id="radial-success-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">61K</h3>
-                                                                        </div>
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-primary mx-auto my-1">
+                                                                                <i class='bx bxs-save icon_size'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h3 class="text-center"><?= $count_prospect ?></h3>
+                                                                        
                                                                     </div>
-                                                                    <div class="sessions-analytics">
-                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Sessions</span>
+                                                                    <div class="sessions-analytics">                                                                    
+                                                                        <span class="align-middle text-muted">En cours</span>
                                                                         <div class="d-flex">
-                                                                            <div id="radial-warning-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">92K</h3>
-                                                                        </div>
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto my-1">
+                                                                                <i class='bx bx-badge-check icon_size'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h3 class="text-center"><?= $count_encours ?></h3>
+                                                                        
                                                                     </div>
-                                                                    <div class="bounce-rate-analytics">
-                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Bounce Rate</span>
+                                                                    <div class="bounce-rate-analytics">                                                                       
+                                                                        <span class="align-middle text-muted">Actif</span>
                                                                         <div class="d-flex">
-                                                                            <div id="radial-danger-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                        </div>
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-warning mx-auto my-1">
+                                                                                <i class='bx bx-loader-circle icon_size'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h3 class="text-center"><?= $count_actif ?></h3>                                                                        
                                                                     </div>
-                                                                </div>
+                                                                </div>   
+                                                                <!-- affichage pour nombre client valide(actif) -->
+                                                                <input type="hidden" id="nb_actif_01" value="<?= $nb_actif_01 ?>">
+                                                                <input type="hidden" id="nb_actif_02" value="<?= $nb_actif_02 ?>">
+                                                                <input type="hidden" id="nb_actif_03" value="<?= $nb_actif_03 ?>">
+                                                                <input type="hidden" id="nb_actif_04" value="<?= $nb_actif_04 ?>">
+                                                                <input type="hidden" id="nb_actif_05" value="<?= $nb_actif_05 ?>">
+                                                                <input type="hidden" id="nb_actif_06" value="<?= $nb_actif_06 ?>">
+                                                                <input type="hidden" id="nb_actif_07" value="<?= $nb_actif_07 ?>">
+                                                                <input type="hidden" id="nb_actif_08" value="<?= $nb_actif_08 ?>">
+                                                                <input type="hidden" id="nb_actif_09" value="<?= $nb_actif_09 ?>">
+                                                                <input type="hidden" id="nb_actif_10" value="<?= $nb_actif_10 ?>">
+                                                                <input type="hidden" id="nb_actif_11" value="<?= $nb_actif_11 ?>">
+                                                                <input type="hidden" id="nb_actif_12" value="<?= $nb_actif_12 ?>">
+
+                                                                <!-- affichage pour nombre client passif -->
+                                                                <input type="hidden" id="nb_passif_01" value="<?= $nb_passif_01 ?>">
+                                                                <input type="hidden" id="nb_passif_02" value="<?= $nb_passif_02 ?>">
+                                                                <input type="hidden" id="nb_passif_03" value="<?= $nb_passif_03 ?>">
+                                                                <input type="hidden" id="nb_passif_04" value="<?= $nb_passif_04 ?>">
+                                                                <input type="hidden" id="nb_passif_05" value="<?= $nb_passif_05 ?>">
+                                                                <input type="hidden" id="nb_passif_06" value="<?= $nb_passif_06 ?>">
+                                                                <input type="hidden" id="nb_passif_07" value="<?= $nb_passif_07 ?>">
+                                                                <input type="hidden" id="nb_passif_08" value="<?= $nb_passif_08 ?>">
+                                                                <input type="hidden" id="nb_passif_09" value="<?= $nb_passif_09 ?>">
+                                                                <input type="hidden" id="nb_passif_10" value="<?= $nb_passif_10 ?>">
+                                                                <input type="hidden" id="nb_passif_11" value="<?= $nb_passif_11 ?>">
+                                                                <input type="hidden" id="nb_passif_12" value="<?= $nb_passif_12 ?>">
+                                                                    
                                                                 <div id="analytics-bar-chart"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <section id="horizontal-vertical">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Website Analytics</h4>
-                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+                                                            <h4 class="card-title">Rappel facutres retard</h4>
+                                                            <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                    <div class="user-analytics">
-                                                                        <i class="bx bx-user mr-25 align-middle"></i>
-                                                                        <span class="align-middle text-muted">Users</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-success-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">61K</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="sessions-analytics">
-                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Sessions</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-warning-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">92K</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="bounce-rate-analytics">
-                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Bounce Rate</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-danger-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="analytics-bar-chart"></div>
+                                                                 <!-- table with no border -->
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-borderless nowrap scroll-horizontal-vertical">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center">NAME</th>
+                                                                                <th class="text-center">REFF</th>
+                                                                                <th class="text-center">DATE</th>
+                                                                                <th class="text-center">NUMEROS</th>                                                                                
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <?php foreach($facture_retard as $factures): ?>
+                                                                            <tr>
+                                                                                <td class="text-center"><?= $factures['nameentreprise'] ?></td>
+                                                                                <td class="text-center"><?= $factures['reffacture'] ?></td>
+                                                                                <td class="text-center"><?= $factures['dateecheance'] ?>&nbsp <i class="bx bxs-circle danger font-small-1 mr-50"></i></td>
+                                                                                <td class="text-center"><?= $factures['numerosfacture'] ?></td>
+                                                                                
+                                                                            </tr>
+                                                                        <?php endforeach; ?> 
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>    
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            </section>
                                         </div>
                                         <!-- FIN COLONNE GAUCHE -->
                                         <!-- DEBUT COLONNE DROITE -->
@@ -1214,6 +1282,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
+    <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
     <script>
 
@@ -1256,6 +1325,7 @@ require_once 'php/verif_session_connect_admin.php';
         });
 
     </script>
+
 
 </body>
 <!-- END: Body-->
