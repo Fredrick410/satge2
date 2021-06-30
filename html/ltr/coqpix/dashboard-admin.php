@@ -31,118 +31,45 @@ require_once 'php/verif_session_connect_admin.php';
     $facture_retard = $pdoSt->fetchAll();
 
     $count_retard = count($facture_retard);
+    
+    // recup l'année 
+    $pdoSt=$bdd->query('SELECT substr(date_crea, 7) AS annee FROM portefeuille');
+    $pdoSt->execute();
+    $annee = $pdoSt->fetch();
+    
+    // requête pour récupérer le data chart 
+    $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
+    $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "ACTIF"));
+    $actif = array();
+    while ($result_actif = $pdoSt->fetch()) {
+        $actif[$result_actif['mois']] = $result_actif['nb'];
+    }
+ 
+    $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
+    $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "PASSIF"));
+    $passif = array();
+    while ($result_passif = $pdoSt->fetch()) {
+        $passif[$result_passif['mois']] = $result_passif['nb'];
+    }
 
-    // COLOUMN CHART PASSIF
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "01");
-    $pdoSta->execute();
-    $portefeuille_janv = $pdoSta->fetchAll();
-    $count_janv = count($portefeuille_janv);
+    $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
+    for($i=0; $i<12; $i++) {
+        if (array_key_exists($mois[$i], $actif)) {
+            ${'nb_actif_'.$mois[$i]} = $actif[$mois[$i]];
+        }
+        else {
+            ${'nb_actif_'.$mois[$i]} = 0;
+        }
+    }
 
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "02");
-    $pdoSta->execute();
-    $portefeuille_fevr = $pdoSta->fetchAll();
-    $count_fevr = count($portefeuille_fevr);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "03");
-    $pdoSta->execute();
-    $portefeuille_mars = $pdoSta->fetchAll();
-    $count_mars = count($portefeuille_mars);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "04");
-    $pdoSta->execute();
-    $portefeuille_avr = $pdoSta->fetchAll();
-    $count_avr = count($portefeuille_avr);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "05");
-    $pdoSta->execute();
-    $portefeuille_mai = $pdoSta->fetchAll();
-    $count_mai = count($portefeuille_mai);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "06");
-    $pdoSta->execute();
-    $portefeuille_juin = $pdoSta->fetchAll();
-    $count_juin = count($portefeuille_juin);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "07");
-    $pdoSta->execute();
-    $portefeuille_juillet = $pdoSta->fetchAll();
-    $count_juillet = count($portefeuille_juillet);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "08");
-    $pdoSta->execute();
-    $portefeuille_aout = $pdoSta->fetchAll();
-    $count_aout = count($portefeuille_aout);
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif" AND date_crea_m=:date_crea_m'); 
-    $pdoSta->bindValue(':date_crea_m', "09");
-    $pdoSta->execute();
-    $portefeuille_sept = $pdoSta->fetchAll();
-    $count_sept = count($portefeuille_sept);
-
-     // COLOUMN CHART ACTIF
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "01");
-     $pdoSta->execute();
-     $portefeuille_janv = $pdoSta->fetchAll();
-     $actif_janv = count($portefeuille_janv);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "02");
-     $pdoSta->execute();
-     $portefeuille_fevr = $pdoSta->fetchAll();
-     $actif_fevr = count($portefeuille_fevr);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "03");
-     $pdoSta->execute();
-     $portefeuille_mars = $pdoSta->fetchAll();
-     $actif_mars = count($portefeuille_mars);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "04");
-     $pdoSta->execute();
-     $portefeuille_avr = $pdoSta->fetchAll();
-     $actif_avr = count($portefeuille_avr);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "05");
-     $pdoSta->execute();
-     $portefeuille_mai = $pdoSta->fetchAll();
-     $actif_mai = count($portefeuille_mai);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "06");
-     $pdoSta->execute();
-     $portefeuille_juin = $pdoSta->fetchAll();
-     $actif_juin = count($portefeuille_juin);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "07");
-     $pdoSta->execute();
-     $portefeuille_juillet = $pdoSta->fetchAll();
-     $actif_juillet = count($portefeuille_juillet);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "08");
-     $pdoSta->execute();
-     $portefeuille_aout = $pdoSta->fetchAll();
-     $actift_aout = count($portefeuille_aout);
-
-     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND date_crea_m=:date_crea_m'); 
-     $pdoSta->bindValue(':date_crea_m', "09");
-     $pdoSta->execute();
-     $portefeuille_sept = $pdoSta->fetchAll();
-     $actif_sept = count($portefeuille_sept);
-
-   
+    for($i=0; $i<12; $i++) {
+        if (array_key_exists($mois[$i], $passif)) {
+            ${'nb_passif_'.$mois[$i]} = $passif[$mois[$i]];
+        }
+        else {
+            ${'nb_passif_'.$mois[$i]} = 0;
+        }
+    }
 
 ?>
 
@@ -303,7 +230,35 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>    
                                                                         <h3 class="text-center"><?= $count_actif ?></h3>                                                                        
                                                                     </div>
-                                                                </div>
+                                                                </div>   
+                                                                <!-- affichage pour nombre client valide(actif) -->
+                                                                <input type="hidden" id="nb_actif_01" value="<?= $nb_actif_01 ?>">
+                                                                <input type="hidden" id="nb_actif_02" value="<?= $nb_actif_02 ?>">
+                                                                <input type="hidden" id="nb_actif_03" value="<?= $nb_actif_03 ?>">
+                                                                <input type="hidden" id="nb_actif_04" value="<?= $nb_actif_04 ?>">
+                                                                <input type="hidden" id="nb_actif_05" value="<?= $nb_actif_05 ?>">
+                                                                <input type="hidden" id="nb_actif_06" value="<?= $nb_actif_06 ?>">
+                                                                <input type="hidden" id="nb_actif_07" value="<?= $nb_actif_07 ?>">
+                                                                <input type="hidden" id="nb_actif_08" value="<?= $nb_actif_08 ?>">
+                                                                <input type="hidden" id="nb_actif_09" value="<?= $nb_actif_09 ?>">
+                                                                <input type="hidden" id="nb_actif_10" value="<?= $nb_actif_10 ?>">
+                                                                <input type="hidden" id="nb_actif_11" value="<?= $nb_actif_11 ?>">
+                                                                <input type="hidden" id="nb_actif_12" value="<?= $nb_actif_12 ?>">
+
+                                                                <!-- affichage pour nombre client passif -->
+                                                                <input type="hidden" id="nb_passif_01" value="<?= $nb_passif_01 ?>">
+                                                                <input type="hidden" id="nb_passif_02" value="<?= $nb_passif_02 ?>">
+                                                                <input type="hidden" id="nb_passif_03" value="<?= $nb_passif_03 ?>">
+                                                                <input type="hidden" id="nb_passif_04" value="<?= $nb_passif_04 ?>">
+                                                                <input type="hidden" id="nb_passif_05" value="<?= $nb_passif_05 ?>">
+                                                                <input type="hidden" id="nb_passif_06" value="<?= $nb_passif_06 ?>">
+                                                                <input type="hidden" id="nb_passif_07" value="<?= $nb_passif_07 ?>">
+                                                                <input type="hidden" id="nb_passif_08" value="<?= $nb_passif_08 ?>">
+                                                                <input type="hidden" id="nb_passif_09" value="<?= $nb_passif_09 ?>">
+                                                                <input type="hidden" id="nb_passif_10" value="<?= $nb_passif_10 ?>">
+                                                                <input type="hidden" id="nb_passif_11" value="<?= $nb_passif_11 ?>">
+                                                                <input type="hidden" id="nb_passif_12" value="<?= $nb_passif_12 ?>">
+                                                                    
                                                                 <div id="analytics-bar-chart"></div>
                                                             </div>
                                                         </div>
@@ -1331,6 +1286,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
+
 
 </body>
 <!-- END: Body-->

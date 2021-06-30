@@ -376,11 +376,11 @@ require_once 'php/config.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="../../../app-assets/js/scripts/pages/script.js"></script>
-    <script src="../../../app-assets/js/scripts/extensions/tour.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/tour.js"></script>  
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
-
+    
 
 
     
@@ -398,7 +398,7 @@ require_once 'php/config.php';
     ?>
 
 
-       
+
 </body>
 <!-- END: Body-->
 
