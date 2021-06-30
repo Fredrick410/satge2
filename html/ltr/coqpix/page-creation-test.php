@@ -154,13 +154,14 @@ require_once 'php/verif_session_crea.php';
     <div class="container-fluid">
         <div class="row" id="div-entreprise">                
             <div class="col-4 m-0" id="div-nom">
-                <a class="dropdown-toggle dropdown-user-link" href="#" data-toggle="dropdown">
+                <a class="dropdown-user-link" href="#" data-toggle="dropdown">
                     <img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar"><br>
                     <h3> <?= $crea['name_crea'] ?> </h3>
                     <span class="user-status">En ligne</span>
                 </a>
                 <div class="dropdown-menu pb-0" style="margin-left: 150px;">
-                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
+                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="#"><i class="bx bxs-pencil mr-50"></i> Modifier mes informations</a>
+                    <div class="dropdown-divider my-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="php/disconnect.php"><i class="bx bx-log-out mr-50"></i> Se déconnecter</a>
                 </div>
             </div>
             <div class="col-8 m-0 p-2" id="div-info">
