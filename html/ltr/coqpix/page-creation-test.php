@@ -165,71 +165,33 @@ require_once 'php/verif_session_crea.php';
                 </div>
             </div>
             <div class="col-8 m-0 p-2" id="div-info">
-                <form action="php/edit_crea_client.php" method="POST">
-                    <input type="hidden" name="id" value="<?= $crea['id'] ?>">
-
-                    <?php 
-                        if($crea['status_crea'] == ""){
-                            $validation = "harrypottergood";
-                        }else{
-                            $validation = "harrypotter";
-                        }
-                    ?>
                     <ul class="row">
-                        <li class="col-4">
+                        <li class="col-6">
                             <div class="form-group" id="info-gauche">
                                 <div class="form-row m-0 p-2">
                                     <label>Prénom du dirigeant</label>
-                                    <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" required>
+                                    <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" readonly>
                                 </div>
                                 <div class="form-row m-0 p-2">
-                                    <label>Nom du dirigeant</label>
-                                    <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
+                                    <label>E-mail <span style="text-transform: lowercase;">(identifiant de connexion)</span></label>
+                                    <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" readonly>
                                 </div>
                             </div>
                         </li>
-                        <li class="col-4">
+                        <li class="col-6">
                             <div class="form-group" id="info-droite">
                                 <div class="form-row m-0 p-2">
-                                    <label>E-mail</label>
-                                    <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
+                                    <label>Nom du dirigeant</label>
+                                    <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" readonly>
                                 </div>
                                 <div class="form-row m-0 p-2">
                                     <label>Téléphone du dirigeant</label>
-                                    <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
+                                    <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" readonly>
                                     <input type="text" name="tel_diri" id="tel_diri" hidden required>
                                 </div> 
                             </div> 
                         </li>
-
-                                <?php
-                                    if(!empty($_GET['enregister'])){
-                                        if($_GET['enregister'] == "1"){
-                                            $good = "harrypottergood";
-                                        }else{
-                                            $good = "";
-                                        }
-                                    }else{
-                                        $good = "harrypotter";
-                                    }
-                                ?>
-                               <!-- <div class="col-12 <?php echo $good; ?>">
-                                    <div class="form-group">
-                                        <label>Enregistrement effectué 👍🏽</label>
-                                    </div>
-                                </div> -->
-                                
-                        <li class="col-4">
-                            <div class="form group" id="info-btn">
-                                <button type="submit" class="btn mr-sm-1 mb-1">Sauvegarder</button>
-                            </div>
-                        </li>
                     </ul>
-                    
-                
-                    
-                    
-                </form>
             </div>
         </div>
 
@@ -240,37 +202,43 @@ require_once 'php/verif_session_crea.php';
                     <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3>
                     <a href="domiciliation.php" type="button">Se Domicilier</a>
                 </div>
-                <div class="row p-2" id="solution">
-                    <ul class="col-12">
-                        <li class="col-3">
-                            <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
-                            <label for="domicilia" class="">
-                                <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
-                                <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
-                            </label><br>
-                            <label>
-                                <p>Domiciliation</p>
-                            </label>
+                <div class="row p-0" id="solution">
+                    <ul>
+                        <li>
+                            <div class="col-4">
+                                <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
+                                <label for="domicilia" class="">
+                                    <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                    <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                                </label><br>
+                                <label>
+                                    <p>Domiciliation</p>
+                                </label>
+                            </div>
                         </li>
-                        <li class="col-3">
-                            <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
-                            <label for="bureau" class="">
-                                <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
-                                <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
-                            </label><br>
-                            <label>
-                                <p>Bureaux privatifs</p>
-                            </label>
+                        <li>
+                            <div class="col-4">
+                                <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
+                                <label for="bureau" class="">
+                                    <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                    <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                                </label><br>
+                                <label>
+                                    <p>Bureaux privatifs</p>
+                                </label>
+                            </div>
                         </li>
-                        <li class="col-3">
-                            <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
-                            <label for="cowork" class="">
-                                <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
-                                <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
-                            </label><br>
-                            <label>
-                                <p>Coworking</p>
-                            </label>
+                        <li>
+                            <div class="col-4">
+                                <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
+                                <label for="cowork" class="">
+                                    <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                    <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                                </label><br>
+                                <label>
+                                    <p>Coworking</p>
+                                </label>
+                            </div>
                         </li>
                     </ul>
                 </div>
