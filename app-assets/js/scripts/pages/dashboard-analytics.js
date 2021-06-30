@@ -236,15 +236,6 @@ $(window).on("load", function() {
                 endingShape: 'rounded'
             },
         },
-        legend: {
-            horizontalAlign: 'right',
-            offsetY: -10,
-            markers: {
-                radius: 50,
-                height: 8,
-                width: 8
-            }
-        },
         dataLabels: {
             enabled: false
         },
@@ -292,7 +283,13 @@ $(window).on("load", function() {
             }
         },
         legend: {
-            show: false
+            show: true,
+            offsetY: -10,
+            horizontalAlign: 'left',
+            markers: {
+                height: 15,
+                width: 4
+            }
         },
         tooltip: {
             y: {
