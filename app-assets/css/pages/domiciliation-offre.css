@@ -18,12 +18,16 @@
 }
 
 .carousel{
-    margin: 50px;
+    margin: 50px auto;
+}
+
+.carousel-item {
+    text-align: center;
 }
 
 .carousel-item img{
-    height: 600px; 
-    width: 100%;
+    height: auto; 
+    width: auto;
 }
 
 #titre{

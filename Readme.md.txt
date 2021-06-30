@@ -87,3 +87,9 @@ branche de oscar:
 		-partie domiciliation ajouté à la page accueil crea
 		-partie documents ajouté à la page accueil crea
 		-tchat ajouté à la page d'accueil crea
+
+btanche de leo :
+	tache réalisée le 30/06/2021:
+		-base de données : offre-domiciliation fixed et ajout de la partie img
+		-ajout des images sur domiciliation
+		-rectification chat : petite fleche à droite en "popup"
