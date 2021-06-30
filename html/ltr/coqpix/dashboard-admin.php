@@ -6,25 +6,67 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
-    // Taux de prelevement
+    // DEBUT REQUETES CHART BAS DROITE
     $annee_actuelle = date("Y");
+    $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
 
     for ($i=0 ; $i<5 ; $i++) {
 
-        // Requete SQL permettant de recuperer le taux de prélevement
-        ${'select_taux_prelevement_n_'.$i} = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee');
-        ${'select_taux_prelevement_n_'.$i}->bindValue(':annee', $annee_actuelle - $i);
-        ${'select_taux_prelevement_n_'.$i}->execute();
-        ${'result_taux_prelevement_n_'.$i} = ${'select_taux_prelevement_n_'.$i}->fetch();
+        // Requete SQL permettant de recuperer le taux de prélevement par annee et par mois
+        $select_taux_prelevement = $bdd->prepare('SELECT dte_m AS mois, round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee GROUP BY dte_m');
+        $select_taux_prelevement->execute(array(':annee' => $annee_actuelle - $i));
+        ${'array_taux_prelevement_'.($annee_actuelle - $i)} = array();
+        while ($result_taux_prelevement = $select_taux_prelevement->fetch()) {
+            ${'array_taux_prelevement_'.($annee_actuelle - $i)}[$result_taux_prelevement['mois']] = $result_taux_prelevement['taux_prelevement'];
+        }
 
-    } for ($j=1 ; $j<6 ; $j++) {
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'array_taux_prelevement_'.($annee_actuelle - $i)})) {
+                ${'taux_prelevement_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_taux_prelevement_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'taux_prelevement_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
+            }
+        }
 
-        // Requete SQL permettant de recuperer le bilan annuel
-        ${'select_bilan_annuel_n_'.$j} = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
-        ${'select_bilan_annuel_n_'.$j}->bindValue(':annee', $annee_actuelle - $j);
-        ${'select_bilan_annuel_n_'.$j}->execute();
-        ${'result_bilan_annuel_n_'.$j} = ${'select_bilan_annuel_n_'.$j}->fetch();
+    } for ($i=1 ; $i<6 ; $i++) {
 
+        // Requete SQL permettant de recuperer le bilan annuel par annee
+        $select_bilan_annuel = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
+        $select_bilan_annuel->bindValue(':annee', $annee_actuelle - $i);
+        $select_bilan_annuel->execute();
+        $result_bilan_annuel = $select_bilan_annuel->fetch();
+        ${'bilan_annuel_'.($annee_actuelle - $i)} = $result_bilan_annuel['bilan_annuel'];
+
+    }
+    // FIN REQUETES CHART BAS DROITE
+
+    // requête pour récupérer le data chart 
+    // recup l'année 
+    $pdoSt=$bdd->query('SELECT substr(date_crea, 7) AS annee FROM portefeuille');
+    $pdoSt->execute();
+    $annee = $pdoSt->fetch();
+    
+    $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
+    $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "ACTIF"));
+    $actif = array();
+    while ($result_actif = $pdoSt->fetch()) {
+        $actif[$result_actif['mois']] = $result_actif['nb'];
+    }
+
+    $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
+    $pdoSt->bindValue(':annee', $annee['annee']);
+    $pdoSt->bindValue(':statut', "PASSIF");
+    $pdoSt->execute();
+    $passif = $pdoSt->fetchAll();
+
+    for($i=0; $i<12; $i++) {
+        if (array_key_exists($mois[$i], $actif)) {
+            ${'nb_actif_'.$mois[$i]} = $actif[$mois[$i]];
+        }
+        else {
+            ${'nb_actif_'.$mois[$i]} = 0;
+        }
     }
 
 ?>
@@ -257,8 +299,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_ventes">
                                                                         <i class="bx bx-dollar mr-50 font-large-1"></i>
                                                                         <div class="d-none d-md-block">
-                                                                            <div>Ventes</div>
-                                                                            <div class="d-block " style="font-size: 0.8rem;">Entrées d'argent</div>
+                                                                            <div>Ventes</div>              
                                                                         </div>
                                                                     </div></a>
                                                                     <a href="#" id="id_bouton_achats" style="
@@ -270,8 +311,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_achats">
                                                                         <i class="bx bx-wallet mr-50 font-large-1"></i>
                                                                         <div class="d-none d-md-block">
-                                                                            <div>Achats</div>
-                                                                            <div class="d-block" style="font-size: 0.8rem;">Sorties d'argent</div>
+                                                                            <div>Achats</div>       
                                                                         </div>
                                                                     </div></a>
                                                                     <a href="#" id="id_bouton_tresorerie" style="
@@ -283,8 +323,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_tresorerie">
                                                                         <i class="bx bx-diamond mr-50 font-large-1"></i>
                                                                         <div class="d-none d-md-block">
-                                                                            <div>Trésorerie</div>
-                                                                            <div class="d-block" style="font-size: 0.8rem;">État des finance</div>
+                                                                            <div>Trésorerie</div> 
                                                                         </div>
                                                                     </div></a>
                                                                 </div>
@@ -509,36 +548,56 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="card-body text-center">
                                                             <div class="row">
                                                                 <div class="col-md-6 col-12">
-                                                                    <input type="hidden" id="taux_prelevement_2021" value="<?= $result_taux_prelevement_n_0['taux_prelevement'] ?>">
-                                                                    <input type="hidden" id="taux_prelevement_2020" value="<?= $result_taux_prelevement_n_1['taux_prelevement'] ?>">
-                                                                    <input type="hidden" id="taux_prelevement_2019" value="<?= $result_taux_prelevement_n_2['taux_prelevement'] ?>">
-                                                                    <input type="hidden" id="taux_prelevement_2018" value="<?= $result_taux_prelevement_n_3['taux_prelevement'] ?>">
-                                                                    <input type="hidden" id="taux_prelevement_2017" value="<?= $result_taux_prelevement_n_4['taux_prelevement'] ?>">
-                                                                    <h6 class="text-white mb-2"> Taux de prélèvement réussis en <span class="text-white" id="id_span_prelevement">2021</span> </h6>
-                                                                    <select class="form-control" id="id_select_prelevement">
-                                                                        <option value="2021">2021</option>
-                                                                        <option value="2020">2020</option>
-                                                                        <option value="2019">2019</option>
-                                                                        <option value="2018">2018</option>
-                                                                        <option value="2017">2017</option>
-                                                                    </select>
+                                                                    <?php 
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        for ($j=0; $j<12 ; $j++) {
+                                                                            $id_taux_prelevement = "taux_prelevement_".$mois[$j]."_".($annee_actuelle - $i); ?>
+                                                                            <input type="hidden" id="<?= $id_taux_prelevement ?>" value="<?= ${'taux_prelevement_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
+                                                                        }
+                                                                    } ?>
+                                                                    <h6 class="text-white mb-1"> Prélèvement réussis </h6>
+                                                                    <div class="d-flex justify-content-center">
+                                                                        <select style="width: 80px;" class="form-control" id="id_select_mois_prelevement">
+                                                                            <option value="01">Janv</option>
+                                                                            <option value="02">Fevr</option>
+                                                                            <option value="03">Mars</option>
+                                                                            <option value="04">Avril</option>
+                                                                            <option value="05">Mai</option>
+                                                                            <option value="06">Juin</option>
+                                                                            <option value="07">Juil</option>
+                                                                            <option value="08">Aout</option>
+                                                                            <option value="09">Sept</option>
+                                                                            <option value="10">Oct</option>
+                                                                            <option value="11">Nov</option>
+                                                                            <option value="12">Dec</option>
+                                                                        </select>
+                                                                        <select style="width: 80px;" class="form-control" id="id_select_annee_prelevement">
+                                                                            <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
+                                                                            <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
+                                                                            <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
+                                                                            <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
+                                                                            <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                        </select>
+                                                                    </div>
                                                                     <div id="growth-Chart-prelevement"></div>
                                                                 </div>
                                                                 <div class="col-md-6 col-12">
-                                                                    <input type="hidden" id="bilan_annuel_2020" value="<?= $result_bilan_annuel_n_1['bilan_annuel'] ?>">
-                                                                    <input type="hidden" id="bilan_annuel_2019" value="<?= $result_bilan_annuel_n_2['bilan_annuel'] ?>">
-                                                                    <input type="hidden" id="bilan_annuel_2018" value="<?= $result_bilan_annuel_n_3['bilan_annuel'] ?>">
-                                                                    <input type="hidden" id="bilan_annuel_2017" value="<?= $result_bilan_annuel_n_4['bilan_annuel'] ?>">
-                                                                    <input type="hidden" id="bilan_annuel_2016" value="<?= $result_bilan_annuel_n_5['bilan_annuel'] ?>">
-                                                                    <h6 class="text-white mb-2"> Bilans annuels réalisés en <span class="text-white" id="id_span_bilan">2021</span> </h6>
-                                                                    <select class="form-control" id="id_select_bilan">
-                                                                        <option value="2020">2020</option>
-                                                                        <option value="2019">2019</option>
-                                                                        <option value="2018">2018</option>
-                                                                        <option value="2017">2017</option>
-                                                                        <option value="2016">2016</option>
-                                                                    </select>
-                                                                    <div id="growth-Chart-bilan"></div>
+                                                                    <?php 
+                                                                    for ($i=1; $i<6 ; $i++) {
+                                                                        $id_bilan_annuel = "bilan_annuel_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_bilan_annuel ?>" value="<?= ${"bilan_annuel_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+                                                                    <h6 class="text-white mb-1"> Bilans annuels </h6>
+                                                                    <div class="d-flex justify-content-center">
+                                                                        <select style="width: 80px;" class="form-control" id="id_select_bilan">
+                                                                            <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
+                                                                            <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
+                                                                            <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
+                                                                            <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                            <option value="<?= $annee_actuelle-5 ?>"><?= $annee_actuelle-5 ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div id="growth-Chart-bilan" class="pb-0"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1157,6 +1216,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
     <!-- END: Page JS-->
     <script>
+
         $(document).ready(function() {
 
             $("#id_bouton_ventes").click(function(e) {
@@ -1193,7 +1253,8 @@ require_once 'php/verif_session_connect_admin.php';
                 document.getElementById("id_table_tresorerie").style.display = "block";
             });
 
-        });   
+        });
+
     </script>
 
 </body>

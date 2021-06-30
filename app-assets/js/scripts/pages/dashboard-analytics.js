@@ -22,7 +22,7 @@ $(window).on("load", function () {
   var $sub_label_color = "#596778";
   var $radial_bg = "#e7edf3";
 
-
+  
   // Radial-Success-chart
   // --------------------------------
   var radialSuccessoptions = {
@@ -863,11 +863,14 @@ $(window).on("load", function () {
 
   }
 
+  var annee_actuelle = (new Date()).getFullYear();
+  var mois_actuel = ("0" + (new Date().getMonth() + 1)).slice(-2);
+
   // DEBUT TAUX DE PRELEVEMENT
 
-  var taux_prelevement = document.getElementById("taux_prelevement_2021").value;
-
-  $("#growth-Chart-prelevement").empty();
+  document.getElementById("id_select_mois_prelevement").selectedIndex = mois_actuel - 1;
+  var id_taux_prelevement = "taux_prelevement_" + mois_actuel + "_" + annee_actuelle;
+  var taux_prelevement = document.getElementById(id_taux_prelevement).value;
 
   var growthChart = new ApexCharts(
     document.querySelector("#growth-Chart-prelevement"),
@@ -876,32 +879,50 @@ $(window).on("load", function () {
 
   growthChart.render();
 
-  $("#id_select_prelevement").change(function() {
+  $("#id_select_annee_prelevement").change(function() {
 
-    var annee = $(this).children("option:selected").val();
-    document.getElementById("id_span_prelevement").innerText = annee;
-
-    var id_taux_prelevement = "taux_prelevement_" + annee;
+    var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
+    var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
+  
+    var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
     var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-
+  
     $("#growth-Chart-prelevement").empty();
-
+  
     var growthChart = new ApexCharts(
       document.querySelector("#growth-Chart-prelevement"),
       growthChartOptions(taux_prelevement)
     );
-
+  
     growthChart.render();
-
+  
+  });
+  
+  $("#id_select_mois_prelevement").change(function() {
+  
+    var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
+    var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
+  
+    var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
+    var taux_prelevement = document.getElementById(id_taux_prelevement).value;
+  
+    $("#growth-Chart-prelevement").empty();
+  
+    var growthChart = new ApexCharts(
+      document.querySelector("#growth-Chart-prelevement"),
+      growthChartOptions(taux_prelevement)
+    );
+  
+    growthChart.render();
+  
   });
 
   // FIN TAUX DE PRELEVEMENT
 
   // DEBUT BILAN ANNUEL
 
-  var bilan_annuel = document.getElementById("bilan_annuel_2020").value;
-
-  $("#growth-Chart-bilan").empty();
+  var id_bilan_annuel = "bilan_annuel_" + (annee_actuelle - 1);
+  var bilan_annuel = document.getElementById(id_bilan_annuel).value;
 
   var growthChart = new ApexCharts(
     document.querySelector("#growth-Chart-bilan"),
@@ -911,27 +932,26 @@ $(window).on("load", function () {
   growthChart.render();
 
   $("#id_select_bilan").change(function() {
-
-    var annee = $(this).children("option:selected").val();
-    document.getElementById("id_span_bilan").innerText = annee;
-
-    var id_bilan_annuel = "bilan_annuel_" + annee;
+  
+    var annee_bilan = $(this).children("option:selected").val();
+  
+    var id_bilan_annuel = "bilan_annuel_" + annee_bilan;
     var bilan_annuel = document.getElementById(id_bilan_annuel).value;
-
+  
     $("#growth-Chart-bilan").empty();
-
+  
     var growthChart = new ApexCharts(
       document.querySelector("#growth-Chart-bilan"),
       growthChartOptions(bilan_annuel)
     );
-
+  
     growthChart.render();
-
+  
   });
 
   // FIN BILAN ANNUEL
 
-
+  
   // Widget Todo List
   // ------------------
   // Task List Widget - for completed todo item
