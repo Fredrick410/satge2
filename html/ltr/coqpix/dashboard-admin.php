@@ -6,6 +6,14 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
+    $pdoSt = $bdd->prepare('SELECT * FROM comptable');
+    $pdoSt->execute();
+    $comptables = $pdoSt->fetchAll();
+
+    $pdoSt = $bdd->prepare('SELECT MAX(nb) AS nb FROM (SELECT COUNT(*) AS nb FROM comptable_list GROUP BY id_comptable) AS temp');
+    $pdoSt->execute();
+    $nb_assigne_max = ($pdoSt->fetch())['nb'];
+
     // DEBUT REQUETES CHART BAS DROITE
     $annee_actuelle = date("Y");
     $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
@@ -207,16 +215,16 @@ require_once 'php/verif_session_connect_admin.php';
                         <div class="swiper-container gallery-thumbs">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-warning btn-lg btn-block py-1 py-md-0 px-0" ><strong class="d-none d-md-block">Comptabilité</strong></button>
+                                    <button type="button" class="btn btn-yellow btn-lg btn-block py-1 py-md-0 px-0" ><strong class="d-none d-md-block text-dark">Comptabilité</strong></button>
                                 </div>
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-info btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
+                                    <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
                                 </div>
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Fiscalité</strong></button>
+                                    <button type="button" class="btn btn-warning btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Fiscalité</strong></button>
                                 </div>
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-primary btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Sociale</strong></button>
+                                    <button type="button" class="btn btn-info btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Sociale</strong></button>
                                 </div>
                             </div>
                         </div>
@@ -398,90 +406,45 @@ require_once 'php/verif_session_connect_admin.php';
 
                                                             </div>
                                                         </div>
-                                                        <!-- DEBUT TABLE VENTES -->
-                                                        <div id="id_table_ventes" style="display:block;">   
+                                                        <div id="id_table_ventes" style="display:block;">
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
-                                                                                        <span class="font-small-2">Designer</span>
+                                                                        <?php foreach ($comptables as $comptable) :
+                                                                            $pdoSt = $bdd->prepare('SELECT COUNT(*) as nb FROM stockage_admin WHERE name_entreprise IN (SELECT name_societe FROM comptable_list WHERE id_comptable=:id) AND (type_files_fac_achat = "fac_achat" OR type_files_avoir = "avoir") AND send_files="nonvalide"');
+                                                                            $pdoSt->bindValue(':id', $comptable['id']);
+                                                                            $pdoSt->execute();
+                                                                            $nb_assigne_perso = ($pdoSt->fetch())['nb'];
+
+                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($pourcent_perso <34){
+                                                                                $color_bar = "danger";
+                                                                            } else if ($pourcent_perso <67){
+                                                                                $color_bar = "warning";
+                                                                            } else if ($pourcent_perso <100){
+                                                                                $color_bar = "info";
+                                                                            } else {
+                                                                                $color_bar = "success";
+                                                                            }
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">jini mara</h6>
-                                                                                        <span class="font-small-2">Marketing</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-primary progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-12.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Lula Taylor</h6>
-                                                                                        <span class="font-small-2">UX</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-danger progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="80" aria-valuemax="100" style="width:35%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-danger">- $150</span>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -492,65 +455,41 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
-                                                                                        <span class="font-small-2">Designer</span>
+                                                                        <?php foreach ($comptables as $comptable) :
+                                                                            $pdoSt = $bdd->prepare('SELECT COUNT(*) as nb FROM stockage_admin WHERE name_entreprise IN (SELECT name_societe FROM comptable_list WHERE id_comptable=:id) AND (type_files_fac_ventes = "fac_ventes" OR type_files_note = "note") AND send_files="nonvalide"');
+                                                                            $pdoSt->bindValue(':id', $comptable['id']);
+                                                                            $pdoSt->execute();
+                                                                            $nb_assigne_perso = ($pdoSt->fetch())['nb'];
+
+                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($pourcent_perso <34){
+                                                                                $color_bar = "danger";
+                                                                            } else if ($pourcent_perso <67){
+                                                                                $color_bar = "warning";
+                                                                            } else if ($pourcent_perso <100){
+                                                                                $color_bar = "info";
+                                                                            } else {
+                                                                                $color_bar = "success";
+                                                                            }
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">jini mara</h6>
-                                                                                        <span class="font-small-2">Marketing</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-primary progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="15" aria-valuemin="80" aria-valuemax="100" style="width:15%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-primary">+ $125</span>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -561,45 +500,41 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-25.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Mera Lter</h6>
-                                                                                        <span class="font-small-2">Designer</span>
+                                                                        <?php foreach ($comptables as $comptable) :
+                                                                            $pdoSt = $bdd->prepare('SELECT COUNT(*) as nb FROM stockage_admin WHERE name_entreprise IN (SELECT name_societe FROM comptable_list WHERE id_comptable=:id) AND (type_files_caisse_ventes = "caisse_ventes" OR banque = "banque") AND send_files="nonvalide"');
+                                                                            $pdoSt->bindValue(':id', $comptable['id']);
+                                                                            $pdoSt->execute();
+                                                                            $nb_assigne_perso = ($pdoSt->fetch())['nb'];
+
+                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($pourcent_perso <34){
+                                                                                $color_bar = "danger";
+                                                                            } else if ($pourcent_perso <67){
+                                                                                $color_bar = "warning";
+                                                                            } else if ($pourcent_perso <100){
+                                                                                $color_bar = "info";
+                                                                            } else {
+                                                                                $color_bar = "success";
+                                                                            }
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td class="pr-75">
+                                                                                    <div class="media align-items-center">
+                                                                                        <div class="media-body">
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-info progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="52" aria-valuemin="80" aria-valuemax="100" style="width:52%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-info">- $180</span></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="pr-75">
-                                                                                <div class="media align-items-center">
-                                                                                    <a class="media-left mr-50" href="#">
-                                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" class="rounded-circle" height="30" width="30">
-                                                                                    </a>
-                                                                                    <div class="media-body">
-                                                                                        <h6 class="media-heading mb-0">Pauly Dez</h6>
-                                                                                        <span class="font-small-2">Devloper</span>
+                                                                                </td>
+                                                                                <td class="px-0 w-25">
+                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="px-0 w-25">
-                                                                                <div class="progress progress-bar-success progress-sm mb-0">
-                                                                                    <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="80" aria-valuemax="100" style="width:90%;"></div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="text-center"><span class="badge badge-light-success">+ $553</span>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -681,12 +616,12 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- DEBUT COMPTA -->
                                     <div class="row">
                                         <!-- DEBUT COLONNE GAUCHE -->
-                                        <div class="col-xl-6 col-sm-12">
+                                        <div class="col-xl-7 col-sm-12">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Juridique</h4>
+                                                            <h4 class="card-title">Modifiaction</h4>
                                                             <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
                                                         </div>
                                                         <div class="card-content">
@@ -770,49 +705,15 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>
                                         <!-- FIN COLONNE GAUCHE -->
                                         <!-- DEBUT COLONNE DROITE -->
-                                        <div class="col-xl-6 col-md-12">
+                                        <div class="col-xl-5 col-md-12">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="card">
-                                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Website Analytics</h4>
-                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                        </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <p>hello</p>
-                                                                <div class="d-flex justify-content-around align-items-center flex-wrap">
-                                                                    <div class="user-analytics">
-                                                                        <i class="bx bx-user mr-25 align-middle"></i>
-                                                                        <span class="align-middle text-muted">Users</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-success-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">61K</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="sessions-analytics">
-                                                                        <i class="bx bx-trending-up align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Sessions</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-warning-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">92K</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="bounce-rate-analytics">
-                                                                        <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
-                                                                        <span class="align-middle text-muted">Bounce Rate</span>
-                                                                        <div class="d-flex">
-                                                                            <div id="radial-danger-chart"></div>
-                                                                            <h3 class="mt-1 ml-50">72.6%</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="analytics-bar-chart"></div>
+                                                                <p>Nombre de création en cours</p>
+                                                                <p>Nombre de création validé total</p>
+                                                                <p>Nombre de créa abandonnés</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -821,40 +722,32 @@ require_once 'php/verif_session_connect_admin.php';
                                             <!-- DEBUT CROISSANCE -->
                                             <div class="row">
                                                 <!-- Croissance 1 -->
-                                                <div class="col-md-6">
+                                                <div class="col-12">
                                                     <div class="card">
-                                                        <div class="card-body text-center">
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    2019
-                                                                </button>
-                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                    <a class="dropdown-item" href="#">2019</a>
-                                                                    <a class="dropdown-item" href="#">2018</a>
-                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                        <!-- Impression Radial Chart Starts-->
+                                                        <div class="col-12">
+                                                            <div class="card">
+                                                                <div class="card-content">
+                                                                    <div class="card-body donut-chart-wrapper">
+                                                                        <div class="row">
+                                                                            <div class="col-5">
+                                                                                <ul class="list-inline d-flex justify-content-around mb-0 flex-column">
+                                                                                    <li> <span class="bullet bullet-xs bullet-success mr-50"></span>SARL</li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-primary mr-50"></span>SAS</li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-warning mr-50"></span>SASU</li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-danger mr-50"></span>SCI</li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-info mr-50"></span>EIRL</li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-light mr-50"></span>EI</li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-dark mr-50"></span>Micro-entreprise</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div class="col-7">
+                                                                                <div id="donut-chart" class="d-flex justify-content-center"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div id="growth-Chart"></div>
-                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Croissance 2-->
-                                                <div class="col-md-6">
-                                                    <div class="card">
-                                                        <div class="card-body text-center">
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    2019
-                                                                </button>
-                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                    <a class="dropdown-item" href="#">2019</a>
-                                                                    <a class="dropdown-item" href="#">2018</a>
-                                                                    <a class="dropdown-item" href="#">2017</a>
-                                                                </div>
-                                                            </div>
-                                                            <div id="growth-Chart"></div>
-                                                            <h6 class="mb-0"> 62% Company Growth in 2019</h6>
                                                         </div>
                                                     </div>
                                                 </div>

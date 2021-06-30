@@ -21,6 +21,7 @@ $(window).on("load", function() {
   var $gray_light = '#828D99';
   var $sub_label_color = "#596778";
   var $radial_bg = "#e7edf3";
+  var $black = "#000000";
 
 
   // Radial-Success-chart
@@ -357,69 +358,68 @@ $(window).on("load", function() {
   // Donut Chart
   // ---------------------
   var donutChartOption = {
-      chart: {
-          width: 200,
-          type: 'donut',
-      },
-      dataLabels: {
-          enabled: false
-      },
-      series: [80, 30, 60],
-      labels: ["Social", "Email", "Search"],
-      stroke: {
-          width: 0,
-          lineCap: 'round',
-      },
-      colors: [$primary, $info, $warning],
-      plotOptions: {
-          pie: {
-              donut: {
-                  size: '90%',
-                  labels: {
-                      show: true,
-                      name: {
-                          show: true,
-                          fontSize: '15px',
-                          colors: $sub_label_color,
-                          offsetY: 20,
-                          fontFamily: 'IBM Plex Sans',
-                      },
-                      value: {
-                          show: true,
-                          fontSize: '26px',
-                          fontFamily: 'Rubik',
-                          color: $label_color,
-                          offsetY: -20,
-                          formatter: function(val) {
-                              return val
-                          }
-                      },
-                      total: {
-                          show: true,
-                          label: 'Impression',
-                          color: $gray_light,
-                          formatter: function(w) {
-                              return w.globals.seriesTotals.reduce(function(a, b) {
-                                  return a + b
-                              }, 0)
-                          }
-                      }
-                  }
+    chart: {
+      width: 300,
+      type: 'donut',
+    },
+    dataLabels: {
+      enabled: false
+    },
+      series: [60, 14, 30, 17, 65, 82, 8],
+    labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
+    stroke: {
+      width: 0,
+      lineCap: 'round',
+    },
+    colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '80%',
+          labels: {
+            show: true,
+            name: {
+              show: true,
+              fontSize: '15px',
+              colors: $sub_label_color,
+              offsetY: 20,
+              fontFamily: 'IBM Plex Sans',
+            },
+            value: {
+              show: true,
+              fontSize: '35px',
+              fontFamily: 'Rubik',
+              color: $label_color,
+              offsetY: -20,
+              formatter: function (val) {
+                return val
               }
+            },
+            total: {
+              show: true,
+              label: 'Entreprises',
+              color: $gray_light,
+              formatter: function (w) {
+                return w.globals.seriesTotals.reduce(function (a, b) {
+                  return a + b
+                }, 0)
+              }
+            }
           }
-      },
-      legend: {
-          show: false
+        }
       }
+    },
+    legend: {
+      show: false
+    }
   }
 
   var donutChart = new ApexCharts(
-      document.querySelector("#donut-chart"),
-      donutChartOption
+    document.querySelector("#donut-chart"),
+    donutChartOption
   );
 
   donutChart.render();
-
   // Stacked Bar Nagetive Chart
   // ----------------------------------
   var barNegativeChartoptions = {
