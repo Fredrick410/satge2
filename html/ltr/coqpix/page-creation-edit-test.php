@@ -67,6 +67,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-creation-edit.css">
     <!-- END: Custom CSS-->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
@@ -78,13 +79,7 @@ require_once 'php/verif_session_crea.php';
 <!-- BEGIN: Body-->
 
 <body class="horizontal-layout horizontal-menu navbar-static layout 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns" data-layout="dark-layout">
-<style>
 
-.harrypotter{display: none;}
-.harrypottergood{display: block;}
-.vert{color: #12ff3a;}
-
-</style>
     <!-- BEGIN: Header-->
      
     <?php require_once("php/header-crea.php") ?>
@@ -209,7 +204,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Nom de l'entreprise (Non-modifiable)</label>
-                                                                            <input type="text" name="name_crea" id="name_crea" class="form-control" placeholder="" value="<?= $crea['name_crea'] ?>" disabled>
+                                                                            <input type="text" name="name_crea" id="name_crea" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['name_crea'] ?>" disabled>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -217,7 +212,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Prénom du dirigeant</label>
-                                                                            <input type="text" name="prenom_diri" class="form-control" placeholder="Name" value="<?= $crea['prenom_diri'] ?>" required>
+                                                                            <input type="text" name="prenom_diri" class="form-control border rounded-pill border-dark" placeholder="Name" value="<?= $crea['prenom_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -225,7 +220,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Nom du dirigeant</label>
-                                                                            <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
+                                                                            <input type="text" name="nom_diri" class="form-control border rounded-pill border-dark" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -233,7 +228,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <label>Téléphone du dirigeant</label>
                                                                         <br>
-                                                                        <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
+                                                                        <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control border rounded-pill border-dark" value="<?= $crea['tel_diri'] ?>" required>
                                                                         <input type="text" name="tel_diri" id="tel_diri" value="<?= $crea['tel_diri'] ?>" hidden required>
                                                                     </div>
                                                                 </div>
@@ -241,7 +236,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>E-mail (Identifiant de connexion)</label>
-                                                                            <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
+                                                                            <input type="email" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -289,12 +284,12 @@ require_once 'php/verif_session_crea.php';
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Sauvegarder</button>
+                                                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark">Sauvegarder</button>
                                                                 </div>
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <div class="tab-pane fade " id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
+                                                    <div class="tab-pane fade" id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
                                                         <form action="php/edit_password_crea.php" method="POST">
                                                             <input name="id" type="hidden" value="<?= $crea['id'] ?>">
                                                             <div class="row">
@@ -302,7 +297,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Ancien mot de passe</label>
-                                                                            <input type="password" name="lastpassword" class="form-control" placeholder="Votre ancien mot de passe">
+                                                                            <input type="password" name="lastpassword" class="form-control border rounded-pill border-dark" placeholder="Votre ancien mot de passe">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -310,7 +305,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Nouveaux mot de passe</label>
-                                                                            <input type="password" name="password" class="form-control" placeholder="Votre nouveaux mot de passe">
+                                                                            <input type="password" name="password" class="form-control border rounded-pill border-dark" placeholder="Votre nouveaux mot de passe">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -318,243 +313,15 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Repeter le mot de passe</label>
-                                                                            <input type="password" name="con-password" class="form-control" placeholder="Votre nouveaux mot de passe">
+                                                                            <input type="password" name="con-password" class="form-control border rounded-pill border-dark" placeholder="Votre nouveaux mot de passe">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Sauvegarder</button>
+                                                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark">Sauvegarder</button>
                                                                 </div>
                                                             </div>
                                                         </form>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="account-vertical-info" role="tabpanel" aria-labelledby="account-pill-info" aria-expanded="false">
-                                                        <form novalidate>
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Bio</label>
-                                                                        <textarea class="form-control" id="accountTextarea" rows="3" placeholder="Your Bio data here..."></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <div class="controls">
-                                                                            <label>Birth date</label>
-                                                                            <input type="text" class="form-control birthdate-picker" required placeholder="Birth date" data-validation-required-message="This birthdate field is required">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Country</label>
-                                                                        <select class="form-control" id="accountSelect">
-                                                                            <option>USA</option>
-                                                                            <option>India</option>
-                                                                            <option>Canada</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Languages</label>
-                                                                        <select class="form-control" id="languageselect2" multiple="multiple">
-                                                                            <option value="English" selected>English</option>
-                                                                            <option value="Spanish">Spanish</option>
-                                                                            <option value="French">French</option>
-                                                                            <option value="Russian">Russian</option>
-                                                                            <option value="German">German</option>
-                                                                            <option value="Arabic" selected>Arabic</option>
-                                                                            <option value="Sanskrit">Sanskrit</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <div class="controls">
-                                                                            <label>Phone</label>
-                                                                            <input type="text" class="form-control" required placeholder="Phone number" value="(+656) 254 2568" data-validation-required-message="This phone number field is required">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Website</label>
-                                                                        <input type="text" class="form-control" placeholder="Website address">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Favourite Music</label>
-                                                                        <select class="form-control" id="musicselect2" multiple="multiple">
-                                                                            <option value="Rock">Rock</option>
-                                                                            <option value="Jazz" selected>Jazz</option>
-                                                                            <option value="Disco">Disco</option>
-                                                                            <option value="Pop">Pop</option>
-                                                                            <option value="Techno">Techno</option>
-                                                                            <option value="Folk" selected>Folk</option>
-                                                                            <option value="Hip hop">Hip hop</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Favourite movies</label>
-                                                                        <select class="form-control" id="moviesselect2" multiple="multiple">
-                                                                            <option value="The Dark Knight" selected>The Dark Knight
-                                                                            </option>
-                                                                            <option value="Harry Potter" selected>Harry Potter</option>
-                                                                            <option value="Airplane!">Airplane!</option>
-                                                                            <option value="Perl Harbour">Perl Harbour</option>
-                                                                            <option value="Spider Man">Spider Man</option>
-                                                                            <option value="Iron Man" selected>Iron Man</option>
-                                                                            <option value="Avatar">Avatar</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Save
-                                                                        changes</button>
-                                                                    <button type="reset" class="btn btn-light mb-1">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="tab-pane fade " id="account-vertical-social" role="tabpanel" aria-labelledby="account-pill-social" aria-expanded="false">
-                                                        <form>
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Twitter</label>
-                                                                        <input type="text" class="form-control" placeholder="Add link" value="https://www.twitter.com">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Facebook</label>
-                                                                        <input type="text" class="form-control" placeholder="Add link">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Google+</label>
-                                                                        <input type="text" class="form-control" placeholder="Add link">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>LinkedIn</label>
-                                                                        <input type="text" class="form-control" placeholder="Add link" value="https://www.linkedin.com">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Instagram</label>
-                                                                        <input type="text" class="form-control" placeholder="Add link">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label>Quora</label>
-                                                                        <input type="text" class="form-control" placeholder="Add link">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Save
-                                                                        changes</button>
-                                                                    <button type="reset" class="btn btn-light mb-1">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="account-vertical-connections" role="tabpanel" aria-labelledby="account-pill-connections" aria-expanded="false">
-                                                        <div class="row">
-                                                            <div class="col-12 my-2">
-                                                                <a href="javascript: void(0);" class="btn btn-info">Connect to
-                                                                    <strong>Twitter</strong></a>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="col-12 my-2">
-                                                                <button class=" btn btn-sm btn-light-secondary float-right">edit</button>
-                                                                <h6>You are connected to facebook.</h6>
-                                                                <p>Johndoe@gmail.com</p>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="col-12 my-2">
-                                                                <a href="javascript: void(0);" class="btn btn-danger">Connect to
-                                                                    <strong>Google</strong>
-                                                                </a>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="col-12 my-2">
-                                                                <button class=" btn btn-sm btn-light-secondary float-right">edit</button>
-                                                                <h6>You are connected to Instagram.</h6>
-                                                                <p>Johndoe@gmail.com</p>
-                                                            </div>
-                                                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                                <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Save
-                                                                    changes</button>
-                                                                <button type="reset" class="btn btn-light mb-1">Cancel</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="account-vertical-notifications" role="tabpanel" aria-labelledby="account-pill-notifications" aria-expanded="false">
-                                                        <div class="row">
-                                                            <h6 class="m-1">Activity</h6>
-                                                            <div class="col-12 mb-1">
-                                                                <div class="custom-control custom-switch custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" checked id="accountSwitch1">
-                                                                    <label class="custom-control-label mr-1" for="accountSwitch1"></label>
-                                                                    <span class="switch-label w-100">Email me when someone comments
-                                                                        onmy
-                                                                        article</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 mb-1">
-                                                                <div class="custom-control custom-switch custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" checked id="accountSwitch2">
-                                                                    <label class="custom-control-label mr-1" for="accountSwitch2"></label>
-                                                                    <span class="switch-label w-100">Email me when someone answers on
-                                                                        my
-                                                                        form</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 mb-1">
-                                                                <div class="custom-control custom-switch custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="accountSwitch3">
-                                                                    <label class="custom-control-label mr-1" for="accountSwitch3"></label>
-                                                                    <span class="switch-label w-100">Email me hen someone follows
-                                                                        me</span>
-                                                                </div>
-                                                            </div>
-                                                            <h6 class="m-1">Application</h6>
-                                                            <div class="col-12 mb-1">
-                                                                <div class="custom-control custom-switch custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" checked id="accountSwitch4">
-                                                                    <label class="custom-control-label mr-1" for="accountSwitch4"></label>
-                                                                    <span class="switch-label w-100">News and announcements</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 mb-1">
-                                                                <div class="custom-control custom-switch custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="accountSwitch5">
-                                                                    <label class="custom-control-label mr-1" for="accountSwitch5"></label>
-                                                                    <span class="switch-label w-100">Weekly product updates</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 mb-1">
-                                                                <div class="custom-control custom-switch custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" checked id="accountSwitch6">
-                                                                    <label class="custom-control-label mr-1" for="accountSwitch6"></label>
-                                                                    <span class="switch-label w-100">Weekly blog digest</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                                <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">Save
-                                                                    changes</button>
-                                                                <button type="reset" class="btn btn-light mb-1">Cancel</button>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

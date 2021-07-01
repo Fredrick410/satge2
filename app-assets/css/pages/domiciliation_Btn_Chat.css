@@ -76,6 +76,8 @@
     padding: 5px;
     
     height: 7%;
+
+    z-index: 6;
     
     border: none;
     background: white;
@@ -103,11 +105,7 @@
     position: absolute;
     right : 5%;
     bottom: 5%;
-  }
-  
-  /* Add a red background color to the cancel button */
-  .form-container .cancel {
-    background-color: red;
+    z-index: 6;
   }
   
 
@@ -200,6 +198,7 @@
   .message{
       color: white;
       height: 16.66%;
+      z-index: 5;
   }
 
   .round{
@@ -209,31 +208,20 @@
   
   }
 
-  .tri-right.border.btm-left:before {
-	content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	left: -8px;
-  right: auto;
-  top: auto;
-	bottom: -40px;
-	border: 32px solid;
-	border-color: transparent transparent transparent #666;
-  pointer-events: none;
-}
+  
 .tri-right.btm-left:after{
 	content: ' ';
 	position: absolute;
 	width: 0;
 	height: 0;
-	left: 0px;
-  right: auto;
+	left: auto;
+  right: 10px;
   top: auto;
-	bottom: -50px;
+	bottom: -55px;
 	border: 55px solid;
-	border-color: transparent transparent transparent #051441;
+	border-color: transparent #051441 transparent transparent ;
   pointer-events: none;
+  z-index: -1;
 }
 
 .cross{
