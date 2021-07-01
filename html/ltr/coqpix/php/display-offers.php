@@ -8,6 +8,8 @@ ini_set('display_startup_errors', TRUE);
 $ville = $_POST["ville"];
 $type = $_POST["type"];
 
+
+//Le type (coworking, bureau, domiciliation) fonctionnent comme le chmod unix : 1 pour le bureau, 2 pour le coworking et 4 pour la domiciliation
 if ($type == 0) {
     $query = $bdd->query("SELECT * FROM offre_domiciliation WHERE ville like '$ville'"); //on recupère les offres de la ville correspondante
 }
@@ -45,13 +47,57 @@ if(!empty($tab)){
     <ul>
 
 <?php 
+$i = 1;
 foreach($tab as $offre){
     
 ?>
 
     <li>
         <div class="card-body p-0">
-                    <img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-1.jpg">
+
+
+        <div id="carouselExampleIndicators<?php echo $i;?>" class="carousel slide" data-ride="carousel">
+        
+                
+
+         
+        
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-mdb-interval="10000000000" id="img1">
+    	
+              	<img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-1.jpg" >
+      	
+            </div>
+            <div class="carousel-item" data-mdb-interval="10000">
+    	
+      	        <img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-2.jpg" >
+        
+            </div>
+            <?php
+            $url = $offre['img'];
+            $filename = "../../../../app-assets/images/pages/offre-domiciliation/liste-offre/$url-3.jpg";
+                if (file_exists($filename)) {
+            ?>
+            <div class="carousel-item" data-mdb-interval="10000">
+    	
+      	        <img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-3.jpg" >
+      	
+            </div>
+            <?php
+                }
+            ?>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators<?php echo $i;?>" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators<?php echo $i;?>" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
                     <div class="card-descrip">
                             <p id="ville"><?php echo $offre['titre']; ?></p>
                             <p id="adresse"><?php echo $offre['adresse']; ?></p>
@@ -62,7 +108,7 @@ foreach($tab as $offre){
         </div>
     </li>
 <?php 
-}
+$i=$i+1;}
 ?>
 
 </ul>
