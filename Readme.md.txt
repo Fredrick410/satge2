@@ -98,7 +98,8 @@ branche de oscar :
 	tache réalisée le 01/07/2021 :
 		- page-creation.php responsive
 		- ajout des caractéristique des offres de domiciliation page domiciliation-offre.php
-		
+		- creation de page-creation-edit-test.php : travail sur le front
+
 branche de leo :
 	tache réalisée le 01/07/2021
 		-bdd : ajout de la colonne caracteristique dans la table offre-domiciliation
