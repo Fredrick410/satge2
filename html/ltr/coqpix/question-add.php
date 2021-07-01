@@ -37,7 +37,7 @@ $entreprise = $pdoSta->fetch();
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Ajouter une question</title>
+    <title>Ajouter une question - <?= $qcms[0]['libelle'] ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
@@ -194,7 +194,7 @@ $entreprise = $pdoSta->fetch();
                                                                 <div class="col p-0">
                                                                     <button class="btn btn-light-primary btn-sm" type="button">
                                                                         <i class="bx bx-plus"></i>
-                                                                        <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+                                                                        <span id="button_send" class="invoice-repeat-btn">Ajouter la réponse</span>
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -202,7 +202,7 @@ $entreprise = $pdoSta->fetch();
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="reponses" class="col-form-label">Liste des réponses</label>
+                                                        <label class="col-form-label">Liste des réponses</label>
                                                         <table id="table" name="table" class="table table-bordered">
                                                             <style>
                                                                 .red {
@@ -217,6 +217,7 @@ $entreprise = $pdoSta->fetch();
                                                                 <tr>
                                                                     <th>Libellé de la réponse</th>
                                                                     <th>Vrai ou faux :</th>
+                                                                    <th></th>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

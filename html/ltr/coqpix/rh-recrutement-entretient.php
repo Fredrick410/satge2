@@ -34,7 +34,7 @@ $entreprise = $pdoStt->fetch();
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Liste QCMs</title>
+    <title>Liste des QCMs</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">

@@ -45,7 +45,7 @@ $pdoSta->execute();
 $question = $pdoSta->fetch();
 
 try {
-    if (count($question) != 4) {
+    if (count($question) != 5) {
         if (!isset($_GET['idqcm'])) {
             header('Location: recrutement-list.php.php');
         } elseif (empty($_GET['idqcm'])) {
@@ -102,7 +102,7 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Recrutement - Coqpix</title>
+    <title>Modifier une question - <?= $question['libelle'] ?></title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -210,6 +210,11 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                     </div>
 
                                                     <div class="form-group">
+                                                        <label for="critere" class="col-form-label">Critère evalué</label>
+                                                        <input class="form-control" type="text" name="critere" id="critere" value="<?= $question['critere'] ?>" placeholder="Personnalté">
+                                                    </div>
+
+                                                    <div class="form-group">
                                                         <label for="points" class="col-form-label">Points</label>
                                                         <input class="form-control" type="number" value="<?= $question['points'] ?>" step="1" name="points" id="points" placeholder="1">
                                                     </div>
@@ -232,7 +237,7 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                                 <div class="col p-0">
                                                                     <button class="btn btn-light-primary btn-sm" type="button">
                                                                         <i class="bx bx-plus"></i>
-                                                                        <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+                                                                        <span id="button_send" class="invoice-repeat-btn">Ajouter la réponse</span>
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -240,7 +245,7 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="reponses" class="col-form-label">Liste des réponses</label>
+                                                        <label class="col-form-label">Liste des réponses</label>
                                                         <table id="table" name="table" class="table table-bordered">
                                                             <style>
                                                                 .red {
@@ -255,6 +260,7 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                                 <tr>
                                                                     <th>Libellé de la réponse</th>
                                                                     <th>Vrai ou faux :</th>
+                                                                    <th></th>
                                                                 </tr>
                                                                 <?php
                                                                 for ($i = 1; $i <= count($reponses); $i++) {

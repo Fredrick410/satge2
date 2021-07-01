@@ -4,9 +4,8 @@ require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-
+$id = htmlspecialchars($_POST['idqcm']);
     if(isset($_POST['reponses']) AND isset($_POST['vraioufaux']) AND $_POST['libelle'] != "" AND $_POST['idqcm'] != "" AND $_POST['points'] != "") {
-        $id = htmlspecialchars($_POST['idqcm']);
         if(count($_POST['reponses']) == count($_POST['vraioufaux']) AND count($_POST['reponses']) >= 2){
             if(in_array("Vrai", $_POST['vraioufaux'])){
                 try {
@@ -18,7 +17,7 @@ ini_set('display_startup_errors', TRUE);
                     ));
                 } catch (PDOException $exception) {
                     var_dump($exception->getMessage());
-                    echo "qcm-add.php?id=$id";
+                    echo "question-add.php?id=$id";
                 }
                 
                 $id_question = $bdd->lastInsertId();
@@ -33,7 +32,7 @@ ini_set('display_startup_errors', TRUE);
                     }
                 } catch (PDOException $exception) {
                     var_dump($exception->getMessage());
-                    echo "qcm-add.php?id=$id";
+                    echo "question-add.php?id=$id";
                 }
                 $id = $_POST['idqcm'];
                 echo "rh-recrutement-entretient-question.php?id=$id";
@@ -41,7 +40,7 @@ ini_set('display_startup_errors', TRUE);
             }
         }
     }
-    echo "qcm-add.php?id=$id";
+    echo "question-add.php?id=$id";
     exit();
     
 ?>

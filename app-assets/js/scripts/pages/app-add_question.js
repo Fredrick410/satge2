@@ -1,3 +1,7 @@
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 $(document).ready(function() {      
     if($('#table tr:last').attr("id") === undefined)
         var id = 1;
@@ -7,14 +11,16 @@ $(document).ready(function() {
     }
     /*Assigning id and class for tr and td tags for separation.*/
     $("#button_send").click(function() {
-        var newid = id++; 
-        $("#table").append(`<tr valign="top" id="${newid}">
-        <td id="reponse${newid}">${$("#reponse").val()}</td>
-        <td id="vraioufaux${newid}" class="line">${$("#vraioufaux").val()}</td>
-        <td><a href="javascript:void(0);" class="remCF"><i class='bx bx-x red'></i></a></td></tr>`);
+        if(htmlEntities($("#reponse").val()) != '' && htmlEntities($("#vraioufaux").val()) != ''){
+            var newid = id++; 
+            $("#table").append(`<tr valign="top" id="${newid}">
+            <td id="reponse${newid}">${htmlEntities($("#reponse").val())}</td>
+            <td id="vraioufaux${newid}" class="line">${$("#vraioufaux").val()}</td>
+            <td><a href="javascript:void(0);" class="remCF"><i class='bx bx-x red'></i></a></td></tr>`);
 
-        document.getElementById("reponse").value = "";
-        document.getElementById("vraioufaux").value = "";
+            document.getElementById("reponse").value = "";
+            document.getElementById("vraioufaux").value = "";
+        }
     });
 
     // function to remove article if u don't want it
@@ -83,7 +89,7 @@ $(document).ready(function() {
                 points: points
             },
             success:function(data){
-                console.log('ok');
+                window.location.href = data;
             }
         });
     });
