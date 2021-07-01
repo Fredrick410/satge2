@@ -178,10 +178,16 @@ echo $result['description'];
     </div>
     <div class="row">
         <div class="col-12" id="div-info">
-            <ul>
+            <ul> 
+                <li>
+               
                 <?php
-                    echo $result['caracteristique']
+                    $carac = $result['caracteristique'];
+                    $carac = str_replace("\n","</li><li>",$carac);
+                    echo $carac; 
                 ?>
+                </li>
+
             </ul>
         </div>
     </div>
