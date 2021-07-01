@@ -93,3 +93,9 @@ btanche de leo :
 		-base de données : offre-domiciliation fixed et ajout de la partie img
 		-ajout des images sur domiciliation
 		-rectification chat : petite fleche à droite en "popup"
+
+branche de oscar :
+	tache réalisée le 01/07/2021 :
+		- page-creation.php responsive
+		- ajout des caractéristique des offres de domiciliation page domiciliation-offre.php
+		
