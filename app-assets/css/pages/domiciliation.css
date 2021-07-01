@@ -208,11 +208,13 @@ input[type="checkbox"].solu + label:hover{
     border: 1px solid #051441;
     border-radius: 10px;
     margin: 20px;
+    overflow: hidden;
 }
 
 .card-body img{
-    width: 250px;
-    height: 200px;
+    width: auto;
+    height: auto;
+    overflow: hidden;
 }
 
 .card-descrip{
