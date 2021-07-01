@@ -99,3 +99,7 @@ branche de oscar :
 		- page-creation.php responsive
 		- ajout des caractéristique des offres de domiciliation page domiciliation-offre.php
 		
+branche de leo :
+	tache réalisée le 01/07/2021
+		-bdd : ajout de la colonne caracteristique dans la table offre-domiciliation
+		-domiciliation-offre.php : ajout des caractéristiques
