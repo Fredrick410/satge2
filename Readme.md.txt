@@ -93,3 +93,7 @@ btanche de leo :
 		-base de données : offre-domiciliation fixed et ajout de la partie img
 		-ajout des images sur domiciliation
 		-rectification chat : petite fleche à droite en "popup"
+	
+	tache réalisée le 01/07/2021
+		-bdd : ajout de la colonne caracteristique dans la table offre-domiciliation
+		-domiciliation-offre.php : ajout des caractéristiques

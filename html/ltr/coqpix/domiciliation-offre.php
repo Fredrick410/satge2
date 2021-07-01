@@ -179,11 +179,9 @@ echo $result['description'];
     <div class="row">
         <div class="col-12" id="div-info">
             <ul>
-                <li> 2 300m^2 d'espaces modulables et évolutifs</li>
-                <li> Des bureaux flexibles et personnalisables</li>
-                <li> 6 sales de réunion jusqu'à 30 personnes</li>
-                <li> Un espace de bureaux partagés lumineux</li>
-                <li> Des services de domiciliation et de bureau virtuel</li>
+                <?php
+                    echo $result['caracteristique']
+                ?>
             </ul>
         </div>
     </div>
