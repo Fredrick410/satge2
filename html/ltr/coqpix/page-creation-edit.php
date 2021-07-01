@@ -217,7 +217,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Prénom du dirigeant</label>
-                                                                            <input type="text" name="nom_diri" class="form-control" placeholder="Name" value="<?= $crea['prenom_diri'] ?>" required>
+                                                                            <input type="text" name="prenom_diri" class="form-control" placeholder="Name" value="<?= $crea['prenom_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -225,7 +225,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Nom du dirigeant</label>
-                                                                            <input type="text" name="prenom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
+                                                                            <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -234,7 +234,7 @@ require_once 'php/verif_session_crea.php';
                                                                         <label>Téléphone du dirigeant</label>
                                                                         <br>
                                                                         <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
-                                                                        <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                                                                        <input type="text" name="tel_diri" id="tel_diri" value="<?= $crea['tel_diri'] ?>" hidden required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
