@@ -173,7 +173,19 @@ require_once 'php/verif_session_connect_admin.php';
 <!-- BEGIN: Body-->
 
 <body class="horizontal-layout horizontal-menu navbar-static dark-layout 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns" data-layout="dark-layout">
+<style>
+    table tbody {
+    display: block;
+    max-height: 300px;
+    overflow-y: scroll;
+}
 
+table thead, table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+</style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-primary navbar-brand-center">
         <div class="navbar-header d-xl-block d-none">
@@ -277,33 +289,35 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         $id_count_actif = "id_count_actif_".($annee_actuelle - $i); ?>
                                                                         <input type="hidden" id="<?= $id_count_actif ?>" value="<?= ${"count_actif_".($annee_actuelle - $i)} ?>"> <?php
                                                                     } ?>
-
+                                                                    
                                                                     <div class="user-analytics">                                                                        
-                                                                        <span class="align-middle text-muted">Prospect</span>
+                                                                        <h6 class="text-center">Prospect</h6>
                                                                         <div class="d-flex">
                                                                             <div class="badge-circle badge-circle-lg badge-circle-light-primary mx-auto my-1">
-                                                                                <i class='bx bxs-save icon_size'></i>
+                                                                                <i class='bx bxs-save font-medium-5'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h3 class="text-center" id="id_text_count_prospect"><?= ${'count_prospect_'.$annee_actuelle} ?></h3>                      
+                                                                        <h6 class="text-center"><?= ${'count_prospect_'.$annee_actuelle} ?></h6>
+                                                                        
                                                                     </div>
                                                                     <div class="sessions-analytics">                                                                    
-                                                                        <span class="align-middle text-muted">En cours</span>
-                                                                        <div class="d-flex">
-                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto my-1">
-                                                                                <i class='bx bx-badge-check icon_size'></i>
-                                                                            </div>
-                                                                        </div>    
-                                                                        <h3 class="text-center" id="id_text_count_encours"><?= ${'count_encours_'.$annee_actuelle} ?></h3>                                 
-                                                                    </div>
-                                                                    <div class="bounce-rate-analytics">                                                                       
-                                                                        <span class="align-middle text-muted">Actif</span>
+                                                                        <h6 class="text-center">En cours</h6>
                                                                         <div class="d-flex">
                                                                             <div class="badge-circle badge-circle-lg badge-circle-light-warning mx-auto my-1">
-                                                                                <i class='bx bx-loader-circle icon_size'></i>
+                                                                                <i class='bx bx-loader-circle font-medium-5'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h3 class="text-center" id="id_text_count_actif"><?= ${'count_actif_'.$annee_actuelle} ?></h3>                                                                        
+                                                                        <h6 class="text-center"><?= ${'count_encours_'.$annee_actuelle} ?></h6>
+                                                                        
+                                                                    </div>
+                                                                    <div class="bounce-rate-analytics">                                                                       
+                                                                        <h6 class="text-center">Actif</h6>
+                                                                        <div class="d-flex">
+                                                                            <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto my-1">
+                                                                                <i class='bx bx-badge-check font-medium-5'></i>
+                                                                            </div>
+                                                                        </div>    
+                                                                        <h6 class="text-center"><?= ${'count_actif_'.$annee_actuelle} ?></h6>                                                                        
                                                                     </div>
                                                                 </div>   
 

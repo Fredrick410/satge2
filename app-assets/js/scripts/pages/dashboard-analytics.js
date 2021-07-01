@@ -228,14 +228,14 @@ $(window).on("load", function() {
                 },
             },
             series: [{
-            name: 'nombre valide',
-            data: [array_1[0], array_1[1], array_1[2], array_1[3], array_1[4], array_1[5], array_1[6], array_1[7], array_1[8], array_1[9], array_1[10], array_1[11]]
+                name: 'nombre valide',
+                data: [array_1[0], array_1[1], array_1[2], array_1[3], array_1[4], array_1[5], array_1[6], array_1[7], array_1[8], array_1[9], array_1[10], array_1[11]]
             }, {
-            name: 'passif',
-            data: [array_2[0], array_2[1], array_2[2], array_2[3], array_2[4], array_2[5], array_2[6], array_2[7], array_2[8], array_2[9], array_2[10], array_2[11]]
+                name: 'passif',
+                data: [array_2[0], array_2[1], array_2[2], array_2[3], array_2[4], array_2[5], array_2[6], array_2[7], array_2[8], array_2[9], array_2[10], array_2[11]]
             }],
             xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
                 axisBorder: {
                     show: false
                 },
@@ -249,13 +249,15 @@ $(window).on("load", function() {
                 }
             },
             yaxis: {
-                min: 0,
-                max: 10,
                 tickAmount: 3,
                 labels: {
                     style: {
                         color: $gray_light
+                    },
+                    formatter: function(val) {
+                        return val.toFixed(0);
                     }
+    
                 }
             },
             legend: {
