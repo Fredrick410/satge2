@@ -235,7 +235,7 @@ $(window).on("load", function() {
                 data: [array_2[0], array_2[1], array_2[2], array_2[3], array_2[4], array_2[5], array_2[6], array_2[7], array_2[8], array_2[9], array_2[10], array_2[11]]
             }],
             xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 axisBorder: {
                     show: false
                 },
@@ -283,7 +283,7 @@ $(window).on("load", function() {
   
     var analyticsBarChart = new ApexCharts(
         document.querySelector("#analytics-bar-chart"),
-        analyticsBarChartOptions(array_actif_2021, array_actif_2021)
+        analyticsBarChartOptions(array_actif_2021, array_passif_2021)
     );
   
     analyticsBarChart.render();
@@ -355,69 +355,77 @@ $(window).on("load", function() {
   
     // Donut Chart
     // ---------------------
+    var $nb_SARL = parseInt(document.getElementById("nb_SARL").value);
+    var $nb_SAS = parseInt(document.getElementById("nb_SAS").value);
+    var $nb_SASU = parseInt(document.getElementById("nb_SASU").value);
+    var $nb_SCI = parseInt(document.getElementById("nb_SCI").value);
+    var $nb_EIRL = parseInt(document.getElementById("nb_EIRL").value);
+    var $nb_EI = parseInt(document.getElementById("nb_EI").value);
+    var $nb_Micro = parseInt(document.getElementById("nb_Micro").value);
     var donutChartOption = {
-      chart: {
-        width: 300,
-        type: 'donut',
-      },
-      dataLabels: {
-        enabled: false
-      },
-        series: [60, 14, 30, 17, 65, 82, 8],
-      labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
-      stroke: {
-        width: 0,
-        lineCap: 'round',
-      },
-      colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '80%',
-            labels: {
+    chart: {
+      width: 300,
+      type: 'donut',
+    },
+    dataLabels: {
+      enabled: false
+    },
+      series: [$nb_SARL, $nb_SAS, $nb_SASU, $nb_SCI, $nb_EIRL, $nb_EI, $nb_Micro],
+    labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
+    stroke: {
+      width: 0,
+      lineCap: 'round',
+    },
+    colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '80%',
+          labels: {
+            show: true,
+            name: {
               show: true,
-              name: {
-                show: true,
-                fontSize: '15px',
-                colors: $sub_label_color,
-                offsetY: 20,
-                fontFamily: 'IBM Plex Sans',
-              },
-              value: {
-                show: true,
-                fontSize: '35px',
-                fontFamily: 'Rubik',
-                color: $label_color,
-                offsetY: -20,
-                formatter: function (val) {
-                  return val
-                }
-              },
-              total: {
-                show: true,
-                label: 'Entreprises',
-                color: $gray_light,
-                formatter: function (w) {
-                  return w.globals.seriesTotals.reduce(function (a, b) {
-                    return a + b
-                  }, 0)
-                }
+              fontSize: '15px',
+              colors: $sub_label_color,
+              offsetY: 20,
+              fontFamily: 'IBM Plex Sans',
+            },
+            value: {
+              show: true,
+              fontSize: '35px',
+              fontFamily: 'Rubik',
+              color: $label_color,
+              offsetY: -20,
+              formatter: function (val) {
+                return val
+              }
+            },
+            total: {
+              show: true,
+              label: 'Entreprises',
+              color: $gray_light,
+              formatter: function (w) {
+                return w.globals.seriesTotals.reduce(function (a, b) {
+                  return a + b
+                }, 0)
               }
             }
           }
         }
-      },
-      legend: {
-        show: false
       }
+    },
+    legend: {
+      show: false
     }
-  
-    var donutChart = new ApexCharts(
-      document.querySelector("#donut-chart"),
-      donutChartOption
-    );
-  
-    donutChart.render();
+  }
+
+  var donutChart = new ApexCharts(
+    document.querySelector("#donut-chart"),
+    donutChartOption
+  );
+
+  donutChart.render();
+
     // Stacked Bar Nagetive Chart
     // ----------------------------------
     var barNegativeChartoptions = {

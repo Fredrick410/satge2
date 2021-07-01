@@ -18,6 +18,30 @@ require_once 'php/verif_session_connect_admin.php';
     $annee_actuelle = date("Y");
     $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
 
+    // Requete SQL permettant de recuperer le nombre de créa valides
+    $query = $bdd->query('SELECT COUNT(*) AS nb FROM crea_societe WHERE doc_pieceid!="" AND doc_cerfaM0!="" AND doc_pouvoir!="" AND doc_attestation!="" AND RIGHT(depo_cfe,3) ="yes" and RIGHT(depo_greffe,3) ="yes" AND RIGHT(frais,3)="yes" AND ( (doc_cerfaMBE!="" AND doc_justificatifss!="" AND doc_statuts!="" AND doc_nomination!="" AND doc_annonce!="" AND doc_depot!="") OR (doc_xp!="" AND doc_justificatifd!="" AND doc_peirl!="" AND doc_attestation!=""))');
+    $nb_crea_valide = ($query->fetch())['nb'];
+
+    
+    // Requete SQL permettant de recuperer le nombre de créa par type
+    $query = $bdd->query('SELECT LEFT(status_crea, 4) AS status_crea, COUNT(*) AS nb FROM crea_societe GROUP BY status_crea');
+    $nb_crea_type = $query->fetchAll();
+
+    $nb_SARL = 0;$nb_SAS = 0;$nb_SASU = 0;$nb_SCI = 0;$nb_EIRL = 0;$nb_EI = 0;$nb_Micro = 0;
+
+    foreach($nb_crea_type as $nb_crea) :
+
+       ${'nb_'.$nb_crea['status_crea']} = $nb_crea['nb'];
+
+    endforeach;
+
+    // Requete SQL permettant de recuperer le nombre de créa en cours
+    $nb_crea_en_cours = $nb_SARL + $nb_SAS + $nb_SASU + $nb_SCI + $nb_EIRL + $nb_EI + $nb_Micro - $nb_crea_valide;
+
+    // Requete SQL permettant de recuperer le nombre de créa supprimées
+    $query = $bdd->query('SELECT COUNT(*) AS nb FROM delete_societe');
+    $nb_crea_delete = ($query->fetch())['nb'];
+
     for ($i=0 ; $i<5 ; $i++) {
 
         // Requete SQL permettant de recuperer le taux de prélevement par annee et par mois
@@ -728,14 +752,42 @@ table thead, table tbody tr {
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="card">
-                                                        <div class="card-content">
-                                                            <div class="card-body pb-1">
-                                                                <p>Nombre de création en cours</p>
-                                                                <p>Nombre de création validé total</p>
-                                                                <p>Nombre de créa abandonnés</p>
+                                                        <div class="card">
+                                                            <div class="card-header d-flex justify-content-between align-items-center pb-50">
+                                                                <h4 class="card-title">Créations</h4>
+                                                            </div>
+                                                            <div class="card-body p-0 pb-1">
+                                                                <ul class="list-group list-group-flush">
+                                                                    <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                        <div class="list-left d-flex">
+                                                                            <div class="list-content">
+                                                                                <span class="list-title">Créations en cours</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="badge badge-light-warning  float-right mt-20"><?= $nb_crea_valide ?> En cours</span>
+                                                                    </li>
+                                                                    <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                        <div class="list-left d-flex">
+                                                                            <div class="list-content">
+                                                                                <span class="list-title">Créations validées totales</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="badge badge-light-success  float-right mt-20"><?= $nb_crea_en_cours ?> Validées</span>
+                                                                    </li>
+                                                                    <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                        <div class="list-left d-flex">
+                                                                            <div class="list-content">
+                                                                                <span class="list-title">Créations abandonnées</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="badge badge-light-danger  float-right mt-20"><?= $nb_crea_delete ?> Abandons</span>
+                                                                    </li>
+                                                                    
+                                                                </ul>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!-- Earning Swiper Starts -->
                                                 </div>
                                             </div>
                                             <!-- DEBUT CROISSANCE -->
@@ -751,13 +803,13 @@ table thead, table tbody tr {
                                                                         <div class="row">
                                                                             <div class="col-5">
                                                                                 <ul class="list-inline d-flex justify-content-around mb-0 flex-column">
-                                                                                    <li> <span class="bullet bullet-xs bullet-success mr-50"></span>SARL</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-primary mr-50"></span>SAS</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-warning mr-50"></span>SASU</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-danger mr-50"></span>SCI</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-info mr-50"></span>EIRL</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-light mr-50"></span>EI</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-dark mr-50"></span>Micro-entreprise</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-success mr-50"></span>SARL<input type="hidden" id="nb_SARL" value="<?= $nb_SARL?>"/></li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-primary mr-50"></span>SAS<input type="hidden" id="nb_SAS" value="<?= $nb_SAS?>"/></li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-warning mr-50"></span>SASU<input type="hidden" id="nb_SASU" value="<?= $nb_SASU?>"/></li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-danger mr-50"></span>SCI<input type="hidden" id="nb_SCI" value="<?= $nb_SCI?>"/></li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-info mr-50"></span>EIRL<input type="hidden" id="nb_EIRL" value="<?= $nb_EIRL?>"/></li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-light mr-50"></span>EI<input type="hidden" id="nb_EI" value="<?= $nb_EI?>"/></li>
+                                                                                    <li> <span class="bullet bullet-xs bullet-dark mr-50"></span>Micro-entreprise<input type="hidden" id="nb_Micro" value="<?= $nb_Micro?>"/></li>
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="col-7">
@@ -1232,6 +1284,7 @@ table thead, table tbody tr {
                 document.getElementById("id_text_count_prospect").innerText = count_prospect;
                 document.getElementById("id_text_count_encours").innerText = count_encours;
                 document.getElementById("id_text_count_actif").innerText = count_actif;
+
 
             });
             // script JS pour le chart compables
