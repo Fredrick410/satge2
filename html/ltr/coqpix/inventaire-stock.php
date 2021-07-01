@@ -16,8 +16,11 @@ require_once 'php/config.php';
     $pdoSt->execute();
     $article = $pdoSt->fetchAll();
 
+    $pdoSt = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
+    $pdoSt->bindValue(':num',$_SESSION['id_session']);
+    $pdoSt->execute();
+    $fournisseur = $pdoSt->fetchAll();
 ?>
-
 
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -30,7 +33,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Listes Articles</title>
+    <title>Liste des articles</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -38,6 +41,8 @@ require_once 'php/config.php';
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -51,7 +56,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-users.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -76,8 +81,16 @@ require_once 'php/config.php';
                             <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
                         </ul>
                         <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
                         </ul>
+                        <script>
+                            function retourn() {
+                                window.history.back();
+                            }
+                        </script> 
+                        <ul class="nav navbar-nav bookmark-icons">
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
+                        </ul>              
                     </div>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
@@ -120,7 +133,6 @@ require_once 'php/config.php';
         </div>
     </nav>
     <!-- END: Header-->
-
 
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
@@ -170,34 +182,34 @@ require_once 'php/config.php';
                                             <thead class="text-center">
                                                 <tr>
                                                     <th>Image</th>
+                                                <!-- Nom des articles -->
                                                     <th>Article</th>
+                                                <!-- Référence des articles -->
                                                     <th>Référence</th>
-                                                    <th>Prix ou Cout U</th>
-                                                    <th>Tva</th>
-                                                    <th>Fonction</th>
+                                                <!-- Indique la quantité de chaque produit dans le stock -->
+                                                    <th>Quantité</th>
+                                                <!-- Indique si le produit est commandé : Commande en attente de validation / Commande annulé / Livraison en cours / Pas de commande -->
+                                                    <th>Commandé</th>
+                                                <!-- Date de la dernière commande effectué -->
+                                                    <th>Date de commande</th>
+                                                <!-- Fournisseur du produit -> on clique pour être redirigé vers une page afin de faire une commande chez ce fournisseur -->
+                                                    <th>Fournisseur</th>
                                                     <th>Options</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
                                             <?php foreach($article as $articlee): ?>
-                                            <?php
-
-                                                if($articlee['typ'] == "Ventes"){$typ = ''.$articlee['prixvente'].' €';}
-                                                if($articlee['typ'] == "Achats"){$typ = ''.$articlee['coutachat'].' €';}
-                                                $prixvente = $articlee['prixvente'];
-                                                $coutachat = $articlee['coutachat'];
-                                                if($articlee['typ'] == "Ventes et Achats"){$typ = ''.$prixvente.' € et '.$coutachat.' €';}
-
-                                            ?>
                                                 <tr>
-                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100">
-                                                    </td>
+                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100"></td>
                                                     <td><?= $articlee['article'] ?></td>
                                                     <td><?= $articlee['referencearticle'] ?></td>
-                                                    <td><?= $typ ?></td>
-                                                    <td><?= $articlee['tvavente'] ?>%</td>
-                                                    <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
+                                                    <td><?= $articlee['stock'] ?></td>
+                                                    <td><?= $articlee['commandeatm'] ?></td>
+                                                    <td><?= $articlee['datecommande'] ?></td>
+                                                    <?php foreach($fournisseur as $fournisseurr): ?>
+                                                        <td><a href="fournisseur-edit.php?numfour=<?= $fournisseurr['id'] ?>"><?= $articlee['nom_fournisseur'] ?></a></td>
+                                                        <?php endforeach; ?>
+                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>" title="Editer article"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>" title="Supprimer article"><i class="bx bx-trash-alt"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="app-bon-achat-add.php?jXN955CbHqqbQ463u5Uq=Rt82u&numfour=<?= $fournisseurr['id'] ?>" title="Commandé l'article"><i class="bx bx-revision"></i></a></td> 
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>
@@ -242,6 +254,7 @@ require_once 'php/config.php';
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
+
 </body>
 <!-- END: Body-->
 
