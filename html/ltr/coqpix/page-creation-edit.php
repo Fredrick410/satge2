@@ -234,7 +234,7 @@ require_once 'php/verif_session_crea.php';
                                                                         <label>Téléphone du dirigeant</label>
                                                                         <br>
                                                                         <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" required>
-                                                                        <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                                                                        <input type="text" name="tel_diri" id="tel_diri" value="<?= $crea['tel_diri'] ?>" hidden required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">

@@ -104,3 +104,4 @@ branche de leo :
 	tache réalisée le 01/07/2021
 		-bdd : ajout de la colonne caracteristique dans la table offre-domiciliation
 		-domiciliation-offre.php : ajout des caractéristiques
+		-fix bug page-creation-edit : on ne pouvait pas sauvegarder si on ne modifiait pas le telephone
