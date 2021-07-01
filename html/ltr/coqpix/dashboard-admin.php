@@ -49,21 +49,28 @@ require_once 'php/verif_session_connect_admin.php';
     }
     // FIN REQUETES CHART BAS DROITE
 
-    // requête pour récupérer le data chart 
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "prospect" || statut = "prospect!validation"');
-    $pdoSta->execute();
-    $portefeuille_prospect = $pdoSta->fetchAll();
-    $count_prospect = count($portefeuille_prospect);
+    // requête pour récupérer le data chart
+    for ($i=0 ; $i<5 ; $i++) {
 
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif"');
-    $pdoSta->execute();
-    $portefeuille_actif = $pdoSta->fetchAll();
-    $count_actif = count($portefeuille_actif);
+        $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE (statut = "prospect" || statut = "prospect!validation") AND substr(date_crea, 7) = :annee');
+        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
+        $pdoSta->execute();
+        $portefeuille_prospect = $pdoSta->fetchAll();
+        ${'count_prospect_'.($annee_actuelle - $i)} = count($portefeuille_prospect);
 
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "encours"');
-    $pdoSta->execute();
-    $portefeuille_encours = $pdoSta->fetchAll();
-    $count_encours = count($portefeuille_encours);
+        $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND substr(date_crea, 7) = :annee');
+        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
+        $pdoSta->execute();
+        $portefeuille_actif = $pdoSta->fetchAll();
+        ${'count_actif_'.($annee_actuelle - $i)} = count($portefeuille_actif);
+
+        $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "encours" AND substr(date_crea, 7) = :annee');
+        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
+        $pdoSta->execute();
+        $portefeuille_encours = $pdoSta->fetchAll();
+        ${'count_encours_'.($annee_actuelle - $i)} = count($portefeuille_encours);
+
+    }
 
     // rappel facture retard 
     $pdoSt= $bdd->query('SELECT * FROM facture');
@@ -76,43 +83,43 @@ require_once 'php/verif_session_connect_admin.php';
 
     $count_retard = count($facture_retard);
     
-    // recup l'année 
-    $pdoSt=$bdd->query('SELECT substr(date_crea, 7) AS annee FROM portefeuille');
-    $pdoSt->execute();
-    $annee = $pdoSt->fetch();
+    // requête pour récupérer le data chart
+    for ($i=0 ; $i<5 ; $i++) {
+
+        $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i), ':statut' => "ACTIF"));
+        ${'actif_'.($annee_actuelle - $i)} = array();
+        while ($result_actif = $pdoSt->fetch()) {
+            ${'actif_'.($annee_actuelle - $i)}[$result_actif['mois']] = $result_actif['nb'];
+        }
     
-    // requête pour récupérer le data chart 
-    $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
-    $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "ACTIF"));
-    $actif = array();
-    while ($result_actif = $pdoSt->fetch()) {
-        $actif[$result_actif['mois']] = $result_actif['nb'];
-    }
- 
-    $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
-    $pdoSt->execute(array(':annee' => $annee['annee'], ':statut' => "PASSIF"));
-    $passif = array();
-    while ($result_passif = $pdoSt->fetch()) {
-        $passif[$result_passif['mois']] = $result_passif['nb'];
-    }
+        $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i), ':statut' => "PASSIF"));
+        ${'passif_'.($annee_actuelle - $i)} = array();
+        while ($result_passif = $pdoSt->fetch()) {
+            ${'passif_'.($annee_actuelle - $i)}[$result_passif['mois']] = $result_passif['nb'];
+        }
 
-    $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
-    for($i=0; $i<12; $i++) {
-        if (array_key_exists($mois[$i], $actif)) {
-            ${'nb_actif_'.$mois[$i]} = $actif[$mois[$i]];
+        ${'array_actif_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'actif_'.($annee_actuelle - $i)})) {
+                ${'array_actif_'.($annee_actuelle - $i)}[$j] = ${'actif_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_actif_'.($annee_actuelle - $i)}[$j] = '0';
+            }
         }
-        else {
-            ${'nb_actif_'.$mois[$i]} = 0;
-        }
-    }
 
-    for($i=0; $i<12; $i++) {
-        if (array_key_exists($mois[$i], $passif)) {
-            ${'nb_passif_'.$mois[$i]} = $passif[$mois[$i]];
+        ${'array_passif_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'passif_'.($annee_actuelle - $i)})) {
+                ${'array_passif_'.($annee_actuelle - $i)}[$j] = ${'passif_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_passif_'.($annee_actuelle - $i)}[$j] = '0';
+            }
         }
-        else {
-            ${'nb_passif_'.$mois[$i]} = 0;
-        }
+
     }
 
 ?>
@@ -238,13 +245,39 @@ require_once 'php/verif_session_connect_admin.php';
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="card">
-                                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Compta</h4>
-                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
-                                                        </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
+                                                                <div class="d-flex justify-content-end mb-1">
+                                                                    <div>
+                                                                        <select style="width: 80px;" class="form-control" id="id_select_portefeuille">
+                                                                            <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
+                                                                            <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
+                                                                            <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
+                                                                            <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
+                                                                            <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="d-flex justify-content-around align-items-center flex-wrap">
+
+                                                                    <?php
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        $id_count_prospect = "id_count_prospect_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_count_prospect ?>" value="<?= ${"count_prospect_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+
+                                                                    <?php
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        $id_count_encours = "id_count_encours_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_count_encours ?>" value="<?= ${"count_encours_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+
+                                                                    <?php
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        $id_count_actif = "id_count_actif_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_count_actif ?>" value="<?= ${"count_actif_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+
                                                                     <div class="user-analytics">                                                                        
                                                                         <span class="align-middle text-muted">Prospect</span>
                                                                         <div class="d-flex">
@@ -252,8 +285,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <i class='bx bxs-save icon_size'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h3 class="text-center"><?= $count_prospect ?></h3>
-                                                                        
+                                                                        <h3 class="text-center" id="id_text_count_prospect"><?= ${'count_prospect_'.$annee_actuelle} ?></h3>                      
                                                                     </div>
                                                                     <div class="sessions-analytics">                                                                    
                                                                         <span class="align-middle text-muted">En cours</span>
@@ -262,8 +294,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <i class='bx bx-badge-check icon_size'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h3 class="text-center"><?= $count_encours ?></h3>
-                                                                        
+                                                                        <h3 class="text-center" id="id_text_count_encours"><?= ${'count_encours_'.$annee_actuelle} ?></h3>                                 
                                                                     </div>
                                                                     <div class="bounce-rate-analytics">                                                                       
                                                                         <span class="align-middle text-muted">Actif</span>
@@ -272,38 +303,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <i class='bx bx-loader-circle icon_size'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h3 class="text-center"><?= $count_actif ?></h3>                                                                        
+                                                                        <h3 class="text-center" id="id_text_count_actif"><?= ${'count_actif_'.$annee_actuelle} ?></h3>                                                                        
                                                                     </div>
                                                                 </div>   
-                                                                <!-- affichage pour nombre client valide(actif) -->
-                                                                <input type="hidden" id="nb_actif_01" value="<?= $nb_actif_01 ?>">
-                                                                <input type="hidden" id="nb_actif_02" value="<?= $nb_actif_02 ?>">
-                                                                <input type="hidden" id="nb_actif_03" value="<?= $nb_actif_03 ?>">
-                                                                <input type="hidden" id="nb_actif_04" value="<?= $nb_actif_04 ?>">
-                                                                <input type="hidden" id="nb_actif_05" value="<?= $nb_actif_05 ?>">
-                                                                <input type="hidden" id="nb_actif_06" value="<?= $nb_actif_06 ?>">
-                                                                <input type="hidden" id="nb_actif_07" value="<?= $nb_actif_07 ?>">
-                                                                <input type="hidden" id="nb_actif_08" value="<?= $nb_actif_08 ?>">
-                                                                <input type="hidden" id="nb_actif_09" value="<?= $nb_actif_09 ?>">
-                                                                <input type="hidden" id="nb_actif_10" value="<?= $nb_actif_10 ?>">
-                                                                <input type="hidden" id="nb_actif_11" value="<?= $nb_actif_11 ?>">
-                                                                <input type="hidden" id="nb_actif_12" value="<?= $nb_actif_12 ?>">
 
-                                                                <!-- affichage pour nombre client passif -->
-                                                                <input type="hidden" id="nb_passif_01" value="<?= $nb_passif_01 ?>">
-                                                                <input type="hidden" id="nb_passif_02" value="<?= $nb_passif_02 ?>">
-                                                                <input type="hidden" id="nb_passif_03" value="<?= $nb_passif_03 ?>">
-                                                                <input type="hidden" id="nb_passif_04" value="<?= $nb_passif_04 ?>">
-                                                                <input type="hidden" id="nb_passif_05" value="<?= $nb_passif_05 ?>">
-                                                                <input type="hidden" id="nb_passif_06" value="<?= $nb_passif_06 ?>">
-                                                                <input type="hidden" id="nb_passif_07" value="<?= $nb_passif_07 ?>">
-                                                                <input type="hidden" id="nb_passif_08" value="<?= $nb_passif_08 ?>">
-                                                                <input type="hidden" id="nb_passif_09" value="<?= $nb_passif_09 ?>">
-                                                                <input type="hidden" id="nb_passif_10" value="<?= $nb_passif_10 ?>">
-                                                                <input type="hidden" id="nb_passif_11" value="<?= $nb_passif_11 ?>">
-                                                                <input type="hidden" id="nb_passif_12" value="<?= $nb_passif_12 ?>">
-                                                                    
-                                                                <div id="analytics-bar-chart"></div>
+                                                                <div id="analytics-bar-chart">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -314,7 +319,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <h4 class="card-title">Rappel facutres retard</h4>
+                                                            <h4 class="card-title">Rappel factures retard</h4>
                                                             <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
                                                         </div>
                                                         <div class="card-content">
@@ -324,19 +329,19 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <table class="table table-borderless nowrap scroll-horizontal-vertical">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th class="text-center">NAME</th>
-                                                                                <th class="text-center">REFF</th>
-                                                                                <th class="text-center">DATE</th>
-                                                                                <th class="text-center">NUMEROS</th>                                                                                
+                                                                                <th class="text-center px-3">NAME</th>
+                                                                                <th class="text-center px-2">REFF</th>
+                                                                                <th class="text-center px-3">DATE</th>
+                                                                                <th class="text-center pl-1">NUMEROS</th>                                                                                
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                             <?php foreach($facture_retard as $factures): ?>
                                                                             <tr>
-                                                                                <td class="text-center"><?= $factures['nameentreprise'] ?></td>
-                                                                                <td class="text-center"><?= $factures['reffacture'] ?></td>
-                                                                                <td class="text-center"><?= $factures['dateecheance'] ?>&nbsp <i class="bx bxs-circle danger font-small-1 mr-50"></i></td>
-                                                                                <td class="text-center"><?= $factures['numerosfacture'] ?></td>
+                                                                                <td class="text-center px-0"><?= $factures['nameentreprise'] ?></td>
+                                                                                <td class="text-center px-1"><?= $factures['reffacture'] ?></td>
+                                                                                <td class="text-center px-0"><?= $factures['dateecheance'] ?>&nbsp <i class="bx bxs-circle danger font-small-1 mr-50"></i></td>
+                                                                                <td class="text-center pl-1"><?= $factures['numerosfacture'] ?></td>
                                                                                 
                                                                             </tr>
                                                                         <?php endforeach; ?> 
@@ -444,7 +449,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
                                                                                 </td>
                                                                             </tr>
-                                                                        <?php endforeach ?>
+                                                                        <?php endforeach; ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -489,7 +494,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
                                                                                 </td>
                                                                             </tr>
-                                                                        <?php endforeach ?>
+                                                                        <?php endforeach; ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -534,7 +539,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
                                                                                 </td>
                                                                             </tr>
-                                                                        <?php endforeach ?>
+                                                                        <?php endforeach; ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1171,16 +1176,51 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
+    <script type="text/javascript">
+        var annee_actuelle = (new Date()).getFullYear();
+        var array_actif = "array_actif_";
+        var array_passif = "array_passif_";
+
+        this[array_actif + annee_actuelle] =<?php echo json_encode(${'array_actif_'.($annee_actuelle)}); ?>;
+        this[array_actif + (annee_actuelle - 1)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 1)}); ?>;
+        this[array_actif + (annee_actuelle - 2)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 2)}); ?>;
+        this[array_actif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 3)}); ?>;
+        this[array_actif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 4)}); ?>;
+
+        this[array_passif + annee_actuelle] =<?php echo json_encode(${'array_passif_'.($annee_actuelle)}); ?>;
+        this[array_passif + (annee_actuelle - 1)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 1)}); ?>;
+        this[array_passif + (annee_actuelle - 2)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 2)}); ?>;
+        this[array_passif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 3)}); ?>;
+        this[array_passif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 4)}); ?>;
+
+    </script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
     <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
+    
     <script>
 
         $(document).ready(function() {
 
+            // script JS pour la data chart
+            $("#id_select_portefeuille").change(function() {
+                
+                var annee_portefeuille = $("#id_select_portefeuille").children("option:selected").val();
+                var id_count_prospect = "id_count_prospect_" + annee_portefeuille;
+                var id_count_encours = "id_count_encours_" + annee_portefeuille;
+                var id_count_actif = "id_count_actif_" + annee_portefeuille;
+                var count_prospect = document.getElementById(id_count_prospect).value;
+                var count_encours = document.getElementById(id_count_encours).value;
+                var count_actif = document.getElementById(id_count_actif).value;
+                document.getElementById("id_text_count_prospect").innerText = count_prospect;
+                document.getElementById("id_text_count_encours").innerText = count_encours;
+                document.getElementById("id_text_count_actif").innerText = count_actif;
+
+            });
+            // script JS pour le chart compables
             $("#id_bouton_ventes").click(function(e) {
                 e.preventDefault();
                 // changer la couleur de fond du bouton
