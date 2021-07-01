@@ -11,6 +11,83 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
 
+    if($crea['doc_pieceid'] == ""){
+        $doc_pieceid = "0";
+    }else{
+        $doc_pieceid = "1";
+    }
+    if($crea['doc_cerfaM0'] == ""){
+        $doc_cerfaM0 = "0";
+    }else{
+        $doc_cerfaM0 = "1";
+    }
+    if($crea['doc_cerfaMBE'] == ""){
+        $doc_cerfaMBE = "0";
+    }else{
+        $doc_cerfaMBE = "1";
+    }
+    if($crea['doc_justificatifd'] == ""){
+        $doc_justificatifd = "0";
+    }else{
+        $doc_justificatifd = "1";
+    }
+    if($crea['doc_justificatifss'] == ""){
+        $doc_justificatifss = "0";
+    }else{
+        $doc_justificatifss = "1";
+    }
+    if($crea['doc_statuts'] == ""){
+        $doc_statuts = "0";
+    }else{
+        $doc_statuts = "1";
+    }
+    if($crea['doc_nomination'] == ""){
+        $doc_nomination = "0";
+    }else{
+        $doc_nomination = "1";
+    }
+    if($crea['doc_affectation'] == ""){
+        $doc_affectation = "0";
+    }else{
+        $doc_affectation = "1";
+    }
+    if($crea['doc_pouvoir'] == ""){
+        $doc_pouvoir = "0";
+    }else{
+        $doc_pouvoir = "1";
+    }
+    if($crea['doc_attestation'] == ""){
+        $doc_attestation = "0";
+    }else{
+        $doc_attestation = "1";
+    }
+    if($crea['doc_xp'] == ""){
+        $doc_xp = "0";
+    }else{
+        $doc_xp = "1";
+    }
+    if($crea['doc_peirl'] == ""){
+        $doc_peirl = "0";
+    }else{
+        $doc_peirl = "1";
+    }
+    if($crea['doc_depot'] == ""){
+        $doc_depot = "0";
+    }else{
+        $doc_depot = "1";
+    }
+    if($crea['doc_annonce'] == ""){
+        $doc_annonce = "0";
+    }else{
+        $doc_annonce = "1";
+    }
+
+    if(!empty($_GET['suppression'])){
+        $disparition = "harrypottergood";
+    }else{
+        $disparition = "harrypotter";
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -50,15 +127,18 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-creation.css">
     <!-- END: Custom CSS-->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
 </head>
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns footer-static" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 <style>
 .none-validation{display: none;}
 .block-validation{display: block;}
@@ -66,112 +146,138 @@ require_once 'php/verif_session_crea.php';
 </style>
 
     <!-- BEGIN: Header-->
-    <?php require_once("php/header-crea.php") ?>
+    <?php //require_once("php/header-crea.php") ?> 
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-body">
-                <div class="form-group">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+    
+    <div class="container-fluid">
+        <div class="row" id="div-entreprise">                
+            <div class="col-4 m-0" id="div-nom">
+                <a class="dropdown-user-link" href="#" data-toggle="dropdown">
+                    <img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar"><br>
+                    <h3> <?= $crea['name_crea'] ?> </h3>
+                    <span class="user-status">En ligne</span>
+                </a>
+                <div class="dropdown-menu pb-0" style="margin-left: 150px;">
+                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Modifier mes informations</a>
+                    <div class="dropdown-divider my-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="php/disconnect.php"><i class="bx bx-log-out mr-50"></i> Se déconnecter</a>
                 </div>
-                <!-- faq start -->
-                <section class="faq">
-                    <div class="row">
-                        <div class="col-12">
-                            <!-- swiper start -->
-                            <div class="card bg-transparent shadow-none">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="swiper-centered-slides swiper-container p-1">
-                                            <div class="swiper-wrapper">
-                                                <?php
-                                                if($crea['status_crea'] == "EURL"){
-                                                            $linkview = "morale";
-                                                    }else{        
-                                                        if($crea['status_crea'] == "SARL"){
-                                                            $linkview = "morale";
-                                                        }else{
-                                                            if($crea['status_crea'] == "SAS"){
-                                                                $linkview = "morale";
-                                                            }else{
-                                                                if($crea['status_crea'] == "SASU"){
-                                                                    $linkview = "morale";
-                                                                }else{
-                                                                    if($crea['status_crea'] == "SCI"){
-                                                                        $linkview = "morale";
-                                                                    }else{
-                                                                        if($crea['status_crea'] == "EIRL"){
-                                                                            $linkview = "physique";
-                                                                        }else{
-                                                                            if($crea['status_crea'] == "Micro-entreprise"){
-                                                                                $linkview = "physique";
-                                                                            }else{
-                                                                                $linkview = "physique";
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                if($crea['status_crea'] == ""){
-                                                    $noneform = "none-validation";
-                                                }else{
-                                                    $noneform = "block-validation";
-                                                }
-                                                ?>
-                                                 <div class="swiper-slide rounded swiper-shadow <?php echo $noneform; ?>" id="getting-text"><a href="domiciliation.php"><i class="bx bx-home mb-1 font-large-1"></a></i>
-                                                <a href="domiciliation.php"><div class="cent-text1">Se Domicilier</div></a>
-                                                </div>
-                                                <div class="swiper-slide rounded swiper-shadow <?php echo $noneform; ?>" id="getting-text"><a href="creation-view-<?php echo $linkview; ?>-pieceid.php"><i class="bx bx-notepad mb-1 font-large-1"></a></i>
-                                                <a href="creation-view-<?php echo $linkview; ?>-pieceid.php"><div class="cent-text1">Document</div></a>
-                                                </div>
-                                                <div class="swiper-slide rounded swiper-shadow" id="pricing-text"> <a href="page-creation-edit.php"><i class="bx bxs-user-circle mb-1 font-large-1"></a></i>
-                                                    <a href="page-creation-edit.php"><div class="cent-text1">Profil</div></a>
-                                                </div>
-                                                <?php
-                                                    if($crea['notification_crea'] > 0){
-                                                        $notification = '('.$crea['notification_crea'].')'; 
-                                                    }else{
-                                                        $notification = ""; 
-                                                    }
-                                                ?>
-                                                <div class="swiper-slide rounded swiper-shadow" id="sales-text"> <a href="page-creation-chat.php"><i class="bx bx-chat mb-1 font-large-1"></a></i>
-                                                    <a href="page-creation-chat.php"><div class="cent-text1">Chat&nbsp&nbsp<small class="red"><?php echo $notification; ?></small></div></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+            </div>
+            <div class="col-8 m-0 p-2" id="div-info">
+                    <ul class="row">
+                        <li class="col-6">
+                            <div class="form-group" id="info-gauche">
+                                <div class="form-row m-0 p-2">
+                                    <label>Prénom du dirigeant</label>
+                                    <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" readonly>
+                                </div>
+                                <div class="form-row m-0 p-2">
+                                    <label>E-mail <span style="text-transform: lowercase;">(identifiant de connexion)</span></label>
+                                    <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" readonly>
                                 </div>
                             </div>
-                            <!-- swiper ends -->
-                        </div>
-                    </div>
-                </section>
-                <!-- faq ends -->
+                        </li>
+                        <li class="col-6">
+                            <div class="form-group" id="info-droite">
+                                <div class="form-row m-0 p-2">
+                                    <label>Nom du dirigeant</label>
+                                    <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" readonly>
+                                </div>
+                                <div class="form-row m-0 p-2">
+                                    <label>Téléphone du dirigeant</label>
+                                    <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" readonly>
+                                    <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                                </div> 
+                            </div> 
+                        </li>
+                    </ul>
             </div>
         </div>
-    </div>
-    <!-- END: Content-->
 
+        <div class="row pt-2 pb-5" id="div-dodo">
+            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
+                <h2>Domiciliation</h2>
+                <div class="row p-2" id="se-domicilier">
+                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a><br><a href="domiciliation.php" type="button">Se Domicilier</a></h3>
+                    
+                </div>
+                <div class="row p-0" id="solution">
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
+                            <label for="domicilia" class="">
+                                <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                            </label><br>
+                            <label>
+                                <p>Domiciliation</p>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
+                            <label for="bureau" class="">
+                                <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                            </label><br>
+                            <label>
+                                <p>Bureaux privatifs</p>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
+                            <label for="cowork" class="">
+                                <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                            </label><br>
+                            <label>
+                                <p>Coworking</p>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <?php require_once('php/page-creation-document.php') ?>
+        </div>
+        <?php require_once('php/chat_domiciliation.php')?>
     </div>
+
+    <!-- END: Content -->
+
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+    <script>
+
+        //changement image
+        function openGreen(element1,element2) {
+            if (document.getElementById(element1).style.display == "none" ){
+                document.getElementById(element1).style.display = "block";
+                document.getElementById(element2).style.display = "none";
+            } else {
+                document.getElementById(element1).style.display = "none";
+                document.getElementById(element2).style.display = "block";
+            }
+        }
+
+        //telephone
+        const phoneInputField = document.querySelector("#tel_temp");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            preferredCountries: ["fr"],
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function process(event) {
+            event.preventDefault();
+
+            const phoneNumber = phoneInput.getNumber();
+
+           
+            document.getElementById("tel_diri").value=`${phoneNumber}`;
+        }
+  
+    </script>
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>

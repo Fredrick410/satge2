@@ -87,3 +87,19 @@ branche de oscar:
 		-partie domiciliation ajouté à la page accueil crea
 		-partie documents ajouté à la page accueil crea
 		-tchat ajouté à la page d'accueil crea
+
+btanche de leo :
+	tache réalisée le 30/06/2021:
+		-base de données : offre-domiciliation fixed et ajout de la partie img
+		-ajout des images sur domiciliation
+		-rectification chat : petite fleche à droite en "popup"
+
+branche de oscar :
+	tache réalisée le 01/07/2021 :
+		- page-creation.php responsive
+		- ajout des caractéristique des offres de domiciliation page domiciliation-offre.php
+		
+branche de leo :
+	tache réalisée le 01/07/2021
+		-bdd : ajout de la colonne caracteristique dans la table offre-domiciliation
+		-domiciliation-offre.php : ajout des caractéristiques

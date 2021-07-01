@@ -51,7 +51,7 @@ foreach($tab as $offre){
 
     <li>
         <div class="card-body p-0">
-                    <img src="../../../app-assets/images/profile/pages/page-09.jpg">
+                    <img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-1.jpg">
                     <div class="card-descrip">
                             <p id="ville"><?php echo $offre['titre']; ?></p>
                             <p id="adresse"><?php echo $offre['adresse']; ?></p>

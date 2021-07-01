@@ -217,7 +217,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Prénom du dirigeant</label>
-                                                                            <input type="text" name="nom_diri" class="form-control" placeholder="Name" value="<?= $crea['nom_diri'] ?>" required>
+                                                                            <input type="text" name="nom_diri" class="form-control" placeholder="Name" value="<?= $crea['prenom_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -225,7 +225,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Nom du dirigeant</label>
-                                                                            <input type="text" name="prenom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['prenom_diri'] ?>" required>
+                                                                            <input type="text" name="prenom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>

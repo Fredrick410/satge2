@@ -12,7 +12,7 @@ $result = $query->fetch();
 if(!empty($result)) {
 ?>
 <ul id="city-list">
-<li onClick="selectCity('<?php echo $result['ville']; ?>');"><?php echo $result['ville']; ?></li>
+<li onClick="selectCity('<?php echo $result['ville']; ?>');"><i class="bx bx-map"></i><?php echo $result['ville']; ?></li>
 </ul>
 <?php }else{
 ?>
