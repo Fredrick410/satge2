@@ -211,14 +211,6 @@ require_once 'php/config.php';
 															Facture N°
 														</h6>
 														<input type="number" name="numerosfacture" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
-														<p style='position: relative; top: 7px; display: <?php if($entreprise['incrementation'] == "no"){echo "none";} ?>;'>
-															&nbsp&nbsp&nbsp FAC-
-															<?= date('y') ?>
-															(année)
-															<?= substr($max_incrementation, 2) ?>
-															(numéro) 
-															<label>&nbsp&nbsp&nbsp MODE AUTO-INCREMENTATION : <label style='color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;'><?php if($entreprise['incrementation'] == "yes"){echo "On";}else{echo "Off";} ?></label></label>
-														</p>
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 														<div class="d-flex align-items-center">
