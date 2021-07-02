@@ -128,7 +128,7 @@ require_once 'php/verif_session_crea.php';
             
             <?php
                 $url = $result['img'];
-                $filename = "../../../app-assets/images/pages/offre-domiciliation/page-offre/$url-3.jpg";
+                $filename = "../../../src/domiciliation/page-offre/$url-3.jpg";
 
                 if (file_exists($filename)) {
             ?>
@@ -140,12 +140,12 @@ require_once 'php/verif_session_crea.php';
         <div class="carousel-inner">
             <div class="carousel-item active" data-mdb-interval="10000000000" id="img1">
     	
-              	<img src="../../../app-assets/images/pages/offre-domiciliation/page-offre/<?php echo $result['img']; ?>-1.jpg" >
+              	<img src="../../../src/domiciliation/page-offre/<?php echo $result['img']; ?>-1.jpg" >
       	
             </div>
             <div class="carousel-item" data-mdb-interval="10000">
     	
-      	        <img src="../../../app-assets/images/pages/offre-domiciliation/page-offre/<?php echo $result['img']; ?>-2.jpg" >
+      	        <img src="../../../src/domiciliation/page-offre/<?php echo $result['img']; ?>-2.jpg" >
         
             </div>
             <?php
@@ -153,7 +153,7 @@ require_once 'php/verif_session_crea.php';
             ?>
             <div class="carousel-item" data-mdb-interval="10000">
     	
-      	        <img src="../../../app-assets/images/pages/offre-domiciliation/page-offre/<?php echo $result['img']; ?>-3.jpg" >
+      	        <img src="../../../src/domiciliation/page-offre/<?php echo $result['img']; ?>-3.jpg" >
       	
             </div>
             <?php
