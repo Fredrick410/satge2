@@ -115,6 +115,15 @@ require_once 'php/config.php';
 
 <!-- BEGIN: Body-->
 
+    <!-- BEGIN: Header-->
+    <?php $btnreturn = true;
+    include('php/menu_header_front.php'); ?>
+    <!-- END: Header-->
+
+    <!-- BEGIN: Main Menu-->
+    <?php include('php/menu_front.php'); ?>
+    <!-- END: Main Menu-->
+
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
 <style>
 .none-validation{display: none;}
@@ -311,18 +320,12 @@ require_once 'php/config.php';
                                         </button>
                                     </div>
                                     <div class="invoice-action-btn">
-                                        
                                       <form action="app-invoice-edit.php" method="GET">
                                         <input type="hidden" name="numfacture" value="<?= $facture['id']?>">
                                         <input value="Modifier la facture" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
                                       </form>    
                                       
                                         </a>
-                                    </div>
-                                    <div class="invoice-action-btn">
-                                        
-                                        <form action="app-invoice-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>
-                                          
                                     </div>
                                 </div>
                             </div>
