@@ -23,7 +23,7 @@ $(window).on("load", function() {
     var $radial_bg = "#e7edf3";
     var $black = "#000000";
 
-  
+
     // Radial-Success-chart
     // --------------------------------
     var radialSuccessoptions = {
@@ -77,9 +77,9 @@ $(window).on("load", function() {
         document.querySelector("#radial-success-chart"),
         radialSuccessoptions
     );
-  
+
     radialSuccessChart.render();
-  
+
     // Radial-Warning-chart
     // --------------------------------
     var radialWarningoptions = {
@@ -133,9 +133,9 @@ $(window).on("load", function() {
         document.querySelector("#radial-warning-chart"),
         radialWarningoptions
     );
-  
+
     radialWarningChart.render();
-  
+
     // Radial-Danger-chart
     // --------------------------------
     var radialDangeroptions = {
@@ -189,14 +189,14 @@ $(window).on("load", function() {
         document.querySelector("#radial-danger-chart"),
         radialDangeroptions
     );
-  
+
     radialDangerChart.render();
-  
+
     // Bar Chart
     // ---------
- 
+
     function analyticsBarChartOptions(array_1, array_2) {
-        
+
         var analyticsBarChartOptions = {
             chart: {
                 height: 260,
@@ -257,7 +257,7 @@ $(window).on("load", function() {
                     formatter: function(val) {
                         return val.toFixed(0);
                     }
-    
+
                 }
             },
             legend: {
@@ -280,30 +280,30 @@ $(window).on("load", function() {
 
         return analyticsBarChartOptions
     }
-  
+
     var analyticsBarChart = new ApexCharts(
         document.querySelector("#analytics-bar-chart"),
         analyticsBarChartOptions(array_actif_2021, array_passif_2021)
     );
-  
+
     analyticsBarChart.render();
 
     $("#id_select_portefeuille").change(function() {
-    
+
         var annee_portefeuille = $("#id_select_portefeuille").children("option:selected").val();
         var array_actif = "array_actif_" + annee_portefeuille;
         var array_passif = "array_passif_" + annee_portefeuille;
-      
+
         $("#analytics-bar-chart").empty();
-      
+
         var growthChart = new ApexCharts(
             document.querySelector("#analytics-bar-chart"),
             analyticsBarChartOptions(window[array_actif], window[array_passif])
         );
-      
+
         growthChart.render();
-      
-      });
+
+    });
 
 
     // Success Line Chart
@@ -346,13 +346,13 @@ $(window).on("load", function() {
             show: false
         },
     }
-  
+
     var successLineChart = new ApexCharts(
         document.querySelector("#success-line-chart"),
         successLineChartOption
     );
     successLineChart.render();
-  
+
     // Donut Chart
     // ---------------------
     var $nb_SARL = parseInt(document.getElementById("nb_SARL").value);
@@ -363,68 +363,68 @@ $(window).on("load", function() {
     var $nb_EI = parseInt(document.getElementById("nb_EI").value);
     var $nb_Micro = parseInt(document.getElementById("nb_Micro").value);
     var donutChartOption = {
-    chart: {
-      width: 300,
-      type: 'donut',
-    },
-    dataLabels: {
-      enabled: false
-    },
-      series: [$nb_SARL, $nb_SAS, $nb_SASU, $nb_SCI, $nb_EIRL, $nb_EI, $nb_Micro],
-    labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
-    stroke: {
-      width: 0,
-      lineCap: 'round',
-    },
-    colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
-    plotOptions: {
-      pie: {
-        donut: {
-          size: '80%',
-          labels: {
-            show: true,
-            name: {
-              show: true,
-              fontSize: '15px',
-              colors: $sub_label_color,
-              offsetY: 20,
-              fontFamily: 'IBM Plex Sans',
-            },
-            value: {
-              show: true,
-              fontSize: '35px',
-              fontFamily: 'Rubik',
-              color: $label_color,
-              offsetY: -20,
-              formatter: function (val) {
-                return val
-              }
-            },
-            total: {
-              show: true,
-              label: 'Entreprises',
-              color: $gray_light,
-              formatter: function (w) {
-                return w.globals.seriesTotals.reduce(function (a, b) {
-                  return a + b
-                }, 0)
-              }
+        chart: {
+            width: 300,
+            type: 'donut',
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [$nb_SARL, $nb_SAS, $nb_SASU, $nb_SCI, $nb_EIRL, $nb_EI, $nb_Micro],
+        labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
+        stroke: {
+            width: 0,
+            lineCap: 'round',
+        },
+        colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '80%',
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true,
+                            fontSize: '15px',
+                            colors: $sub_label_color,
+                            offsetY: 20,
+                            fontFamily: 'IBM Plex Sans',
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '35px',
+                            fontFamily: 'Rubik',
+                            color: $label_color,
+                            offsetY: -20,
+                            formatter: function(val) {
+                                return val
+                            }
+                        },
+                        total: {
+                            show: true,
+                            label: 'Entreprises',
+                            color: $gray_light,
+                            formatter: function(w) {
+                                return w.globals.seriesTotals.reduce(function(a, b) {
+                                    return a + b
+                                }, 0)
+                            }
+                        }
+                    }
+                }
             }
-          }
+        },
+        legend: {
+            show: false
         }
-      }
-    },
-    legend: {
-      show: false
     }
-  }
 
-  var donutChart = new ApexCharts(
-    document.querySelector("#donut-chart"),
-    donutChartOption
-  );
+    var donutChart = new ApexCharts(
+        document.querySelector("#donut-chart"),
+        donutChartOption
+    );
 
-  donutChart.render();
+    donutChart.render();
 
     // Stacked Bar Nagetive Chart
     // ----------------------------------
@@ -466,14 +466,14 @@ $(window).on("load", function() {
             x: { show: false }
         },
     }
-  
+
     var barNegativeChart = new ApexCharts(
         document.querySelector("#bar-negative-chart"),
         barNegativeChartoptions
     );
-  
+
     barNegativeChart.render();
-  
+
     // Primary Line Chart
     // -----------------------------
     var primaryLineChartOption = {
@@ -532,13 +532,13 @@ $(window).on("load", function() {
             show: false
         },
     }
-  
+
     var primaryLineChart = new ApexCharts(
         document.querySelector("#primary-line-chart"),
         primaryLineChartOption
     );
     primaryLineChart.render();
-  
+
     // Warning Line Chart
     // -----------------------------
     var warningLineChartOption = {
@@ -597,13 +597,13 @@ $(window).on("load", function() {
             show: false
         },
     }
-  
+
     var warningLineChart = new ApexCharts(
         document.querySelector("#warning-line-chart"),
         warningLineChartOption
     );
     warningLineChart.render();
-  
+
     // Profit Primary Chart
     // --------------------------------
     var profitPrimaryOptions = {
@@ -650,10 +650,10 @@ $(window).on("load", function() {
         document.querySelector("#profit-primary-chart"),
         profitPrimaryOptions
     );
-  
+
     profitPrimaryChart.render();
-  
-  
+
+
     // Profit Info Chart
     // --------------------------------
     var profitInfoOptions = {
@@ -700,9 +700,9 @@ $(window).on("load", function() {
         document.querySelector("#profit-info-chart"),
         profitInfoOptions
     );
-  
+
     profitInfoChart.render();
-  
+
     // Registration Chart
     // -------------------
     var registrationChartoptions = {
@@ -730,7 +730,7 @@ $(window).on("load", function() {
                 right: 0
             }
         },
-  
+
         plotOptions: {
             bar: {
                 columnWidth: '80%',
@@ -748,9 +748,9 @@ $(window).on("load", function() {
         document.querySelector("#registration-chart"),
         registrationChartoptions
     );
-  
+
     registrationChart.render();
-  
+
     // Sales Chart
     // ---------------------
     var salesChartOptions = {
@@ -817,183 +817,183 @@ $(window).on("load", function() {
             },
         }
     }
-  
+
     var salesChart = new ApexCharts(
         document.querySelector("#sales-chart"),
         salesChartOptions
     );
-  
+
     salesChart.render();
-  
+
     // Growth Radial Chart
     // --------------------
-  
+
     function growthChartOptions(pourcentage) {
-  
-      var growthChartOptions = {
-      chart: {
-        height: 200,
-        type: 'radialBar',
-        sparkline: {
-          show: true
+
+        var growthChartOptions = {
+            chart: {
+                height: 200,
+                type: 'radialBar',
+                sparkline: {
+                    show: true
+                }
+            },
+            grid: {
+                show: false,
+            },
+            plotOptions: {
+                radialBar: {
+                    size: 100,
+                    startAngle: -135,
+                    endAngle: 135,
+                    offsetY: 40,
+                    hollow: {
+                        size: '60%',
+                    },
+                    track: {
+                        strokeWidth: '90%',
+                        background: '#fff'
+                    },
+                    dataLabels: {
+                        value: {
+                            offsetY: -10,
+                            color: '#475f7b',
+                            fontSize: '26px'
+                        },
+                        name: {
+                            fontSize: '15px',
+                            color: "#596778",
+                            offsetY: 30
+                        },
+                    }
+                },
+            },
+            colors: [$danger],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    type: 'horizontal',
+                    shadeIntensity: 0.5,
+                    gradientToColors: [$primary],
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100]
+                },
+            },
+            stroke: {
+                dashArray: 3
+            },
+            series: [pourcentage],
+            labels: ['Growth'],
         }
-      },
-      grid: {
-        show: false,
-      },
-      plotOptions: {
-        radialBar: {
-          size: 100,
-          startAngle: -135,
-          endAngle: 135,
-          offsetY: 40,
-          hollow: {
-            size: '60%',
-          },
-          track: {
-            strokeWidth: '90%',
-            background: '#fff'
-          },
-          dataLabels: {
-            value: {
-              offsetY: -10,
-              color: '#475f7b',
-              fontSize: '26px'
-            },
-            name: {
-              fontSize: '15px',
-              color: "#596778",
-              offsetY: 30
-            },
-          }
-        },
-      },
-      colors: [$danger],
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'dark',
-          type: 'horizontal',
-          shadeIntensity: 0.5,
-          gradientToColors: [$primary],
-          inverseColors: true,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 100]
-        },
-      },
-      stroke: {
-        dashArray: 3
-      },
-      series: [pourcentage],
-      labels: ['Growth'],
-      }
-  
-      return growthChartOptions
-  
+
+        return growthChartOptions
+
     }
-  
+
     var annee_actuelle = (new Date()).getFullYear();
     var mois_actuel = ("0" + (new Date().getMonth() + 1)).slice(-2);
-  
+
     // DEBUT TAUX DE PRELEVEMENT
-  
+
     document.getElementById("id_select_mois_prelevement").selectedIndex = mois_actuel - 1;
     var id_taux_prelevement = "taux_prelevement_" + mois_actuel + "_" + annee_actuelle;
     var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-  
+
     var growthChart = new ApexCharts(
-      document.querySelector("#growth-Chart-prelevement"),
-      growthChartOptions(taux_prelevement)
+        document.querySelector("#growth-Chart-prelevement"),
+        growthChartOptions(taux_prelevement)
     );
-  
+
     growthChart.render();
-  
+
     $("#id_select_annee_prelevement").change(function() {
-  
-      var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
-      var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
-    
-      var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
-      var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-    
-      $("#growth-Chart-prelevement").empty();
-    
-      var growthChart = new ApexCharts(
-        document.querySelector("#growth-Chart-prelevement"),
-        growthChartOptions(taux_prelevement)
-      );
-    
-      growthChart.render();
-    
+
+        var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
+        var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
+
+        var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
+        var taux_prelevement = document.getElementById(id_taux_prelevement).value;
+
+        $("#growth-Chart-prelevement").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-prelevement"),
+            growthChartOptions(taux_prelevement)
+        );
+
+        growthChart.render();
+
     });
-    
+
     $("#id_select_mois_prelevement").change(function() {
-    
-      var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
-      var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
-    
-      var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
-      var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-    
-      $("#growth-Chart-prelevement").empty();
-    
-      var growthChart = new ApexCharts(
-        document.querySelector("#growth-Chart-prelevement"),
-        growthChartOptions(taux_prelevement)
-      );
-    
-      growthChart.render();
-    
+
+        var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
+        var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
+
+        var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
+        var taux_prelevement = document.getElementById(id_taux_prelevement).value;
+
+        $("#growth-Chart-prelevement").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-prelevement"),
+            growthChartOptions(taux_prelevement)
+        );
+
+        growthChart.render();
+
     });
-  
+
     // FIN TAUX DE PRELEVEMENT
-  
+
     // DEBUT BILAN ANNUEL
-  
+
     var id_bilan_annuel = "bilan_annuel_" + (annee_actuelle - 1);
     var bilan_annuel = document.getElementById(id_bilan_annuel).value;
-  
+
     var growthChart = new ApexCharts(
-      document.querySelector("#growth-Chart-bilan"),
-      growthChartOptions(bilan_annuel)
-    );
-  
-    growthChart.render();
-  
-    $("#id_select_bilan").change(function() {
-    
-      var annee_bilan = $(this).children("option:selected").val();
-    
-      var id_bilan_annuel = "bilan_annuel_" + annee_bilan;
-      var bilan_annuel = document.getElementById(id_bilan_annuel).value;
-    
-      $("#growth-Chart-bilan").empty();
-    
-      var growthChart = new ApexCharts(
         document.querySelector("#growth-Chart-bilan"),
         growthChartOptions(bilan_annuel)
-      );
-    
-      growthChart.render();
-    
+    );
+
+    growthChart.render();
+
+    $("#id_select_bilan").change(function() {
+
+        var annee_bilan = $(this).children("option:selected").val();
+
+        var id_bilan_annuel = "bilan_annuel_" + annee_bilan;
+        var bilan_annuel = document.getElementById(id_bilan_annuel).value;
+
+        $("#growth-Chart-bilan").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-bilan"),
+            growthChartOptions(bilan_annuel)
+        );
+
+        growthChart.render();
+
     });
-  
+
     // FIN BILAN ANNUEL
-  
-  
+
+
     // Widget Todo List
     // ------------------
     // Task List Widget - for completed todo item
     $(document).on('click', '.widget-todo-item input', function() {
         $(this).closest('.widget-todo-item').toggleClass("completed");
     });
-  
+
     // Drag the task
     dragula([document.getElementById("widget-todo-list")], {
         moves: function(el, container, handle) {
             return handle.classList.contains("cursor-move");
         }
     });
-  
-  });
+
+});
