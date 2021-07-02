@@ -128,6 +128,7 @@ require_once 'php/config.php';
 <style>
 .none-validation{display: none;}
 </style>
+
     <!-- BEGIN: Content-->
     
         
@@ -320,6 +321,7 @@ require_once 'php/config.php';
                                         </button>
                                     </div>
                                     <div class="invoice-action-btn">
+                                        
                                       <form action="app-invoice-edit.php" method="GET">
                                         <input type="hidden" name="numfacture" value="<?= $facture['id']?>">
                                         <input value="Modifier la facture" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
