@@ -12,7 +12,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     $pdoSt = $bdd->prepare('SELECT MAX(nb) AS nb FROM (SELECT COUNT(*) AS nb FROM comptable_list GROUP BY id_comptable) AS temp');
     $pdoSt->execute();
-    $nb_assigne_max = ($pdoSt->fetch())['nb'];
+    $nb_assigne_max = ($pdoSt->fetch())['nb'] + 1;
 
     // DEBUT REQUETES CHART BAS DROITE
     $annee_actuelle = date("Y");
@@ -358,12 +358,14 @@ table thead, table tbody tr {
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
                                                             <h4 class="card-title">Rappel factures retard</h4>
-                                                            <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
+                                                            <?php if ($count_retard != 0) { ?>
+                                                                <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
+                                                            <?php } ?>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
                                                                  <!-- table with no border -->
-                                                                <div class="table-responsive">
+                                                                <div class="table-responsive d-none d-sm-block">
                                                                     <table class="table table-borderless nowrap scroll-horizontal-vertical">
                                                                         <thead>
                                                                             <tr>
@@ -374,6 +376,7 @@ table thead, table tbody tr {
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                            
                                                                             <?php foreach($facture_retard as $factures): ?>
                                                                             <tr>
                                                                                 <td class="text-center px-0"><?= $factures['nameentreprise'] ?></td>
@@ -385,8 +388,10 @@ table thead, table tbody tr {
                                                                         <?php endforeach; ?> 
                                                                         </tbody>
                                                                     </table>
-                                                                </div>    
-                                                               
+                                                                </div>
+                                                                <?php if ($count_retard == 0) { ?>
+                                                                    <h5 class="text-center"> Aucune facture en retard </h5>
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
