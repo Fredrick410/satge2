@@ -195,7 +195,7 @@ $(window).on("load", function() {
     // Bar Chart
     // ---------
  
-    function analyticsBarChartOptions(array_1, array_2) {
+    function analyticsBarChartOptions(array_1, array_2, legende_1, legende_2) {
         
         var analyticsBarChartOptions = {
             chart: {
@@ -228,10 +228,10 @@ $(window).on("load", function() {
                 },
             },
             series: [{
-                name: 'nombre valide',
+                name: legende_1,
                 data: [array_1[0], array_1[1], array_1[2], array_1[3], array_1[4], array_1[5], array_1[6], array_1[7], array_1[8], array_1[9], array_1[10], array_1[11]]
             }, {
-                name: 'passif',
+                name: legende_2,
                 data: [array_2[0], array_2[1], array_2[2], array_2[3], array_2[4], array_2[5], array_2[6], array_2[7], array_2[8], array_2[9], array_2[10], array_2[11]]
             }],
             xaxis: {
@@ -280,10 +280,12 @@ $(window).on("load", function() {
 
         return analyticsBarChartOptions
     }
+
+    // DEBUT COMPTA
   
     var analyticsBarChart = new ApexCharts(
-        document.querySelector("#analytics-bar-chart"),
-        analyticsBarChartOptions(array_actif_2021, array_passif_2021)
+        document.querySelector("#analytics-bar-chart-compta"),
+        analyticsBarChartOptions(array_actif_2021, array_passif_2021, " Nombre valide", " Passif")
     );
   
     analyticsBarChart.render();
@@ -294,16 +296,46 @@ $(window).on("load", function() {
         var array_actif = "array_actif_" + annee_portefeuille;
         var array_passif = "array_passif_" + annee_portefeuille;
       
-        $("#analytics-bar-chart").empty();
+        $("#analytics-bar-chart-compta").empty();
       
-        var growthChart = new ApexCharts(
-            document.querySelector("#analytics-bar-chart"),
-            analyticsBarChartOptions(window[array_actif], window[array_passif])
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-compta"),
+            analyticsBarChartOptions(window[array_actif], window[array_passif], " Nombre valide", " Passif")
         );
       
-        growthChart.render();
+        analyticsBarChart.render();
       
-      });
+    });
+
+    // FIN COMPTA
+
+    // DEBUT JURIDIQUE
+
+    var analyticsBarChart = new ApexCharts(
+        document.querySelector("#analytics-bar-chart-juridique"),
+        analyticsBarChartOptions(array_demande_crea_2021, array_crea_valide_2021, " Demande en cours", " Validé")
+    );
+  
+    analyticsBarChart.render();
+
+    $("#id_select_crea_entreprise").change(function() {
+    
+        var annee_crea_entreprise = $("#id_select_crea_entreprise").children("option:selected").val();
+        var array_demande_crea = "array_demande_crea_" + annee_crea_entreprise;
+        var array_crea_valide = "array_crea_valide_" + annee_crea_entreprise;
+      
+        $("#analytics-bar-chart-juridique").empty();
+      
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-juridique"),
+            analyticsBarChartOptions(window[array_demande_crea], window[array_crea_valide], " Demande en cours", " Validé")
+        );
+      
+        analyticsBarChart.render();
+      
+    });
+
+    // FIN JURIDIQUE
 
 
     // Success Line Chart
@@ -355,13 +387,14 @@ $(window).on("load", function() {
   
     // Donut Chart
     // ---------------------
-    var $nb_SARL = parseInt(document.getElementById("nb_SARL").value);
-    var $nb_SAS = parseInt(document.getElementById("nb_SAS").value);
-    var $nb_SASU = parseInt(document.getElementById("nb_SASU").value);
-    var $nb_SCI = parseInt(document.getElementById("nb_SCI").value);
-    var $nb_EIRL = parseInt(document.getElementById("nb_EIRL").value);
-    var $nb_EI = parseInt(document.getElementById("nb_EI").value);
-    var $nb_Micro = parseInt(document.getElementById("nb_Micro").value);
+    // var $nb_SARL = parseInt(document.getElementById("nb_SARL").value);
+    // var $nb_SAS = parseInt(document.getElementById("nb_SAS").value);
+    // var $nb_SASU = parseInt(document.getElementById("nb_SASU").value);
+    // var $nb_SCI = parseInt(document.getElementById("nb_SCI").value);
+    // var $nb_EIRL = parseInt(document.getElementById("nb_EIRL").value);
+    // var $nb_EI = parseInt(document.getElementById("nb_EI").value);
+    // var $nb_Micro = parseInt(document.getElementById("nb_Micro").value);
+
     var donutChartOption = {
     chart: {
       width: 300,
@@ -370,7 +403,7 @@ $(window).on("load", function() {
     dataLabels: {
       enabled: false
     },
-      series: [$nb_SARL, $nb_SAS, $nb_SASU, $nb_SCI, $nb_EIRL, $nb_EI, $nb_Micro],
+      series: [1, 1, 1, 1, 1, 1, 1],
     labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
     stroke: {
       width: 0,
