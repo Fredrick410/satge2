@@ -93,12 +93,11 @@ require_once 'php/verif_session_crea.php';
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h5 class="content-header-title float-left pr-1 mb-0">Paramètre du compte</h5>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb p-0 mb-0">
                                     <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item active"> Paramètre du compte
+                                    <li class="breadcrumb-item active"> Retour à l'accueil
                                     </li>
                                 </ol>
                             </div>
@@ -116,9 +115,15 @@ require_once 'php/verif_session_crea.php';
                                 <div class="col-md-3 mb-2 mb-md-0 pills-stacked">
                                     <ul class="nav nav-pills flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link d-flex align-items-center active" id="account-pill-general" data-toggle="pill" href="#account-vertical-general" aria-expanded="true">
+                                            <a class="nav-link d-flex align-items-center active" id="account-pill-dirigeant" data-toggle="pill" href="#account-vertical-dirigeant" aria-expanded="true">
                                                 <i class="bx bx-cog"></i>
-                                                <span>General</span>
+                                                <span>Dirigeant</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center" id="account-pill-entreprise" data-toggle="pill" href="#account-vertical-entreprise" aria-expanded="true">
+                                                <i class="bx bx-cog"></i>
+                                                <span>Entreprise</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -135,7 +140,7 @@ require_once 'php/verif_session_crea.php';
                                         <div class="card-content">
                                             <div class="card-body">
                                                 <div class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane active" id="account-vertical-general" aria-labelledby="account-pill-general" aria-expanded="true">
+                                                    <div role="tabpanel" class="tab-pane active" id="account-vertical-dirigeant" aria-labelledby="account-pill-dirigeant" aria-expanded="true">
                                                         <!-- ESPACE IMAGE -->
                                                         <!-- <div class="media">
                                                             <a href="javascript: void(0);">
@@ -155,51 +160,6 @@ require_once 'php/verif_session_crea.php';
                                                             <input type="hidden" name="id" value="<?= $crea['id'] ?>">
                                                             <div class="row">
 
-                                                                <?php 
-                                                                
-                                                                if($crea['status_crea'] == ""){
-                                                                    $validation = "harrypottergood";
-                                                                }else{
-                                                                    $validation = "harrypotter";
-                                                                }
-
-                                                                ?>
-
-                                                                <div class="<?php echo $validation; ?>">
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <div class="controls">
-                                                                            <input type="button" class="btn btn-danger" value="⚠️POUR ACCEDER A L'INSERTION DE DOCUMENTS VOUS DEVEZ CHOISIR UNE FORME JURIDIQUE" disable>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <div class="controls">
-                                                                            <label>Forme juridique ⚠️</label>
-                                                                            <fieldset class="invoice-address form-group">
-                                                                                <select name="status_crea" class="form-control invoice-item-select">
-                                                                                    <option value="<?= $crea['status_crea'] ?>" selected>Choisir une forme juridique</option>
-                                                                                    <optgroup label="Morale">
-                                                                                        <option value="SARL">SARL</option>
-                                                                                        <option value="SAS">SAS</option>
-                                                                                        <option value="SASU">SASU</option>
-                                                                                        <option value="SCI">SCI</option>
-                                                                                        <option value="EURL">EURL</option>
-                                                                                    </optgroup>
-                                                                                    <optgroup label="Physique">
-                                                                                        <option value="EIRL">EIRL</option>
-                                                                                        <option value="EI">EI</option>
-                                                                                        <option value="Micro-entreprise">Micro-entreprise</option>
-                                                                                    </optgroup> 
-                                                                                </select>
-                                                                            <small>La forme juridique est obligatoire pour la suite de la création de votre entreprise pour plus d'informations concernant celle-ci contactez-nous via le chat mis à votre disposition.</small>
-                                                                            </fieldset>
-                                                                        </div>
-                                                                    </div>
-                                                                    <hr>
-                                                                </div>
-                                                                </div>
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <div class="controls">
@@ -289,6 +249,39 @@ require_once 'php/verif_session_crea.php';
                                                             </div>
                                                         </form>
                                                     </div>
+                                                    <!--<div role="tabpanel" class="tab-pane fade" id="account-vertical-entreprise" aria-labelledby="account-pill-entreprise" aria-expanded="false">
+                                                        <form>
+                                                            <div class="row">
+                                                                                                                        
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Forme juridique</label>
+                                                                            <fieldset class="invoice-address form-group">
+                                                                                <select name="status_crea" class="form-control invoice-item-select border rounded-pill border-dark">
+                                                                                    <option value="<?= $crea['status_crea'] ?>" selected>Choisir une forme juridique</option>
+                                                                                    <optgroup label="Morale">
+                                                                                        <option value="SARL">SARL</option>
+                                                                                        <option value="SAS">SAS</option>
+                                                                                        <option value="SASU">SASU</option>
+                                                                                        <option value="SCI">SCI</option>
+                                                                                        <option value="EURL">EURL</option>
+                                                                                    </optgroup>
+                                                                                    <optgroup label="Physique">
+                                                                                        <option value="EIRL">EIRL</option>
+                                                                                        <option value="EI">EI</option>
+                                                                                        <option value="Micro-entreprise">Micro-entreprise</option>
+                                                                                    </optgroup> 
+                                                                                </select>
+                                                                            <small>La forme juridique est obligatoire pour la suite de la création de votre entreprise pour plus d'informations concernant celle-ci contactez-nous via le chat mis à votre disposition.</small>
+                                                                            </fieldset>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>-->
                                                     <div class="tab-pane fade" id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
                                                         <form action="php/edit_password_crea.php" method="POST">
                                                             <input name="id" type="hidden" value="<?= $crea['id'] ?>">
