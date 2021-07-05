@@ -7,7 +7,7 @@ require_once 'php/config.php';
 require_once 'php/verif_session_crea.php';
 require_once 'php/get_documents_physique.php';
 
-    //insertion piece id
+    //insertion piece id 
 
     if(!empty($_POST['id_doc'])){
 
