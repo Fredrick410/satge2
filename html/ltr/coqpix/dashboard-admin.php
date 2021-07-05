@@ -12,7 +12,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     $pdoSt = $bdd->prepare('SELECT MAX(nb) AS nb FROM (SELECT COUNT(*) AS nb FROM comptable_list GROUP BY id_comptable) AS temp');
     $pdoSt->execute();
-    $nb_assigne_max = ($pdoSt->fetch())['nb'];
+    $nb_assigne_max = ($pdoSt->fetch())['nb'] + 1;
 
     // DEBUT REQUETES CHART BAS DROITE
     $annee_actuelle = date("Y");
@@ -224,10 +224,10 @@ table thead, table tbody tr {
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav float-right d-flex align-items-center">
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
+                            <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span></a>
+                            <div class="dropdown-menu dropdown-menu pb-0">
+                                <a class="dropdown-item" href="#"><i class="bx bx-user mr-50"></i> Editer Profile (SOON)</a>
+                                <a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Déconnexion</a>
                             </div>
                         </li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
@@ -358,12 +358,14 @@ table thead, table tbody tr {
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
                                                             <h4 class="card-title">Rappel factures retard</h4>
-                                                            <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
+                                                            <?php if ($count_retard != 0) { ?>
+                                                                <span class="badge badge-danger badge-pill badge-round float-right mt-50" style="color:black"><?= $count_retard ?></span>
+                                                            <?php } ?>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
                                                                  <!-- table with no border -->
-                                                                <div class="table-responsive">
+                                                                <div class="table-responsive d-none d-sm-block">
                                                                     <table class="table table-borderless nowrap scroll-horizontal-vertical">
                                                                         <thead>
                                                                             <tr>
@@ -374,6 +376,7 @@ table thead, table tbody tr {
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
+                                                                            
                                                                             <?php foreach($facture_retard as $factures): ?>
                                                                             <tr>
                                                                                 <td class="text-center px-0"><?= $factures['nameentreprise'] ?></td>
@@ -385,8 +388,10 @@ table thead, table tbody tr {
                                                                         <?php endforeach; ?> 
                                                                         </tbody>
                                                                     </table>
-                                                                </div>    
-                                                               
+                                                                </div>
+                                                                <?php if ($count_retard == 0) { ?>
+                                                                    <h5 class="text-center"> Aucune facture en retard </h5>
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>

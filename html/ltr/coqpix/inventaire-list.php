@@ -1,24 +1,40 @@
 <?php 
-
-include 'php/verif_session_connect.php';
+require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise',$_SESSION['id']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+    $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
+    $pdoStat->bindValue(':num',$_SESSION['id_session']);
+    $pdoStat->execute();
+    $facture = $pdoStat->fetchAll();
 
-    $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
-    $pdoSt->bindValue(':num',$_SESSION['id_session']);
-    $pdoSt->execute();
-    $article = $pdoSt->fetchAll();
+    $pdoStatr = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $facturer = $pdoStatr->fetch();
+    
+    
+    $pdoStatr = $bdd->prepare('SELECT reffacture,numerosfacture FROM facture WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $fu = $pdoStatr->fetch();
+    $nom = $fu['reffacture'];
+    
 
+    $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+    $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
+    $pdoStt->execute();
+    $entreprise = $pdoStt->fetch();
+    
+    
+    // $p = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+    // $p->bindValue(':num',$_SESSION['id_session']);
+    // $p->execute();
+    // $test = $p->fetch();
 ?>
-
-
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -30,7 +46,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Listes Articles</title>
+    <title>Inventaire</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -38,6 +54,8 @@ require_once 'php/config.php';
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -51,7 +69,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-users.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -121,7 +139,6 @@ require_once 'php/config.php';
     </nav>
     <!-- END: Header-->
 
-
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
     <!-- END: Main Menu-->
@@ -130,93 +147,107 @@ require_once 'php/config.php';
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
             <div class="content-body">
-                <!-- users list start -->
-                <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <div class="row rounded py-2 mb-2">
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                <div class="dropdown invoice-options">
-                                    <style>
-                                        .bleu {
-                                            background-color: #475F7B;
-                                        }
-
-                                        .white{
-                                            color: white;
-                                        }
-
-                                        .bleu:hover{
-                                            transition-duration: 1s;
-                                            background-color: #394C62;
-                                        }
-                                    </style>
-                                    <a href="article-add.php" class="btn border mr-2 bleu white">
-                                    <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un article
-                                    </a>
+                <!-- Knowledge base start -->
+                <section class="kb-content">
+                    <div class="form-group text-center">
+                        <h5>Votre inventaire</h5>
+                    </div>
+                    <div class="form-group">
+                        <br>
+                        <hr>
+                    </div>
+                    <div class="row kb-search-content-info mx-1 mx-md-2 mx-lg-5">
+                        <div class="col-12">
+                            <div class="row match-height">
+                                <div class="col-md-4 col-sm-6 kb-search-content">
+                                    <div class="card kb-hover-1">
+                                        <div class="card-content">
+                                            <div class="card-body text-center">
+                                                <a href="inventaire-stock.php">
+                                                    <div class=" mb-1">
+                                                        <i class="livicon-evo" data-options="name: users.svg; size: 50px; strokeColorAlt: #FDAC41; strokeColor: #5A8DEE; style: lines-alt; eventOn: .kb-hover-1;"></i>
+                                                    </div>
+                                                    <h5>Stock</h5>
+                                                    <p class=" text-muted">Visualiser, contrôler et suiver votre stock en temps réel ...</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6 kb-search-content">
+                                    <div class="card kb-hover-2">
+                                        <div class="card-content">
+                                            <div class="card-body text-center">
+                                                <a href="inventaire-commande-fourni.php">
+                                                    <div class=" mb-1">
+                                                        <i class="livicon-evo" data-options="name: diagram.svg; size: 50px; strokeColorAlt: #FDAC41; strokeColor: #5A8DEE; style: lines-alt; eventOn: .kb-hover-2;"></i>
+                                                    </div>
+                                                    <h5>Commandes fournisseur</h5>
+                                                    <p class=" text-muted">Gérer, contrôler et suiver les commandes fournisseur ...</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6 kb-search-content">
+                                    <div class="card kb-hover-4">
+                                        <div class="card-content">
+                                            <div class="card-body text-center">
+                                                <a href="inventaire-commande-client.php">
+                                                    <div class=" mb-1">
+                                                        <i class="livicon-evo" data-options="name: paper-plane.svg; size: 50px; strokeColorAlt: #FDAC41; strokeColor: #5A8DEE; style: lines-alt; eventOn: .kb-hover-3;"></i>
+                                                    </div>
+                                                    <h5>Commandes client</h5>
+                                                    <p class="text-muted">Gérer, contrôler et suiver les commandes client ...</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6 kb-search-content">
+                                    <div class="card kb-hover-4">
+                                        <div class="card-content">
+                                            <div class="card-body text-center">
+                                                <a href="#">
+                                                    <div class=" mb-1">
+                                                        <i class="livicon-evo" data-options="name: paper-plane.svg; size: 50px; strokeColorAlt: #FDAC41; strokeColor: #5A8DEE; style: lines-alt; eventOn: .kb-hover-4;"></i>
+                                                    </div>
+                                                    <h5>Réception des commandes <span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></h5>
+                                                    <p class="text-muted">Contrôler et garder un oeil sur la réception des commandes en temps réel ...</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="users-list-table">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <!-- datatable start -->
-                                    <div class="table-responsive">
-                                        <table id="users-list-datatable" class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Article</th>
-                                                    <th>Référence</th>
-                                                    <th>Prix ou Cout U</th>
-                                                    <th>Tva</th>
-                                                    <th>Fonction</th>
-                                                    <th>Options</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-center">
-                                            <?php foreach($article as $articlee): ?>
-                                            <?php
-
-                                                if($articlee['typ'] == "Ventes"){$typ = ''.$articlee['prixvente'].' €';}
-                                                if($articlee['typ'] == "Achats"){$typ = ''.$articlee['coutachat'].' €';}
-                                                $prixvente = $articlee['prixvente'];
-                                                $coutachat = $articlee['coutachat'];
-                                                if($articlee['typ'] == "Ventes et Achats"){$typ = ''.$prixvente.' € et '.$coutachat.' €';}
-
-                                            ?>
-                                                <tr>
-                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100">
-                                                    </td>
-                                                    <td><?= $articlee['article'] ?></td>
-                                                    <td><?= $articlee['referencearticle'] ?></td>
-                                                    <td><?= $typ ?></td>
-                                                    <td><?= $articlee['tvavente'] ?>%</td>
-                                                    <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
-                                                </tr>
-                                            <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- datatable ends -->
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group text-center">
+                        <br>
+                        <br>
+                    </div>
+                    <div class="form-group text-center">
+                        <img src="../../../src/img/banner-rh2.gif" class="img-fluid" alt="Responsive image">
                     </div>
                 </section>
-                <!-- users list ends -->
+                <!-- Knowledge base ends -->
             </div>
         </div>
     </div>
     <!-- END: Content-->
+ 
+<script type="text/javascript">
+    function checkbox(){
+        if(document.getElementById('checkbox').checked){
+            document.getElementById('submit').disabled = '';
+        }
+        else{
+            document.getElementById('submit').disabled = 'disabled';
+        }
+    }
+</script>
 
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
     <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
@@ -227,10 +258,13 @@ require_once 'php/config.php';
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
     <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/responsive.bootstrap.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="../../../app-assets/js/scripts/configs/vertical-menu-light.js"></script>
+    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
     <script src="../../../app-assets/js/core/app-menu.js"></script>
     <script src="../../../app-assets/js/core/app.js"></script>
     <script src="../../../app-assets/js/scripts/components.js"></script>
@@ -238,10 +272,11 @@ require_once 'php/config.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
+
 </body>
 <!-- END: Body-->
 

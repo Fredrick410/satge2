@@ -82,9 +82,9 @@ if($_POST['prixvente'] == "" && $_POST['coutachat'] == ""){
                }
         }   
          
-    }else
+    }elseif(empty($_FILES['img']['name']))
     {
-        $pdo = $bdd->prepare('UPDATE article SET article=:article, referencearticle=:referencearticle, prixvente=:prixvente, coutachat=:coutachat, tvavente=:tvavente, tvaachat=:tvaachat, umesure=:umesure, typ=:typ, img=:img, stock=:stock, nom_fournisseur=:nom_fournisseur WHERE id=:num LIMIT 1');
+        $pdo = $bdd->prepare('UPDATE article SET article=:article, referencearticle=:referencearticle, prixvente=:prixvente, coutachat=:coutachat, tvavente=:tvavente, tvaachat=:tvaachat, umesure=:umesure, typ=:typ, stock=:stock, nom_fournisseur=:nom_fournisseur WHERE id=:num LIMIT 1');
         $pdo->bindValue(':num', $_POST['id']);
         $pdo->bindValue(':article', $_POST['article']);
         $pdo->bindValue(':referencearticle', $_POST['referencearticle']);
@@ -94,7 +94,7 @@ if($_POST['prixvente'] == "" && $_POST['coutachat'] == ""){
         $pdo->bindValue(':tvaachat', $_POST['tvaachat']);
         $pdo->bindValue(':umesure', $_POST['umesure']);
         $pdo->bindValue(':typ', $typ);
-        $pdo->bindValue(':id_session', $_SESSION['id_session']);  
+        
         $pdo->bindValue(':stock', $_POST['stock']);
         $pdo->bindValue(':nom_fournisseur', $_POST['nom_fournisseur']);
         $pdo->execute();

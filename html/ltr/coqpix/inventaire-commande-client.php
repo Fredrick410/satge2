@@ -1,24 +1,40 @@
 <?php 
-
-include 'php/verif_session_connect.php';
+require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise',$_SESSION['id']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+    $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
+    $pdoStat->bindValue(':num',$_SESSION['id_session']);
+    $pdoStat->execute();
+    $facture = $pdoStat->fetchAll();
 
-    $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
-    $pdoSt->bindValue(':num',$_SESSION['id_session']);
-    $pdoSt->execute();
-    $article = $pdoSt->fetchAll();
+    $pdoStatr = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $facturer = $pdoStatr->fetch();
+    
+    
+    $pdoStatr = $bdd->prepare('SELECT reffacture,numerosfacture FROM facture WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $fu = $pdoStatr->fetch();
+    $nom = $fu['reffacture'];
+    
 
+    $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+    $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
+    $pdoStt->execute();
+    $entreprise = $pdoStt->fetch();
+    
+    
+    // $p = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+    // $p->bindValue(':num',$_SESSION['id_session']);
+    // $p->execute();
+    // $test = $p->fetch();
 ?>
-
-
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -30,7 +46,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Listes Articles</title>
+    <title>Liste facture</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -38,6 +54,8 @@ require_once 'php/config.php';
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -51,7 +69,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-users.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -76,8 +94,16 @@ require_once 'php/config.php';
                             <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
                         </ul>
                         <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
                         </ul>
+                        <script>
+                            function retourn() {
+                                window.history.back();
+                            }
+                        </script> 
+                        <ul class="nav navbar-nav bookmark-icons">
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
+                        </ul> 
                     </div>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
@@ -121,102 +147,25 @@ require_once 'php/config.php';
     </nav>
     <!-- END: Header-->
 
-
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
     <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
-            <div class="content-body">
-                <!-- users list start -->
-                <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <div class="row rounded py-2 mb-2">
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                <div class="dropdown invoice-options">
-                                    <style>
-                                        .bleu {
-                                            background-color: #475F7B;
-                                        }
-
-                                        .white{
-                                            color: white;
-                                        }
-
-                                        .bleu:hover{
-                                            transition-duration: 1s;
-                                            background-color: #394C62;
-                                        }
-                                    </style>
-                                    <a href="article-add.php" class="btn border mr-2 bleu white">
-                                    <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un article
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="users-list-table">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <!-- datatable start -->
-                                    <div class="table-responsive">
-                                        <table id="users-list-datatable" class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Article</th>
-                                                    <th>Référence</th>
-                                                    <th>Prix ou Cout U</th>
-                                                    <th>Tva</th>
-                                                    <th>Fonction</th>
-                                                    <th>Options</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-center">
-                                            <?php foreach($article as $articlee): ?>
-                                            <?php
-
-                                                if($articlee['typ'] == "Ventes"){$typ = ''.$articlee['prixvente'].' €';}
-                                                if($articlee['typ'] == "Achats"){$typ = ''.$articlee['coutachat'].' €';}
-                                                $prixvente = $articlee['prixvente'];
-                                                $coutachat = $articlee['coutachat'];
-                                                if($articlee['typ'] == "Ventes et Achats"){$typ = ''.$prixvente.' € et '.$coutachat.' €';}
-
-                                            ?>
-                                                <tr>
-                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100">
-                                                    </td>
-                                                    <td><?= $articlee['article'] ?></td>
-                                                    <td><?= $articlee['referencearticle'] ?></td>
-                                                    <td><?= $typ ?></td>
-                                                    <td><?= $articlee['tvavente'] ?>%</td>
-                                                    <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
-                                                </tr>
-                                            <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- datatable ends -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- users list ends -->
-            </div>
-        </div>
-    </div>
+    
     <!-- END: Content-->
+ 
+<script type="text/javascript">
+    function checkbox(){
+        if(document.getElementById('checkbox').checked){
+            document.getElementById('submit').disabled = '';
+        }
+        else{
+            document.getElementById('submit').disabled = 'disabled';
+        }
+    }
+</script>
 
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
     <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
@@ -227,10 +176,13 @@ require_once 'php/config.php';
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
     <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/responsive.bootstrap.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="../../../app-assets/js/scripts/configs/vertical-menu-light.js"></script>
+    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
     <script src="../../../app-assets/js/core/app-menu.js"></script>
     <script src="../../../app-assets/js/core/app.js"></script>
     <script src="../../../app-assets/js/scripts/components.js"></script>
@@ -238,10 +190,11 @@ require_once 'php/config.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
+
 </body>
 <!-- END: Body-->
 

@@ -1,24 +1,27 @@
 <?php 
-
-include 'php/verif_session_connect.php';
+require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise',$_SESSION['id']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+    $pdoStat = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
+    $pdoStat->bindValue(':num',$_SESSION['id_session']);
+    $pdoStat->execute();
+    $facture = $pdoStat->fetchAll();
 
-    $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
-    $pdoSt->bindValue(':num',$_SESSION['id_session']);
-    $pdoSt->execute();
-    $article = $pdoSt->fetchAll();
+    $pdoStatr = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
+    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
+    $pdoStatr->execute();
+    $facturer = $pdoStatr->fetch();
+    $numeros = $facturer['numerosbon'];
 
+    $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+    $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
+    $pdoStt->execute();
+    $entreprise = $pdoStt->fetch();
 ?>
-
-
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -30,7 +33,7 @@ require_once 'php/config.php';
     <meta name="description" content="Coqpix crée By audit action plus - développé par Youness Haddou">
     <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
     <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Listes Articles</title>
+    <title>Liste Bulletin de Commande</title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -38,6 +41,8 @@ require_once 'php/config.php';
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/extensions/dataTables.checkboxes.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -51,7 +56,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-users.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-invoice.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -75,6 +80,14 @@ require_once 'php/config.php';
                         <ul class="nav navbar-nav">
                             <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
                         </ul>
+                        <ul class="nav navbar-nav bookmark-icons">
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                        </ul>
+                        <script>
+                            function retourn() {
+                                window.history.back();
+                            }
+                        </script> 
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
                         </ul>
@@ -121,7 +134,6 @@ require_once 'php/config.php';
     </nav>
     <!-- END: Header-->
 
-
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
     <!-- END: Main Menu-->
@@ -133,90 +145,108 @@ require_once 'php/config.php';
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <!-- users list start -->
-                <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <div class="row rounded py-2 mb-2">
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                <div class="dropdown invoice-options">
-                                    <style>
-                                        .bleu {
-                                            background-color: #475F7B;
-                                        }
-
-                                        .white{
-                                            color: white;
-                                        }
-
-                                        .bleu:hover{
-                                            transition-duration: 1s;
-                                            background-color: #394C62;
-                                        }
-                                    </style>
-                                    <a href="article-add.php" class="btn border mr-2 bleu white">
-                                    <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un article
-                                    </a>
-                                </div>
+                <!-- invoice list -->
+                <section class="invoice-list-wrapper">
+                    <!-- create invoice button-->
+                    <div class="row">
+                        <?php
+                            if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $url = "https://"; else $url = "http://";$url .= $_SERVER['HTTP_HOST'];$url .= $_SERVER['REQUEST_URI'];
+                        ?>
+                        <div class="col">
+                            <div class="invoice-create-btn mb-1">
+                                <a href="app-bon-achat-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "Rt82u";}else{echo "y44vJ";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon de commande</a>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <div class="invoice-create-btn mb-1">
+                                <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
+                                   Auto-incrementation sous la forme FAC-(année)(numéro)<br>
+                                   <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
+                                   <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <div class="users-list-table">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <!-- datatable start -->
-                                    <div class="table-responsive">
-                                        <table id="users-list-datatable" class="table">
-                                            <thead class="text-center">
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Article</th>
-                                                    <th>Référence</th>
-                                                    <th>Prix ou Cout U</th>
-                                                    <th>Tva</th>
-                                                    <th>Fonction</th>
-                                                    <th>Options</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-center">
-                                            <?php foreach($article as $articlee): ?>
-                                            <?php
-
-                                                if($articlee['typ'] == "Ventes"){$typ = ''.$articlee['prixvente'].' €';}
-                                                if($articlee['typ'] == "Achats"){$typ = ''.$articlee['coutachat'].' €';}
-                                                $prixvente = $articlee['prixvente'];
-                                                $coutachat = $articlee['coutachat'];
-                                                if($articlee['typ'] == "Ventes et Achats"){$typ = ''.$prixvente.' € et '.$coutachat.' €';}
-
-                                            ?>
-                                                <tr>
-                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100">
-                                                    </td>
-                                                    <td><?= $articlee['article'] ?></td>
-                                                    <td><?= $articlee['referencearticle'] ?></td>
-                                                    <td><?= $typ ?></td>
-                                                    <td><?= $articlee['tvavente'] ?>%</td>
-                                                    <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
-                                                </tr>
-                                            <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- datatable ends -->
-                                </div>
+                    <!-- Options and filter dropdown button-->
+                    <div class="action-dropdown-btn d-none">
+                        <div class="dropdown invoice-options">
+                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Options
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
+                                <a class="dropdown-item" href="#">Supprimer</a>
                             </div>
                         </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th><span class="align-middle">Numéro</span></th>
+                                    <th>Valeur</th>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Article</th>
+                                    <th>Quantité</th>
+                                    <th>Commandé</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($facture as $factures):
+                            $numeros = $factures['numerosbon'];
+                                try{
+  
+                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout, quantite, (cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
+  
+                                $req = $bdd->prepare($sql);
+                                $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
+                                $req->bindValue(':numeros',$numeros); 
+                                $req->execute();
+                                $res = $req->fetch();
+                                }catch(Exception $e){
+                                    echo "Erreur " . $e->getMessage();
+                                }
+
+                                $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
+
+                            ?>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><a href="app-invoice-view.php?numbon=<?= $factures['id'] ?>">BC-<?= $factures['numerosbon'] ?></a></td>
+                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
+                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
+                                    <td><span class="invoice-customer"><?= $factures['bonpour'] ?></span></td>
+                                    <td><?= $factures['namearticle'] ?></td>
+                                    <td><?= $factures['quantite'] ?></span></td>
+                                    <td><?= $factures['commande'] ?></span></td>
+                                    <td>
+                                        <div class="invoice-action"><br>
+                                            <a href="app-bon-achat-view.php?numbon=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                                <i class="bx bx-show-alt"></i>
+                                            </a>
+                                            <a href="app-bon-achat-edit.php?numbon=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                                <i class="bx bx-edit"></i>
+                                            </a>&nbsp&nbsp&nbsp&nbsp
+                                            <a href="php/delete_bon_achat.php?numbon=<?= $factures['numerosbon'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                                <i class='bx bxs-trash'></i>
+                                            </a>                                
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
-                <!-- users list ends -->
             </div>
         </div>
     </div>
     <!-- END: Content-->
 
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
     <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
@@ -227,10 +257,13 @@ require_once 'php/config.php';
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
     <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/responsive.bootstrap.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="../../../app-assets/js/scripts/configs/vertical-menu-light.js"></script>
+    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
     <script src="../../../app-assets/js/core/app-menu.js"></script>
     <script src="../../../app-assets/js/core/app.js"></script>
     <script src="../../../app-assets/js/scripts/components.js"></script>
@@ -238,7 +271,7 @@ require_once 'php/config.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
