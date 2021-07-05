@@ -14,7 +14,7 @@ require_once 'php/verif_session_connect_admin.php';
     $pdoSt->execute();
     $nb_assigne_max = ($pdoSt->fetch())['nb'] + 1;
 
-    // DEBUT REQUETES COMPTABILITE
+// DEBUT REQUETES COMPTABILITE
 
     $annee_actuelle = date("Y");
     $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
@@ -407,7 +407,7 @@ require_once 'php/verif_session_connect_admin.php';
     <?php include('php/menu_backend.php'); ?>
 
     <!-- BEGIN: Content-->
-    <div class="app-content content">
+    <div class="mt-xl-0 mt-1 app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper pt-0">
             <div class="content-header row">
@@ -535,19 +535,19 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <table class="table table-borderless nowrap scroll-horizontal-vertical">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th class="text-center px-3">NAME</th>
-                                                                                <th class="text-center px-2">REFF</th>
-                                                                                <th class="text-center px-3">DATE</th>
-                                                                                <th class="text-center pl-1">NUMEROS</th>                                                                                
+                                                                                <th class="text-center px-0">NAME</th>
+                                                                                <th class="text-center px-0">REFF</th>
+                                                                                <th class="text-center pl-0">DATE</th>
+                                                                                <th class="text-center pl-0">NUMEROS</th>                                                                                
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>                                                                           
                                                                             <?php foreach($facture_retard as $factures): ?>
                                                                             <tr>
                                                                                 <td class="text-center px-0"><?= $factures['nameentreprise'] ?></td>
-                                                                                <td class="text-center px-1"><?= $factures['reffacture'] ?></td>
+                                                                                <td class="text-center px-0"><?= $factures['reffacture'] ?></td>
                                                                                 <td class="text-center px-0"><?= $factures['dateecheance'] ?>&nbsp <i class="bx bxs-circle danger font-small-1 mr-50"></i></td>
-                                                                                <td class="text-center pl-1"><?= $factures['numerosfacture'] ?></td>                                                                            
+                                                                                <td class="text-center px-1"><?= $factures['numerosfacture'] ?></td>                                                                            
                                                                             </tr>
                                                                         <?php endforeach; ?> 
                                                                         </tbody>
@@ -1042,8 +1042,7 @@ require_once 'php/verif_session_connect_admin.php';
         $(document).ready(function() {
 
             // script JS pour la data chart
-            $("#id_select_portefeuille").change(function() {
-                
+            $("#id_select_portefeuille").change(function() {         
                 var annee_portefeuille = $("#id_select_portefeuille").children("option:selected").val();
                 var id_count_prospect = "id_count_prospect_" + annee_portefeuille;
                 var id_count_encours = "id_count_encours_" + annee_portefeuille;
@@ -1054,9 +1053,8 @@ require_once 'php/verif_session_connect_admin.php';
                 document.getElementById("id_nb_prospect").innerText = count_prospect;
                 document.getElementById("id_nb_encours").innerText = count_encours;
                 document.getElementById("id_nb_actif").innerText = count_actif;
-
-
             });
+
             // script JS pour le chart compables
             $("#id_bouton_ventes").click(function(e) {
                 e.preventDefault();
@@ -1090,32 +1088,6 @@ require_once 'php/verif_session_connect_admin.php';
                 document.getElementById("id_table_ventes").style.display = "none";
                 document.getElementById("id_table_achats").style.display = "none";
                 document.getElementById("id_table_tresorerie").style.display = "block";
-            });
-
-            // Juridique : script JS pour le clic sur les fleches gauche et droite
-            $("#id_fleche_gauche_juridique").click(function(e) {
-                e.preventDefault();
-                var titre_juridique = document.getElementById("id_titre_juridique").textContent;
-                if (titre_juridique == "Radiation d'entreprise") {
-                    titre_juridique = "Modification d'entreprise";
-                } else if (titre_juridique == "Création d'entreprise") {
-                    titre_juridique = "Radiation d'entreprise";
-                } else if (titre_juridique == "Modification d'entreprise") {
-                    titre_juridique = "Création d'entreprise";
-                }
-                document.getElementById("id_titre_juridique").innerText = titre_juridique;
-            });
-            $("#id_fleche_droite_juridique").click(function(e) {
-                e.preventDefault();
-                var titre_juridique = document.getElementById("id_titre_juridique").textContent;
-                if (titre_juridique == "Radiation d'entreprise") {
-                    titre_juridique = "Création d'entreprise";
-                } else if (titre_juridique == "Création d'entreprise") {
-                    titre_juridique = "Modification d'entreprise";
-                } else if (titre_juridique == "Modification d'entreprise") {
-                    titre_juridique = "Radiation d'entreprise";
-                }
-                document.getElementById("id_titre_juridique").innerText = titre_juridique;
             });
 
         });

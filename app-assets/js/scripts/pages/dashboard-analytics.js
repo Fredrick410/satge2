@@ -283,26 +283,27 @@ $(window).on("load", function() {
 
     // DEBUT COMPTA
   
+    // Charge le chart de l'année en cours
     var analyticsBarChart = new ApexCharts(
         document.querySelector("#analytics-bar-chart-compta"),
         analyticsBarChartOptions(array_actif_2021, array_passif_2021, " Nombre valide", " Passif")
-    );
-  
+    ); 
     analyticsBarChart.render();
 
+    // S'éxecute lorsqu'on change l'année du select dans Comptabilité
     $("#id_select_portefeuille").change(function() {
     
+        // On récupère le nom du tableau stockant les données du chart de l'année selectionnée
         var annee_portefeuille = $("#id_select_portefeuille").children("option:selected").val();
         var array_actif = "array_actif_" + annee_portefeuille;
         var array_passif = "array_passif_" + annee_portefeuille;
       
-        $("#analytics-bar-chart-compta").empty();
-      
+        // On remplace le graphique par rapport à l'année sélectionnée
+        $("#analytics-bar-chart-compta").empty(); 
         var analyticsBarChart = new ApexCharts(
             document.querySelector("#analytics-bar-chart-compta"),
             analyticsBarChartOptions(window[array_actif], window[array_passif], " Nombre valide", " Passif")
         );
-      
         analyticsBarChart.render();
       
     });
@@ -311,27 +312,43 @@ $(window).on("load", function() {
 
     // DEBUT JURIDIQUE
 
+    // Charge le chart de l'année en cours
     var analyticsBarChart = new ApexCharts(
         document.querySelector("#analytics-bar-chart-juridique"),
         analyticsBarChartOptions(array_demande_crea_2021, array_crea_valide_2021, " Demande en cours", " Validé")
     );
-  
     analyticsBarChart.render();
-
-    $("#id_select_juridique").change(function() {
     
-        var annee_crea_entreprise = $("#id_select_juridique").children("option:selected").val();
-        var array_demande_crea = "array_demande_crea_" + annee_crea_entreprise;
-        var array_crea_valide = "array_crea_valide_" + annee_crea_entreprise;
-      
-        $("#analytics-bar-chart-juridique").empty();
-      
-        var analyticsBarChart = new ApexCharts(
-            document.querySelector("#analytics-bar-chart-juridique"),
-            analyticsBarChartOptions(window[array_demande_crea], window[array_crea_valide], " Demande en cours", " Validé")
-        );
-      
-        analyticsBarChart.render();
+    // S'éxecute lorsqu'on change l'année du select dans Juridique
+    $("#id_select_juridique").change(function() {
+
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            // A VENIR
+
+        } else if (titre_juridique == "Création d'entreprise") {
+
+            // On récupère le nom du tableau stockant les données du chart de l'année selectionnée
+            var annee_crea_entreprise = $("#id_select_juridique").children("option:selected").val();
+            var array_demande_crea = "array_demande_crea_" + annee_crea_entreprise;
+            var array_crea_valide = "array_crea_valide_" + annee_crea_entreprise;
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-juridique").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-juridique"),
+                analyticsBarChartOptions(window[array_demande_crea], window[array_crea_valide], " Demande en cours", " Validé")
+            );
+            analyticsBarChart.render();
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            // A VENIR
+
+        }
       
     });
 
@@ -461,24 +478,109 @@ $(window).on("load", function() {
         document.querySelector("#donut-chart"),
         donutChartOption(array_nb_crea_2021)
     );
-
     donutChart.render();
 
+    // S'éxecute lorsqu'on change l'année du select dans Juridique
     $("#id_select_juridique").change(function() {
-    
-        var annee_juridique = $(this).children("option:selected").val();   
-        var array_nb_crea = "array_nb_crea_" + annee_juridique;
+
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            // A VENIR
+
+        } else if (titre_juridique == "Création d'entreprise") {
+
+            // On récupère le nom du tableau stockant les données du chart de l'année selectionnée
+            var annee_juridique = $(this).children("option:selected").val();   
+            var array_nb_crea = "array_nb_crea_" + annee_juridique;
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#donut-chart").empty();
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOption(window[array_nb_crea])
+            );
+            donutChart.render();
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            // A VENIR
+
+        }
       
-        $("#donut-chart").empty();
-      
-        var donutChart = new ApexCharts(
-          document.querySelector("#donut-chart"),
-          donutChartOption(window[array_nb_crea])
-        );
-      
-        donutChart.render();
-      
-      });
+    });
+
+    /**
+     * Remplace le titre, le data-chart et la donut-chart lorsque qu'on change de section entre création, modification et radiation d'entreprise
+     * 
+     * @param {string} direction // direction de la flêche cliqué
+     */
+     function traiterClicFleche(direction) {
+
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+
+        // On cherche la section dans laquelle on doit se rendre
+        if (direction == "gauche") {
+            if (titre_juridique == "Radiation d'entreprise") {
+                titre_juridique = "Modification d'entreprise";
+            } else if (titre_juridique == "Création d'entreprise") {
+                titre_juridique = "Radiation d'entreprise";
+            } else if (titre_juridique == "Modification d'entreprise") {
+                titre_juridique = "Création d'entreprise";
+            }
+        } else if (direction == "droite")  {
+            if (titre_juridique == "Radiation d'entreprise") {
+                titre_juridique = "Création d'entreprise";
+            } else if (titre_juridique == "Création d'entreprise") {
+                titre_juridique = "Modification d'entreprise";
+            } else if (titre_juridique == "Modification d'entreprise") {
+                titre_juridique = "Radiation d'entreprise";
+            }
+        }
+
+        // On change le titre de la section
+        document.getElementById("id_titre_juridique").innerText = titre_juridique;
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            // On remplace les charts actuels de radiation d'entreprise
+            $("#analytics-bar-chart-juridique").empty();
+            $("#donut-chart").empty();
+            // A VENIR
+
+        } else if (titre_juridique == "Création d'entreprise") {
+
+            // On remplace les charts actuels de création d'entreprise    
+            $("#analytics-bar-chart-juridique").empty();
+            $("#donut-chart").empty();
+            analyticsBarChart.render();
+            donutChart.render();
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            // On remplace les charts actuels de modification d'entreprise
+            $("#analytics-bar-chart-juridique").empty();
+            $("#donut-chart").empty();
+            // A VENIR
+
+        }
+
+    }
+
+    // Clic sur la fleche gauche
+    $("#id_fleche_gauche_juridique").click(function(e) {
+        e.preventDefault();
+        traiterClicFleche("gauche");
+    });
+
+    // Clic sur la fleche droite
+    $("#id_fleche_droite_juridique").click(function(e) {
+        e.preventDefault();
+        traiterClicFleche("droite");
+    });
 
     // Stacked Bar Nagetive Chart
     // ----------------------------------
