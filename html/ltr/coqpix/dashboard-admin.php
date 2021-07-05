@@ -224,15 +224,17 @@ require_once 'php/verif_session_connect_admin.php';
     }
 
     // $nb_SARL = 0;$nb_SAS = 0;$nb_SASU = 0;$nb_SCI = 0;$nb_EIRL = 0;$nb_EI = 0;$nb_Micro = 0;
-   
     // foreach($nb_crea_type as $nb_crea) :
-
     //    ${'nb_'.$nb_crea['status_crea']} = $nb_crea['nb'];
-
     // endforeach;
 
     // Requete SQL permettant de recuperer le nombre de créa en cours
-    // $nb_crea_en_cours = $nb_SARL + $nb_SAS + $nb_SASU + $nb_SCI + $nb_EIRL + $nb_EI + $nb_Micr - $nb_crea_valide;
+    $nb_crea_en_cours = array_sum(${'array_nb_crea_'.($annee_actuelle)})
+                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 1)})
+                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 2)})
+                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 3)})
+                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 4)})
+                        - $nb_crea_valide;
 
     // Requete SQL permettant de recuperer le nombre de créa supprimées
     $query = $bdd->query('SELECT COUNT(*) AS nb FROM delete_societe');
@@ -877,7 +879,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <span class="list-title">Créations en cours</span>
                                                                             </div>
                                                                         </div>
-                                                                        <span class="badge badge-light-warning  float-right mt-20"><?= 0//$nb_crea_en_cours ?> En cours</span>
+                                                                        <span class="badge badge-light-warning  float-right mt-20"><?= $nb_crea_en_cours ?> En cours</span>
                                                                     </li>
                                                                     <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
                                                                         <div class="list-left d-flex">
@@ -885,7 +887,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <span class="list-title">Créations validées totales</span>
                                                                             </div>
                                                                         </div>
-                                                                        <span class="badge badge-light-success  float-right mt-20"><?= 0//$nb_crea_valide ?> Validées</span>
+                                                                        <span class="badge badge-light-success  float-right mt-20"><?= $nb_crea_valide ?> Validées</span>
                                                                     </li>
                                                                     <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
                                                                         <div class="list-left d-flex">
@@ -893,7 +895,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <span class="list-title">Créations abandonnées</span>
                                                                             </div>
                                                                         </div>
-                                                                        <span class="badge badge-light-danger  float-right mt-20"><?= 0//$nb_crea_delete ?> Abandons</span>
+                                                                        <span class="badge badge-light-danger  float-right mt-20"><?= $nb_crea_delete ?> Abandons</span>
                                                                     </li>
                                                                     
                                                                 </ul>
