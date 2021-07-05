@@ -18,6 +18,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     $annee_actuelle = date("Y");
     $mois = array('01','02','03','04','05','06','07','08','09','10','11','12');
+    $status_crea = array('SARL', 'SAS', 'SASU', 'SCI', 'EIRL', 'EI', 'Micr');
 
     // DEBUT CHART 1
 
@@ -205,14 +206,21 @@ require_once 'php/verif_session_connect_admin.php';
     for ($i=0 ; $i<5 ; $i++) {
         $query = $bdd->prepare('SELECT LEFT(status_crea, 4) AS status_crea, COUNT(*) AS nb FROM crea_societe WHERE substr(date_crea, 7) = :annee GROUP BY status_crea');
         $query->execute(array(':annee' => ($annee_actuelle - $i)));
-        $nb_crea_type = $query->fetchAll();
 
-        ${'nb_'.($annee_actuelle - $i)} = array();
-        foreach($nb_crea_type as $nb_crea) :
+        ${'nb_crea_'.($annee_actuelle - $i)} = array();
+        while ($nb_crea_type = $query->fetch()) {
+            ${'nb_crea_'.($annee_actuelle - $i)}[$nb_crea_type['status_crea']] = $nb_crea_type['nb'];
+        }
 
-        ${'nb_crea_'.($annee_actuelle - $i)}[$nb_crea['status_crea']] = $nb_crea['nb'];
-
-        endforeach;
+        ${'array_nb_crea_'.($annee_actuelle - $i)} = array('SARL'=>0, 'SAS'=>0, 'SASU'=>0, 'SCI'=>0, 'EIRL'=>0, 'EI'=>0, 'Micr'=>0);
+        for($j=0; $j<7; $j++) {
+            if (array_key_exists($status_crea[$j], ${'nb_crea_'.($annee_actuelle - $i)})) {
+                ${'array_nb_crea_'.($annee_actuelle - $i)}[$status_crea[$j]] = (int) ${'nb_crea_'.($annee_actuelle - $i)}[$status_crea[$j]];
+            }
+            else {
+                ${'array_nb_crea_'.($annee_actuelle - $i)}[$status_crea[$j]] = 0;
+            }
+        }
     }
 
     // $nb_SARL = 0;$nb_SAS = 0;$nb_SASU = 0;$nb_SCI = 0;$nb_EIRL = 0;$nb_EI = 0;$nb_Micro = 0;
@@ -822,7 +830,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
                                                             <h4 class="card-title" id="id_titre_juridique">Création d'entreprise</h4>
-                                                            <select style="width: 80px;" class="form-control" id="id_select_crea_entreprise">
+                                                            <select style="width: 80px;" class="form-control" id="id_select_juridique">
                                                                 <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
                                                                 <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
                                                                 <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
@@ -1010,6 +1018,14 @@ require_once 'php/verif_session_connect_admin.php';
         this[array_crea_valide + (annee_actuelle - 2)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 2)}); ?>;
         this[array_crea_valide + (annee_actuelle - 3)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 3)}); ?>;
         this[array_crea_valide + (annee_actuelle - 4)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 4)}); ?>;
+
+        var array_nb_crea = "array_nb_crea_";
+
+        this[array_nb_crea + annee_actuelle] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle)}); ?>;
+        this[array_nb_crea + (annee_actuelle - 1)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 1)}); ?>;
+        this[array_nb_crea + (annee_actuelle - 2)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 2)}); ?>;
+        this[array_nb_crea + (annee_actuelle - 3)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 3)}); ?>;
+        this[array_nb_crea + (annee_actuelle - 4)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 4)}); ?>;
         
     </script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>

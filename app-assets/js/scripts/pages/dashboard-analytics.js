@@ -318,9 +318,9 @@ $(window).on("load", function() {
   
     analyticsBarChart.render();
 
-    $("#id_select_crea_entreprise").change(function() {
+    $("#id_select_juridique").change(function() {
     
-        var annee_crea_entreprise = $("#id_select_crea_entreprise").children("option:selected").val();
+        var annee_crea_entreprise = $("#id_select_juridique").children("option:selected").val();
         var array_demande_crea = "array_demande_crea_" + annee_crea_entreprise;
         var array_crea_valide = "array_crea_valide_" + annee_crea_entreprise;
       
@@ -395,69 +395,90 @@ $(window).on("load", function() {
     // var $nb_EI = parseInt(document.getElementById("nb_EI").value);
     // var $nb_Micro = parseInt(document.getElementById("nb_Micro").value);
 
-    var donutChartOption = {
-    chart: {
-      width: 300,
-      type: 'donut',
-    },
-    dataLabels: {
-      enabled: false
-    },
-      series: [1, 1, 1, 1, 1, 1, 1],
-    labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
-    stroke: {
-      width: 0,
-      lineCap: 'round',
-    },
-    colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
-    plotOptions: {
-      pie: {
-        donut: {
-          size: '80%',
-          labels: {
-            show: true,
-            name: {
-              show: true,
-              fontSize: '15px',
-              colors: $sub_label_color,
-              offsetY: 20,
-              fontFamily: 'IBM Plex Sans',
+    function donutChartOption(array) {
+    
+        var donutChartOption = {
+            chart: {
+            width: 300,
+            type: 'donut',
             },
-            value: {
-              show: true,
-              fontSize: '35px',
-              fontFamily: 'Rubik',
-              color: $label_color,
-              offsetY: -20,
-              formatter: function (val) {
-                return val
-              }
+            dataLabels: {
+            enabled: false
             },
-            total: {
-              show: true,
-              label: 'Entreprises',
-              color: $gray_light,
-              formatter: function (w) {
-                return w.globals.seriesTotals.reduce(function (a, b) {
-                  return a + b
-                }, 0)
-              }
+            series: [array['SARL'], array['SAS'], array['SASU'], array['SCI'], array['EIRL'], array['EI'], array['Micr']],
+            labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
+            stroke: {
+            width: 0,
+            lineCap: 'round',
+            },
+            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
+            plotOptions: {
+            pie: {
+                donut: {
+                size: '80%',
+                labels: {
+                    show: true,
+                    name: {
+                    show: true,
+                    fontSize: '15px',
+                    colors: $sub_label_color,
+                    offsetY: 20,
+                    fontFamily: 'IBM Plex Sans',
+                    },
+                    value: {
+                    show: true,
+                    fontSize: '35px',
+                    fontFamily: 'Rubik',
+                    color: $label_color,
+                    offsetY: -20,
+                    formatter: function (val) {
+                        return val
+                    }
+                    },
+                    total: {
+                    show: true,
+                    label: 'Entreprises',
+                    color: $gray_light,
+                    formatter: function (w) {
+                        return w.globals.seriesTotals.reduce(function (a, b) {
+                        return a + b
+                        }, 0)
+                    }
+                    }
+                }
+                }
             }
-          }
+            },
+            legend: {
+            show: false
+            }
         }
-      }
-    },
-    legend: {
-      show: false
+        return donutChartOption;
+
     }
-  }
 
-  var donutChart = new ApexCharts(
-    document.querySelector("#donut-chart"),
-    donutChartOption
-  );
+    var donutChart = new ApexCharts(
+        document.querySelector("#donut-chart"),
+        donutChartOption(array_nb_crea_2021)
+    );
 
-  donutChart.render();
+    donutChart.render();
+
+    $("#id_select_juridique").change(function() {
+    
+        var annee_juridique = $(this).children("option:selected").val();   
+        var array_nb_crea = "array_nb_crea_" + annee_juridique;
+      
+        $("#donut-chart").empty();
+      
+        var donutChart = new ApexCharts(
+          document.querySelector("#donut-chart"),
+          donutChartOption(window[array_nb_crea])
+        );
+      
+        donutChart.render();
+      
+      });
 
     // Stacked Bar Nagetive Chart
     // ----------------------------------
