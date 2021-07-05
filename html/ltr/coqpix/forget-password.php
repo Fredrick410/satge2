@@ -23,6 +23,7 @@ if (isset($key) && !empty($key)) {
 
 $mdp1 = htmlspecialchars($_POST['passwordentreprise']);
 $mdp2 = htmlspecialchars($_POST['passwordentreprise2']);
+?><script>alert(<?=$key?>)</script><?php
 // ajouter regle mdp !
 
 if ($mdp1 == $mdp2 && $mdp1 != "") {
@@ -37,7 +38,7 @@ if ($mdp1 == $mdp2 && $mdp1 != "") {
     header('Location: ../../../');
 
 } else if ($mdp1 != "") {
-    header('Location: forget-password.php?key=<?=$key?>&error=0');
+    header("Location: forget-password.php?key=". $key ."&error=0");
 }
 
 ?>
