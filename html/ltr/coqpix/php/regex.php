@@ -114,12 +114,6 @@ function generate_alpha_key($size_of_key) {
     return $hash;
 };
 
-$key = generate_alpha_key(10);
-send_reset_mail($mail, $key);
-$coq_key_reset = password_hash($key, PASSWORD_DEFAULT);
-
-$insert_key_reset = $bdd->prepare('INSERT INTO reset_key(mail,key_reset) VALUES(?,?)');
-$insert_key_reset->execute((array($mail, $coq_key_reset)));
 
 function send_reset_mail($mail_user_reset, $random_key_reset) {
 

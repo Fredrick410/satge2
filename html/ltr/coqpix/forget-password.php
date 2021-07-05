@@ -8,37 +8,36 @@ $name_page = "Mot de passe oublié";
 include 'includes/menus/head-front.php';
 
 $key = htmlspecialchars($_GET['key']);
-if (isset($key) AND empty($key)) {
+if (isset($key) && !empty($key)) {
     
-    $coq_key_reset = password_hash($key, PASSWORD_DEFAULT);
+    $coq_key_reset = crypt($key, "VXoJeYyNzMLya1ODvc3n1cnWJoDjG");
     $req_key_reset = $bdd->prepare('SELECT mail FROM reset_key WHERE key_reset = ?');
-    $req_key_reset->execute(array($key));
-
-    if ($req_key_reset->rowCount() === 0) {
-        header('../../../');
+    $req_key_reset->execute(array($coq_key_reset));
+    if (!($mail = $req_key_reset->fetch())) {
+        header('Location: ../../../index.php');
     }
-    $mail = ($req_key_reset->fetch()) ['mail'];
+    
 } else {
-    header('../../../');
+    header('Location: ../../../index.php');
 }
 
 $mdp1 = htmlspecialchars($_POST['passwordentreprise']);
 $mdp2 = htmlspecialchars($_POST['passwordentreprise2']);
 // ajouter regle mdp !
 
-if ($mdp1 === $mdp2 AND $mdp1 != "") {
+if ($mdp1 == $mdp2 && $mdp1 != "") {
 
-    $coq_new_mdp_h = password_hash($mdp1, PASSWORD_DEFAULT);
+    $coq_new_mdp_h = crypt($mdp1, "5c725a26307c3b5170634a7e2b");
     $coq_update_mdp = $bdd->prepare('UPDATE entreprise SET passwordentreprise = ? WHERE emailentreprise = ?');
-    $coq_update_mdp->execute(array($coq_new_mdp_h, $mail));
+    $coq_update_mdp->execute(array($coq_new_mdp_h, $mail['mail']));
 
     $coq_delete_key = $bdd->prepare('DELETE FROM reset_key WHERE mail = ?');
-    $coq_delete_key->execute(array($mail));
+    $coq_delete_key->execute(array($mail['mail']));
 
-    header('../../../');
+    header('Location: ../../../');
 
-} else {
-    header('forget-password.php?error=0');
+} else if ($mdp1 != "") {
+    header('Location: forget-password.php?key=<?=$key?>&error=0');
 }
 
 ?>
@@ -68,7 +67,9 @@ if ($mdp1 === $mdp2 AND $mdp1 != "") {
                                         </div>
                                         <div class="card-content">
                                             <div class="card-body">
-
+                                                <?php if (htmlspecialchars($_GET['error']) == "0") {?>
+                                                    <h6 class="text-warning">Les mots de passe ne correspondent pas</h6>
+                                                <?php } ?>
                                                 <form action="" method="POST" enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         <label class="text-bold-600" for="exampleInputPassword1">Mot de
