@@ -16,6 +16,7 @@ if (isset($key) && !empty($key)) {
     if (!($mail = $req_key_reset->fetch())) {
         header('Location: ../../../index.php');
     }
+    \\ AJOUTER l envoie de mail
     
 } else {
     header('Location: ../../../index.php');
@@ -23,8 +24,6 @@ if (isset($key) && !empty($key)) {
 
 $mdp1 = htmlspecialchars($_POST['passwordentreprise']);
 $mdp2 = htmlspecialchars($_POST['passwordentreprise2']);
-?><script>alert(<?=$key?>)</script><?php
-// ajouter regle mdp !
 
 if ($mdp1 == $mdp2 && $mdp1 != "") {
 
