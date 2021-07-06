@@ -69,3 +69,40 @@ branche de leo :
 	tache réalisée 28/06/21
 		-factorisation du chat
 		-liaison du chat (chat censé être fonctionnel, à tester en ligne car le chat ne fonctionne pas en local)
+
+	tache réalisée 29/06/2021
+		-chat present sur offre domiciliation
+		-inclusion du 'type' (domiciliation, coworking...) lors de la recherche (boutons fonctionnels)
+
+branch de robin :
+	tache réalisée 29/06/21
+		-affichage des boutons correspondant sur offre domiciliation
+		-affichage de la description de l'offre sur offre domiciliation
+
+branche de oscar:
+	tache réalisée le 28/06/2021:
+		-création page accueil crea
+
+	tache réalisée le 29/06/2021:
+		-partie domiciliation ajouté à la page accueil crea
+		-partie documents ajouté à la page accueil crea
+		-tchat ajouté à la page d'accueil crea
+
+btanche de leo :
+	tache réalisée le 30/06/2021:
+		-base de données : offre-domiciliation fixed et ajout de la partie img
+		-ajout des images sur domiciliation
+		-rectification chat : petite fleche à droite en "popup"
+
+branche de oscar :
+	tache réalisée le 01/07/2021 :
+		- page-creation.php responsive
+		- ajout des caractéristique des offres de domiciliation page domiciliation-offre.php
+		- creation de page-creation-edit-test.php : travail sur le front
+
+branche de leo :
+	tache réalisée le 01/07/2021
+		-bdd : ajout de la colonne caracteristique dans la table offre-domiciliation
+		-domiciliation-offre.php : ajout des caractéristiques
+		-fix bug page-creation-edit : on ne pouvait pas sauvegarder si on ne modifiait pas le telephone
+		-ajout des "carousel" dans la page domiciliation pour les offres

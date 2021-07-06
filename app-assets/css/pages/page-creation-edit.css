@@ -1,0 +1,76 @@
+@font-face{
+    font-family: "mukta malar bold";
+    src: url("../Mukta_Malar/MuktaMalar-Bold.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar medium";
+    src: url("../Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar light";
+    src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
+}
+
+.harrypotter{display: none;}
+.harrypottergood{display: block;}
+.vert{color: #12ff3a;}
+
+html body {
+    height: 100%;
+    background-color: #edf1ff;
+    direction: ltr;
+}
+
+html body .content .content-wrapper .content-header-title {
+    color: #051441;
+    margin-right: 1rem;
+    border-right: 1px solid #051441;
+}
+
+html body .content .content-wrapper .breadcrumb-wrapper .breadcrumb .breadcrumb-item a, html body .content .content-wrapper .breadcrumb-wrapper .breadcrumb .breadcrumb-item a i {
+    color: #051441;
+    background-color: #edf1ff;
+}
+
+html body .content .content-wrapper .breadcrumb-wrapper .breadcrumb .breadcrumb-item + .breadcrumb-item:before {
+    color: #051441;
+    padding-right: 9px;
+}
+
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1.05rem 1.67rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #edf1ff;
+    border-radius: 0.267rem;
+}
+
+.nav-pills .nav-link, .nav-pills .show > .nav-link {
+    color: #051441;
+    background-color: #edf1ff;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #FFFFFF;
+    background-color: #051441;
+}
+
+.btn-primary {
+    border: none !important;
+    background-color: #29fe8c !important;
+    color: #fff;
+}
+
+.form-group label{
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+.form-group input{
+    font-family: mukta malar light;
+    color: #051441;
+}

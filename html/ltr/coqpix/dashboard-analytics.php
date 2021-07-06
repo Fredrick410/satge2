@@ -44,6 +44,7 @@ require_once 'php/config.php';
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/charts/apexcharts.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/dragula.min.css">
+    <script src="../../../app-assets/vendors/js/extensions/shepherd.min.js"></script>
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -374,10 +375,30 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="../../../app-assets/js/scripts/pages/script.js"></script>  
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="../../../app-assets/js/scripts/pages/script.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/tour.js"></script>  
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
+    
+
+
+    
+    <?php
+         //Exectution des "premiers pas"
+        $pdoS = $bdd->prepare('SELECT premiere_connexion FROM entreprise WHERE id=:id_session');
+        $pdoS->bindValue(':id_session', $_SESSION['id_session']);
+        $pdoS->execute();
+        $premiere_connexion = ($pdoS->fetch())['premiere_connexion'];
+        if ( $premiere_connexion == 1) {
+            ?><script>document.onload = tour.start()</script><?php
+
+
+        }
+    ?>
+
+
+
 </body>
 <!-- END: Body-->
 
