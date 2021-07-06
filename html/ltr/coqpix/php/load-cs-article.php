@@ -25,7 +25,7 @@ if($id){
           FROM `article` 
           WHERE id_session =:id_session AND article = :article "; //$_SESSION
 
-  $datas = array(':article'=>$id, ':id_session'=>$_SESSION['id_session']);
+  $datas = array(':article'=>htmlspecialchars($id), ':id_session'=>$_SESSION['id_session']);
 
   try {
     $pdoS = $bdd->prepare($sql);
