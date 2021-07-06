@@ -146,8 +146,127 @@ require_once 'php/verif_session_connect_admin.php';
 
     }
 
-    // SOCIALE -- DEBUT REQUETES CHART HAUT DROITE 
-        // Requete SQL permettant de recuperer le nombre total d'attestation demandé
+// DEBUT REQUETES SOCIALE 
+
+    // DEBUT CHART 1, BAR CHART 
+
+    for ($i=0; $i<5; $i++) {
+
+        // requete permettant de recuperer le nb attestation URSSAF/MSA demandé
+        $pdoSt= $bdd->prepare('SELECT substr(date_demande, 4,2) AS mois, COUNT(*) AS nb FROM attestation_sociale WHERE type_attestation ="URSSAF/MSA" AND substr(date_demande, 7) = :annee GROUP BY substr(date_demande, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+        ${'demande_soc_'.($annee_actuelle - $i)} = array();
+        while ($result_demande_soc = $pdoSt->fetch()) {
+            ${'demande_soc_'.($annee_actuelle - $i)}[$result_demande_soc['mois']] = $result_demande_soc['nb'];
+        }
+
+        ${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'demande_soc_'.($annee_actuelle - $i)})) {
+                ${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - $i)}[$j] = ${'demande_soc_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - $i)}[$j] = 0;
+            }
+        }
+
+        // requete permettant de recuperer le nb attestation URSSAF/MSA envoyé
+        $pdoSt= $bdd->prepare('SELECT substr(date_donner, 4,2) AS mois, COUNT(*) AS nb FROM attestation_sociale WHERE statut_attestation = "Terminée" AND type_attestation ="URSSAF/MSA" AND substr(date_donner, 7) = :annee GROUP BY substr(date_donner, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+        ${'envoye_soc_'.($annee_actuelle - $i)} = array();
+        while ($result_envoye_soc = $pdoSt->fetch()) {
+            ${'envoye_soc_'.($annee_actuelle - $i)}[$result_envoye_soc['mois']] = $result_envoye_soc['nb'];
+        }
+
+        ${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'envoye_soc_'.($annee_actuelle - $i)})) {
+                ${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - $i)}[$j] = ${'envoye_soc_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - $i)}[$j] = 0;
+            }
+        }
+
+        // requete permettant de recuperer le nb attestation PROBTP demandé
+        $pdoSt= $bdd->prepare('SELECT substr(date_demande, 4,2) AS mois, COUNT(*) AS nb FROM attestation_sociale WHERE type_attestation ="PRO BTP" AND substr(date_demande, 7) = :annee GROUP BY substr(date_demande, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+        ${'demande_soc_'.($annee_actuelle - $i)} = array();
+        while ($result_demande_soc = $pdoSt->fetch()) {
+            ${'demande_soc_'.($annee_actuelle - $i)}[$result_demande_soc['mois']] = $result_demande_soc['nb'];
+        }
+
+        ${'array_demande_soc_PROBTP_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'demande_soc_'.($annee_actuelle - $i)})) {
+                ${'array_demande_soc_PROBTP_'.($annee_actuelle - $i)}[$j] = ${'demande_soc_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_demande_soc_PROBTP_'.($annee_actuelle - $i)}[$j] = 0;
+            }
+        }
+
+        // requete permettant de recuperer le nb attestation PROBTP envoyé
+        $pdoSt= $bdd->prepare('SELECT substr(date_donner, 4,2) AS mois, COUNT(*) AS nb FROM attestation_sociale WHERE statut_attestation = "Terminée" AND type_attestation ="PRO BTP" AND substr(date_donner, 7) = :annee GROUP BY substr(date_donner, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+        ${'envoye_soc_'.($annee_actuelle - $i)} = array();
+        while ($result_envoye_soc = $pdoSt->fetch()) {
+            ${'envoye_soc_'.($annee_actuelle - $i)}[$result_envoye_soc['mois']] = $result_envoye_soc['nb'];
+        }
+
+        ${'array_envoye_soc_PROBTP_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'envoye_soc_'.($annee_actuelle - $i)})) {
+                ${'array_envoye_soc_PROBTP_'.($annee_actuelle - $i)}[$j] = ${'envoye_soc_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_envoye_soc_PROBTP_'.($annee_actuelle - $i)}[$j] = 0;
+            }
+        }
+
+        // requete permettant de recuperer le nb attestation CIBTP demandé
+        $pdoSt= $bdd->prepare('SELECT substr(date_demande, 4,2) AS mois, COUNT(*) AS nb FROM attestation_sociale WHERE type_attestation ="CIBTP" AND substr(date_demande, 7) = :annee GROUP BY substr(date_demande, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+        ${'demande_soc_'.($annee_actuelle - $i)} = array();
+        while ($result_demande_soc = $pdoSt->fetch()) {
+            ${'demande_soc_'.($annee_actuelle - $i)}[$result_demande_soc['mois']] = $result_demande_soc['nb'];
+        }
+
+        ${'array_demande_soc_CIBTP_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'demande_soc_'.($annee_actuelle - $i)})) {
+                ${'array_demande_soc_CIBTP_'.($annee_actuelle - $i)}[$j] = ${'demande_soc_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_demande_soc_CIBTP_'.($annee_actuelle - $i)}[$j] = 0;
+            }
+        }
+
+        // requete permettant de recuperer le nb attestation CIBTP envoyé
+        $pdoSt= $bdd->prepare('SELECT substr(date_donner, 4,2) AS mois, COUNT(*) AS nb FROM attestation_sociale WHERE statut_attestation = "Terminée" AND type_attestation ="CIBTP" AND substr(date_donner, 7) = :annee GROUP BY substr(date_donner, 4,2)');
+        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+        ${'envoye_soc_'.($annee_actuelle - $i)} = array();
+        while ($result_envoye_soc = $pdoSt->fetch()) {
+            ${'envoye_soc_'.($annee_actuelle - $i)}[$result_envoye_soc['mois']] = $result_envoye_soc['nb'];
+        }
+
+        ${'array_envoye_soc_CIBTP_'.($annee_actuelle - $i)} = array();
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'envoye_soc_'.($annee_actuelle - $i)})) {
+                ${'array_envoye_soc_CIBTP_'.($annee_actuelle - $i)}[$j] = ${'envoye_soc_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'array_envoye_soc_CIBTP_'.($annee_actuelle - $i)}[$j] = 0;
+            }
+        }
+
+
+
+    }
+
+    // FIN CHART 1, BAR CHART
+
+    // Requete SQL permettant de recuperer le nombre total d'attestation demandé
     for ($i=0 ; $i<5 ; $i++) {
 
         $pdoSta = $bdd->prepare('SELECT * FROM attestation_sociale where type_attestation = "URSSAF/MSA" and substr(date_demande,7) =:annee');
@@ -167,6 +286,62 @@ require_once 'php/verif_session_connect_admin.php';
         $pdoSta->execute();
         $attestation_cibtp = $pdoSta->fetchAll();
         ${'count_cibtp_'.($annee_actuelle - $i)} = count($attestation_cibtp);
+
+    }
+
+    // recup attestation envoyé par mois pour growth chart
+    for ($i=0 ; $i<5 ; $i++) {
+
+        // Requete SQL permettant de recuperer le nombre attestation URSSAF/MSA envoyé par annee et par mois
+        $select_att_envoye = $bdd->prepare('SELECT substr(date_donner,4,2) as mois, round(count(*) / (SELECT count(*) FROM attestation_sociale) * 100) AS att_envoye FROM attestation_sociale WHERE statut_attestation = "Terminée" AND substr(date_donner,7) =:annee AND type_attestation = "URSSAF/MSA" GROUP BY substr(date_donner,4,2)');
+        $select_att_envoye->execute(array(':annee' => $annee_actuelle - $i));
+        ${'array_att_envoye_'.($annee_actuelle - $i)} = array();
+        while ($result_att_envoye = $select_att_envoye->fetch()) {
+            ${'array_att_envoye_'.($annee_actuelle - $i)}[$result_att_envoye['mois']] = $result_att_envoye['att_envoye'];
+        }
+
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'array_att_envoye_'.($annee_actuelle - $i)})) {
+                ${'total_envoye_URSSAFMSA_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_att_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'total_envoye_URSSAFMSA_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
+            }
+        }
+
+        // Requete SQL permettant de recuperer le nombre attestation PROBTP envoyé par annee et par mois
+        $select_att_envoye = $bdd->prepare('SELECT substr(date_donner,4,2) as mois, round(count(*) / (SELECT count(*) FROM attestation_sociale) * 100) AS att_envoye FROM attestation_sociale WHERE statut_attestation = "Terminée" AND substr(date_donner,7) =:annee AND type_attestation = "PROBTP" GROUP BY substr(date_donner,4,2)');
+        $select_att_envoye->execute(array(':annee' => $annee_actuelle - $i));
+        ${'array_att_envoye_'.($annee_actuelle - $i)} = array();
+        while ($result_att_envoye = $select_att_envoye->fetch()) {
+            ${'array_att_envoye_'.($annee_actuelle - $i)}[$result_att_envoye['mois']] = $result_att_envoye['att_envoye'];
+        }
+
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'array_att_envoye_'.($annee_actuelle - $i)})) {
+                ${'total_envoye_PROBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_att_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'total_envoye_PROBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
+            }
+        }
+
+        // Requete SQL permettant de recuperer le nombre attestation CIBTP envoyé par annee et par mois
+        $select_att_envoye = $bdd->prepare('SELECT substr(date_donner,4,2) as mois, round(count(*) / (SELECT count(*) FROM attestation_sociale) * 100) AS att_envoye FROM attestation_sociale WHERE statut_attestation = "Terminée" AND substr(date_donner,7) =:annee AND type_attestation = "CIBTP" GROUP BY substr(date_donner,4,2)');
+        $select_att_envoye->execute(array(':annee' => $annee_actuelle - $i));
+        ${'array_att_envoye_'.($annee_actuelle - $i)} = array();
+        while ($result_att_envoye = $select_att_envoye->fetch()) {
+            ${'array_att_envoye_'.($annee_actuelle - $i)}[$result_att_envoye['mois']] = $result_att_envoye['att_envoye'];
+        }
+
+        for($j=0; $j<12; $j++) {
+            if (array_key_exists($mois[$j], ${'array_att_envoye_'.($annee_actuelle - $i)})) {
+                ${'total_envoye_CIBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_att_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
+            }
+            else {
+                ${'total_envoye_CIBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
+            }
+        }
 
     }
 
@@ -216,24 +391,94 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- END: Custom CSS-->
 
 </head>
+<style>
+    table tbody {
+        display: block;
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    table thead, table tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .round {
+        position: relative;
+        border: 2px solid #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+    }
+
+    .round:hover{
+        background-color: #5A5E6B;
+    }
+
+    .line1, .line2 {
+        z-index: 999;
+        height: 2px;
+        margin:1px;
+        width: 12px;
+        background: #fff;
+        transition: 0.4s ease;
+    }
+
+    .line1:first-child {
+        display: block;
+        position: absolute;
+        transform: rotate(45deg);
+        right: 33%;
+        bottom: 35%;
+    }
+
+    .line1:nth-child(2) {
+        display: block;
+        position: absolute;
+        transform: rotate(-45deg);
+        right: 33%;
+        bottom: 55%;
+    }
+
+    .line2:first-child {
+        display: block;
+        position: absolute;
+        transform: rotate(-45deg);
+        left: 35%;
+        bottom: 35%;
+    }
+
+    .line2:nth-child(2) {
+        display: block;
+        position: absolute;
+        transform: rotate(45deg);
+        left: 35%;
+        bottom: 55%;
+    }
+
+    .round:hover .line1:nth-child(1) {
+        transform: rotate(225deg);
+    }
+
+    .round:hover .line1:nth-child(2) {
+        transform: rotate(-225deg);
+    }
+
+    .round:hover .line2:nth-child(1) {
+        transform: rotate(-225deg);
+    }
+
+    .round:hover .line2:nth-child(2) {
+        transform: rotate(225deg);
+    }
+
+</style>
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
 
 <body class="horizontal-layout horizontal-menu navbar-static dark-layout 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns" data-layout="dark-layout">
-<style>
-    table tbody {
-    display: block;
-    max-height: 300px;
-    overflow-y: scroll;
-}
-
-table thead, table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-</style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-primary navbar-brand-center">
         <div class="navbar-header d-xl-block d-none">
@@ -345,7 +590,7 @@ table thead, table tbody tr {
                                                                                 <i class='bx bxs-save font-medium-5'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h6 class="text-center"><?= ${'count_prospect_'.$annee_actuelle} ?></h6>
+                                                                        <h6 class="text-center" id="id_text_count_prospect"><?= ${'count_prospect_'.$annee_actuelle} ?></h6>
                                                                         
                                                                     </div>
                                                                     <div class="sessions-analytics">                                                                    
@@ -369,7 +614,7 @@ table thead, table tbody tr {
                                                                     </div>
                                                                 </div>   
 
-                                                                <div id="analytics-bar-chart">
+                                                                <div id="analytics-bar-chart-compta">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1045,50 +1290,46 @@ table thead, table tbody tr {
                                     <!-- FIN COMPTA -->
                                 </div>
                                 <div class="swiper-slide">
-                                    <!-- DEBUT COMPTA -->
+                                    <!-- DEBUT SOCIALE -->
                                     <div class="row">
                                         <!-- DEBUT COLONNE GAUCHE -->
                                         <div class="col-xl-9 col-sm-12">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="card">                                                        
+                                                    <div class="card">                                                                                           
+                                                        <div class="d-flex">
+                                                            <div class="p-2">
+                                                                    <select style="border: none;" class="form-control text-white" id="id_select_type_sociale">
+                                                                        <option value="URSSAFMSA">Attestation URSSAF/MSA &nbsp&nbsp</option>
+                                                                        <option value="PROBTP">Attestation PRO BTP &nbsp&nbsp</option>
+                                                                        <option value="CIBTP">Attestation CIBTP &nbsp&nbsp</option>
+                                                                    </select>                                                                            
+                                                            </div>                                                                        
+                                                            <div class="ml-auto p-2">
+                                                                    <select style="width: 80px;" class="form-control" id="id_select_sociale">
+                                                                        <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
+                                                                        <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
+                                                                        <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
+                                                                        <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
+                                                                        <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                    </select>
+                                                            </div>
+                                                        </div>
                                                         <div class="card-content">
-                                                            <div class="card-body pb-1">
-                                                                <div class="swiper-navigations swiper-container">
-                                                                    <div class="d-flex">
-                                                                        <div class="p-2">
-                                                                            <select style="border: none;" class="form-control text-white" id="">
-                                                                                <option value="attestion_msa">Attestation URSSAF/MSA &nbsp&nbsp</option>
-                                                                                <option value="attestion_probtp">Attestation PRO BTP &nbsp&nbsp</option>
-                                                                                <option value="attestion_cibtp">Attestation CIBTP &nbsp&nbsp</option>
-                                                                            </select>                                                                            
-                                                                        </div>                                                                        
-                                                                        <div class="ml-auto p-2">
-                                                                            <select style="width: 80px;" class="form-control" id="id_select_sociale">
-                                                                                <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
-                                                                                <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
-                                                                                <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
-                                                                                <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
-                                                                                <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
-                                                                            </select>
+                                                            <div class="card-body pb-1 d-flex">     
+                                                                    <div class="d-flex flex-column justify-content-center"><a class="display-block" href="#" id="id_fleche_gauche_sociale">
+                                                                        <div class="round">
+                                                                            <span class="line1"></span>
+                                                                            <span class="line1"></span>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="swiper-wrapper">
-                                                                        <div class="swiper-slide"> <div id="analytics-bar-chart2"></div>
+                                                                    </a></div>
+                                                                    <div class="flex-grow-1 mr-1" id="analytics-bar-chart-sociale"></div>
+                                                                    <div class="d-flex flex-column justify-content-center"><a class="display-block" href="#" id="id_fleche_droite_sociale">
+                                                                        <div class="round">
+                                                                            <span class="line2"></span>
+                                                                            <span class="line2"></span>
                                                                         </div>
-                                                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-4.jpg" alt="banner">
-                                                                        </div>
-                                                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-14.jpg" alt="banner">
-                                                                        </div>
-                                                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-3.jpg" alt="banner">
-                                                                        </div>
-                                                                        <div class="swiper-slide"> <img class="img-fluid" src="../../../app-assets/images/banner/banner-2.jpg" alt="banner">
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Add Arrows -->
-                                                                    <div class="swiper-button-next"></div>
-                                                                    <div class="swiper-button-prev"></div>
-                                                                </div>
+                                                                        </a></div>                                                                    
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1104,8 +1345,25 @@ table thead, table tbody tr {
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
                                                             <h6 class="text-white text-center"> Total </h6> 
-                                                                <input type="hidden" id="nb_total" value="">
-                                                                <h6 class="text-center"> <?= $count_msa_2021 ?> </h6>                                                           
+                                                            <?php
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        $id_count_msa = "id_count_URSSAFMSA_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_count_msa ?>" value="<?= ${"count_msa_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+
+                                                                    <?php
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        $id_count_probtp = "id_count_PROBTP_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_count_probtp ?>" value="<?= ${"count_probtp_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+
+                                                                    <?php
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        $id_count_cibtp = "id_count_CIBTP_".($annee_actuelle - $i); ?>
+                                                                        <input type="hidden" id="<?= $id_count_cibtp ?>" value="<?= ${"count_cibtp_".($annee_actuelle - $i)} ?>"> <?php
+                                                                    } ?>
+                                                               
+                                                                <h6 class="text-center" id="id_text_count_msa"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>                                                           
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1118,17 +1376,41 @@ table thead, table tbody tr {
                                                     <div class="card">
                                                         <div class="card-body text-center">
                                                             <div class="dropdown">
+                                                                <?php 
+                                                                    for ($i=0; $i<5 ; $i++) {
+                                                                        for ($j=0; $j<12 ; $j++) {
+                                                                            $id_total_envoye = "total_envoye_URSSAFMSA_".$mois[$j]."_".($annee_actuelle - $i); ?>
+                                                                            <input type="hidden" id="<?= $id_total_envoye ?>" value="<?= ${'total_envoye_URSSAFMSA_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
+                                                                        }
+                                                                        for ($j=0; $j<12 ; $j++) {
+                                                                            $id_total_envoye = "total_envoye_PROBTP_".$mois[$j]."_".($annee_actuelle - $i); ?>
+                                                                            <input type="hidden" id="<?= $id_total_envoye ?>" value="<?= ${'total_envoye_PROBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
+                                                                        }
+                                                                        for ($j=0; $j<12 ; $j++) {
+                                                                            $id_total_envoye = "total_envoye_CIBTP_".$mois[$j]."_".($annee_actuelle - $i); ?>
+                                                                            <input type="hidden" id="<?= $id_total_envoye ?>" value="<?= ${'total_envoye_CIBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
+                                                                        }
+                                                                    } 
+                                                                ?>
                                                                 <h6 class="text-white mb-1"> Attestation URSSAF </h6>
-                                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    2019
-                                                                </button>
-                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
-                                                                    <a class="dropdown-item" href="#">2019</a>
-                                                                    <a class="dropdown-item" href="#">2018</a>
-                                                                    <a class="dropdown-item" href="#">2017</a>
+                                                                <div class="d-flex justify-content-center">
+                                                                        <select style="width: 80px;" class="form-control" id="id_select_mois_sociale">
+                                                                            <option value="01">Janv</option>
+                                                                            <option value="02">Fevr</option>
+                                                                            <option value="03">Mars</option>
+                                                                            <option value="04">Avril</option>
+                                                                            <option value="05">Mai</option>
+                                                                            <option value="06">Juin</option>
+                                                                            <option value="07">Juil</option>
+                                                                            <option value="08">Aout</option>
+                                                                            <option value="09">Sept</option>
+                                                                            <option value="10">Oct</option>
+                                                                            <option value="11">Nov</option>
+                                                                            <option value="12">Dec</option>
+                                                                        </select>
                                                                 </div>
                                                             </div>
-                                                            <div id="growth-Chart"></div>
+                                                            <div id="growth-Chart-sociale-envoye"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1136,7 +1418,7 @@ table thead, table tbody tr {
                                             <!-- FIN CROISSANCE -->
                                         </div>
                                     </div>
-                                    <!-- FIN COMPTA -->
+                                    <!-- FIN SOCIALE -->
                                 </div>
                             </div>
                         </div>
@@ -1194,6 +1476,52 @@ table thead, table tbody tr {
         this[array_passif + (annee_actuelle - 2)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 2)}); ?>;
         this[array_passif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 3)}); ?>;
         this[array_passif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 4)}); ?>;
+
+        var array_demande_soc = "array_demande_soc_URSSAFMSA_";
+        var array_envoye_soc = "array_envoye_soc_URSSAFMSA_";
+
+        this[array_demande_soc + annee_actuelle] =<?php echo json_encode(${'array_demande_soc_URSSAFMSA_'.($annee_actuelle)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - 1)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - 2)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - 3)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_demande_soc_URSSAFMSA_'.($annee_actuelle - 4)}); ?>;
+
+        this[array_envoye_soc + annee_actuelle] =<?php echo json_encode(${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - 1)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - 2)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - 3)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_soc_URSSAFMSA_'.($annee_actuelle - 4)}); ?>;
+
+        var array_demande_soc = "array_demande_soc_PROBTP_";
+        var array_envoye_soc = "array_envoye_soc_PROBTP_";
+
+        this[array_demande_soc + annee_actuelle] =<?php echo json_encode(${'array_demande_soc_PROBTP_'.($annee_actuelle)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_demande_soc_PROBTP_'.($annee_actuelle - 1)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_demande_soc_PROBTP_'.($annee_actuelle - 2)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_demande_soc_PROBTP_'.($annee_actuelle - 3)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_demande_soc_PROBTP_'.($annee_actuelle - 4)}); ?>;
+
+        this[array_envoye_soc + annee_actuelle] =<?php echo json_encode(${'array_envoye_soc_PROBTP_'.($annee_actuelle)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_envoye_soc_PROBTP_'.($annee_actuelle - 1)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_envoye_soc_PROBTP_'.($annee_actuelle - 2)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_envoye_soc_PROBTP_'.($annee_actuelle - 3)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_soc_PROBTP_'.($annee_actuelle - 4)}); ?>;
+
+        var array_demande_soc = "array_demande_soc_CIBTP_";
+        var array_envoye_soc = "array_envoye_soc_CIBTP_";
+
+        this[array_demande_soc + annee_actuelle] =<?php echo json_encode(${'array_demande_soc_CIBTP_'.($annee_actuelle)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_demande_soc_CIBTP_'.($annee_actuelle - 1)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_demande_soc_CIBTP_'.($annee_actuelle - 2)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_demande_soc_CIBTP_'.($annee_actuelle - 3)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_demande_soc_CIBTP_'.($annee_actuelle - 4)}); ?>;
+
+        this[array_envoye_soc + annee_actuelle] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle - 1)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle - 2)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle - 3)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle - 4)}); ?>;
+
 
     </script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
@@ -1257,23 +1585,24 @@ table thead, table tbody tr {
                 document.getElementById("id_table_achats").style.display = "none";
                 document.getElementById("id_table_tresorerie").style.display = "block";
             });
+
             // script JS pour la data chart SOCIALE
-         /*   $("#id_select_sociale").change(function() {
+            
+             $("#id_select_sociale").change(function() {
                 
-                var annee_portefeuille = $("#id_select_sociale").children("option:selected").val();
-                var id_count_prospect = "id_count_prospect_" + annee_portefeuille;
-                var id_count_encours = "id_count_encours_" + annee_portefeuille;
-                var id_count_actif = "id_count_actif_" + annee_portefeuille;
-                var count_prospect = document.getElementById(id_count_prospect).value;
-                var count_encours = document.getElementById(id_count_encours).value;
-                var count_actif = document.getElementById(id_count_actif).value;
-                document.getElementById("id_text_count_prospect").innerText = count_prospect;
-                document.getElementById("id_text_count_encours").innerText = count_encours;
-                document.getElementById("id_text_count_actif").innerText = count_actif;
-
-
-            });*/
-
+                var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+                var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+                var id_count_total = "id_count_" + type_sociale + "_" + annee_sociale;
+                var id_count_probtp = "id_count_" + type_sociale + "_" + annee_sociale;
+                var id_count_cibtp = "id_count_" + type_sociale + "_" + annee_sociale;
+                var count_msa = document.getElementById(id_count_msa).value;
+                var count_probtp = document.getElementById(id_count_probtp).value;
+                var count_cibtp = document.getElementById(id_count_cibtp).value;
+                document.getElementById("id_text_count_msa").innerText = count_msa;
+                document.getElementById("id_text_count_probtp").innerText = count_probtp;
+                document.getElementById("id_text_count_cibtp").innerText = count_cibtp; 
+            });
+           
         });
 
     </script>

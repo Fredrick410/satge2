@@ -195,7 +195,7 @@ $(window).on("load", function() {
     // Bar Chart
     // ---------
 
-    function analyticsBarChartOptions(array_1, array_2) {
+    function analyticsBarChartOptions(array_1, array_2, legende_1, legende_2) {
 
         var analyticsBarChartOptions = {
             chart: {
@@ -228,10 +228,10 @@ $(window).on("load", function() {
                 },
             },
             series: [{
-                name: 'nombre valide',
+                name: legende_1,
                 data: [array_1[0], array_1[1], array_1[2], array_1[3], array_1[4], array_1[5], array_1[6], array_1[7], array_1[8], array_1[9], array_1[10], array_1[11]]
             }, {
-                name: 'passif',
+                name: legende_2,
                 data: [array_2[0], array_2[1], array_2[2], array_2[3], array_2[4], array_2[5], array_2[6], array_2[7], array_2[8], array_2[9], array_2[10], array_2[11]]
             }],
             xaxis: {
@@ -281,9 +281,11 @@ $(window).on("load", function() {
         return analyticsBarChartOptions
     }
 
+    // DEBUT COMPTA
+
     var analyticsBarChart = new ApexCharts(
-        document.querySelector("#analytics-bar-chart"),
-        analyticsBarChartOptions(array_actif_2021, array_passif_2021)
+        document.querySelector("#analytics-bar-chart-compta"),
+        analyticsBarChartOptions(array_actif_2021, array_passif_2021, " Nombre valide", " Passif")
     );
 
     analyticsBarChart.render();
@@ -294,17 +296,64 @@ $(window).on("load", function() {
         var array_actif = "array_actif_" + annee_portefeuille;
         var array_passif = "array_passif_" + annee_portefeuille;
 
-        $("#analytics-bar-chart").empty();
+        $("#analytics-bar-chart-compta").empty();
 
-        var growthChart = new ApexCharts(
-            document.querySelector("#analytics-bar-chart"),
-            analyticsBarChartOptions(window[array_actif], window[array_passif])
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-compta"),
+            analyticsBarChartOptions(window[array_actif], window[array_passif], " Nombre valide", " Passif")
         );
 
-        growthChart.render();
+        analyticsBarChart.render();
 
     });
 
+    // FIN COMPTA
+
+
+    // DEBUT SOCIALE 
+    var analyticsBarChart = new ApexCharts(
+        document.querySelector("#analytics-bar-chart-sociale"),
+        analyticsBarChartOptions(array_demande_soc_URSSAFMSA_2021, array_envoye_soc_URSSAFMSA_2021, " Nombre demandé", " Envoyé")
+    );
+
+    analyticsBarChart.render();
+
+    $("#id_select_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var array_demande_soc = "array_demande_soc_" + type_sociale + "_" + annee_sociale;
+        var array_envoye_soc = "array_envoye_soc_" + type_sociale + "_" + annee_sociale;
+
+        $("#analytics-bar-chart-sociale").empty();
+
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-sociale"),
+            analyticsBarChartOptions(window[array_demande_soc], window[array_envoye_soc], " Nombre demandé", " Envoyé")
+        );
+
+        analyticsBarChart.render();
+
+    });
+
+    $("#id_select_type_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var array_demande_soc = "array_demande_soc_" + type_sociale + "_" + annee_sociale;
+        var array_envoye_soc = "array_envoye_soc_" + type_sociale + "_" + annee_sociale;
+
+        $("#analytics-bar-chart-sociale").empty();
+
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-sociale"),
+            analyticsBarChartOptions(window[array_demande_soc], window[array_envoye_soc], " Nombre demandé", " Envoyé")
+        );
+
+        analyticsBarChart.render();
+    });
+
+    // FIN SOCIALE
 
     // Success Line Chart
     // -----------------------------
@@ -828,7 +877,7 @@ $(window).on("load", function() {
     // Growth Radial Chart
     // --------------------
 
-    function growthChartOptions(pourcentage) {
+    function growthChartOptions(pourcentage, label_1) {
 
         var growthChartOptions = {
             chart: {
@@ -886,7 +935,7 @@ $(window).on("load", function() {
                 dashArray: 3
             },
             series: [pourcentage],
-            labels: ['Growth'],
+            labels: [label_1],
         }
 
         return growthChartOptions
@@ -904,7 +953,7 @@ $(window).on("load", function() {
 
     var growthChart = new ApexCharts(
         document.querySelector("#growth-Chart-prelevement"),
-        growthChartOptions(taux_prelevement)
+        growthChartOptions(taux_prelevement, "Croissance")
     );
 
     growthChart.render();
@@ -921,7 +970,7 @@ $(window).on("load", function() {
 
         var growthChart = new ApexCharts(
             document.querySelector("#growth-Chart-prelevement"),
-            growthChartOptions(taux_prelevement)
+            growthChartOptions(taux_prelevement, "Croissance")
         );
 
         growthChart.render();
@@ -940,7 +989,7 @@ $(window).on("load", function() {
 
         var growthChart = new ApexCharts(
             document.querySelector("#growth-Chart-prelevement"),
-            growthChartOptions(taux_prelevement)
+            growthChartOptions(taux_prelevement, "Croissance")
         );
 
         growthChart.render();
@@ -956,7 +1005,7 @@ $(window).on("load", function() {
 
     var growthChart = new ApexCharts(
         document.querySelector("#growth-Chart-bilan"),
-        growthChartOptions(bilan_annuel)
+        growthChartOptions(bilan_annuel, "Croissance")
     );
 
     growthChart.render();
@@ -972,7 +1021,7 @@ $(window).on("load", function() {
 
         var growthChart = new ApexCharts(
             document.querySelector("#growth-Chart-bilan"),
-            growthChartOptions(bilan_annuel)
+            growthChartOptions(bilan_annuel, "Croissance")
         );
 
         growthChart.render();
@@ -980,6 +1029,80 @@ $(window).on("load", function() {
     });
 
     // FIN BILAN ANNUEL
+
+    // DEBUT ATTESTATION SOCIALE ENVOYE 
+
+    document.getElementById("id_select_mois_sociale").selectedIndex = mois_actuel - 1;
+    var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+    var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_actuel + "_" + annee_actuelle;
+    var total_envoye = document.getElementById(id_total_envoye).value;
+
+    var growthChart = new ApexCharts(
+        document.querySelector("#growth-Chart-sociale-envoye"),
+        growthChartOptions(total_envoye, "Envoyé")
+    );
+
+    growthChart.render();
+
+    $("#id_select_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    $("#id_select_mois_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    $("#id_select_type_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    // FIN ATTESTATION SOCIALE ENVOYE
 
 
     // Widget Todo List
