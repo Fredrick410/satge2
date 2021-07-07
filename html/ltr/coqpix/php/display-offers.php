@@ -36,7 +36,6 @@ if ($type == 7) {
 }
 
 
-
 $query->setFetchMode(PDO::FETCH_ASSOC);
 while ($ligne = $query->fetch()) 
     $tab[]= $ligne; //on recupere le tableau des offres

@@ -35,7 +35,7 @@ ini_set('display_startup_errors', TRUE);
                     var_dump($exception->getMessage());
                     echo "qcm-add.php?id=$id";
                 }
-                $id = $_POST['idqcm'];
+                $id = htmlspecialchars($_POST['idqcm']);
                 echo "rh-recrutement-entretient-question.php?id=$id";
                 exit();
             }
