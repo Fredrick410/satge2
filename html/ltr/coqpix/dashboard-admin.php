@@ -290,6 +290,37 @@ for ($i = 0; $i < 5; $i++) {
                         </div>
                         <div class="card-body">
                             <div class="accordion" id="cardAccordion" data-toggle-hover="true">
+                               <!-- Taches juridiques a ajouter
+                                <div class="card">
+                                    <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" role="button">
+                                        <div class="d-flex activity-content">
+                                            <div class="activity-progress flex-grow-1">
+                                                <small class="text-muted d-inline-block mb-50">Taches juridiques</small>
+                                                <small class="float-right"><?//= $nb_tache_juri_valide ?> / <?//= $nb_tache_juri_total ?></small>
+                                                <div class="progress progress-bar-warning progress-sm">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?//= 100*$nb_tache_juri_valide/$nb_tache_juri_total ?>" style="width:<?//= 100*$nb_tache_juri_valide/$nb_tache_juri_total ?>%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collapseThree" class="pt-0 collapse" aria-labelledby="headingThree" data-parent="#cardAccordion">
+                                        <div class="card-body">
+                                            <a href="task-sociale.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php //foreach($task_juri as $tasks): ?>
+                                                        <li class="todo-item my-1">
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?//= $tasks['name_task'] ?> | <?//= $tasks['dte_echeance'] ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <?php //endforeach; ?>
+                                                </ul>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div> -->
                                 <div class="card collapse-header">
                                     <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" role="button">
                                         <div class="d-flex activity-content">
@@ -302,19 +333,21 @@ for ($i = 0; $i < 5; $i++) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="collapseTwo" class="pt-1 collapse" aria-labelledby="headingTwo" data-parent="#cardAccordion">
+                                    <div id="collapseTwo" class="pt-0 collapse" aria-labelledby="headingTwo" data-parent="#cardAccordion">
                                         <div class="card-body">
-                                            <ul class="todo-task-list-wrapper list-unstyled" id="">
-                                                <?php foreach($task_compta as $tasks): ?>
-                                                    <li class="todo-item border rounded" style="height: 50px;">
-                                                        <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
-                                                            <div class="todo-title-area d-flex">
-                                                                <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                            <a href="task-compta.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php foreach($task_compta as $tasks): ?>
+                                                        <li class="todo-item my-1" >
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -330,19 +363,21 @@ for ($i = 0; $i < 5; $i++) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="collapseThree" class="pt-1 collapse" aria-labelledby="headingThree" data-parent="#cardAccordion">
+                                    <div id="collapseThree" class="pt-0 collapse" aria-labelledby="headingThree" data-parent="#cardAccordion">
                                         <div class="card-body">
-                                            <ul class="todo-task-list-wrapper list-unstyled" id="">
-                                                <?php foreach($task_socia as $tasks): ?>
-                                                    <li class="todo-item my-1">
-                                                        <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative;">
-                                                            <div class="todo-title-area d-flex">
-                                                                <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                            <a href="task-sociale.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php foreach($task_socia as $tasks): ?>
+                                                        <li class="todo-item my-1">
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -358,19 +393,21 @@ for ($i = 0; $i < 5; $i++) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="collapseFour" class="collapse pt-1" aria-labelledby="headingFour" data-parent="#cardAccordion">
+                                    <div id="collapseFour" class="collapse pt-0" aria-labelledby="headingFour" data-parent="#cardAccordion">
                                         <div class="card-body">
-                                            <ul class="todo-task-list-wrapper list-unstyled" id="">
-                                                <?php foreach($task_fisca as $tasks): ?>
-                                                    <li class="todo-item" style="height: 50px;">
-                                                        <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
-                                                            <div class="todo-title-area d-flex">
-                                                                <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                            <a href="task-fisca.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php foreach($task_fisca as $tasks): ?>
+                                                        <li class="todo-item my-1">
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
