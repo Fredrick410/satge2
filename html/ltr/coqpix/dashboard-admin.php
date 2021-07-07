@@ -26,6 +26,19 @@ $nb_tache_juri = $query->fetch();
 $nb_tache_juri_total = $nb_tache_juri['nb_tache_juri_total'];
 $nb_tache_juri_valide = $nb_tache_juri['nb_tache_juri_valide']; */
 
+
+//Récupération des taches socia/compta et fisca
+    $pdoStat = $bdd->prepare('SELECT * FROM task_sociale where statut_task != "valide"');
+    $pdoStat->execute();
+    $task_socia = $pdoStat->fetchAll();
+    $pdoStat = $bdd->prepare('SELECT * FROM task_compta where statut_task != "valide"');
+    $pdoStat->execute();
+    $task_compta = $pdoStat->fetchAll();
+    $pdoStat = $bdd->prepare('SELECT * FROM task_fisca where statut_task != "valide"');
+    $pdoStat->execute();
+    $task_fisca = $pdoStat->fetchAll();
+
+
 $pdoSt = $bdd->prepare('SELECT * FROM comptable');
 $pdoSt->execute();
 $comptables = $pdoSt->fetchAll();
@@ -279,16 +292,11 @@ for ($i = 0; $i < 5; $i++) {
                             <div class="accordion" id="cardAccordion" data-toggle-hover="true">
                                 <div class="card collapse-header">
                                     <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" role="button">
-                                    <div class="d-flex activity-content">
-                                            <div class="avatar bg-rgba-primary m-0 mr-75">
-                                                <div class="avatar-content">
-                                                    <i class="bx bx-bar-chart-alt-2 text-primary"></i>
-                                                </div>
-                                            </div>
+                                        <div class="d-flex activity-content">
                                             <div class="activity-progress flex-grow-1">
                                                 <small class="text-muted d-inline-block mb-50">Taches comptabilité</small>
                                                 <small class="float-right"><?= $nb_tache_compta_valide ?> / <?= $nb_tache_compta_total ?></small>
-                                                <div class="progress progress-bar-warning progress-sm">
+                                                <div class="progress progress-bar-yellow progress-sm">
                                                     <div class="progress-bar" role="progressbar" aria-valuenow="<?= 100*$nb_tache_compta_valide/$nb_tache_compta_total ?>" style="width:<?= 100*$nb_tache_compta_valide/$nb_tache_compta_total ?>%"></div>
                                                 </div>
                                             </div>
@@ -296,19 +304,23 @@ for ($i = 0; $i < 5; $i++) {
                                     </div>
                                     <div id="collapseTwo" class="pt-1 collapse" aria-labelledby="headingTwo" data-parent="#cardAccordion">
                                         <div class="card-body">
-                                            Pastry pudding cookie toffee bonbon jujubes jujubes powder topping. Jelly beans gummi bears sweet
-                                            roll bonbon muffin liquorice. Wafer lollipop sesame snaps.
+                                            <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                <?php foreach($task_compta as $tasks): ?>
+                                                    <li class="todo-item border rounded" style="height: 50px;">
+                                                        <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
+                                                            <div class="todo-title-area d-flex">
+                                                                <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card">
                                     <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" role="button">
-                                    <div class="d-flex activity-content">
-                                            <div class="avatar bg-rgba-primary m-0 mr-75">
-                                                <div class="avatar-content">
-                                                    <i class="bx bx-bar-chart-alt-2 text-primary"></i>
-                                                </div>
-                                            </div>
+                                        <div class="d-flex activity-content">
                                             <div class="activity-progress flex-grow-1">
                                                 <small class="text-muted d-inline-block mb-50">Taches sociales</small>
                                                 <small class="float-right"><?= $nb_tache_social_valide ?> / <?= $nb_tache_social_total ?></small>
@@ -320,23 +332,27 @@ for ($i = 0; $i < 5; $i++) {
                                     </div>
                                     <div id="collapseThree" class="pt-1 collapse" aria-labelledby="headingThree" data-parent="#cardAccordion">
                                         <div class="card-body">
-                                            Sweet pie candy jelly. Sesame snaps biscuit sugar plum. Sweet roll topping fruitcake. Caramels
-                                            liquorice biscuit ice cream fruitcake cotton candy tart.
+                                            <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                <?php foreach($task_socia as $tasks): ?>
+                                                    <li class="todo-item my-1">
+                                                        <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative;">
+                                                            <div class="todo-title-area d-flex">
+                                                                <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card">
                                     <div class="card-header" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" role="button">
-                                    <div class="d-flex activity-content">
-                                            <div class="avatar bg-rgba-primary m-0 mr-75">
-                                                <div class="avatar-content">
-                                                    <i class="bx bx-bar-chart-alt-2 text-primary"></i>
-                                                </div>
-                                            </div>
+                                        <div class="d-flex activity-content">
                                             <div class="activity-progress flex-grow-1">
                                                 <small class="text-muted d-inline-block mb-50">Taches Fiscales</small>
                                                 <small class="float-right"><?= $nb_tache_fisca_valide ?> / <?= $nb_tache_fisca_total ?></small>
-                                                <div class="progress progress-bar-danger progress-sm">
+                                                <div class="progress progress-bar-warning progress-sm">
                                                     <div class="progress-bar" role="progressbar" aria-valuenow="<?= 100*$nb_tache_fisca_valide/$nb_tache_fisca_total ?>" style="width:<?= 100*$nb_tache_fisca_valide/$nb_tache_fisca_total ?>%"></div>
                                                 </div>
                                             </div>
@@ -344,72 +360,18 @@ for ($i = 0; $i < 5; $i++) {
                                     </div>
                                     <div id="collapseFour" class="collapse pt-1" aria-labelledby="headingFour" data-parent="#cardAccordion">
                                         <div class="card-body">
-                                            Sweet pie candy jelly. Sesame snaps biscuit sugar plum. Sweet roll topping fruitcake. Caramels
-                                            liquorice biscuit ice cream fruitcake cotton candy tart.
+                                            <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                <?php foreach($task_fisca as $tasks): ?>
+                                                    <li class="todo-item" style="height: 50px;">
+                                                        <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
+                                                            <div class="todo-title-area d-flex">
+                                                                <p class="todo-title mx-50 m-0 truncate"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-2">
-                        <div class="card-header">
-                            <h4 class="card-title">Taches</h4>
-                        </div>
-                        <div class="card-body pt-1">
-                            <div class="d-flex activity-content">
-                                <div class="avatar bg-rgba-primary m-0 mr-75">
-                                    <div class="avatar-content">
-                                        <i class="bx bx-bar-chart-alt-2 text-primary"></i>
-                                    </div>
-                                </div>
-                                <div class="activity-progress flex-grow-1">
-                                    <small class="text-muted d-inline-block mb-50">Total Sales</small>
-                                    <small class="float-right">$8,125</small>
-                                    <div class="progress progress-bar-primary progress-sm">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="50" style="width:50%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex activity-content">
-                                <div class="avatar bg-rgba-success m-0 mr-75">
-                                    <div class="avatar-content">
-                                        <i class="bx bx-dollar text-success"></i>
-                                    </div>
-                                </div>
-                                <div class="activity-progress flex-grow-1">
-                                    <small class="text-muted d-inline-block mb-50">Income Amount</small>
-                                    <small class="float-right">$18,963</small>
-                                    <div class="progress progress-bar-success progress-sm">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="80" style="width:80%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex activity-content">
-                                <div class="avatar bg-rgba-warning m-0 mr-75">
-                                    <div class="avatar-content">
-                                        <i class="bx bx-stats text-warning"></i>
-                                    </div>
-                                </div>
-                                <div class="activity-progress flex-grow-1">
-                                    <small class="text-muted d-inline-block mb-50">Total Budget</small>
-                                    <small class="float-right">$14,150</small>
-                                    <div class="progress progress-bar-warning progress-sm">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="60" style="width:60%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-75">
-                                <div class="avatar bg-rgba-danger m-0 mr-75">
-                                    <div class="avatar-content">
-                                        <i class="bx bx-check text-danger"></i>
-                                    </div>
-                                </div>
-                                <div class="activity-progress flex-grow-1">
-                                    <small class="text-muted d-inline-block mb-50">Completed Tasks</small>
-                                    <small class="float-right">106</small>
-                                    <div class="progress progress-bar-danger progress-sm">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="30" style="width:30%"></div>
                                     </div>
                                 </div>
                             </div>
