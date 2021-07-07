@@ -7,14 +7,14 @@ ini_set('display_startup_errors', TRUE);
 
     // vide
 
-    if($_POST['numerosfacture'] == ""){
-        $numerosfacture = "000d";
+    if($_POST['numerosbon'] == ""){
+        $numerosbon = "0000";
     }else{
-        $numerosfacture = $_POST['numerosfacture'];
+        $numerosbon = $_POST['numerosbon'];
     }
 
     if($_POST['dte'] == ""){
-        $dte = "00-00-00";
+        $dte = "0000-00-00";
     }else{
         $dte = $_POST['dte'];
     }
@@ -25,10 +25,16 @@ ini_set('display_startup_errors', TRUE);
         $nomproduit = $_POST['nomproduit'];
     }
 
-    if($_POST['facturepour'] == ""){
-        $facturepour = "Facture pour";
+    if($_POST['quantite'] == ""){
+        $quantite = "0";
     }else{
-        $facturepour = $_POST['facturepour'];
+        $quantite = $_POST['quantite'];
+    }
+
+    if($_POST['commande'] == ""){
+        $commande = "Commande en cours de traitement";
+    }else{
+        $commande = $_POST['commande'];
     }
 
     if($_POST['adresse'] == ""){
@@ -69,13 +75,16 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nomproduit, bonpour, adresse, email, tel, departement, modalite, monnaie, note, status_bon, status_color, etiquette, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, nomproduit, quantite, commande, refbon, adresse, email, tel, departement, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, nom_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
-        htmlspecialchars($numerosfacture),
+        htmlspecialchars($numerosbon),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
+        htmlspecialchars($_POST['nom_bon']),
         htmlspecialchars($nomproduit),
-        htmlspecialchars($facturepour),
+        htmlspecialchars($quantite),
+        htmlspecialchars($commande),
+        htmlspecialchars($_POST['refbon']),
         htmlspecialchars($adresse),
         htmlspecialchars($email),
         htmlspecialchars($tel),
@@ -86,20 +95,40 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($_POST['statut']),
         htmlspecialchars($color),
         htmlspecialchars($_POST['etiquette']),
-        htmlspecialchars($_SESSION['id_session']) //$_SESSION
+        htmlspecialchars($_SESSION['id_session']), //$_SESSION
+        htmlspecialchars($_POST['descrip']),
+        htmlspecialchars($_POST['nom_fournisseur'])
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-        $pdoA->bindValue(':numeros', $numerosfacture);
+        $pdoA->bindValue(':numeros', $numerosarticle);
         $pdoA->execute();
+
+        //calculs
+
+        $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
+        $pdoS->bindValue(':num',$_SESSION['id_session']); // $_SESSION
+        $pdoS->execute();
+        $calculs = $pdoS->fetch();
+
+    try{
+  
+        $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout, quantite,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
+            
+        $req = $bdd->prepare($sql);
+        $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
+        $req->bindValue(':numeros',$_POST['numeroarticle']); 
+        $req->execute();
+        $res = $req->fetch();
+        }catch(Exception $e){
+            echo "Erreur " . $e->getMessage();
+        }
 
         //delete tout les articles en plus
         
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
         $pdoDel->execute();
-
-        
 
     header('Location: ../app-bon-achat-list.php');
     exit();

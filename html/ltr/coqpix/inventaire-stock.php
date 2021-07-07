@@ -208,7 +208,7 @@ require_once 'php/config.php';
                                                     <td><?= $articlee['datecommande'] ?></td>
                                                     <?php foreach($fournisseur as $fournisseurr): ?>
                                                         <td><a href="fournisseur-edit.php?numfour=<?= $fournisseurr['id'] ?>"><?= $articlee['nom_fournisseur'] ?></a></td>
-                                                        <?php endforeach; ?>
+                                                    <?php endforeach; ?>
                                                     <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>" title="Editer article"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>" title="Supprimer article"><i class="bx bx-trash-alt"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="app-bon-achat-add.php?jXN955CbHqqbQ463u5Uq=Rt82u&numfour=<?= $fournisseurr['id'] ?>" title="Commandé l'article"><i class="bx bx-revision"></i></a></td> 
                                                 </tr>
                                             <?php endforeach; ?>

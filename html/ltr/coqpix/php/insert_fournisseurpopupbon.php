@@ -27,6 +27,6 @@ require_once 'config.php';
         htmlspecialchars($_SESSION['id_session'])
     ));
 
-    header('Location: ../article-add.php');
+    header('Location: ../app-bon-achat-add.php?jXN955CbHqqbQ463u5Uq=Rt82u');
 
 ?>
