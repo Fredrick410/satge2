@@ -239,13 +239,6 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>
                                         Conversation
                                     </a>
-                                    <a href="#" class="list-group-item pt-0 ">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: paper-clip.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Document
-                                    </a>
                                     <a href="creation-list-notification.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: label-new.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
@@ -421,30 +414,6 @@ require_once 'php/verif_session_connect_admin.php';
                             <!-- Email list Area -->
                             <div class="email-app-list-wrapper">
                                 <div class="email-app-list">
-                                    <div class="form-group position-relative">
-                                        <div class="alert bg-rgba-info alert-dismissible" role="alert" style="margin: 0px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bx bx-diamond"></i>
-                                                <span>
-                                                    L'Icône diamant signifie que les frais et les honoraires de créa ont été payés
-                                                </span>
-                                            </div>
-                                        </div> 
-                                        <div class="alert bg-rgba-secondary alert-dismissible" role="alert" style="margin: 0px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bx bx-paperclip mr-50"></i>
-                                                <span>
-                                                    Cette Icône va vous permettre de suivre l'avancement du dossier en 3 étapes : &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #ff0000;'></i> - de 33% de l'avancement -> &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #ffbd00;'></i> - de 66% de l'avancement -> &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #59ff00;'></i> - le dossier est validé à 100%
-                                                </span>
-                                            </div>
-                                        </div>                                                                   
-                                    </div>
                                     <div class="email-action">
                                         <!-- action left start here -->
                                         <div class="action-left d-flex align-items-center">
