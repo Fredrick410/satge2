@@ -71,18 +71,16 @@ body{
     font-family: mukta malar bold;
     white-space: nowrap;
     width: 100%;
-    font-size: 10px;
+    font-size: 15px;
 }
 
-#div-info input{
+#div-info p{
     width: 100%;
-    height: 30px;
-    background-color: #EDF1FF;
-    color: #051441;
-    font-family: mukta malar light;
+    height: 20px;
+    color: black;
+    font-family: mukta malar medium;
     border: none;
-    border-radius: 10px;
-    box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+    font-size: 15px;
 }
 
 #info-btn{

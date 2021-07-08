@@ -170,11 +170,11 @@ require_once 'php/verif_session_crea.php';
                             <div class="form-group" id="info-gauche">
                                 <div class="form-row m-0 p-2">
                                     <label>Prénom du dirigeant</label>
-                                    <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" readonly>
+                                    <p name="prenom_diri" class="form-control"> <?= $crea['prenom_diri'] ?> </p>
                                 </div>
                                 <div class="form-row m-0 p-2">
                                     <label>E-mail <span style="text-transform: lowercase;">(identifiant de connexion)</span></label>
-                                    <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" readonly>
+                                    <p name="email_crea" class="form-control"> <?= $crea['email_diri'] ?> </p>
                                 </div>
                             </div>
                         </li>
@@ -182,12 +182,11 @@ require_once 'php/verif_session_crea.php';
                             <div class="form-group" id="info-droite">
                                 <div class="form-row m-0 p-2">
                                     <label>Nom du dirigeant</label>
-                                    <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" readonly>
+                                    <p name="nom_diri" class="form-control"> <?= $crea['nom_diri'] ?> </p>
                                 </div>
                                 <div class="form-row m-0 p-2">
                                     <label>Téléphone du dirigeant</label>
-                                    <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" readonly>
-                                    <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                                    <p name="tel_diri" class="form-control"> <?= $crea['tel_diri'] ?> </p>
                                 </div> 
                             </div> 
                         </li>
@@ -260,22 +259,7 @@ require_once 'php/verif_session_crea.php';
             }
         }
 
-        //telephone
-        const phoneInputField = document.querySelector("#tel_temp");
-        const phoneInput = window.intlTelInput(phoneInputField, {
-            preferredCountries: ["fr"],
-            utilsScript: 
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
-        function process(event) {
-            event.preventDefault();
-
-            const phoneNumber = phoneInput.getNumber();
-
-           
-            document.getElementById("tel_diri").value=`${phoneNumber}`;
-        }
+        
   
     </script>
 
