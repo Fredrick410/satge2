@@ -6273,6 +6273,13 @@ input:focus ~ .bg-warning {
   box-shadow: 0 2px 6px 0 rgba(253, 172, 65, 0.6);
 }
 
+/* Progress Bars yellow */
+/* ---------------------- */
+.progress-bar-yellow .progress-bar {
+  background-color: #fdfa41;
+  box-shadow: 0 2px 6px 0 rgba(253, 234, 65, 0.6);
+}
+
 /* Chips warning */
 /* ---------------- */
 .chip-warning {

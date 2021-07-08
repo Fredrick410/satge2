@@ -6,13 +6,36 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
-    $pdoSt = $bdd->prepare('SELECT * FROM comptable');
-    $pdoSt->execute();
-    $comptables = $pdoSt->fetchAll();
+    //requetes pour les taches, charts de gauche
+    $query= $bdd->query("SELECT COUNT(*) as nb_tache_social_total, COUNT(case when statut_task = 'valide' then 1 else null end) as nb_tache_social_valide from task_sociale");
+    $nb_tache_social = $query->fetch(); 
+    $nb_tache_social_total = $nb_tache_social['nb_tache_social_total'];
+    $nb_tache_social_valide = $nb_tache_social['nb_tache_social_valide'];
+    $query= $bdd->query("SELECT COUNT(*) as nb_tache_fisca_total, COUNT(case when statut_task = 'valide' then 1 else null end) as nb_tache_fisca_valide from task_fisca");
+    $nb_tache_fisca = $query->fetch();
+    $nb_tache_fisca_total = $nb_tache_fisca['nb_tache_fisca_total'];
+    $nb_tache_fisca_valide = $nb_tache_fisca['nb_tache_fisca_valide'];
+    $query= $bdd->query("SELECT COUNT(*) as nb_tache_compta_total, COUNT(case when statut_task = 'valide' then 1 else null end) as nb_tache_compta_valide from task_compta");
+    $nb_tache_compta = $query->fetch();
+    $nb_tache_compta_total = $nb_tache_compta['nb_tache_compta_total'];
+    $nb_tache_compta_valide = $nb_tache_compta['nb_tache_compta_valide'];
+    /* A Ajouter avec les taches juridiques
+    $query= $bdd->query("SELECT COUNT(*) as nb_tache_juri_total, COUNT(case when statut_task = 'valide' then 1 else null end) as nb_tache_juri_valide from task_juri");
+    $nb_tache_juri = $query->fetch();
+    $nb_tache_juri_total = $nb_tache_juri['nb_tache_juri_total'];
+    $nb_tache_juri_valide = $nb_tache_juri['nb_tache_juri_valide']; */
 
-    $pdoSt = $bdd->prepare('SELECT MAX(nb) AS nb FROM (SELECT COUNT(*) AS nb FROM comptable_list GROUP BY id_comptable) AS temp');
-    $pdoSt->execute();
-    $nb_assigne_max = ($pdoSt->fetch())['nb'];
+
+    //Récupération des taches socia/compta et fisca
+    $pdoStat = $bdd->prepare('SELECT * FROM task_sociale where statut_task != "valide"');
+    $pdoStat->execute();
+    $task_socia = $pdoStat->fetchAll();
+    $pdoStat = $bdd->prepare('SELECT * FROM task_compta where statut_task != "valide"');
+    $pdoStat->execute();
+    $task_compta = $pdoStat->fetchAll();
+    $pdoStat = $bdd->prepare('SELECT * FROM task_fisca where statut_task != "valide"');
+    $pdoStat->execute();
+    $task_fisca = $pdoStat->fetchAll();
 
 // DEBUT REQUETES COMPTABILITE
 
@@ -397,7 +420,8 @@ require_once 'php/verif_session_connect_admin.php';
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav float-right d-flex align-items-center">
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                            <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span></a>
+                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
+                            </a>
                             <div class="dropdown-menu dropdown-menu pb-0">
                                 <a class="dropdown-item" href="#"><i class="bx bx-user mr-50"></i> Editer Profile (SOON)</a>
                                 <a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Déconnexion</a>
@@ -422,7 +446,136 @@ require_once 'php/verif_session_connect_admin.php';
             <div class="content-body row">
                 <!-- DEBUT MENU GAUCHE -->
                 <div class="col-3">
-
+                    <div class="card collapse-icon accordion-icon-rotate mt-2">
+                        <div class="card-header">
+                            <h4 class="card-title">Taches</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="cardAccordion" data-toggle-hover="true">
+                               <!-- Taches juridiques a ajouter
+                                <div class="card">
+                                    <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" role="button">
+                                        <div class="d-flex activity-content">
+                                            <div class="activity-progress flex-grow-1">
+                                                <small class="text-muted d-inline-block mb-50">Taches juridiques</small>
+                                                <small class="float-right"><?//= $nb_tache_juri_valide ?> / <?//= $nb_tache_juri_total ?></small>
+                                                <div class="progress progress-bar-warning progress-sm">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?//= 100*$nb_tache_juri_valide/$nb_tache_juri_total ?>" style="width:<?//= 100*$nb_tache_juri_valide/$nb_tache_juri_total ?>%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collapseThree" class="pt-0 collapse" aria-labelledby="headingThree" data-parent="#cardAccordion">
+                                        <div class="card-body">
+                                            <a href="task-sociale.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php //foreach($task_juri as $tasks): ?>
+                                                        <li class="todo-item my-1">
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?//= $tasks['name_task'] ?> | <?//= $tasks['dte_echeance'] ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <?php //endforeach; ?>
+                                                </ul>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="card collapse-header">
+                                    <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" role="button">
+                                        <div class="d-flex activity-content">
+                                            <div class="activity-progress flex-grow-1">
+                                                <small class="text-muted d-inline-block mb-50">Taches comptabilité</small>
+                                                <small class="float-right"><?= $nb_tache_compta_valide ?> / <?= $nb_tache_compta_total ?></small>
+                                                <div class="progress progress-bar-yellow progress-sm">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?= 100*$nb_tache_compta_valide/$nb_tache_compta_total ?>" style="width:<?= 100*$nb_tache_compta_valide/$nb_tache_compta_total ?>%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collapseTwo" class="pt-0 collapse" aria-labelledby="headingTwo" data-parent="#cardAccordion">
+                                        <div class="card-body">
+                                            <a href="task-compta.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php foreach($task_compta as $tasks): ?>
+                                                        <li class="todo-item my-1" >
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" role="button">
+                                        <div class="d-flex activity-content">
+                                            <div class="activity-progress flex-grow-1">
+                                                <small class="text-muted d-inline-block mb-50">Taches sociales</small>
+                                                <small class="float-right"><?= $nb_tache_social_valide ?> / <?= $nb_tache_social_total ?></small>
+                                                <div class="progress progress-bar-info progress-sm">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?= 100*$nb_tache_social_valide/$nb_tache_social_total ?>" style="width:<?= 100*$nb_tache_social_valide/$nb_tache_social_total ?>%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collapseThree" class="pt-0 collapse" aria-labelledby="headingThree" data-parent="#cardAccordion">
+                                        <div class="card-body">
+                                            <a href="task-sociale.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php foreach($task_socia as $tasks): ?>
+                                                        <li class="todo-item my-1">
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" role="button">
+                                        <div class="d-flex activity-content">
+                                            <div class="activity-progress flex-grow-1">
+                                                <small class="text-muted d-inline-block mb-50">Taches Fiscales</small>
+                                                <small class="float-right"><?= $nb_tache_fisca_valide ?> / <?= $nb_tache_fisca_total ?></small>
+                                                <div class="progress progress-bar-warning progress-sm">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?= 100*$nb_tache_fisca_valide/$nb_tache_fisca_total ?>" style="width:<?= 100*$nb_tache_fisca_valide/$nb_tache_fisca_total ?>%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collapseFour" class="collapse pt-0" aria-labelledby="headingFour" data-parent="#cardAccordion">
+                                        <div class="card-body">
+                                            <a href="task-fisca.php">
+                                                <ul class="todo-task-list-wrapper list-unstyled" id="">
+                                                    <?php foreach($task_fisca as $tasks): ?>
+                                                        <li class="todo-item my-1">
+                                                            <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center" style="position: relative; top: 25%;">
+                                                                <div class="todo-title-area d-flex">
+                                                                    <p class="todo-title mx-50 m-0 overflow-auto"><?= $tasks['name_task'] ?> | <?= $tasks['dte_echeance'] ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- FIN MENU GAUCHE -->
                 <!-- Dashboard Analytics Start -->
@@ -431,7 +584,7 @@ require_once 'php/verif_session_connect_admin.php';
                         <div class="swiper-container gallery-thumbs">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-yellow btn-lg btn-block py-1 py-md-0 px-0" ><strong class="d-none d-md-block text-dark">Comptabilité</strong></button>
+                                    <button type="button" class="btn btn-yellow btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block text-dark">Comptabilité</strong></button>
                                 </div>
                                 <div class="swiper-slide">
                                     <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
@@ -460,10 +613,10 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <div>
                                                                         <select style="width: 80px;" class="form-control" id="id_select_annee_portefeuille">
                                                                             <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
-                                                                            <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
-                                                                            <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
-                                                                            <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
-                                                                            <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 1 ?>"><?= $annee_actuelle - 1 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 2 ?>"><?= $annee_actuelle - 2 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 3 ?>"><?= $annee_actuelle - 3 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 4 ?>"><?= $annee_actuelle - 4 ?></option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -498,7 +651,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>    
                                                                         <h6 class="text-center" id="id_count_actif"><?= $count_actif[$annee_actuelle] ?></h6>                                                                        
                                                                     </div>
-                                                                </div>   
+                                                                </div>
 
                                                                 <div id="analytics-bar-chart-compta">
                                                                 </div>
@@ -549,7 +702,6 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             </section>
                                         </div>
                                         <!-- FIN COLONNE GAUCHE -->
@@ -572,11 +724,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         box-shadow: 0 0 3px 3px rgba(92,111,140,0.7);
                                                                         border-radius: 8px;">
                                                                         <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_ventes">
-                                                                        <i class="bx bx-dollar mr-50 font-large-1"></i>
-                                                                        <div class="d-none d-md-block">
-                                                                            <div>Ventes</div>              
+                                                                            <i class="bx bx-dollar mr-50 font-large-1"></i>
+                                                                            <div class="d-none d-md-block">
+                                                                                <div>Ventes</div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div></a>
+                                                                    </a>
                                                                     <a href="#" id="id_bouton_achats" style="
                                                                         font-family: Rubik, Helvetica, Arial, serif;
                                                                         color: #FFFFFF;
@@ -584,11 +737,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         box-shadow: 0 0 3px 3px rgba(92,111,140,0.7);
                                                                         border-radius: 8px;">
                                                                         <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_achats">
-                                                                        <i class="bx bx-wallet mr-50 font-large-1"></i>
-                                                                        <div class="d-none d-md-block">
-                                                                            <div>Achats</div>       
+                                                                            <i class="bx bx-wallet mr-50 font-large-1"></i>
+                                                                            <div class="d-none d-md-block">
+                                                                                <div>Achats</div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div></a>
+                                                                    </a>
                                                                     <a href="#" id="id_bouton_tresorerie" style="
                                                                         font-family: Rubik, Helvetica, Arial, serif;
                                                                         color: #FFFFFF;
@@ -596,11 +750,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         box-shadow: 0 0 3px 3px rgba(92,111,140,0.7);
                                                                         border-radius: 8px;">
                                                                         <div class="py-50 px-1 d-flex align-items-center" id="id_bouton_tresorerie">
-                                                                        <i class="bx bx-diamond mr-50 font-large-1"></i>
-                                                                        <div class="d-none d-md-block">
-                                                                            <div>Trésorerie</div> 
+                                                                            <i class="bx bx-diamond mr-50 font-large-1"></i>
+                                                                            <div class="d-none d-md-block">
+                                                                                <div>Trésorerie</div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div></a>
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -621,29 +776,29 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             }
                                                                             if ($pourcent_perso <34){
                                                                                 $color_bar = "danger";
-                                                                            } else if ($pourcent_perso <67){
+                                                                            } else if ($pourcent_perso < 67) {
                                                                                 $color_bar = "warning";
-                                                                            } else if ($pourcent_perso <100){
+                                                                            } else if ($pourcent_perso < 100) {
                                                                                 $color_bar = "info";
                                                                             } else {
                                                                                 $color_bar = "success";
                                                                             }
-                                                                            ?>
+                                                                        ?>
                                                                             <tr>
                                                                                 <td class="pr-75">
                                                                                     <div class="media align-items-center">
                                                                                         <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
-                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom'] . " " . $comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?= $comptable['role_comptable'] ?></span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
                                                                                 <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
+                                                                                    <div class="progress progress-bar-<?= $color_bar ?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso ?>%;"></div>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar ?>"><?= $nb_assigne_perso ?> Restants</span>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php endforeach; ?>
@@ -653,7 +808,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                         <!-- FIN TABLE VENTES -->
                                                         <!-- DEBUT TABLE ACHATS -->
-                                                        <div id="id_table_achats" style="display:none;"> 
+                                                        <div id="id_table_achats" style="display:none;">
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
@@ -670,29 +825,29 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             }
                                                                             if ($pourcent_perso <34){
                                                                                 $color_bar = "danger";
-                                                                            } else if ($pourcent_perso <67){
+                                                                            } else if ($pourcent_perso < 67) {
                                                                                 $color_bar = "warning";
-                                                                            } else if ($pourcent_perso <100){
+                                                                            } else if ($pourcent_perso < 100) {
                                                                                 $color_bar = "info";
                                                                             } else {
                                                                                 $color_bar = "success";
                                                                             }
-                                                                            ?>
+                                                                        ?>
                                                                             <tr>
                                                                                 <td class="pr-75">
                                                                                     <div class="media align-items-center">
                                                                                         <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
-                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom'] . " " . $comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?= $comptable['role_comptable'] ?></span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
                                                                                 <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
+                                                                                    <div class="progress progress-bar-<?= $color_bar ?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso ?>%;"></div>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar ?>"><?= $nb_assigne_perso ?> Restants</span>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php endforeach; ?>
@@ -702,7 +857,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                         <!-- FIN TABLE ACHATS -->
                                                         <!-- DEBUT TABLE TRESORERIE -->
-                                                        <div id="id_table_tresorerie" style="display:none;"> 
+                                                        <div id="id_table_tresorerie" style="display:none;">
                                                             <div class="table-responsive">
                                                                 <table class="table table-borderless mb-0">
                                                                     <tbody>
@@ -719,29 +874,29 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             }
                                                                             if ($pourcent_perso <34){
                                                                                 $color_bar = "danger";
-                                                                            } else if ($pourcent_perso <67){
+                                                                            } else if ($pourcent_perso < 67) {
                                                                                 $color_bar = "warning";
-                                                                            } else if ($pourcent_perso <100){
+                                                                            } else if ($pourcent_perso < 100) {
                                                                                 $color_bar = "info";
                                                                             } else {
                                                                                 $color_bar = "success";
                                                                             }
-                                                                            ?>
+                                                                        ?>
                                                                             <tr>
                                                                                 <td class="pr-75">
                                                                                     <div class="media align-items-center">
                                                                                         <div class="media-body">
-                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom']." ".$comptable['prenom'] ?></h6>
-                                                                                            <span class="font-small-2"><?=$comptable['role_comptable'] ?></span>
+                                                                                            <h6 class="media-heading mb-0"><?= $comptable['nom'] . " " . $comptable['prenom'] ?></h6>
+                                                                                            <span class="font-small-2"><?= $comptable['role_comptable'] ?></span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
                                                                                 <td class="px-0 w-25">
-                                                                                    <div class="progress progress-bar-<?= $color_bar?> progress-sm mb-0">
-                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso?>%;"></div>
+                                                                                    <div class="progress progress-bar-<?= $color_bar ?> progress-sm mb-0">
+                                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $pourcent_perso ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $pourcent_perso ?>%;"></div>
                                                                                     </div>
                                                                                 </td>
-                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar?>"><?= $nb_assigne_perso?> Restants</span>
+                                                                                <td class="text-center"><span class="badge badge-light-<?= $color_bar ?>"><?= $nb_assigne_perso ?> Restants</span>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php endforeach; ?>
@@ -779,10 +934,10 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </select>
                                                                         <select style="width: 80px;" class="form-control" id="id_select_annee_prelevement">
                                                                             <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
-                                                                            <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
-                                                                            <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
-                                                                            <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
-                                                                            <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 1 ?>"><?= $annee_actuelle - 1 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 2 ?>"><?= $annee_actuelle - 2 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 3 ?>"><?= $annee_actuelle - 3 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 4 ?>"><?= $annee_actuelle - 4 ?></option>
                                                                         </select>
                                                                     </div>
                                                                     <div id="growth-Chart-prelevement"></div>
@@ -791,11 +946,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <h6 class="mb-1"> Bilans annuels </h6>
                                                                     <div class="d-flex justify-content-center">
                                                                         <select style="width: 80px;" class="form-control" id="id_select_bilan">
-                                                                            <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
-                                                                            <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
-                                                                            <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
-                                                                            <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
-                                                                            <option value="<?= $annee_actuelle-5 ?>"><?= $annee_actuelle-5 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 1 ?>"><?= $annee_actuelle - 1 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 2 ?>"><?= $annee_actuelle - 2 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 3 ?>"><?= $annee_actuelle - 3 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 4 ?>"><?= $annee_actuelle - 4 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 5 ?>"><?= $annee_actuelle - 5 ?></option>
                                                                         </select>
                                                                     </div>
                                                                     <div id="growth-Chart-bilan" class="pb-0"></div>
@@ -885,7 +1040,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>
                                                                         <span class="badge badge-light-danger float-right mt-20"><?= $nb_crea_delete ?> Abandons</span>
                                                                     </li>
-                                                                    
+
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -1076,9 +1231,8 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
     <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
-    
-    <script>
 
+    <script>
         $(document).ready(function() {
 
             $("#id_select_annee_portefeuille").change(function() {         
@@ -1124,7 +1278,6 @@ require_once 'php/verif_session_connect_admin.php';
             });
 
         });
-
     </script>
 
 </body>
