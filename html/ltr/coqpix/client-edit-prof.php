@@ -433,14 +433,14 @@ require_once 'php/config.php';
                                                         <div class="col-12 col-sm-6">
                                                             <div class="form-group">
 																<label for="email">*Code postal :</label>
-																<input type="number" name="codePostal" class=" form-control" placeholder="Code Postal" onkeyup="getCp($(this))" autocomplete="off">
+																<input type="number" name="codePostal" class=" form-control" placeholder="Code Postal" onkeyup="getCpcl($(this))" autocomplete="off">
 																<input type="hidden" name="insee_code" id="insee_code" value="" autocomplete="off">
 															</div>
                                                         </div>
                                                         <div class="col-12 col-sm-6">
 															<div class="form-group">
 																<label for="email">*Département :</label>
-																<select name="departement" id="ville" class="form-control " required></select>
+																<select name="departement" id="cl" class="form-control " required></select>
 															</div>
                                                         </div>
                                                 
@@ -488,7 +488,7 @@ require_once 'php/config.php';
     <script src="../../../app-assets/js/scripts/components.js"></script>
     <script src="../../../app-assets/js/scripts/footer.js"></script>
     <!-- END: Theme JS-->
-
+    <script src="../../../app-assets/js/scripts/pages/getcpcl.js"></script>
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
     <script src="../../../app-assets/js/scripts/navs/navs.js"></script>
