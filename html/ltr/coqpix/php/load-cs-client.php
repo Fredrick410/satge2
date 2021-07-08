@@ -26,7 +26,7 @@ if($id){
           FROM `client` 
           WHERE id_session =:id_session AND name_client = :name_client "; //$_SESSION
 
-  $datas = array(':name_client'=>$id, ':id_session'=>$_SESSION['id_session']);
+  $datas = array(':name_client'=>htmlspecialchars($id), ':id_session'=>$_SESSION['id_session']);
 
   try {
     $pdoS = $bdd->prepare($sql);

@@ -36,7 +36,6 @@ if ($type == 7) {
 }
 
 
-
 $query->setFetchMode(PDO::FETCH_ASSOC);
 while ($ligne = $query->fetch()) 
     $tab[]= $ligne; //on recupere le tableau des offres
@@ -65,22 +64,22 @@ foreach($tab as $offre){
         <div class="carousel-inner">
             <div class="carousel-item active" data-mdb-interval="10000000000" id="img1">
     	
-              	<img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-1.jpg" >
+              	<img src="../../../src/domiciliation/liste-offre/<?php echo $offre['img']; ?>-1.jpg" >
       	
             </div>
             <div class="carousel-item" data-mdb-interval="10000">
     	
-      	        <img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-2.jpg" >
+      	        <img src="../../../src/domiciliation/liste-offre/<?php echo $offre['img']; ?>-2.jpg" >
         
             </div>
             <?php
             $url = $offre['img'];
-            $filename = "../../../../app-assets/images/pages/offre-domiciliation/liste-offre/$url-3.jpg";
+            $filename = "../../../../src/domiciliation/liste-offre/$url-3.jpg";
                 if (file_exists($filename)) {
             ?>
             <div class="carousel-item" data-mdb-interval="10000">
     	
-      	        <img src="../../../app-assets/images/pages/offre-domiciliation/liste-offre/<?php echo $offre['img']; ?>-3.jpg" >
+      	        <img src="../../../src/domiciliation/liste-offre/<?php echo $offre['img']; ?>-3.jpg" >
       	
             </div>
             <?php
