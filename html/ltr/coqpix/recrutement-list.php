@@ -153,6 +153,14 @@ $entreprise = $pdoStt->fetch();
                                                 <label for="libelle" class="col-form-label">Libellé:</label>
                                                 <input type="text" class="form-control" id="libelle">
                                             </div>
+                                            <div class="form-group">
+                                                <label for="libelle" class="col-form-label">Qualitatif ?</label>
+                                                <select name="qualitatif" id="qualitatif">
+                                                    <option value="">Selectionner oui ou non</option>
+                                                    <option>Oui</option>
+                                                    <option>Non</option>
+                                                </select>
+                                            </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
@@ -252,8 +260,20 @@ $entreprise = $pdoStt->fetch();
                                                             <div class="modal-body">
                                                                 <form>
                                                                     <div class="form-group">
-                                                                        <label for="libelle" class="col-form-label">Libellé:</label>
-                                                                        <input type="text" class="form-control" value="<?= $qcms[$i]['libelle'] ?>" id="<?= $qcms[$i]['id'] ?>">
+                                                                        <label for="libelle<?= $qcms[$i]['id'] ?>" class="col-form-label">Libellé:</label>
+                                                                        <input type="text" class="form-control" value="<?= $qcms[$i]['libelle'] ?>" id="libelle<?= $qcms[$i]['id'] ?>">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="qualitatif<?= $qcms[$i]['id'] ?>" class="col-form-label">Qualitatif ?</label>
+                                                                        <select name="qualitatif<?= $qcms[$i]['id'] ?>" id="qualitatif<?= $qcms[$i]['id'] ?>">
+                                                                            <option value="">Selectionner oui ou non</option>
+                                                                            <option <?php if ($qcms[$i]['qualitatif'] == "Oui") {
+                                                                                        echo "selected";
+                                                                                    } ?>>Oui</option>
+                                                                            <option <?php if ($qcms[$i]['qualitatif'] == "Oui") {
+                                                                                        echo "selected";
+                                                                                    } ?>>Non</option>
+                                                                        </select>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -271,17 +291,17 @@ $entreprise = $pdoStt->fetch();
                                                 <?php
                                                 if ($nbquestion[$i][0]['nbquestion'] >= 2) {
                                                     if ($qcms[$i]['publiee'] == "non") {
-                                                    ?>
+                                                ?>
                                                         <a href="php/publier_qcm_admin.php?id=<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1">
                                                             <i class="bx bxs-send"></i>
                                                         </a>
                                                     <?php
                                                     } else {
                                                     ?>
-                                                        <a href="php/retirer_publication_qcm_admin.php?id=<?= $qcms[$i]['id']?>" class="invoice-action-view mr-1">
+                                                        <a href="php/retirer_publication_qcm_admin.php?id=<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1">
                                                             <i class="bx bxs-send" style="color: purple;"></i>
                                                         </a>
-                                                    <?php
+                                                <?php
                                                     }
                                                 }
                                                 ?>
@@ -341,13 +361,15 @@ $entreprise = $pdoStt->fetch();
 
             /*Ajout du QCM*/
             $("#create").click(function() {
-                var libelle = $('#libelle').val(); /*finds id of the last row inside table*/
-                console.log(libelle);
+                var libelle = $('#libelle').val(); // get qcm name
+                var qualitatif = $('#qualitatif').val(); // get qcm type
+                
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_qcm_admin.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
-                        libelle: libelle
+                        libelle: libelle,
+                        qualitatif: qualitatif
                     },
                     success: function(data) {
                         window.location.reload();

@@ -333,6 +333,31 @@ require_once 'php/config.php';
                                                 <input name="default" type="text" class="form-control" placeholder="Mes defauts" required>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="permis_conduite">types de permis </label>
+                                                <select name="permis_conduite" id="permis_conduite" class="custom-select">
+                                                    <option value="" selected>Selectionnez un type de permis de conduite</option>                
+                                                    <option value="A">A</option>                         
+                                                    <option value="A1">A1</option>
+                                                    <option value="A2">A2</option>
+                                                    <option value="B">B</option>
+                                                    <option value="B1">B1</option>
+                                                    <option value="B2">B2</option>
+                                                    <option value="BE">BE</option>
+                                                    <option value="C1">C1</option>
+                                                    <option value="C2">C2</option>
+                                                    <option value="CE">CE</option>
+                                                    <option value="C1E">C1E</option>
+                                                    <option value="D">D</option>
+                                                    <option value="D1">D1</option>
+                                                    <option value="D2">D2</option>
+                                                    <option value="D1E">D1E</option>
+                                                    <option value="DE">DE</option>
+                                                    <option value="AM">AM</option>
+                                                </select>
+                                            </div>
+                                        </div>              
                                     </div>
                                 </fieldset>
                                 <!-- body content of step 2 end-->

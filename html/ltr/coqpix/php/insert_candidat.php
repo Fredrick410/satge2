@@ -19,6 +19,7 @@ ini_set('display_startup_errors', TRUE);
     $interet = $_POST['interet'];
     $qualite = $_POST['qualite'];
     $default = $_POST['default'];
+    $permis_conduite = $_POST['permis_conduite'];
 
     $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND name_annonce=:name_annonce');
     $pdoS->bindValue(':num',$_POST['id_session']);
@@ -56,7 +57,7 @@ ini_set('display_startup_errors', TRUE);
 
     $code = ''.passgen1(10).';'.$id_session.';'.$num.'';
 
-    $insert = $bdd->prepare('INSERT INTO rh_candidature (name_annonce , num_candidat, sexe_candidat, nom_candidat, prenom_candidat, age_candidat, specialite_candidat, image_candidat, time_candidat, logiciel, langue, formationetude, interet, qualite, default_candi, cv_doc, lettredemotivation_doc, other_doc, qcm, statut, key_candidat, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO rh_candidature (name_annonce , num_candidat, sexe_candidat, nom_candidat, prenom_candidat, age_candidat, specialite_candidat, image_candidat, time_candidat, logiciel, langue, formationetude, interet, qualite, default_candi, cv_doc, lettredemotivation_doc, other_doc, qcm, statut, key_candidat, id_session,permis_conduite) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($name_annonce),
         htmlspecialchars($num_candidat),
@@ -79,7 +80,8 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars(""),
         htmlspecialchars("En cours"),
         htmlspecialchars($code),
-        htmlspecialchars($id_session)
+        htmlspecialchars($id_session),
+        htmlspecialchars($permis_conduite)
     ));
     header('Location: ../test-qcm.php?key='.$code.'');
     exit();

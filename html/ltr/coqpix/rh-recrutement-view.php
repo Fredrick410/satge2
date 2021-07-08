@@ -16,61 +16,102 @@ require_once 'php/config.php';
     $candidature = $pdoStt->fetch();
     $pourc = "0";
 
-    //progression 3 PART 33 par partie
+    if(count($candidature) != 0){
 
-        //profile part /4 = 8,25
-            if($candidature['nom_candidat'] !== ""){
-                $pourc = $pourc + 8.333;
-            }   
-            if($candidature['prenom_candidat'] !== ""){
-                $pourc = $pourc + 8.333;
-            }   
-            if($candidature['age_candidat'] !== ""){
-                $pourc = $pourc + 8.333;
-            }   
-            if($candidature['formationetude'] !== ""){
-                $pourc = $pourc + 8.333;
-            }   
-        
-        //Niveau /6 = 5.5556
+        $_SESSION['candidat'] = $candidature['id'];
 
-            if($candidature['logiciel'] !== ""){
-                $pourc = $pourc + 5.556;
-            }   
-            if($candidature['langue'] !== ""){
-                $pourc = $pourc + 5.556;
-            }   
-            if($candidature['formationetude'] !== ""){
-                $pourc = $pourc + 5.556;
-            }   
-            if($candidature['interet'] !== ""){
-                $pourc = $pourc + 5.556;
-            }  
-            if($candidature['qualite'] !== ""){
-                $pourc = $pourc + 5.556;
-            }   
-            if($candidature['default_candi'] !== ""){
-                $pourc = $pourc + 5.556;
+        //progression 3 PART 33 par partie
+
+            //profile part /4 = 8,25
+                if($candidature['nom_candidat'] !== ""){
+                    $pourc = $pourc + 8.333;
+                }   
+                if($candidature['prenom_candidat'] !== ""){
+                    $pourc = $pourc + 8.333;
+                }   
+                if($candidature['age_candidat'] !== ""){
+                    $pourc = $pourc + 8.333;
+                }   
+                if($candidature['formationetude'] !== ""){
+                    $pourc = $pourc + 8.333;
+                }   
+            
+            //Niveau /6 = 5.5556
+
+                if($candidature['logiciel'] !== ""){
+                    $pourc = $pourc + 5.556;
+                }   
+                if($candidature['langue'] !== ""){
+                    $pourc = $pourc + 5.556;
+                }   
+                if($candidature['formationetude'] !== ""){
+                    $pourc = $pourc + 5.556;
+                }   
+                if($candidature['interet'] !== ""){
+                    $pourc = $pourc + 5.556;
+                }  
+                if($candidature['qualite'] !== ""){
+                    $pourc = $pourc + 5.556;
+                }   
+                if($candidature['default_candi'] !== ""){
+                    $pourc = $pourc + 5.556;
+                }
+            
+            //document /2 = 16.6667
+                if($candidature['cv_doc'] !== ""){
+                    $pourc = $pourc + 16.6667;
+                }   
+                if($candidature['lettredemotivation_doc'] !== ""){
+                    $pourc = $pourc + 16.6667;
+                }   
+
+            if($pourc > 100){
+                $pourc = "100";
             }
-        
-        //document /2 = 16.6667
-             if($candidature['cv_doc'] !== ""){
-                $pourc = $pourc + 16.6667;
-            }   
-            if($candidature['lettredemotivation_doc'] !== ""){
-                $pourc = $pourc + 16.6667;
-            }   
 
-        if($pourc > 100){
-            $pourc = "100";
+            $pourc = substr($pourc, 0, 5);
+
+
+        
+        if ($pourc > "0" && $pourc < "33.3333333333") {$pourc_color = "danger";   }if ($pourc > "30" && $pourc < "66.6666666666") {$pourc_color = "warning";}if ($pourc > "66.6666666666" && $pourc <= "100") {$pourc_color = "success";} 
+
+        $pdoStt = $bdd->prepare('SELECT DISTINCT libelle,idqcm FROM qcm INNER JOIN reponses_qcm_candidat ON (qcm.id = reponses_qcm_candidat.idqcm ) WHERE idcandidat=:num');
+        $pdoStt->bindValue(':num', $candidature['id']);
+        $pdoStt->execute();
+        $qcms = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($qcms as $key => $value) {
+            $pdoStt = $bdd->prepare('SELECT * FROM question WHERE idqcm = :id');
+            $pdoStt->bindValue(':id', $value['idqcm']);
+            $pdoStt->execute();
+            $questions[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        $pourc = substr($pourc, 0, 5);
+        foreach ($questions as $key => $desquestions) { // fixer la liste des questions
+            foreach ($desquestions as $key => $question) { // fixe une question de la liste
+                $pdoStt = $bdd->prepare('SELECT * FROM reponse WHERE idquestion = :id ORDER BY idquestion, id');
+                $pdoStt->bindValue(':id', $question['id']);
+                $pdoStt->execute();
+                $desreponses[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            $reponses[] = $desreponses;
+            unset($desreponses);
 
+            foreach ($desquestions as $key => $question) { // fixe une question de la liste
+                $pdoStt = $bdd->prepare('SELECT * FROM reponses_qcm_candidat WHERE idquestion = :idquestion and idcandidat=:idcandidat');
+                $pdoStt->bindValue(':idquestion', $question['id']);
+                $pdoStt->bindValue(':idcandidat', $candidature['id']);
+                $pdoStt->execute();
+                $desreponses[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            $reponses_candidat[] = $desreponses;
+            unset($desreponses);
 
-    
-    if ($pourc > "0" && $pourc < "33.3333333333") {$pourc_color = "danger";   }if ($pourc > "30" && $pourc < "66.6666666666") {$pourc_color = "warning";}if ($pourc > "66.6666666666" && $pourc <= "100") {$pourc_color = "success";}
-    
+        }
+    }
+    else {
+        header('Location: rh-recrutement-list.php');
+    }
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -165,9 +206,10 @@ require_once 'php/config.php';
                                             <div class="col-12 col-sm-12 col-md-4 ">
                                                 <div class="list-group" role="tablist">
                                                     <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab">Profiles</a>
-                                                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab">Niveaux</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab">Références</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-level-list" data-toggle="list" href="#list-level" role="tab">Niveaux</a>
                                                     <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab">Documents</a>
-                                                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Options (SOON)</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Options</a>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-8 mt-1">
@@ -212,13 +254,35 @@ require_once 'php/config.php';
                                                             <span>Formations & Diplomes : <small><?= $candidature['formationetude'] ?> </small></span>
                                                         </div>   
                                                         <div class="form-group">
-                                                            <span>Interets : <small><?= $candidature['interet'] ?> </small></span>
+                                                            <span>Intérets : <small><?= $candidature['interet'] ?> </small></span>
                                                         </div>  
                                                         <div class="form-group">
-                                                            <span>Mes Qualitées : <small><?= $candidature['qualite'] ?> </small></span>
+                                                            <span>Mes Qualités : <small><?= $candidature['qualite'] ?> </small></span>
                                                         </div>
                                                         <div class="form-group">
                                                             <span>Mes defaults : <small><?= $candidature['default_candi'] ?> </small></span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <span>Permis : <small><?= $candidature['permis_conduite'] ?> </small></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane" id="list-level" role="tabpanel" aria-labelledby="list-level-list">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                <?php
+                                                                for ($i = 0; $i < count($qcms); $i++) {
+                                                                ?>
+                                                                    <div class="col">
+                                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qcm<?= $i?>">
+                                                                            <?=$qcms[$i]['libelle'] ?>
+                                                                        </button>
+                                                                    </div>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
@@ -232,10 +296,10 @@ require_once 'php/config.php';
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
                                                                         </div>
                                                                         <div class="col">   
-                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>                                                         
+                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>                                                         
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -249,10 +313,10 @@ require_once 'php/config.php';
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
                                                                         </div>
                                                                         <div class="col">   
-                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>                                                         
+                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>                                                         
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -266,10 +330,10 @@ require_once 'php/config.php';
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
                                                                         </div>
                                                                         <div class="col">   
-                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>                                                         
+                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>                                                         
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -282,7 +346,7 @@ require_once 'php/config.php';
                                                                 <label>Paramètres et options</label>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>QCM (<small>Les qcm permettent de tester les candidats dans les domaines suivants</small>): </label>         
+                                                                <label>Suivi de la candidature :</label>         
                                                             </div>
                                                             <div class="form-group">
                                                                 <hr>
@@ -291,46 +355,37 @@ require_once 'php/config.php';
                                                                 <div class="row">
                                                                     <div class="col text-center">
                                                                         <div class="form-group">
-                                                                            <small>QCM Anglais</small>
+                                                                            <small>Suivi par mail effectué</small>
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="customSwitchcolor1">
-                                                                                <label class="custom-control-label" for="customSwitchcolor1"></label>
+                                                                                <input type="checkbox" class="custom-control-input" id="suivi_mail" <?php if ($candidature['suivi_mail'] == "oui") { echo "checked";} ?>>
+                                                                                <label class="custom-control-label" for="suivi_mail"></label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col text-center">
                                                                         <div class="form-group">
-                                                                            <small>QCM Confiance</small>
+                                                                            <small>Suivi par téléphone effectué</small>
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="customSwitchcolor2">
-                                                                                <label class="custom-control-label" for="customSwitchcolor2"></label>
+                                                                                <input type="checkbox" class="custom-control-input" id="suivi_tel" <?php if ($candidature['suivi_tel'] == "oui") { echo "checked";} ?>>
+                                                                                <label class="custom-control-label" for="suivi_tel"></label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col text-center">
                                                                         <div class="form-group">
-                                                                            <small>QCM Intelligence</small>
+                                                                            <small>Test specifique effectué</small>
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="customSwitchcolor3">
-                                                                                <label class="custom-control-label" for="customSwitchcolor3"></label>
+                                                                                <input type="checkbox" class="custom-control-input" id="suivi_test_specif" <?php if ($candidature['suivi_test_specif'] == "oui") { echo "checked";} ?>>
+                                                                                <label class="custom-control-label" for="suivi_test_specif"></label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col text-center">
                                                                         <div class="form-group">
-                                                                            <small>QCM Psycologique</small>
+                                                                            <small>Entretien presentiel ou visio effectué</small>
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="customSwitchcolor4">
-                                                                                <label class="custom-control-label" for="customSwitchcolor4"></label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col text-center">
-                                                                        <div class="form-group">
-                                                                            <small>QCM Physique</small>
-                                                                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="customSwitchcolor5">
-                                                                                <label class="custom-control-label" for="customSwitchcolor5"></label>
+                                                                                <input type="checkbox" class="custom-control-input" id="suivi_entretien" <?php if ($candidature['suivi_test_specif'] == "oui") { echo "checked";} ?>>
+                                                                                <label class="custom-control-label" for="suivi_entretien"></label>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -338,7 +393,6 @@ require_once 'php/config.php';
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -349,25 +403,119 @@ require_once 'php/config.php';
                     </div>
                 </section>
                 <!-- List group navigation ends -->
-                <!-- Block level buttons start -->
-                <section id="block-level-buttons">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="card-body" style="background-color: none;">
-                                        <div class="row">
-                                            <div class="col text-center">
-                                                <label>RESULTAT DES TESTS (SOON)</label>
-                                            </div>
-                                        </div>
+                <?php
+                    $total = 0;
+                    for ($i = 0; $i < count($qcms); $i++) {
+                    $score = 0;
+                ?>
+                <!-- Modal -->
+                <div class="modal fade" id="qcm<?= $i?>" tabindex="-1" role="dialog" aria-labelledby="modalQcm<?= $i?>" aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Resultats du qcm : <?=$qcms[$i]['libelle'] ?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-success" id="exportPdf<?=$i?>">Telecharger</button>
+                                        <table class="table table-bordered" id="table<?=$i?>" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>question</th>
+                                                    <th>Nombre points de la question</th>
+                                                    <th>reponse</th>
+                                                    <th>choix candidat</th>
+                                                    <th>choix officiel</th>
+                                                    </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php
+                                            for ($j = 0; $j < count($questions[$i]); ++$j) {
+                                            ?>
+                                                <tr>
+                                                    <td rowspan=<?=count($reponses[$i][$j])?>>
+                                                        <?=$questions[$i][$j]['libelle']?>
+                                                    </td>
+
+                                                    <td rowspan=<?=count($reponses[$i][$j])?>>
+                                                        <?=$questions[$i][$j]['points']?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?=$reponses[$i][$j][0]['libelle']?>
+                                                    </td> 
+                                                    
+                                                    <td>
+                                                        <?=$reponses_candidat[$i][$j][0]['vrai_ou_faux']?>
+                                                    </td> 
+
+                                                    <td>
+                                                        <?=$reponses[$i][$j][0]['vrai_ou_faux']?>
+                                                    </td> 
+                                                </tr> 
+
+                                            <?php
+                                            for ($k = 1; $k < count($reponses[$i][$j]); ++$k)  {
+                                            ?>
+                                                <tr>
+                                                    <td>
+                                                        <?=$reponses[$i][$j][$k]['libelle']?>
+                                                    </td> 
+                
+                                                    <td>
+                                                        <?=$reponses_candidat[$i][$j][$k]['vrai_ou_faux']?>
+                                                    </td> 
+
+                                                    <td>
+                                                        <?=$reponses[$i][$j][$k]['vrai_ou_faux']?>
+                                                    </td> 
+                                                </tr>    
+                                            
+                                            <?php
+                                            }
+                                            $officiel = 0;
+                                            for ($k = 0; $k < count($reponses[$i][$j]); ++$k)  {
+                                                if($reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai'){
+                                                    $officiel++;
+                                                }
+                                            }
+                                            $k = 0;
+                                            $candidat = 0;
+                                            while ($k < count($reponses[$i][$j]))  {
+                                                if($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' AND $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai'){
+                                                    $candidat++;
+                                                }
+                                                elseif ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' AND $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Faux') {
+                                                    $candidat = 0;
+                                                    break;
+                                                }
+                                                $k++;
+                                            }
+                                            $score+= $candidat/$officiel*$questions[$i][$j]['points'];
+                                            }
+                                            ?>
+                                            </tbody>
+                                        </table>
+                                        <label>Total : <?=$score?></label>
+                                        <?php
+                                            $total = $total + $score;
+                                        ?>
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
-                </section>
-                <!-- Block level buttons end -->
+                </div>
+                <?php
+                    }
+                ?>
                 <!-- Block level buttons start -->
                 <section id="block-level-buttons">
                     <div class="row">
@@ -380,7 +528,7 @@ require_once 'php/config.php';
                                                 <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=success"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
                                             </div>
                                             <div class="col">
-                                                <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=blocked"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Resufer le candidat</button></a>
+                                                <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=failure"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Resufer le candidat</button></a>
                                             </div>
                                         </div>
                                     </div>
@@ -388,7 +536,7 @@ require_once 'php/config.php';
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
                 <!-- Block level buttons end -->
             </div>
         </div>
@@ -414,6 +562,51 @@ require_once 'php/config.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
+    <script src="../../../app-assets/js/scripts/extensions/html2canvas.min.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/purify.min.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/jspdf.umd.min.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/jspdf.plugin.autotable.js"></script>
+    <script>
+    $(document).ready(function() {      
+        /*creating a new click event for each toogle this will save to the database*/
+        $('input[type="checkbox"]').change(function() {
+            var type_suivi = this.id;
+            if(this.checked) {
+                var suivi = "oui";
+            }
+            else{
+                var suivi = "non";
+            }
+            num = <?=$candidature['id']?>;
+            $.ajax({
+                url: "../../../html/ltr/coqpix/php/maj_suivi_candidature.php", //new path, save your work first before u try
+                type: "POST",
+                data: {
+                    suivi: suivi,
+                    type_suivi: type_suivi,
+                    num: num
+                }
+            });
+        });
+
+        function downloadPDFWithjsPDF(val) {
+            var doc = new jspdf.jsPDF();
+            doc.autoTable({ html: '#table'+val });
+            doc.save("table.pdf");
+        }
+
+        <?php
+        for ($i = 0; $i < count($qcms); $i++) {
+        ?>
+        id<?=$i?> = <?=$i?>;
+        document.querySelector('#exportPdf<?=$i?>').addEventListener('click', function(){
+            downloadPDFWithjsPDF(id<?=$i?>);
+        }, false);
+        <?php
+        }
+        ?>
+    });
+    </script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
