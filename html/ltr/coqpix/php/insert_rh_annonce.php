@@ -59,7 +59,7 @@ require_once 'config.php';
     $color_annonce = $_POST['color_annonce'];
     $statut = "actif";
 
-    $insert = $bdd->prepare('INSERT INTO rh_annonce (name_annonce, description_annonce, img_annonce, code_annonce, email_annonce, tel_annonce, age, poste, niveau, pays, temps, link, color_annonce, statut, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO rh_annonce (name_annonce, description_annonce, img_annonce, code_annonce, email_annonce, tel_annonce, age, poste, niveau, pays, temps, color_annonce, statut, id_session, qcm, link) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,"","")');
     $insert->execute(array(
         htmlspecialchars($name_annonce),
         htmlspecialchars($description_annonce),
@@ -72,7 +72,6 @@ require_once 'config.php';
         htmlspecialchars($niveau_annonce),
         htmlspecialchars($pays_annonce),
         htmlspecialchars($temps_annonce),
-        htmlspecialchars($link_annonce),
         htmlspecialchars($color_annonce),
         htmlspecialchars($statut),
         htmlspecialchars($_SESSION['id_session'])

@@ -289,7 +289,7 @@ $entreprise = $pdoStt->fetch();
                                                     </div>
                                                 </div>
                                                 <?php
-                                                if ($nbquestion[$i][0]['nbquestion'] >= 2) {
+                                                if ($nbquestion[$i][0]['nbquestion'] > 0) {
                                                     if ($qcms[$i]['publiee'] == "non") {
                                                 ?>
                                                         <a href="php/publier_qcm_admin.php?id=<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1">
