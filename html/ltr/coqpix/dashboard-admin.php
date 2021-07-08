@@ -260,7 +260,24 @@ require_once 'php/verif_session_connect_admin.php';
             }
         }
 
+        // requete pour recuperer le nombre bulletin envoyé par année et mois (chart)
+           $pdoSt= $bdd->prepare('SELECT substr(date_donner, 4,2) AS mois, COUNT(*) AS nb FROM bulletin_salaire WHERE statut_bulletin = "Terminée" AND substr(date_donner, 7) = :annee GROUP BY substr(date_donner, 4,2)');
+            $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
+            ${'envoye_bulletin_'.($annee_actuelle - $i)} = array();
+            while ($result_envoye_bulletin = $pdoSt->fetch()) {
+                ${'envoye_bulletin_'.($annee_actuelle - $i)}[$result_envoye_bulletin['mois']] = $result_envoye_bulletin['nb'];
+            }
 
+            ${'array_envoye_bulletin_'.($annee_actuelle - $i)} = array();
+            for($j=0; $j<12; $j++) {
+                if (array_key_exists($mois[$j], ${'envoye_bulletin_'.($annee_actuelle - $i)})) {
+                    ${'array_envoye_bulletin_'.($annee_actuelle - $i)}[$j] = (int) ${'envoye_bulletin_'.($annee_actuelle - $i)}[$mois[$j]];
+                }
+                else {
+                    ${'array_envoye_bulletin_'.($annee_actuelle - $i)}[$j] = 0;
+                }
+
+            }
 
     }
 
@@ -1298,13 +1315,19 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <div class="col-12">
                                                     <div class="card">                                                                                           
                                                         <div class="d-flex">
-                                                            <div class="p-2">
+                                                            <div class="p-2" id="id_titre_attestation" style="display: block">
                                                                     <select style="border: none;" class="form-control text-white" id="id_select_type_sociale">
                                                                         <option value="URSSAFMSA">Attestation URSSAF/MSA &nbsp&nbsp</option>
                                                                         <option value="PROBTP">Attestation PRO BTP &nbsp&nbsp</option>
                                                                         <option value="CIBTP">Attestation CIBTP &nbsp&nbsp</option>
-                                                                    </select>                                                                            
-                                                            </div>                                                                        
+                                                                    </select>                                                                                                                              
+                                                            </div>
+                                                            <div class="p-2" id="id_titre_bulletin" style="display: none">
+                                                                <h5 class="text-white">Bulletin </h5>                                                            
+                                                            </div>                      
+                                                            <div class="p-2" id="id_titre_dsn" style="display: none">
+                                                                <h5 class="text-white">Dsn </h5>
+                                                            </div>                                                  
                                                             <div class="ml-auto p-2">
                                                                     <select style="width: 80px;" class="form-control" id="id_select_sociale">
                                                                         <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
@@ -1329,7 +1352,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             <span class="line2"></span>
                                                                             <span class="line2"></span>
                                                                         </div>
-                                                                        </a></div>                                                                    
+                                                                    </a></div>                                                                    
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1363,7 +1386,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <input type="hidden" id="<?= $id_count_cibtp ?>" value="<?= ${"count_cibtp_".($annee_actuelle - $i)} ?>"> <?php
                                                                     } ?>
                                                                
-                                                                <h6 class="text-center" id="id_text_count_msa"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>                                                           
+                                                               <h6 class="text-center" id="id_text_count_msa"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>                                                                                              
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1392,7 +1415,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         }
                                                                     } 
                                                                 ?>
-                                                                <h6 class="text-white mb-1"> Attestation URSSAF </h6>
+                                                                <h6 class="text-white mb-1" id= "id_titre_droite"> Attestation URSSAF </h6>
                                                                 <div class="d-flex justify-content-center">
                                                                         <select style="width: 80px;" class="form-control" id="id_select_mois_sociale">
                                                                             <option value="01">Janv</option>
@@ -1522,6 +1545,20 @@ require_once 'php/verif_session_connect_admin.php';
         this[array_envoye_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle - 3)}); ?>;
         this[array_envoye_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_soc_CIBTP_'.($annee_actuelle - 4)}); ?>;
 
+        var array_demande_soc = "array_envoye_bulletin_";
+        var array_envoye_soc = "array_envoye_bulletin_";
+        
+        this[array_demande_soc + annee_actuelle] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 1)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 2)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 3)}); ?>;
+        this[array_demande_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 4)}); ?>;
+
+        this[array_envoye_soc + annee_actuelle] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 1)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 1)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 2)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 2)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 3)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 3)}); ?>;
+        this[array_envoye_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 4)}); ?>;
 
     </script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
@@ -1586,10 +1623,9 @@ require_once 'php/verif_session_connect_admin.php';
                 document.getElementById("id_table_tresorerie").style.display = "block";
             });
 
-            // script JS pour la data chart SOCIALE
+            // script JS pour le nombre total SOCIALE
             
-             $("#id_select_sociale").change(function() {
-                
+             $("#id_select_sociale").change(function() {                
                 var annee_sociale = $("#id_select_sociale").children("option:selected").val();
                 var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
                 var id_count_total = "id_count_" + type_sociale + "_" + annee_sociale;
@@ -1601,6 +1637,25 @@ require_once 'php/verif_session_connect_admin.php';
                 document.getElementById("id_text_count_msa").innerText = count_msa;
                 document.getElementById("id_text_count_probtp").innerText = count_probtp;
                 document.getElementById("id_text_count_cibtp").innerText = count_cibtp; 
+            });
+
+            // afficher le titre 
+            $("#id_titre_sociale").change(function()) {
+                document.getElementById("id_titre_sociale").style.display = "block";
+                document.getElementById("id_titre_bulletin").style.display = "none";
+                document.getElementById("id_titre_dsn").style.display = "none";
+            });
+
+            $("#id_titre_bulletin").change(function()) {
+                document.getElementById("id_titre_sociale").style.display = "none";
+                document.getElementById("id_titre_bulletin").style.display = "block";
+                document.getElementById("id_titre_dsn").style.display = "none";
+            });
+
+            $("#id_titre_dsn").change(function()) {
+                document.getElementById("id_titre_sociale").style.display = "none";
+                document.getElementById("id_titre_bulletin").style.display = "none";
+                document.getElementById("id_titre_dsn").style.display = "block";
             });
            
         });
