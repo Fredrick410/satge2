@@ -204,7 +204,7 @@ if($result['type']=='1'){ //bureau disponible
 
 
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
                                     <label for="bureau" class="">
                                         <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
                                         <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
@@ -222,7 +222,7 @@ if($result['type']=='2'){ //coworking disponible
 
 
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
                                     <label for="cowork" class="">
                                         <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
                                         <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
@@ -239,7 +239,7 @@ if($result['type']=='3'){ //bureau et coworking disponible
 ?>
 
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
                                     <label for="bureau" class="">
                                         <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
                                         <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
@@ -250,7 +250,7 @@ if($result['type']=='3'){ //bureau et coworking disponible
                                 </li>
 
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
                                     <label for="cowork" class="">
                                         <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
                                         <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
@@ -268,7 +268,7 @@ if($result['type']=='4'){ //domiciliation disponible
 
 
                                 <li>
-                                    <input type="radio" name="choix_offre" id="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
                                     <label for="domicilia" class="">
                                         <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
                                         <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
@@ -286,7 +286,7 @@ if($result['type']=='5'){ //domiciliation et bureau disponible
 
 
                                 <li>
-                                    <input type="radio" name="choix_offre" id="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
                                     <label for="domicilia" class="">
                                         <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
                                         <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
@@ -296,7 +296,7 @@ if($result['type']=='5'){ //domiciliation et bureau disponible
                                     </label>
                                 </li>  
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
                                     <label for="bureau" class="">
                                         <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
                                         <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
@@ -313,7 +313,7 @@ if($result['type']=='6'){ //domiciliation et coworking disponible
 
 
                                 <li>
-                                    <input type="radio" name="choix_offre" id="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
                                     <label for="domicilia" class="">
                                         <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
                                         <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
@@ -323,7 +323,7 @@ if($result['type']=='6'){ //domiciliation et coworking disponible
                                     </label>
                                 </li>  
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
                                     <label for="cowork" class="">
                                         <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
                                         <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
@@ -339,7 +339,7 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
 ?>
 
                                 <li>
-                                    <input type="radio" name="choix_offre" id="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
                                     <label for="domicilia" class="">
                                         <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
                                         <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
@@ -349,7 +349,7 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
                                     <label for="bureau" class="">
                                         <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
                                         <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
@@ -359,7 +359,7 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" class="solu"></input>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
                                     <label for="cowork" class="">
                                         <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
                                         <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
