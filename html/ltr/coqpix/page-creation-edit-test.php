@@ -163,14 +163,6 @@ require_once 'php/verif_session_crea.php';
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <div class="controls">
-                                                                            <label>Nom de l'entreprise (Non-modifiable)</label>
-                                                                            <input type="text" name="name_crea" id="name_crea" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['name_crea'] ?>" disabled>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <div class="controls">
                                                                             <label>Prénom du dirigeant</label>
                                                                             <input type="text" name="prenom_diri" class="form-control border rounded-pill border-dark" placeholder="Name" value="<?= $crea['prenom_diri'] ?>" required>
                                                                         </div>
@@ -252,7 +244,15 @@ require_once 'php/verif_session_crea.php';
                                                     <!--<div role="tabpanel" class="tab-pane fade" id="account-vertical-entreprise" aria-labelledby="account-pill-entreprise" aria-expanded="false">
                                                         <form>
                                                             <div class="row">
-                                                                                                                        
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Nom de l'entreprise (Non-modifiable)</label>
+                                                                            <input type="text" name="name_crea" id="name_crea" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['name_crea'] ?>" disabled>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                    
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <div class="controls">
