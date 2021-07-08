@@ -12,6 +12,7 @@
                                             </i>
                                         </div>
                                         Conversation
+                                        <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count_msg ?></span>
                                     </a>
                                     <a href="creation-list-notification.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
