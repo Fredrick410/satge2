@@ -144,14 +144,31 @@ $entreprise = $pdoSta->fetch();
                                                         <input class="form-control" type="text" name="libelle" id="libelle" placeholder="Qui êtes vous?">
                                                     </div>
 
-                                                    <div class="form-group">
-                                                        <label for="critere" class="col-form-label">Critère evalué</label>
-                                                        <input class="form-control" type="text" name="critere" id="critere" placeholder="Personnalté">
-                                                    </div>
+                                                    <?php
+                                                    if ($qcms[0]['qualitatif'] == "Oui") {
+                                                    ?>
 
+                                                        <div class="form-group">
+                                                            <label for="critere" class="col-form-label">Critère evalué</label>
+                                                            <select class="form-control" name="critere" id="critere">
+                                                                <option value="">Selectionner une evaluation</option>
+                                                                <option>paramA</option>
+                                                                <option>paramB</option>
+                                                                <option>paramC</option>
+                                                                <option>paramD</option>
+                                                                <option>paramE</option>
+                                                                <option>paramF</option>
+                                                            </select>
+                                                        </div>
+
+                                                    <?php
+                                                    }
+                                                    ?>
                                                     <div class="form-group">
                                                         <label for="points" class="col-form-label">Points</label>
-                                                        <input class="form-control" type="number" step="1" name="points" id="points" placeholder="1">
+                                                        <input class="form-control" type="number" step="1" name="points" <?php if ($qcms[0]['qualitatif'] == "Oui") {
+                                                                                                                                echo "value=\"1\" disabled";
+                                                                                                                            } ?> id="points" placeholder="1">
                                                     </div>
 
                                                     <div class="form-group">

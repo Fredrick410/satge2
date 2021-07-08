@@ -209,14 +209,44 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                         <input class="form-control" type="text" name="libelle" id="libelle" value="<?= $question['libelle'] ?>" placeholder="Qui êtes vous?">
                                                     </div>
 
-                                                    <div class="form-group">
-                                                        <label for="critere" class="col-form-label">Critère evalué</label>
-                                                        <input class="form-control" type="text" name="critere" id="critere" value="<?= $question['critere'] ?>" placeholder="Personnalté">
-                                                    </div>
+                                                    <?php
+                                                    if ($qcms[0]['qualitatif'] == "Oui") {
+                                                    ?>
+
+                                                        <div class="form-group">
+                                                            <label for="critere" class="col-form-label">Critère evalué</label>
+                                                            <select class="form-control" name="critere" id="critere">
+                                                                <option value="">Selectionner une evaluation</option>
+                                                                <option <?php if ($question['statu'] == "paramA") {
+                                                                            echo "selected";
+                                                                        } ?>>paramA</option>
+                                                                <option <?php if ($question['statu'] == "paramB") {
+                                                                            echo "selected";
+                                                                        } ?>>paramB</option>
+                                                                <option <?php if ($question['statu'] == "paramC") {
+                                                                            echo "selected";
+                                                                        } ?>>paramC</option>
+                                                                <option <?php if ($question['statu'] == "paramD") {
+                                                                            echo "selected";
+                                                                        } ?>>paramD</option>
+                                                                <option <?php if ($question['statu'] == "paramE") {
+                                                                            echo "selected";
+                                                                        } ?>>paramE</option>
+                                                                <option <?php if ($question['statu'] == "paramF") {
+                                                                            echo "selected";
+                                                                        } ?>>paramF</option>
+                                                            </select>
+                                                        </div>
+
+                                                    <?php
+                                                    }
+                                                    ?>
 
                                                     <div class="form-group">
                                                         <label for="points" class="col-form-label">Points</label>
-                                                        <input class="form-control" type="number" value="<?= $question['points'] ?>" step="1" name="points" id="points" placeholder="1">
+                                                        <input class="form-control" type="number" value="<?= $question['points'] ?>" step="1" name="points" <?php if ($qcms[0]['qualitatif'] == "Oui") {
+                                                                                                                                                                echo "disabled";
+                                                                                                                                                            } ?> id="points" placeholder="1">
                                                     </div>
 
                                                     <div class="form-group">

@@ -5,20 +5,34 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 $id = htmlspecialchars($_POST['idqcm']);
-if (isset($_POST['reponses']) and isset($_POST['vraioufaux']) and $_POST['libelle'] != "" and $_POST['critere'] != "" and $_POST['idqcm'] != "" and $_POST['points'] != "") {
+if (isset($_POST['reponses']) and isset($_POST['vraioufaux']) and $_POST['libelle'] != "" and $_POST['idqcm'] != "" and $_POST['points'] != "") {
     if (count($_POST['reponses']) == count($_POST['vraioufaux']) and count($_POST['reponses']) >= 2) {
         if (in_array("Vrai", $_POST['vraioufaux'])) {
-            try {
-                $insert = $bdd->prepare("INSERT INTO question(idqcm, libelle, critere, points) VALUES(?, ?, ?, ?)");
-                $insert->execute(array(
-                    htmlspecialchars($_POST['idqcm']),
-                    htmlspecialchars($_POST['libelle']),
-                    htmlspecialchars($_POST['critere']),
-                    htmlspecialchars($_POST['points'])
-                ));
-            } catch (PDOException $exception) {
-                var_dump($exception->getMessage());
-                echo "question-add-admin.php?id=$id";
+            if (isset($_POST['critere'])) {
+                try {
+                    $insert = $bdd->prepare("INSERT INTO question(idqcm, libelle, statu, points) VALUES(?, ?, ?, ?)");
+                    $insert->execute(array(
+                        htmlspecialchars($_POST['idqcm']),
+                        htmlspecialchars($_POST['libelle']),
+                        htmlspecialchars($_POST['critere']),
+                        htmlspecialchars($_POST['points'])
+                    ));
+                } catch (PDOException $exception) {
+                    var_dump($exception->getMessage());
+                    echo "question-add-admin.php?id=$id";
+                }
+            } else {
+                try {
+                    $insert = $bdd->prepare("INSERT INTO question(idqcm, libelle, points) VALUES(?, ?, ?)");
+                    $insert->execute(array(
+                        htmlspecialchars($_POST['idqcm']),
+                        htmlspecialchars($_POST['libelle']),
+                        htmlspecialchars($_POST['points'])
+                    ));
+                } catch (PDOException $exception) {
+                    var_dump($exception->getMessage());
+                    echo "question-add-admin.php?id=$id";
+                }
             }
 
             $id_question = $bdd->lastInsertId();
@@ -43,4 +57,3 @@ if (isset($_POST['reponses']) and isset($_POST['vraioufaux']) and $_POST['libell
 }
 echo "question-add-admin.php?id=$id";
 exit();
-?>

@@ -148,13 +148,13 @@ $entreprise = $pdoStt->fetch();
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                        <form id="create_form">
                                             <div class="form-group">
                                                 <label for="libelle" class="col-form-label">Libellé:</label>
                                                 <input type="text" class="form-control" id="libelle">
                                             </div>
                                             <div class="form-group">
-                                                <label for="libelle" class="col-form-label">Qualitatif ?</label>
+                                                <label for="qualitatif" class="col-form-label">Qualitatif ?</label>
                                                 <select name="qualitatif" id="qualitatif">
                                                     <option value="">Selectionner oui ou non</option>
                                                     <option>Oui</option>
@@ -258,7 +258,7 @@ $entreprise = $pdoStt->fetch();
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form>
+                                                                <form id="update_form">
                                                                     <div class="form-group">
                                                                         <label for="libelle<?= $qcms[$i]['id'] ?>" class="col-form-label">Libellé:</label>
                                                                         <input type="text" class="form-control" value="<?= $qcms[$i]['libelle'] ?>" id="libelle<?= $qcms[$i]['id'] ?>">
@@ -270,7 +270,7 @@ $entreprise = $pdoStt->fetch();
                                                                             <option <?php if ($qcms[$i]['qualitatif'] == "Oui") {
                                                                                         echo "selected";
                                                                                     } ?>>Oui</option>
-                                                                            <option <?php if ($qcms[$i]['qualitatif'] == "Oui") {
+                                                                            <option <?php if ($qcms[$i]['qualitatif'] == "Non") {
                                                                                         echo "selected";
                                                                                     } ?>>Non</option>
                                                                         </select>
@@ -356,6 +356,20 @@ $entreprise = $pdoStt->fetch();
 
     <!-- BEGIN: Page JS-->
     <script>
+        function addAlert(message, type) {
+            if(type == "create"){
+                $('#create_form').append(
+                    '<div class="alert alert-danger">' +
+                        '<button type="button" class="close" data-dismiss="alert">' +
+                        '&times;</button>' + message + '</div>');
+            }
+            else{
+                $('#update_form').append(
+                    '<div class="alert alert-danger">' +
+                        '<button type="button" class="close" data-dismiss="alert">' +
+                        '&times;</button>' + message + '</div>');
+            }
+        }
         $(document).ready(function() {
             $('#qcmList').DataTable();
 
@@ -363,21 +377,25 @@ $entreprise = $pdoStt->fetch();
             $("#create").click(function() {
                 var libelle = $('#libelle').val(); // get qcm name
                 var qualitatif = $('#qualitatif').val(); // get qcm type
-                
-                $.ajax({
-                    url: "../../../html/ltr/coqpix/php/insert_qcm_admin.php", //new path, save your work first before u try
-                    type: "POST",
-                    data: {
-                        libelle: libelle,
-                        qualitatif: qualitatif
-                    },
-                    success: function(data) {
-                        window.location.reload();
-                    }
-                });
+                if (libelle != "" && qualitatif != "") {
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/insert_qcm_admin.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            libelle: libelle,
+                            qualitatif: qualitatif
+                        },
+                        success: function(data) {
+                            window.location.reload();
+                        }
+                    });
+                } else if (libelle == "") {
+                    addAlert("Merci de nommer le qcm.", "create");
+                } else {
+                    addAlert("Merci de qualifier le qcm.", "create");
+                }
             });
 
-            /*Misa a jour du libelle du QCM*/
             $(".cancel").click(function() {
                 window.location.reload();
             });
@@ -385,18 +403,31 @@ $entreprise = $pdoStt->fetch();
 
         /*Misa a jour du libelle du QCM*/
         function update(id) {
-            var libelle = $('#' + id).val();
-            $.ajax({
-                url: "../../../html/ltr/coqpix/php/edit_qcm_admin.php", //new path, save your work first before u try
-                type: "POST",
-                data: {
-                    libelle: libelle,
-                    id: id
-                },
-                success: function(data) {
-                    window.location.reload();
-                }
-            });
+            var libelle = $('#libelle' + id).val();
+            var qualitatif = $('#qualitatif' + id).val(); // get qcm type
+            if (libelle != "" && qualitatif != "") {
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/edit_qcm_admin.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        libelle: libelle,
+                        qualitatif: qualitatif,
+                        id: id
+                    },
+                    success: function(data) {
+                        //if(data.include("qcm")){
+                            //$('#libelle' + id).val(data);
+                        //}
+                        //else{
+                            window.location.reload();
+                        //}
+                    }
+                });
+            } else if (libelle == "") {
+                addAlert("Merci de nommer le qcm.", "update");
+            } else {
+                addAlert("Merci de qualifier le qcm.", "update");
+            }
         }
     </script>
     <!-- END: Page JS-->
