@@ -65,8 +65,8 @@ $(window).on("load", function() {
             $("#analytics-bar-chart-juridique").empty();
             $("#donut-chart").empty();
 
-            // document.getElementById("id_legende_crea").style.display = "none";
-            // document.getElementById("id_legende_modif").style.display = "none";
+            document.getElementById("id_legende_crea").style.display = "none";
+            document.getElementById("id_legende_modif").style.display = "none";
 
         } else if (titre_juridique == "Création d'entreprise") {
 
@@ -88,9 +88,9 @@ $(window).on("load", function() {
 
             donutChart.render();
 
-            // // On modifie la légende du donut-chart
-            // document.getElementById("id_legende_modif").style.display = "none";
-            // document.getElementById("id_legende_crea").style.display = "block";
+            // On modifie la légende du donut-chart
+            document.getElementById("id_legende_modif").style.display = "none";
+            document.getElementById("id_legende_crea").style.display = "block";
 
         } else if (titre_juridique == "Modification d'entreprise") {
 
@@ -113,9 +113,9 @@ $(window).on("load", function() {
 
             donutChart.render();
 
-            // // On modifie la légende du donut-chart
-            // document.getElementById("id_legende_crea").style.display = "none";
-            // document.getElementById("id_legende_modif").style.display = "block";
+            // On modifie la légende du donut-chart
+            document.getElementById("id_legende_crea").style.display = "none";
+            document.getElementById("id_legende_modif").style.display = "block";
 
         }
 

@@ -1055,7 +1055,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="col-12">
                                                             <div class="card">
                                                                 <div class="card-content">
-                                                                    <div class="card-body donut-chart-wrapper">
+                                                                    <div class="card-body">
                                                                         <div class="row">
                                                                             <div id="id_legende_crea" class="col-5" style="display: block;">
                                                                                 <ul class="list-inline d-flex justify-content-around mb-0 flex-column">
@@ -1081,7 +1081,9 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="col-7">
-                                                                                <div id="donut-chart" class="d-flex justify-content-center"></div>
+                                                                                <div class="card">                                      
+                                                                                    <div id="donut-chart" class="d-flex justify-content-center"></div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
