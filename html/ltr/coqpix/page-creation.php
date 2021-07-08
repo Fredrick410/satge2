@@ -160,7 +160,7 @@ require_once 'php/verif_session_crea.php';
                     <span class="user-status">En ligne</span>
                 </a>
                 <div class="dropdown-menu pb-0" style="margin-left: 40%;">
-                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Paramètre du compte</a>
+                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Information entreprise/dirigeant</a>
                     <div class="dropdown-divider my-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="php/disconnect.php"><i class="bx bx-log-out mr-50"></i> Se déconnecter</a>
                 </div>
             </div>
