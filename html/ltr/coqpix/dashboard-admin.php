@@ -12,7 +12,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     $pdoSt = $bdd->prepare('SELECT MAX(nb) AS nb FROM (SELECT COUNT(*) AS nb FROM comptable_list GROUP BY id_comptable) AS temp');
     $pdoSt->execute();
-    $nb_assigne_max = ($pdoSt->fetch())['nb'] + 1;
+    $nb_assigne_max = ($pdoSt->fetch())['nb'];
 
 // DEBUT REQUETES COMPTABILITE
 
@@ -22,66 +22,44 @@ require_once 'php/verif_session_connect_admin.php';
 
     // DEBUT CHART 1
 
-    // requete pour recuperer le nombre de prospect, en cours, actif
-    for ($i=0 ; $i<5 ; $i++) {
-
-        $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE (statut = "prospect" || statut = "prospect!validation") AND substr(date_crea, 7) = :annee');
-        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
-        $pdoSta->execute();
-        $portefeuille_prospect = $pdoSta->fetchAll();
-        ${'count_prospect_'.($annee_actuelle - $i)} = count($portefeuille_prospect);
-
-        $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif" AND substr(date_crea, 7) = :annee');
-        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
-        $pdoSta->execute();
-        $portefeuille_actif = $pdoSta->fetchAll();
-        ${'count_actif_'.($annee_actuelle - $i)} = count($portefeuille_actif);
-
-        $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "encours" AND substr(date_crea, 7) = :annee');
-        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
-        $pdoSta->execute();
-        $portefeuille_encours = $pdoSta->fetchAll();
-        ${'count_encours_'.($annee_actuelle - $i)} = count($portefeuille_encours);
-
+    // Requete pour recuperer le nombre de prospect, en cours, actif
+    $query = $bdd->prepare('SELECT substr(date_crea, 7) AS annee, count(case when (statut = "prospect" || statut = "prospect!validation") then 1 else null end) AS count_prospect, count(case when statut = "encours" then 1 else null end) AS count_encours, count(case when statut = "actif" then 1 else null end) AS count_actif FROM portefeuille WHERE substr(date_crea, 7) > (:annee - 5) GROUP BY substr(date_crea, 7)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    $count_prospect = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+    $count_encours = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+    $count_actif = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+    while ($count_portefeuille = $query->fetch()) {
+        $count_prospect[$count_portefeuille['annee']] = (int) $count_portefeuille['count_prospect'];
+        $count_encours[$count_portefeuille['annee']] = (int) $count_portefeuille['count_encours'];
+        $count_actif[$count_portefeuille['annee']] = (int) $count_portefeuille['count_actif'];
     }
 
-    // requete pour recuperer le data chart
+    // Requete pour recuperer le nombre d'actifs par mois et pour les 5 dernières années
+    $query = $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, count(case when substr(date_crea, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(date_crea, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(date_crea, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(date_crea, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(date_crea, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM portefeuille WHERE upper(statut) = "ACTIF" GROUP BY substr(date_crea, 4,2)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
     for ($i=0 ; $i<5 ; $i++) {
+        ${'nb_actif_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($nb_actif = $query->fetch()) {
+        ${'nb_actif_'.($annee_actuelle)}[array_search($nb_actif['mois'], $mois)] = (int) $nb_actif['nb_n'];
+        ${'nb_actif_'.($annee_actuelle-1)}[array_search($nb_actif['mois'], $mois)] = (int) $nb_actif['nb_n_1'];
+        ${'nb_actif_'.($annee_actuelle-2)}[array_search($nb_actif['mois'], $mois)] = (int) $nb_actif['nb_n_2'];
+        ${'nb_actif_'.($annee_actuelle-3)}[array_search($nb_actif['mois'], $mois)] = (int) $nb_actif['nb_n_3'];
+        ${'nb_actif_'.($annee_actuelle-4)}[array_search($nb_actif['mois'], $mois)] = (int) $nb_actif['nb_n_4'];
+    }
 
-        $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
-        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i), ':statut' => "ACTIF"));
-        ${'actif_'.($annee_actuelle - $i)} = array();
-        while ($result_actif = $pdoSt->fetch()) {
-            ${'actif_'.($annee_actuelle - $i)}[$result_actif['mois']] = $result_actif['nb'];
-        }
-    
-        $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM (SELECT * FROM portefeuille WHERE substr(date_crea, 7) =:annee AND upper(statut) = :statut) AS temp GROUP BY substr(date_crea, 4,2)');
-        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i), ':statut' => "PASSIF"));
-        ${'passif_'.($annee_actuelle - $i)} = array();
-        while ($result_passif = $pdoSt->fetch()) {
-            ${'passif_'.($annee_actuelle - $i)}[$result_passif['mois']] = $result_passif['nb'];
-        }
-
-        ${'array_actif_'.($annee_actuelle - $i)} = array();
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'actif_'.($annee_actuelle - $i)})) {
-                ${'array_actif_'.($annee_actuelle - $i)}[$j] = ${'actif_'.($annee_actuelle - $i)}[$mois[$j]];
-            }
-            else {
-                ${'array_actif_'.($annee_actuelle - $i)}[$j] = '0';
-            }
-        }
-
-        ${'array_passif_'.($annee_actuelle - $i)} = array();
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'passif_'.($annee_actuelle - $i)})) {
-                ${'array_passif_'.($annee_actuelle - $i)}[$j] = ${'passif_'.($annee_actuelle - $i)}[$mois[$j]];
-            }
-            else {
-                ${'array_passif_'.($annee_actuelle - $i)}[$j] = '0';
-            }
-        }
-
+    // Requete pour recuperer le nombre d'actifs par mois et pour les 5 dernières années
+    $query = $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, count(case when substr(date_crea, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(date_crea, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(date_crea, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(date_crea, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(date_crea, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM portefeuille WHERE upper(statut) = "PASSIF" GROUP BY substr(date_crea, 4,2)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'nb_passif_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($nb_passif = $query->fetch()) {
+        ${'nb_passif_'.($annee_actuelle)}[array_search($nb_passif['mois'], $mois)] = (int) $nb_passif['nb_n'];
+        ${'nb_passif_'.($annee_actuelle-1)}[array_search($nb_passif['mois'], $mois)] = (int) $nb_passif['nb_n_1'];
+        ${'nb_passif_'.($annee_actuelle-2)}[array_search($nb_passif['mois'], $mois)] = (int) $nb_passif['nb_n_2'];
+        ${'nb_passif_'.($annee_actuelle-3)}[array_search($nb_passif['mois'], $mois)] = (int) $nb_passif['nb_n_3'];
+        ${'nb_passif_'.($annee_actuelle-4)}[array_search($nb_passif['mois'], $mois)] = (int) $nb_passif['nb_n_4'];
     }
 
     // FIN CHART 1
@@ -117,34 +95,42 @@ require_once 'php/verif_session_connect_admin.php';
 
     // DEBUT CHART 4
     
-    // requete pour recuperer le pourcentage de prelevements reussis
+    // requete pour recuperer le nombre de prelevements reussis
+    $query = $bdd->prepare('SELECT dte_m AS mois, count(case when dte_a = :annee and upper(statut) = "PAYE" then 1 else null end) AS nb_n, count(case when dte_a = :annee - 1 and upper(statut) = "PAYE" then 1 else null end) AS nb_n_1, count(case when dte_a = :annee - 2 and upper(statut) = "PAYE" then 1 else null end) AS nb_n_2, count(case when dte_a = :annee - 3 and upper(statut) = "PAYE" then 1 else null end) AS nb_n_3, count(case when dte_a = :annee - 4 and upper(statut) = "PAYE" then 1 else null end) AS nb_n_4 FROM prelevement GROUP BY dte_m');
+    $query->execute(array(':annee' => $annee_actuelle));
     for ($i=0 ; $i<5 ; $i++) {
+        ${'nb_prelev_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($prelev_reussis = $query->fetch()) {
+        ${'nb_prelev_'.($annee_actuelle)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['nb_n'];
+        ${'nb_prelev_'.($annee_actuelle-1)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['nb_n_1'];
+        ${'nb_prelev_'.($annee_actuelle-2)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['nb_n_2'];
+        ${'nb_prelev_'.($annee_actuelle-3)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['nb_n_3'];
+        ${'nb_prelev_'.($annee_actuelle-4)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['nb_n_4'];
+    }
 
-        $select_taux_prelevement = $bdd->prepare('SELECT dte_m AS mois, round(count(*) / (SELECT count(*) FROM prelevement) * 100) AS taux_prelevement FROM prelevement WHERE upper(statut) = "PAYE" AND dte_a = :annee GROUP BY dte_m');
-        $select_taux_prelevement->execute(array(':annee' => $annee_actuelle - $i));
-        ${'array_taux_prelevement_'.($annee_actuelle - $i)} = array();
-        while ($result_taux_prelevement = $select_taux_prelevement->fetch()) {
-            ${'array_taux_prelevement_'.($annee_actuelle - $i)}[$result_taux_prelevement['mois']] = $result_taux_prelevement['taux_prelevement'];
-        }
-
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'array_taux_prelevement_'.($annee_actuelle - $i)})) {
-                ${'taux_prelevement_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_taux_prelevement_'.($annee_actuelle - $i)}[$mois[$j]];
-            }
-            else {
-                ${'taux_prelevement_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
-            }
-        }
+    // requete pour recuperer le pourcentage de prelevements reussis
+    $query = $bdd->prepare('SELECT dte_m AS mois, round(count(case when dte_a = :annee and upper(statut) = "PAYE" then 1 else null end) / count(case when dte_a = :annee then 1 else null end) * 100) AS pourcent_n, round(count(case when dte_a = :annee - 1 and upper(statut) = "PAYE" then 1 else null end) / count(case when dte_a = :annee - 1 then 1 else null end) * 100) AS pourcent_n_1, round(count(case when dte_a = :annee - 2 and upper(statut) = "PAYE" then 1 else null end) / count(case when dte_a = :annee - 2 then 1 else null end) * 100) AS pourcent_n_2, round(count(case when dte_a = :annee - 3 and upper(statut) = "PAYE" then 1 else null end) / count(case when dte_a = :annee - 3 then 1 else null end) * 100) AS pourcent_n_3, round(count(case when dte_a = :annee - 4 and upper(statut) = "PAYE" then 1 else null end) / count(case when dte_a = :annee - 4 then 1 else null end) * 100) AS pourcent_n_4 FROM prelevement GROUP BY dte_m');
+    $query->execute(array(':annee' => $annee_actuelle));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'pourcent_prelev_'.($annee_actuelle - $i)} = array(100,100,100,100,100,100,100,100,100,100,100,100);
+    }
+    while ($prelev_reussis = $query->fetch()) {
+        if ($prelev_reussis['pourcent_n'] != null) { ${'pourcent_prelev_'.($annee_actuelle)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['pourcent_n']; }
+        if ($prelev_reussis['pourcent_n_1'] != null) {${'pourcent_prelev_'.($annee_actuelle-1)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['pourcent_n_1']; }
+        if ($prelev_reussis['pourcent_n_2'] != null) { ${'pourcent_prelev_'.($annee_actuelle-2)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['pourcent_n_2']; }
+        if ($prelev_reussis['pourcent_n_3'] != null) { ${'pourcent_prelev_'.($annee_actuelle-3)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['pourcent_n_3']; }
+        if ($prelev_reussis['pourcent_n_4'] != null) { ${'pourcent_prelev_'.($annee_actuelle-4)}[array_search($prelev_reussis['mois'], $mois)] = (int) $prelev_reussis['pourcent_n_4']; }
+    }
     
-    // requete pour recuperer le bilan annuel
-    } for ($i=1 ; $i<6 ; $i++) {
-
-        $select_bilan_annuel = $bdd->prepare('SELECT round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS bilan_annuel FROM bilan WHERE date_a = :annee');
-        $select_bilan_annuel->bindValue(':annee', $annee_actuelle - $i);
-        $select_bilan_annuel->execute();
-        $result_bilan_annuel = $select_bilan_annuel->fetch();
-        ${'bilan_annuel_'.($annee_actuelle - $i)} = $result_bilan_annuel['bilan_annuel'];
-
+    // Requête pour récupérer le bilan annuel pour les 5 dernières années
+    $query = $bdd->prepare('SELECT date_a AS annee, count(*) AS nb, round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS pourcent FROM bilan WHERE date_a > (:annee - 6) GROUP BY date_a');
+    $query->execute(array(':annee' => $annee_actuelle));
+    $nb_bilan = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+    $pourcent_bilan = array($annee_actuelle-1 => 100, $annee_actuelle-2 => 100, $annee_actuelle-3 => 100, $annee_actuelle-4 => 100, $annee_actuelle-5 => 100);
+    while ($bilan_annuel = $query->fetch()) {
+        $nb_bilan[$bilan_annuel['annee']] = (int) $bilan_annuel['nb'];
+        $pourcent_bilan[$bilan_annuel['annee']] = (int) $bilan_annuel['pourcent'];
     }
 
     // FIN CHART 4
@@ -155,90 +141,110 @@ require_once 'php/verif_session_connect_admin.php';
 
     // DEBUT CHART 1
 
+    // Requete SQL permettant de récupérer le nombre de créations d'entreprise validés par mois et pour les 5 dernières années
+    $query = $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, count(case when substr(date_crea, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(date_crea, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(date_crea, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(date_crea, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(date_crea, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM crea_societe WHERE doc_pieceid!="" AND doc_cerfaM0!="" AND doc_pouvoir!="" AND doc_attestation!="" AND RIGHT(depo_cfe,3) ="yes" and RIGHT(depo_greffe,3) ="yes" AND RIGHT(frais,3)="yes" AND ( (doc_cerfaMBE!="" AND doc_justificatifss!="" AND doc_statuts!="" AND doc_nomination!="" AND doc_annonce!="" AND doc_depot!="") OR (doc_xp!="" AND doc_justificatifd!="" AND doc_peirl!="" AND doc_attestation!="")) GROUP BY substr(date_crea, 4,2)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
     for ($i=0 ; $i<5 ; $i++) {
-    
-        // requete permettant de recuperer le nb total de créations valides par mois
-        $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, COUNT(*) AS nb FROM crea_societe WHERE doc_pieceid!="" AND doc_cerfaM0!="" AND doc_pouvoir!="" AND doc_attestation!="" AND RIGHT(depo_cfe,3) ="yes" and RIGHT(depo_greffe,3) ="yes" AND RIGHT(frais,3)="yes" AND ( (doc_cerfaMBE!="" AND doc_justificatifss!="" AND doc_statuts!="" AND doc_nomination!="" AND doc_annonce!="" AND doc_depot!="") OR (doc_xp!="" AND doc_justificatifd!="" AND doc_peirl!="" AND doc_attestation!="")) AND substr(date_crea, 7) = :annee GROUP BY substr(date_crea, 4,2)');
-        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
-        ${'crea_valide_'.($annee_actuelle - $i)} = array();
-        while ($result_total_crea = $pdoSt->fetch()) {
-            ${'crea_valide_'.($annee_actuelle - $i)}[$result_total_crea['mois']] = $result_total_crea['nb'];
-        }
+        ${'crea_valide_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($crea_valide = $query->fetch()) {
+        ${'crea_valide_'.($annee_actuelle)}[array_search($crea_valide['mois'], $mois)] = (int) $crea_valide['nb_n'];
+        ${'crea_valide_'.($annee_actuelle-1)}[array_search($crea_valide['mois'], $mois)] = (int) $crea_valide['nb_n_1'];
+        ${'crea_valide_'.($annee_actuelle-2)}[array_search($crea_valide['mois'], $mois)] = (int) $crea_valide['nb_n_2'];
+        ${'crea_valide_'.($annee_actuelle-3)}[array_search($crea_valide['mois'], $mois)] = (int) $crea_valide['nb_n_3'];
+        ${'crea_valide_'.($annee_actuelle-4)}[array_search($crea_valide['mois'], $mois)] = (int) $crea_valide['nb_n_4'];
+    }
 
-        ${'array_crea_valide_'.($annee_actuelle - $i)} = array();
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'crea_valide_'.($annee_actuelle - $i)})) {
-                ${'array_crea_valide_'.($annee_actuelle - $i)}[$j] = (int) ${'crea_valide_'.($annee_actuelle - $i)}[$mois[$j]];
-            }
-            else {
-                ${'array_crea_valide_'.($annee_actuelle - $i)}[$j] = 0;
-            }
-        }
+    // Requete SQL permettant de récupérer le nombre total créations d'entreprise par mois et pour les 5 dernières années
+    $query = $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, count(case when substr(date_crea, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(date_crea, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(date_crea, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(date_crea, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(date_crea, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM crea_societe GROUP BY substr(date_crea, 4,2)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'crea_encours_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($total_crea = $query->fetch()) {
+        ${'crea_encours_'.($annee_actuelle)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n'] - ${'crea_valide_'.($annee_actuelle)}[array_search($total_crea['mois'], $mois)];
+        ${'crea_encours_'.($annee_actuelle-1)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_1'] - ${'crea_valide_'.($annee_actuelle-1)}[array_search($total_crea['mois'], $mois)];
+        ${'crea_encours_'.($annee_actuelle-2)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_2'] - ${'crea_valide_'.($annee_actuelle-2)}[array_search($total_crea['mois'], $mois)];
+        ${'crea_encours_'.($annee_actuelle-3)}[array_search($total_crea['mois'], $mois)] = (int) $crea_valide['nb_n_3'] - ${'crea_valide_'.($annee_actuelle-3)}[array_search($total_crea['mois'], $mois)];
+        ${'crea_encours_'.($annee_actuelle-4)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_4'] - ${'crea_valide_'.($annee_actuelle-4)}[array_search($total_crea['mois'], $mois)];
+    }
 
-        // requete permettant de recuperer le nb de demande de creation d'entreprises par mois
-        $pdoSt= $bdd->prepare('SELECT substr(date_crea, 4,2) AS mois, count(*) AS nb FROM crea_societe WHERE substr(date_crea, 7) = :annee GROUP BY substr(date_crea, 4,2)');
-        $pdoSt->execute(array(':annee' => ($annee_actuelle - $i)));
-        ${'total_crea_'.($annee_actuelle - $i)} = array();
-        while ($result_demande_crea = $pdoSt->fetch()) {
-            ${'total_crea_'.($annee_actuelle - $i)}[$result_demande_crea['mois']] = $result_demande_crea['nb'];
-        }
+    // Requete SQL permettant de récupérer le nombre de modifications d'entreprise validés par mois et pour les 5 dernières années
+    $query = $bdd->prepare('SELECT substr(dte, 4,2) AS mois, count(case when substr(dte, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(dte, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(dte, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(dte, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(dte, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM acte WHERE progression = "100" and right(frais, 3) = "yes" and right(honoraire, 3) = "yes" and right(depo_greffe, 3) = "yes" and right(depo_cfe, 3) = "yes" and article_three = "yes" GROUP BY substr(dte, 4,2)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'modif_valide_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($modif_valide = $query->fetch()) {
+        ${'modif_valide_'.($annee_actuelle)}[array_search($modif_valide['mois'], $mois)] = (int) $modif_valide['nb_n'];
+        ${'modif_valide_'.($annee_actuelle-1)}[array_search($modif_valide['mois'], $mois)] = (int) $modif_valide['nb_n_1'];
+        ${'modif_valide_'.($annee_actuelle-2)}[array_search($modif_valide['mois'], $mois)] = (int) $modif_valide['nb_n_2'];
+        ${'modif_valide_'.($annee_actuelle-3)}[array_search($modif_valide['mois'], $mois)] = (int) $modif_valide['nb_n_3'];
+        ${'modif_valide_'.($annee_actuelle-4)}[array_search($modif_valide['mois'], $mois)] = (int) $modif_valide['nb_n_4'];
+    }
 
-        ${'array_demande_crea_'.($annee_actuelle - $i)} = array();
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'total_crea_'.($annee_actuelle - $i)})) {
-                ${'array_demande_crea_'.($annee_actuelle - $i)}[$j] = ${'total_crea_'.($annee_actuelle - $i)}[$mois[$j]] - ${'array_crea_valide_'.($annee_actuelle - $i)}[$j];
-            }
-            else {
-                ${'array_demande_crea_'.($annee_actuelle - $i)}[$j] = 0;
-            }
-        }
-
+    // Requete SQL permettant de récupérer le nombre total de modifications d'entreprise par mois et pour les 5 dernières années
+    $query = $bdd->prepare('SELECT substr(dte, 4,2) AS mois, count(case when substr(dte, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(dte, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(dte, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(dte, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(dte, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM acte GROUP BY substr(dte, 4,2)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'modif_encours_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($total_modif = $query->fetch()) {
+        ${'modif_encours_'.($annee_actuelle)}[array_search($total_modif['mois'], $mois)] = (int) $total_modif['nb_n'] - ${'modif_valide_'.($annee_actuelle)}[array_search($total_modif['mois'], $mois)];
+        ${'modif_encours_'.($annee_actuelle-1)}[array_search($total_modif['mois'], $mois)] = (int) $total_modif['nb_n_1'] - ${'modif_valide_'.($annee_actuelle-1)}[array_search($total_modif['mois'], $mois)];
+        ${'modif_encours_'.($annee_actuelle-2)}[array_search($total_modif['mois'], $mois)] = (int) $total_modif['nb_n_2'] - ${'modif_valide_'.($annee_actuelle-2)}[array_search($total_modif['mois'], $mois)];
+        ${'modif_encours_'.($annee_actuelle-3)}[array_search($total_modif['mois'], $mois)] = (int) $total_modif['nb_n_3'] - ${'modif_valide_'.($annee_actuelle-3)}[array_search($total_modif['mois'], $mois)];
+        ${'modif_encours_'.($annee_actuelle-4)}[array_search($total_modif['mois'], $mois)] = (int) $total_modif['nb_n_4'] - ${'modif_valide_'.($annee_actuelle-4)}[array_search($total_modif['mois'], $mois)];
     }
 
     // FIN CHART 1
+
+    // Requete SQL permettant de recuperer le nombre de créa par type
+    $query = $bdd->prepare('SELECT LEFT(status_crea, 4) AS status_crea, count(case when substr(date_crea, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(date_crea, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(date_crea, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(date_crea, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(date_crea, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM crea_societe GROUP BY status_crea');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'nb_crea_type_'.($annee_actuelle - $i)} = array('SARL'=>0, 'SAS'=>0, 'SASU'=>0, 'SCI'=>0, 'EIRL'=>0, 'EI'=>0, 'Micro-Entreprise'=>0);
+    }
+    while ($nb_crea_type = $query->fetch()) {
+        ${'nb_crea_type_'.($annee_actuelle)}[$nb_crea_type['status_crea']] = (int) $nb_crea_type['nb_n'];
+        ${'nb_crea_type_'.($annee_actuelle-1)}[$nb_crea_type['status_crea']] = (int) $nb_crea_type['nb_n_1'];
+        ${'nb_crea_type_'.($annee_actuelle-2)}[$nb_crea_type['status_crea']] = (int) $nb_crea_type['nb_n_2'];
+        ${'nb_crea_type_'.($annee_actuelle-3)}[$nb_crea_type['status_crea']] = (int) $nb_crea_type['nb_n_3'];
+        ${'nb_crea_type_'.($annee_actuelle-4)}[$nb_crea_type['status_crea']] = (int) $nb_crea_type['nb_n_4'];
+    }
 
     // Requete SQL permettant de recuperer le nombre de créa valides
     $query = $bdd->query('SELECT COUNT(*) AS nb FROM crea_societe WHERE doc_pieceid!="" AND doc_cerfaM0!="" AND doc_pouvoir!="" AND doc_attestation!="" AND RIGHT(depo_cfe,3) ="yes" and RIGHT(depo_greffe,3) ="yes" AND RIGHT(frais,3)="yes" AND ((doc_cerfaMBE!="" AND doc_justificatifss!="" AND doc_statuts!="" AND doc_nomination!="" AND doc_annonce!="" AND doc_depot!="") OR (doc_xp!="" AND doc_justificatifd!="" AND doc_peirl!="" AND doc_attestation!=""))');
     $nb_crea_valide = ($query->fetch())['nb'];
 
-    
-    // Requete SQL permettant de recuperer le nombre de créa par type
-    for ($i=0 ; $i<5 ; $i++) {
-        $query = $bdd->prepare('SELECT LEFT(status_crea, 4) AS status_crea, COUNT(*) AS nb FROM crea_societe WHERE substr(date_crea, 7) = :annee GROUP BY status_crea');
-        $query->execute(array(':annee' => ($annee_actuelle - $i)));
-
-        ${'nb_crea_'.($annee_actuelle - $i)} = array();
-        while ($nb_crea_type = $query->fetch()) {
-            ${'nb_crea_'.($annee_actuelle - $i)}[$nb_crea_type['status_crea']] = $nb_crea_type['nb'];
-        }
-
-        ${'array_nb_crea_'.($annee_actuelle - $i)} = array('SARL'=>0, 'SAS'=>0, 'SASU'=>0, 'SCI'=>0, 'EIRL'=>0, 'EI'=>0, 'Micr'=>0);
-        for($j=0; $j<7; $j++) {
-            if (array_key_exists($status_crea[$j], ${'nb_crea_'.($annee_actuelle - $i)})) {
-                ${'array_nb_crea_'.($annee_actuelle - $i)}[$status_crea[$j]] = (int) ${'nb_crea_'.($annee_actuelle - $i)}[$status_crea[$j]];
-            }
-            else {
-                ${'array_nb_crea_'.($annee_actuelle - $i)}[$status_crea[$j]] = 0;
-            }
-        }
-    }
-
-    // $nb_SARL = 0;$nb_SAS = 0;$nb_SASU = 0;$nb_SCI = 0;$nb_EIRL = 0;$nb_EI = 0;$nb_Micro = 0;
-    // foreach($nb_crea_type as $nb_crea) :
-    //    ${'nb_'.$nb_crea['status_crea']} = $nb_crea['nb'];
-    // endforeach;
-
-    // Requete SQL permettant de recuperer le nombre de créa en cours
-    $nb_crea_en_cours = array_sum(${'array_nb_crea_'.($annee_actuelle)})
-                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 1)})
-                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 2)})
-                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 3)})
-                        + array_sum(${'array_nb_crea_'.($annee_actuelle - 4)})
+    // Nombre de créations d'entreprise en cours
+    $nb_crea_en_cours = array_sum(${'nb_crea_type_'.($annee_actuelle)})
+                        + array_sum(${'nb_crea_type_'.($annee_actuelle-1)})
+                        + array_sum(${'nb_crea_type_'.($annee_actuelle-2)})
+                        + array_sum(${'nb_crea_type_'.($annee_actuelle-3)})
+                        + array_sum(${'nb_crea_type_'.($annee_actuelle-4)})
                         - $nb_crea_valide;
 
     // Requete SQL permettant de recuperer le nombre de créa supprimées
     $query = $bdd->query('SELECT COUNT(*) AS nb FROM delete_societe');
     $nb_crea_delete = ($query->fetch())['nb'];
+
+    // Requete SQL permettant de recuperer le nombre de modifications d'entreprise par type de changement
+    $query = $bdd->prepare('SELECT substr(dte, 7) AS annee, count(case when one = "on" then 1 else null end) AS nb_one, count(case when two = "on" then 1 else null end) AS nb_two, count(case when three = "on" then 1 else null end) AS nb_three, count(case when four = "on" then 1 else null end) AS nb_four, count(case when five = "on" then 1 else null end) AS nb_five, count(case when six = "on" then 1 else null end) AS nb_six, count(case when seven = "on" then 1 else null end) AS nb_seven, count(case when eight = "on" then 1 else null end) AS nb_eight FROM acte GROUP BY substr(dte, 7)');
+    $query->execute(array(':annee' => ($annee_actuelle)));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'nb_modif_type_'.($annee_actuelle - $i)} = array('one'=>0, 'two'=>0, 'three'=>0, 'four'=>0, 'five'=>0, 'six'=>0, 'seven'=>0, 'eight'=>0);
+    }
+    while ($nb_modif_type = $query->fetch()) {
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['one'] = (int) $nb_modif_type['nb_one'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['two'] = (int) $nb_modif_type['nb_two'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['three'] = (int) $nb_modif_type['nb_three'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['four'] = (int) $nb_modif_type['nb_four'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['five'] = (int) $nb_modif_type['nb_five'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['six'] = (int) $nb_modif_type['nb_six'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['seven'] = (int) $nb_modif_type['nb_seven'];
+        ${'nb_modif_type_'.$nb_modif_type['annee']}['eight'] = (int) $nb_modif_type['nb_eight'];
+    }
 
 // FIN REQUETES JURIDIQUE
 
@@ -292,7 +298,8 @@ require_once 'php/verif_session_connect_admin.php';
     table tbody {
         display: block;
         max-height: 300px;
-        overflow-y: scroll;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     table thead, table tbody tr {
@@ -451,7 +458,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <div class="card-body pb-1">
                                                                 <div class="d-flex justify-content-end mb-1">
                                                                     <div>
-                                                                        <select style="width: 80px;" class="form-control" id="id_select_portefeuille">
+                                                                        <select style="width: 80px;" class="form-control" id="id_select_annee_portefeuille">
                                                                             <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
                                                                             <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
                                                                             <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
@@ -461,25 +468,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex justify-content-around align-items-center flex-wrap">
-
-                                                                    <?php
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        $id_count_prospect = "id_count_prospect_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_count_prospect ?>" value="<?= ${"count_prospect_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
-
-                                                                    <?php
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        $id_count_encours = "id_count_encours_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_count_encours ?>" value="<?= ${"count_encours_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
-
-                                                                    <?php
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        $id_count_actif = "id_count_actif_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_count_actif ?>" value="<?= ${"count_actif_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
-                                                                    
+                               
                                                                     <div class="user-analytics">                                                                        
                                                                         <h6 class="mb-0 text-center">Prospect</h6>
                                                                         <div class="d-flex">
@@ -487,7 +476,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <i class='bx bxs-save font-medium-5'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h6 class="text-center" id="id_nb_prospect"><?= ${'count_prospect_'.$annee_actuelle} ?></h6>
+                                                                        <h6 class="text-center" id="id_count_prospect"><?= $count_prospect[$annee_actuelle] ?></h6>
                                                                         
                                                                     </div>
                                                                     <div class="sessions-analytics">                                                                    
@@ -497,7 +486,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <i class='bx bx-loader-circle font-medium-5'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h6 class="text-center" id="id_nb_encours"><?= ${'count_encours_'.$annee_actuelle} ?></h6>
+                                                                        <h6 class="text-center" id="id_count_encours"><?= $count_encours[$annee_actuelle] ?></h6>
                                                                         
                                                                     </div>
                                                                     <div class="bounce-rate-analytics">                                                                       
@@ -507,7 +496,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <i class='bx bx-badge-check font-medium-5'></i>
                                                                             </div>
                                                                         </div>    
-                                                                        <h6 class="text-center" id="id_nb_actif"><?= ${'count_actif_'.$annee_actuelle} ?></h6>                                                                        
+                                                                        <h6 class="text-center" id="id_count_actif"><?= $count_actif[$annee_actuelle] ?></h6>                                                                        
                                                                     </div>
                                                                 </div>   
 
@@ -554,7 +543,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     </table>
                                                                 </div>
                                                                 <?php if ($count_retard == 0) { ?>
-                                                                    <h5 class="text-center"> Aucune facture en retard </h5>
+                                                                    <h5 class="text-center text-success"> Aucune facture en retard </h5>
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
@@ -572,7 +561,6 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="card">
                                                         <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                                                             <h5 class="card-title"><i class="bx bx-group font-medium-5 align-middle"></i> <span class="align-middle">Comptables</span></h5>
-                                                            <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body py-1 px-0">
@@ -626,7 +614,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             $pdoSt->execute();
                                                                             $nb_assigne_perso = ($pdoSt->fetch())['nb'];
 
-                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($nb_assigne_max != 0 ) {
+                                                                                $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max); 
+                                                                            } else {
+                                                                                $pourcent_perso = 100;
+                                                                            }
                                                                             if ($pourcent_perso <34){
                                                                                 $color_bar = "danger";
                                                                             } else if ($pourcent_perso <67){
@@ -671,7 +663,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             $pdoSt->execute();
                                                                             $nb_assigne_perso = ($pdoSt->fetch())['nb'];
 
-                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($nb_assigne_max != 0 ) {
+                                                                                $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max); 
+                                                                            } else {
+                                                                                $pourcent_perso = 100;
+                                                                            }
                                                                             if ($pourcent_perso <34){
                                                                                 $color_bar = "danger";
                                                                             } else if ($pourcent_perso <67){
@@ -716,7 +712,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             $pdoSt->execute();
                                                                             $nb_assigne_perso = ($pdoSt->fetch())['nb'];
 
-                                                                            $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max);
+                                                                            if ($nb_assigne_max != 0 ) {
+                                                                                $pourcent_perso = 100-(100*$nb_assigne_perso / $nb_assigne_max); 
+                                                                            } else {
+                                                                                $pourcent_perso = 100;
+                                                                            }
                                                                             if ($pourcent_perso <34){
                                                                                 $color_bar = "danger";
                                                                             } else if ($pourcent_perso <67){
@@ -761,28 +761,21 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="card-body text-center">
                                                             <div class="row">
                                                                 <div class="col-md-6 col-12">
-                                                                    <?php 
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        for ($j=0; $j<12 ; $j++) {
-                                                                            $id_taux_prelevement = "taux_prelevement_".$mois[$j]."_".($annee_actuelle - $i); ?>
-                                                                            <input type="hidden" id="<?= $id_taux_prelevement ?>" value="<?= ${'taux_prelevement_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
-                                                                        }
-                                                                    } ?>
                                                                     <h6 class="mb-1"> Prélèvement réussis </h6>
                                                                     <div class="d-flex justify-content-center">
                                                                         <select style="width: 80px;" class="form-control" id="id_select_mois_prelevement">
-                                                                            <option value="01">Janv</option>
-                                                                            <option value="02">Fevr</option>
-                                                                            <option value="03">Mars</option>
-                                                                            <option value="04">Avril</option>
-                                                                            <option value="05">Mai</option>
-                                                                            <option value="06">Juin</option>
-                                                                            <option value="07">Juil</option>
-                                                                            <option value="08">Aout</option>
-                                                                            <option value="09">Sept</option>
-                                                                            <option value="10">Oct</option>
-                                                                            <option value="11">Nov</option>
-                                                                            <option value="12">Dec</option>
+                                                                            <option value="0">Janv</option>
+                                                                            <option value="1">Fevr</option>
+                                                                            <option value="2">Mars</option>
+                                                                            <option value="3">Avril</option>
+                                                                            <option value="4">Mai</option>
+                                                                            <option value="5">Juin</option>
+                                                                            <option value="6">Juil</option>
+                                                                            <option value="7">Aout</option>
+                                                                            <option value="8">Sept</option>
+                                                                            <option value="9">Oct</option>
+                                                                            <option value="10">Nov</option>
+                                                                            <option value="11">Dec</option>
                                                                         </select>
                                                                         <select style="width: 80px;" class="form-control" id="id_select_annee_prelevement">
                                                                             <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
@@ -795,11 +788,6 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <div id="growth-Chart-prelevement"></div>
                                                                 </div>
                                                                 <div class="col-md-6 col-12">
-                                                                    <?php 
-                                                                    for ($i=1; $i<6 ; $i++) {
-                                                                        $id_bilan_annuel = "bilan_annuel_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_bilan_annuel ?>" value="<?= ${"bilan_annuel_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
                                                                     <h6 class="mb-1"> Bilans annuels </h6>
                                                                     <div class="d-flex justify-content-center">
                                                                         <select style="width: 80px;" class="form-control" id="id_select_bilan">
@@ -832,7 +820,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="card">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
                                                             <h4 class="card-title" id="id_titre_juridique">Création d'entreprise</h4>
-                                                            <select style="width: 80px;" class="form-control" id="id_select_juridique">
+                                                            <select style="width: 80px;" class="form-control" id="id_select_annee_juridique">
                                                                 <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
                                                                 <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
                                                                 <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
@@ -879,7 +867,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <span class="list-title">Créations en cours</span>
                                                                             </div>
                                                                         </div>
-                                                                        <span class="badge badge-light-warning  float-right mt-20"><?= $nb_crea_en_cours ?> En cours</span>
+                                                                        <span class="badge badge-light-warning float-right mt-20"><?= $nb_crea_en_cours ?> En cours</span>
                                                                     </li>
                                                                     <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
                                                                         <div class="list-left d-flex">
@@ -887,7 +875,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <span class="list-title">Créations validées totales</span>
                                                                             </div>
                                                                         </div>
-                                                                        <span class="badge badge-light-success  float-right mt-20"><?= $nb_crea_valide ?> Validées</span>
+                                                                        <span class="badge badge-light-success float-right mt-20"><?= $nb_crea_valide ?> Validées</span>
                                                                     </li>
                                                                     <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
                                                                         <div class="list-left d-flex">
@@ -895,7 +883,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <span class="list-title">Créations abandonnées</span>
                                                                             </div>
                                                                         </div>
-                                                                        <span class="badge badge-light-danger  float-right mt-20"><?= $nb_crea_delete ?> Abandons</span>
+                                                                        <span class="badge badge-light-danger float-right mt-20"><?= $nb_crea_delete ?> Abandons</span>
                                                                     </li>
                                                                     
                                                                 </ul>
@@ -914,15 +902,27 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <div class="card-content">
                                                                     <div class="card-body donut-chart-wrapper">
                                                                         <div class="row">
-                                                                            <div class="col-5">
+                                                                            <div id="id_legende_crea" class="col-5" style="display: block;">
                                                                                 <ul class="list-inline d-flex justify-content-around mb-0 flex-column">
-                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-success mr-50"></span>SARL</li>
-                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-primary mr-50"></span>SAS</li>
-                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-warning mr-50"></span>SASU</li>
-                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-danger mr-50"></span>SCI</li>
-                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-info mr-50"></span>EIRL</li>
-                                                                                    <li class = "mb-1"> <span class="bullet bullet-xs bullet-light mr-50"></span>EI</li>
-                                                                                    <li> <span class="bullet bullet-xs bullet-dark mr-50"></span>Micro-entreprise</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-success mr-50"></span>SARL</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-primary mr-50"></span>SAS</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-warning mr-50"></span>SASU</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-danger mr-50"></span>SCI</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-info mr-50"></span>EIRL</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-light mr-50"></span>EI</li>
+                                                                                    <li> <span class="bullet bullet-sm bullet-dark mr-50"></span>Micro-entreprise</li>
+                                                                                </ul>
+                                                                            </div>
+                                                                            <div id="id_legende_modif" class="col-5" style="display: none;">
+                                                                                <ul class="list-inline d-flex justify-content-around mb-0 flex-column">
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-success mr-50"></span>Cession de parts / Actions</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-primary mr-50"></span>Gérant / Président</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-warning mr-50"></span>Siège social</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-danger mr-50"></span>Objet social</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-info mr-50"></span>Forme juridique</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-light mr-50"></span>Dénomination</li>
+                                                                                    <li class = "mb-1"> <span class="bullet bullet-sm bullet-dark mr-50"></span>Capital social</li>
+                                                                                    <li> <span class="bullet bullet-sm mr-50" style="background-color: #FF00FF;"></span>Veille</li>
                                                                                 </ul>
                                                                             </div>
                                                                             <div class="col-7">
@@ -991,44 +991,84 @@ require_once 'php/verif_session_connect_admin.php';
     <script type="text/javascript">
 
         var annee_actuelle = (new Date()).getFullYear();
-        var array_actif = "array_actif_";
-        var array_passif = "array_passif_";
 
-        this[array_actif + annee_actuelle] =<?php echo json_encode(${'array_actif_'.($annee_actuelle)}); ?>;
-        this[array_actif + (annee_actuelle - 1)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 1)}); ?>;
-        this[array_actif + (annee_actuelle - 2)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 2)}); ?>;
-        this[array_actif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 3)}); ?>;
-        this[array_actif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 4)}); ?>;
+        var count_prospect = <?php echo json_encode($count_prospect); ?>;
+        var count_encours = <?php echo json_encode($count_encours); ?>;
+        var count_actif = <?php echo json_encode($count_actif); ?>;
 
-        this[array_passif + annee_actuelle] =<?php echo json_encode(${'array_passif_'.($annee_actuelle)}); ?>;
-        this[array_passif + (annee_actuelle - 1)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 1)}); ?>;
-        this[array_passif + (annee_actuelle - 2)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 2)}); ?>;
-        this[array_passif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 3)}); ?>;
-        this[array_passif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 4)}); ?>;
+        var pourcent_prelev = "pourcent_prelev_";
+        this[pourcent_prelev + annee_actuelle] = <?php echo json_encode(${'pourcent_prelev_'.($annee_actuelle)}); ?>;
+        this[pourcent_prelev + (annee_actuelle-1)] = <?php echo json_encode(${'pourcent_prelev_'.($annee_actuelle-1)}); ?>;
+        this[pourcent_prelev + (annee_actuelle-2)] = <?php echo json_encode(${'pourcent_prelev_'.($annee_actuelle-2)}); ?>;
+        this[pourcent_prelev + (annee_actuelle-3)] = <?php echo json_encode(${'pourcent_prelev_'.($annee_actuelle-3)}); ?>;
+        this[pourcent_prelev + (annee_actuelle-4)] = <?php echo json_encode(${'pourcent_prelev_'.($annee_actuelle-4)}); ?>;
 
-        var array_demande_crea = "array_demande_crea_";
-        var array_crea_valide = "array_crea_valide_";
+        var nb_prelev = "nb_prelev_";
+        this[nb_prelev + annee_actuelle] = <?php echo json_encode(${'nb_prelev_'.($annee_actuelle)}); ?>;
+        this[nb_prelev + (annee_actuelle-1)] = <?php echo json_encode(${'nb_prelev_'.($annee_actuelle-1)}); ?>;
+        this[nb_prelev + (annee_actuelle-2)] = <?php echo json_encode(${'nb_prelev_'.($annee_actuelle-2)}); ?>;
+        this[nb_prelev + (annee_actuelle-3)] = <?php echo json_encode(${'nb_prelev_'.($annee_actuelle-3)}); ?>;
+        this[nb_prelev + (annee_actuelle-4)] = <?php echo json_encode(${'nb_prelev_'.($annee_actuelle-4)}); ?>;
 
-        this[array_demande_crea + annee_actuelle] =<?php echo json_encode(${'array_demande_crea_'.($annee_actuelle)}); ?>;
-        this[array_demande_crea + (annee_actuelle - 1)] =<?php echo json_encode(${'array_demande_crea_'.($annee_actuelle - 1)}); ?>;
-        this[array_demande_crea + (annee_actuelle - 2)] =<?php echo json_encode(${'array_demande_crea_'.($annee_actuelle - 2)}); ?>;
-        this[array_demande_crea + (annee_actuelle - 3)] =<?php echo json_encode(${'array_demande_crea_'.($annee_actuelle - 3)}); ?>;
-        this[array_demande_crea + (annee_actuelle - 4)] =<?php echo json_encode(${'array_demande_crea_'.($annee_actuelle - 4)}); ?>;
+        var nb_bilan = <?php echo json_encode($nb_bilan); ?>;
+        var pourcent_bilan = <?php echo json_encode($pourcent_bilan); ?>;
 
-        this[array_crea_valide + annee_actuelle] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle)}); ?>;
-        this[array_crea_valide + (annee_actuelle - 1)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 1)}); ?>;
-        this[array_crea_valide + (annee_actuelle - 2)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 2)}); ?>;
-        this[array_crea_valide + (annee_actuelle - 3)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 3)}); ?>;
-        this[array_crea_valide + (annee_actuelle - 4)] =<?php echo json_encode(${'array_crea_valide_'.($annee_actuelle - 4)}); ?>;
+        var nb_actif = "nb_actif_";
+        this[nb_actif + annee_actuelle] = <?php echo json_encode(${'nb_actif_'.($annee_actuelle)}); ?>;
+        this[nb_actif + (annee_actuelle-1)] = <?php echo json_encode(${'nb_actif_'.($annee_actuelle-1)}); ?>;
+        this[nb_actif + (annee_actuelle-2)] = <?php echo json_encode(${'nb_actif_'.($annee_actuelle-2)}); ?>;
+        this[nb_actif + (annee_actuelle-3)] = <?php echo json_encode(${'nb_actif_'.($annee_actuelle-3)}); ?>;
+        this[nb_actif + (annee_actuelle-4)] = <?php echo json_encode(${'nb_actif_'.($annee_actuelle-4)}); ?>;
 
-        var array_nb_crea = "array_nb_crea_";
+        var nb_passif = "nb_passif_";
+        this[nb_passif + annee_actuelle] = <?php echo json_encode(${'nb_passif_'.($annee_actuelle)}); ?>;
+        this[nb_passif + (annee_actuelle-1)] = <?php echo json_encode(${'nb_passif_'.($annee_actuelle-1)}); ?>;
+        this[nb_passif + (annee_actuelle-2)] = <?php echo json_encode(${'nb_passif_'.($annee_actuelle-2)}); ?>;
+        this[nb_passif + (annee_actuelle-3)] = <?php echo json_encode(${'nb_passif_'.($annee_actuelle-3)}); ?>;
+        this[nb_passif + (annee_actuelle-4)] = <?php echo json_encode(${'nb_passif_'.($annee_actuelle-4)}); ?>;
 
-        this[array_nb_crea + annee_actuelle] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle)}); ?>;
-        this[array_nb_crea + (annee_actuelle - 1)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 1)}); ?>;
-        this[array_nb_crea + (annee_actuelle - 2)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 2)}); ?>;
-        this[array_nb_crea + (annee_actuelle - 3)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 3)}); ?>;
-        this[array_nb_crea + (annee_actuelle - 4)] =<?php echo json_encode(${'array_nb_crea_'.($annee_actuelle - 4)}); ?>;
-        
+        var crea_valide = "crea_valide_";
+        this[crea_valide + annee_actuelle] = <?php echo json_encode(${'crea_valide_'.($annee_actuelle)}); ?>;
+        this[crea_valide + (annee_actuelle-1)] = <?php echo json_encode(${'crea_valide_'.($annee_actuelle-1)}); ?>;
+        this[crea_valide + (annee_actuelle-2)] = <?php echo json_encode(${'crea_valide_'.($annee_actuelle-2)}); ?>;
+        this[crea_valide + (annee_actuelle-3)] = <?php echo json_encode(${'crea_valide_'.($annee_actuelle-3)}); ?>;
+        this[crea_valide + (annee_actuelle-4)] = <?php echo json_encode(${'crea_valide_'.($annee_actuelle-4)}); ?>;
+
+        var crea_encours = "crea_encours_";
+        this[crea_encours + annee_actuelle] = <?php echo json_encode(${'crea_encours_'.($annee_actuelle)}); ?>;
+        this[crea_encours + (annee_actuelle-1)] = <?php echo json_encode(${'crea_encours_'.($annee_actuelle-1)}); ?>;
+        this[crea_encours + (annee_actuelle-2)] = <?php echo json_encode(${'crea_encours_'.($annee_actuelle-2)}); ?>;
+        this[crea_encours + (annee_actuelle-3)] = <?php echo json_encode(${'crea_encours_'.($annee_actuelle-3)}); ?>;
+        this[crea_encours + (annee_actuelle-4)] = <?php echo json_encode(${'crea_encours_'.($annee_actuelle-4)}); ?>;
+
+        var modif_valide = "modif_valide_";
+        this[modif_valide + annee_actuelle] = <?php echo json_encode(${'modif_valide_'.($annee_actuelle)}); ?>;
+        this[modif_valide + (annee_actuelle-1)] = <?php echo json_encode(${'modif_valide_'.($annee_actuelle-1)}); ?>;
+        this[modif_valide + (annee_actuelle-2)] = <?php echo json_encode(${'modif_valide_'.($annee_actuelle-2)}); ?>;
+        this[modif_valide + (annee_actuelle-3)] = <?php echo json_encode(${'modif_valide_'.($annee_actuelle-3)}); ?>;
+        this[modif_valide + (annee_actuelle-4)] = <?php echo json_encode(${'modif_valide_'.($annee_actuelle-4)}); ?>;
+
+        var modif_encours = "modif_encours_";
+        this[modif_encours + annee_actuelle] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle)}); ?>;
+        this[modif_encours + (annee_actuelle-1)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-1)}); ?>;
+        this[modif_encours + (annee_actuelle-2)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-2)}); ?>;
+        this[modif_encours + (annee_actuelle-3)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-3)}); ?>;
+        this[modif_encours + (annee_actuelle-4)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-4)}); ?>;
+
+        var nb_crea_type = "nb_crea_type_";
+        this[nb_crea_type + annee_actuelle] = <?php echo json_encode(${'nb_crea_type_'.($annee_actuelle)}); ?>;
+        this[nb_crea_type + (annee_actuelle-1)] = <?php echo json_encode(${'nb_crea_type_'.($annee_actuelle-1)}); ?>;
+        this[nb_crea_type + (annee_actuelle-2)] = <?php echo json_encode(${'nb_crea_type_'.($annee_actuelle-2)}); ?>;
+        this[nb_crea_type + (annee_actuelle-3)] = <?php echo json_encode(${'nb_crea_type_'.($annee_actuelle-3)}); ?>;
+        this[nb_crea_type + (annee_actuelle-4)] = <?php echo json_encode(${'nb_crea_type_'.($annee_actuelle-4)}); ?>;
+
+        var nb_modif_type = "nb_modif_type_";
+        this[nb_modif_type + annee_actuelle] = <?php echo json_encode(${'nb_modif_type_'.($annee_actuelle)}); ?>;
+        this[nb_modif_type + (annee_actuelle-1)] = <?php echo json_encode(${'nb_modif_type_'.($annee_actuelle-1)}); ?>;
+        this[nb_modif_type + (annee_actuelle-2)] = <?php echo json_encode(${'nb_modif_type_'.($annee_actuelle-2)}); ?>;
+        this[nb_modif_type + (annee_actuelle-3)] = <?php echo json_encode(${'nb_modif_type_'.($annee_actuelle-3)}); ?>;
+        this[nb_modif_type + (annee_actuelle-4)] = <?php echo json_encode(${'nb_modif_type_'.($annee_actuelle-4)}); ?>;
+
     </script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
@@ -1041,50 +1081,43 @@ require_once 'php/verif_session_connect_admin.php';
 
         $(document).ready(function() {
 
-            // script JS pour la data chart
-            $("#id_select_portefeuille").change(function() {         
-                var annee_portefeuille = $("#id_select_portefeuille").children("option:selected").val();
-                var id_count_prospect = "id_count_prospect_" + annee_portefeuille;
-                var id_count_encours = "id_count_encours_" + annee_portefeuille;
-                var id_count_actif = "id_count_actif_" + annee_portefeuille;
-                var count_prospect = document.getElementById(id_count_prospect).value;
-                var count_encours = document.getElementById(id_count_encours).value;
-                var count_actif = document.getElementById(id_count_actif).value;
-                document.getElementById("id_nb_prospect").innerText = count_prospect;
-                document.getElementById("id_nb_encours").innerText = count_encours;
-                document.getElementById("id_nb_actif").innerText = count_actif;
+            $("#id_select_annee_portefeuille").change(function() {         
+                var annee_portefeuille = $("#id_select_annee_portefeuille").children("option:selected").val();
+                // Modifier les competeurs de Prospect, En cours et Actif
+                document.getElementById("id_count_prospect").innerText = count_prospect[annee_portefeuille];
+                document.getElementById("id_count_encours").innerText = count_encours[annee_portefeuille];
+                document.getElementById("id_count_actif").innerText = count_actif[annee_portefeuille];
             });
 
-            // script JS pour le chart compables
             $("#id_bouton_ventes").click(function(e) {
                 e.preventDefault();
-                // changer la couleur de fond du bouton
+                // Changer la couleur de fond du bouton
                 document.getElementById("id_bouton_ventes").style.backgroundColor="#5A8DEE";
                 document.getElementById("id_bouton_achats").style.backgroundColor="";
                 document.getElementById("id_bouton_tresorerie").style.backgroundColor="";
-                // afficher la table correspondant aux ventes et masquer les autres
+                // Afficher la table correspondant aux ventes et masquer les autres
                 document.getElementById("id_table_ventes").style.display = "block";
                 document.getElementById("id_table_achats").style.display = "none";
                 document.getElementById("id_table_tresorerie").style.display = "none";
             });
             $("#id_bouton_achats").click(function(e) {
                 e.preventDefault();
-                // changer la couleur de fond du bouton
+                // Changer la couleur de fond du bouton
                 document.getElementById("id_bouton_ventes").style.backgroundColor="";
                 document.getElementById("id_bouton_achats").style.backgroundColor="#5A8DEE";
                 document.getElementById("id_bouton_tresorerie").style.backgroundColor="";
-                // afficher la table correspondant aux achats et masquer les autres
+                // Afficher la table correspondant aux achats et masquer les autres
                 document.getElementById("id_table_ventes").style.display = "none";
                 document.getElementById("id_table_achats").style.display = "block";
                 document.getElementById("id_table_tresorerie").style.display = "none";
             });
             $("#id_bouton_tresorerie").click(function(e) {
                 e.preventDefault();
-                // changer la couleur de fond du bouton
+                // Changer la couleur de fond du bouton
                 document.getElementById("id_bouton_ventes").style.backgroundColor="";
                 document.getElementById("id_bouton_achats").style.backgroundColor="";
                 document.getElementById("id_bouton_tresorerie").style.backgroundColor="#5A8DEE";
-                // afficher la table correspondant à la trésorerie et masquer les autres
+                // Afficher la table correspondant à la trésorerie et masquer les autres
                 document.getElementById("id_table_ventes").style.display = "none";
                 document.getElementById("id_table_achats").style.display = "none";
                 document.getElementById("id_table_tresorerie").style.display = "block";
@@ -1093,7 +1126,6 @@ require_once 'php/verif_session_connect_admin.php';
         });
 
     </script>
-
 
 </body>
 <!-- END: Body-->
