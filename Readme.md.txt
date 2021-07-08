@@ -106,3 +106,6 @@ branche de leo :
 		-domiciliation-offre.php : ajout des caractéristiques
 		-fix bug page-creation-edit : on ne pouvait pas sauvegarder si on ne modifiait pas le telephone
 		-ajout des "carousel" dans la page domiciliation pour les offres
+
+	tache réalisée
+		-bouton radio sur offre-domiciliation et fix js
