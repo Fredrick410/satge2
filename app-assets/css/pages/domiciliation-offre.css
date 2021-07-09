@@ -119,7 +119,7 @@ input[type="radio"].solu + label:hover{
 
 #titre-contrat{
     text-align: center; 
-    margin: 75px 0 20px 0;
+    margin: 50px 0 20px 0;
     font-family: mukta malar bold;
     color: #051441;
 }
@@ -132,9 +132,17 @@ input[type="radio"].solu + label:hover{
 #contrat{
     width: 60%;
     margin: 100px auto;
-    padding: 50px 50px 50px 10px;
+    padding: 60px;
     border-radius: 50px;
     box-shadow: 0px 0px 10px #051441;
+}
+
+#contrat-gauche, #contrat-droite{
+    margin-bottom: 10px;
+}
+
+#contrat ul{
+
 }
 
 #contrat ul li{
@@ -143,21 +151,50 @@ input[type="radio"].solu + label:hover{
     margin: 0 0 15px 0;
 }
 
-#contrat ul li button{
-    right: 0;
-    position: absolute;
+#btn button{
     background-color: #29fe8c;
     padding: 5px 10px;
 }
 
-#contrat label{
+#contrat-droite label, #contrat-gauche label{
     font-family: mukta malar medium;
     color: #051441;
     font-size: 15px;
+    margin-top: 5px;
 }
 
-#contrat input{
-    right: 0;
+#contrat-droite input, #contrat-gauche input{
+    right: 40px;
     position: absolute;
     padding: 5px 10px;
+}
+
+@media screen and (max-width: 1700px) {
+    #contrat-gauche, #contrat-droite{
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #contrat-droite label, #contrat-droite input, #contrat-gauche label, #contrat-gauche input{
+        min-width: 90%;
+        left: 0;
+        position: relative;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #contrat{
+        padding: 30px 10px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    #contrat{
+        padding: 30px 0;
+    }
+    #contrat-droite label, #contrat-droite input, #contrat-gauche label, #contrat-gauche input{
+        width: 15%;
+        left: -10px;
+    }
 }
