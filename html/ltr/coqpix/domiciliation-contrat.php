@@ -116,15 +116,33 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
-    <h1 id="titre-contrat">Création du contrat</h1>
+    <h2 id="titre-contrat">Création du contrat</h2>
     <h5 id="sous-titre-contrat">Domiciliation à </h5>
-    <div class=" card-body row bg-white" id="contrat">
-    <div class="col-6" id="" >
-        <form action="" method="POST">
+            
+    <div class="row card-body bg-white" id="contrat">
+        <form class="col-12" action="" method="POST">
+            <!--<h6>
+              <i class="step-icon"></i>
+              <span class="fonticon-wrap">
+                <i class="livicon-evo"
+                  data-options="name:user.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
+              </span>
+              <span>Basic Details</span>
+            </h6>-->
+        <div class="row">
+        <div class="col-6" id="contrat-gauche" >
             <ul>
                 <li>
                     <label for="RaisonSociale">Raison Sociale</label>
                     <input type="text" name="RaisonSociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
+                </li>
+                <li>
+                    <label for="FormeJuridique">Forme Juridique</label>
+                    <input type="text" name="FormeJuridique" class="border-dark rounded-pill" readonly value="<?= $crea['status_crea'] ?>">
+                </li>
+                <li>
+                    <label for="Capital">Capital</label>
+                    <input type="text" name="Capital" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Representant">Représenté par</label>
@@ -133,11 +151,11 @@ require_once 'php/verif_session_crea.php';
                 <li>
                     <label for="RepresentantQualite">En sa qualite de</label>
                     <input type="text" name="RepresentantQualite" class="border-dark rounded-pill" required value="Dirigeant">
-                </li>
-                <li>
-                    <label for="AdresseSS">Adresse du siège social</label>
-                    <input type="text" name="AdresseSS" class="border-dark rounded-pill" required value="">
-                </li>
+                </li>             
+            </ul>
+        </div>
+        <div class="col-6" id="contrat-droite">
+            <ul>
                 <li>
                     <label for="CodePostal">Code Postal</label>
                     <input type="text" name="CodePostal" class="border-dark rounded-pill" required>
@@ -149,56 +167,34 @@ require_once 'php/verif_session_crea.php';
                 <li>
                     <label for="Pays">Pays</label>
                     <input type="text" name="Pays" class="border-dark rounded-pill" required value="FRANCE">
-                </li>               
-            </ul>
-        </div>
-        <div class="col-6">
-            <ul>
-                <li>
-                    <label for="FormeJuridique">Forme Juridique</label>
-                    <input type="text" name="FormeJuridique" class="border-dark rounded-pill" readonly value="<?= $crea['status_crea'] ?>">
-                </li>
-                <li>
-                    <label for="Capital">Capital</label>
-                    <input type="text" name="Capital" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Registe">Registre du commerce</label>
-                    <input type="text" name="Registre" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="NumeroTVA">Numéro de TVA</label>
-                    <input type="text" name="NumeroTVA" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Telephone">Téléphone</label>
                     <input type="text" name="Telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
                 </li>
-                
                 <li>
                     <label for="Email">Email</label>
                     <input type="text" name="Email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
                 </li>
-                <li>
-                    <button class="border rounded-pill">
-                        Valider les informations
-                    </button>
-                </li>
             </ul>
+        </div>
+        <div id="btn" class="col-12 text-center mt-2">
+            <button class="border rounded-pill">
+                Valider les informations
+            </button>
+        </div>
         </div>
         </form>
     </div>
+
     <div class="row">
         
     </div>
+
     <div class="row">
         
     </div>
-    <div class="row">
-        <div class="col-12" id="div-service-dispo">
-            
-        </div>
-    </div>
+   
     <?php require_once('php/chat_domiciliation.php')?>
 </div>
     

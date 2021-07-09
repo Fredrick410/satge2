@@ -117,3 +117,6 @@ branche de oscar :
 		- pop-up message back end dans creation société
 		- alert retirer dans la back end dans crea société
 		- ajout item conversation back end dans creation societe
+
+	tache réalisée le 09/07/2021 :
+		- front page formulaire contrat domiciliation-contrat.php
