@@ -11,6 +11,10 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
     
+    //selection des infos selon l'id
+    $id = $_GET['id'];
+    $query = $bdd->query("SELECT * FROM offre_domiciliation WHERE id like '$id'");
+    $result = $query->fetch();
 
 ?>
 <!DOCTYPE html>
@@ -76,7 +80,7 @@ require_once 'php/verif_session_crea.php';
     </div>
 
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
