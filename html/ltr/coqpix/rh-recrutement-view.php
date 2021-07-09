@@ -712,13 +712,56 @@ if (count($candidature) != 0) {
 
             function downloadPDFWithjsPDF(val, qualitatif) {
                 if (qualitatif == "Non") {
-                    var doc = new jspdf.jsPDF();
+                    var doc = new jspdf.jsPDF('p', 'pt', 'a4');
                     doc.autoTable({
-                        html: '#table' + val
+                        html: '#table' + val,
+                        startY: 120,
+
+                        margin: {
+                            horizontal: 10
+                        },
+                        styles: {
+                            overflow: "linebreak"
+                        },
+                        bodyStyles: {
+                            valign: "top"
+                        },
+                        columnStyles: {
+                            email: {
+                                cellWidth: "wrap"
+                            }
+                        },
+                        theme: "striped",
+                        showHead: "everyPage",
+                        didDrawPage: function(data) {
+
+                            // Header
+                            doc.setFontSize(20);
+                            doc.setTextColor(40);
+                            doc.addImage("../../../app-assets/images/logo/coqpix2.png", 'PNG', data.settings.margin.left, 15, 100, 20);
+                            var home = document.querySelector('#list-home').innerText;
+                            var profile = document.querySelector('#list-profile').innerText;
+                            //console.log(home);
+                            //console.log(profile);
+                            //doc.text(home);
+                            //doc.text(profile);
+
+                            // Footer
+                            var str = "Page " + doc.internal.getNumberOfPages();
+
+                            doc.setFontSize(10);
+
+                            // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+                            var pageSize = doc.internal.pageSize;
+                            var pageHeight = pageSize.height ?
+                                pageSize.height :
+                                pageSize.getHeight();
+                            doc.text(str, data.settings.margin.right, pageHeight - 10);
+                        }
                     });
                     doc.save("table.pdf");
                 } else {
-                    var doc = new jspdf.jsPDF('l', 'pt', [400, 400]);
+                    var doc = new jspdf.jsPDF('p', 'pt', 'a4');
                     doc.addImage(document.getElementById('myChart' + val).toDataURL("image/png"), 'PNG', 0, 0, 400, 400);
                     doc.save("chart.pdf");
                 }
