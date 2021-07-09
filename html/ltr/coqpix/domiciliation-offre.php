@@ -10,52 +10,7 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->bindValue(':num',$_SESSION['id_crea']);
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
-
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_justificatifd'] == ""){
-        $doc_justificatifd = "0";
-    }else{
-        $doc_justificatifd = "1";
-    }
-    if($crea['doc_affectation'] == ""){
-        $doc_affectation = "0";
-    }else{
-        $doc_affectation = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
-    }
-
-    //selection des infos selon l'id
-    $id = $_GET['id'];
-    $query = $bdd->query("SELECT * FROM offre_domiciliation WHERE id like '$id'");
-    $result = $query->fetch();
+    
 
 ?>
 <!DOCTYPE html>
@@ -111,9 +66,17 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
+    <br>
+    <div class="breadcrumb-wrapper col-12" ">
+        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
+            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
+            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
+            <li class="breadcrumb-item active"> Offre de domiciliation </li>
+        </ol>
+    </div>
 
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -383,7 +346,6 @@ if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
             </form>
         </div>
     </div>
-    <?php require_once('php/chat_domiciliation.php')?>
 </div>
     
     <!-- END: Content-->
