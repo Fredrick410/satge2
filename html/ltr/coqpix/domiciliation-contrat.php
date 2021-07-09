@@ -124,11 +124,11 @@ require_once 'php/verif_session_crea.php';
             <ul>
                 <li>
                     <label for="RaisonSociale">Raison Sociale</label>
-                    <input type="text" name="RaisonSociale" required>
+                    <input type="text" name="RaisonSociale" required readonly value="<?= $crea['name_crea'] ?>">
                 </li>
                 <li>
                     <label for="AdresseSS">Adresse du siège social</label>
-                    <input type="text" name="AdresseSS" required>
+                    <input type="text" name="AdresseSS" required value="">
                 </li>
                 <li>
                     <label for="CodePostal">Code Postal</label>
@@ -136,19 +136,19 @@ require_once 'php/verif_session_crea.php';
                     <label for="Ville">Ville</label>
                     <input type="text" name="Ville" required>
                     <label for="Pays">Pays</label>
-                    <input type="text" name="Pays" required>
+                    <input type="text" name="Pays" required value="FRANCE">
                 </li>
                 <li>
                     <label for="FormeJuridique">Forme Juridique</label>
-                    <input type="text" name="FormeJuridique" required>
+                    <input type="text" name="FormeJuridique" required value="<?= $crea['status_crea'] ?>">
                 </li>
                 <li>
                     <label for="Representant">Représenté par</label>
-                    <input type="text" name="Representant" required>
+                    <input type="text" name="Representant" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
                 </li>
                 <li>
                     <label for="RepresentantQualite">En sa qualite de</label>
-                    <input type="text" name="RepresentantQualite" required>
+                    <input type="text" name="RepresentantQualite" required value="Dirigeant">
                 </li>
             </ul>
         </div>
@@ -168,12 +168,12 @@ require_once 'php/verif_session_crea.php';
                 </li>
                 <li>
                     <label for="Telephone">Téléphone</label>
-                    <input type="text" name="Telephone" required>
+                    <input type="text" name="Telephone" required value="<?= $crea['tel_diri'] ?>">
                 </li>
                 
                 <li>
                     <label for="Email">Email</label>
-                    <input type="text" name="Email" required>
+                    <input type="text" name="Email" required value="<?= $crea['email_diri'] ?>">
                 </li>
             </ul>
         </div>
