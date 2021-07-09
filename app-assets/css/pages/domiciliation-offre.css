@@ -116,3 +116,44 @@ input[type="radio"].solu + label:hover{
     white-space: nowrap; 
     background-color: #29fe8c;
 }
+
+#titre-contrat{
+    text-align: center; 
+    margin: 75px 0 20px 0;
+    font-family: mukta malar bold;
+    color: #051441;
+}
+
+#sous-titre-contrat{
+    text-align: center;
+    color: #051441; 
+}
+
+#contrat{
+    width: 60%;
+    margin: 100px auto;
+    padding: 50px 50px 50px 10px;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px #051441;
+}
+
+#contrat ul li{
+    list-style: none;
+    width: 100%;
+    margin: 0 0 10px 0;
+}
+
+#contrat ul li button{
+    right: 0;
+    position: absolute;
+}
+
+#contrat label{
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+#contrat input{
+    right: 0;
+    position: absolute;
+}
