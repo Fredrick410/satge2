@@ -107,7 +107,7 @@ require_once 'php/verif_session_crea.php';
 
 
 <!-- BEGIN: Body-->
-<body class="horizontal-layout horizontal-menu navbar-sticky bg-white content-left-sidebar email-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
+<body class="horizontal-layout horizontal-menu navbar-sticky  content-left-sidebar email-application  footer-static  " style="background-color: #edf1ff;" data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
 
     <!-- BEGIN: Header-->
     
@@ -116,64 +116,73 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
-
-    <div class="row">
-    <div class="col">
+    <h1 id="titre-contrat">Création du contrat</h1>
+    <h5 id="sous-titre-contrat">Domiciliation à </h5>
+    <div class=" card-body row bg-white" id="contrat">
+    <div class="col-6" id="" >
         <form action="" method="POST">
-        
             <ul>
                 <li>
                     <label for="RaisonSociale">Raison Sociale</label>
-                    <input type="text" name="RaisonSociale" required readonly value="<?= $crea['name_crea'] ?>">
-                </li>
-                <li>
-                    <label for="AdresseSS">Adresse du siège social</label>
-                    <input type="text" name="AdresseSS" required value="">
-                </li>
-                <li>
-                    <label for="CodePostal">Code Postal</label>
-                    <input type="text" name="CodePostal" required>
-                    <label for="Ville">Ville</label>
-                    <input type="text" name="Ville" required>
-                    <label for="Pays">Pays</label>
-                    <input type="text" name="Pays" required value="FRANCE">
-                </li>
-                <li>
-                    <label for="FormeJuridique">Forme Juridique</label>
-                    <input type="text" name="FormeJuridique" required value="<?= $crea['status_crea'] ?>">
+                    <input type="text" name="RaisonSociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
                 </li>
                 <li>
                     <label for="Representant">Représenté par</label>
-                    <input type="text" name="Representant" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                    <input type="text" name="Representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
                 </li>
                 <li>
                     <label for="RepresentantQualite">En sa qualite de</label>
-                    <input type="text" name="RepresentantQualite" required value="Dirigeant">
+                    <input type="text" name="RepresentantQualite" class="border-dark rounded-pill" required value="Dirigeant">
                 </li>
+                <li>
+                    <label for="AdresseSS">Adresse du siège social</label>
+                    <input type="text" name="AdresseSS" class="border-dark rounded-pill" required value="">
+                </li>
+                <li>
+                    <label for="CodePostal">Code Postal</label>
+                    <input type="text" name="CodePostal" class="border-dark rounded-pill" required>
+                </li>
+                <li>
+                    <label for="Ville">Ville</label>
+                    <input type="text" name="Ville" class="border-dark rounded-pill" required>
+                </li>
+                <li>
+                    <label for="Pays">Pays</label>
+                    <input type="text" name="Pays" class="border-dark rounded-pill" required value="FRANCE">
+                </li>               
             </ul>
         </div>
-        <div class="col">
+        <div class="col-6">
             <ul>
                 <li>
+                    <label for="FormeJuridique">Forme Juridique</label>
+                    <input type="text" name="FormeJuridique" class="border-dark rounded-pill" readonly value="<?= $crea['status_crea'] ?>">
+                </li>
+                <li>
                     <label for="Capital">Capital</label>
-                    <input type="text" name="Capital" required>
+                    <input type="text" name="Capital" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Registe">Registre du commerce</label>
-                    <input type="text" name="Registre" required>
+                    <input type="text" name="Registre" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="NumeroTVA">Numéro de TVA</label>
-                    <input type="text" name="NumeroTVA" required>
+                    <input type="text" name="NumeroTVA" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Telephone">Téléphone</label>
-                    <input type="text" name="Telephone" required value="<?= $crea['tel_diri'] ?>">
+                    <input type="text" name="Telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
                 </li>
                 
                 <li>
                     <label for="Email">Email</label>
-                    <input type="text" name="Email" required value="<?= $crea['email_diri'] ?>">
+                    <input type="text" name="Email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
+                </li>
+                <li>
+                    <button class="border rounded-pill">
+                        Valider les informations
+                    </button>
                 </li>
             </ul>
         </div>
