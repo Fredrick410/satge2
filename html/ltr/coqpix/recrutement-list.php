@@ -155,7 +155,7 @@ $entreprise = $pdoStt->fetch();
                                             </div>
                                             <div class="form-group">
                                                 <label for="qualitatif" class="col-form-label">Qualitatif ?</label>
-                                                <select name="qualitatif" id="qualitatif">
+                                                <select class="form-control" name="qualitatif" id="qualitatif">
                                                     <option value="">Selectionner oui ou non</option>
                                                     <option>Oui</option>
                                                     <option>Non</option>
@@ -265,7 +265,7 @@ $entreprise = $pdoStt->fetch();
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="qualitatif<?= $qcms[$i]['id'] ?>" class="col-form-label">Qualitatif ?</label>
-                                                                        <select name="qualitatif<?= $qcms[$i]['id'] ?>" id="qualitatif<?= $qcms[$i]['id'] ?>">
+                                                                        <select class="form-control" name="qualitatif<?= $qcms[$i]['id'] ?>" id="qualitatif<?= $qcms[$i]['id'] ?>">
                                                                             <option value="">Selectionner oui ou non</option>
                                                                             <option <?php if ($qcms[$i]['qualitatif'] == "Oui") {
                                                                                         echo "selected";
