@@ -6,7 +6,7 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
     
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE favorite_crea = "1"');
+    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe');
     $pdoSta->execute();
     $crea = $pdoSta->fetchAll();
 
@@ -85,12 +85,12 @@ require_once 'php/verif_session_connect_admin.php';
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
+                    <ul class="nav navbar-nav float-right d-flex align-items-center">
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
+                            <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span></a>
+                            <div class="dropdown-menu dropdown-menu pb-0">
+                                <a class="dropdown-item" href="#"><i class="bx bx-user mr-50"></i> Editer Profile (SOON)</a>
+                                <a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Déconnexion</a>
                             </div>
                         </li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
@@ -127,14 +127,14 @@ require_once 'php/verif_session_connect_admin.php';
                             <div class="sidebar-menu-list">
                                 <!-- sidebar menu  -->
                                 <div class="list-group list-group-messages">
-                                    <a href="creation-list.php" class="list-group-item pt-0" id="inbox-menu">
+                                    <a href="creation-list.php" class="list-group-item pt-0 " id="inbox-menu">
                                         <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: briefcase.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                            <i class="livicon-evo" data-options="name: briefcase.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div>
                                         Tous
                                     </a>
-                                    <a href="creation-list-conversation.php" class="list-group-item pt-0 ">
+                                    <a href="creation-list-conversation.php" class="list-group-item pt-0 active">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
@@ -163,9 +163,9 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>
                                         Créa non valide
                                     </a>
-                                    <a href="crea-list-favo.php" class="list-group-item active">
+                                    <a href="crea-list-favo.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: star.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
+                                            <i class="livicon-evo" data-options="name: star.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div>
                                         Important
@@ -316,30 +316,6 @@ require_once 'php/verif_session_connect_admin.php';
                             <!-- Email list Area -->
                             <div class="email-app-list-wrapper">
                                 <div class="email-app-list">
-                                    <div class="form-group position-relative">
-                                        <div class="alert bg-rgba-info alert-dismissible" role="alert" style="margin: 0px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bx bx-diamond"></i>
-                                                <span>
-                                                    L'Icône diamant signifie que les frais et les honoraires de créa ont été payés
-                                                </span>
-                                            </div>
-                                        </div> 
-                                        <div class="alert bg-rgba-secondary alert-dismissible" role="alert" style="margin: 0px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bx bx-paperclip mr-50"></i>
-                                                <span>
-                                                    Cette Icône va vous permettre de suivre l'avancement du dossier en 3 étapes : &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #ff0000;'></i> - de 33% de l'avancement -> &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #ffbd00;'></i> - de 66% de l'avancement -> &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #59ff00;'></i> - le dossier est validé à 100%
-                                                </span>
-                                            </div>
-                                        </div>                                                                   
-                                    </div>
                                     <div class="email-action">
                                         <!-- action left start here -->
                                         <div class="action-left d-flex align-items-center">
@@ -470,26 +446,26 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                     <div class="pr-50">
                                                         <div class="avatar">
-                                                            <a href="creation-view-<?php echo $linkview; ?>.php?num=<?= $creation['id'] ?>"><img src="../../../app-assets/images/ico/<?= $creation['img_crea'] ?>" alt="avtar img holder"></a>
+                                                            <a href="conversationphp?num=<?= $creation['id'] ?>"><img src="../../../app-assets/images/ico/<?= $creation['img_crea'] ?>" alt="avtar img holder"></a>
                                                         </div>
                                                     </div>
                                                     <div class="media-body">
                                                         <div class="user-details">
                                                             <div class="mail-items">
-                                                                <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $creation['name_crea'] ?></span></a>
+                                                                <a href="conversation.php?num=<?= $creation['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $creation['name_crea'] ?></span></a>
                                                             </div>
                                                             <div class="mail-meta-item">
                                                                 <span class="float-right">
-                                                                    <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><span class="mail-date"><?= $creation['date_crea'] ?> à <?= $creation['date_crea_h'] ?>:<?= $creation['date_crea_m'] ?></span></a>
+                                                                    <a href="conversation.php?num=<?= $creation['id'] ?>"><span class="mail-date"><?= $creation['date_crea'] ?> à <?= $creation['date_crea_h'] ?>:<?= $creation['date_crea_m'] ?></span></a>
                                                                 </span>
                                                             </div>
                                                         </div>
                                                         <div class="mail-message">
-                                                            <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><p class="list-group-item-text truncate mb-0"><?php if($pourc >= 100){echo "Dossier de création validé ✔️";}else{echo "Dossier en cour de traitement ... ⏳";} ?></p></a>
+                                                            <a href="conversation.php?num=<?= $creation['id'] ?>"><p class="list-group-item-text truncate mb-0"><?php if($pourc >= 100){echo "Dossier de création validé ✔️";}else{echo "Dossier en cour de traitement ... ⏳";} ?></p></a>
                                                             <div class="mail-meta-item">
                                                                 <span class="float-right">
                                                                     <span class="float-right d-flex align-items-center">
-                                                                        <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><i class='bx bx-diamond' style="<?php if($creation['frais'] == "" || $creation['honoraire'] == ""){echo "display: none;";}else{$frais_ex = explode('!', $creation['frais']); $honoraire_ex = explode('!', $creation['honoraire']); if($frais_ex[1] == "no" || $honoraire_ex[1] == "no"){echo "display: none;";}} ?> position: relative; top: 5px; color: #00ffdc; font-size: 20px;"></i><i class='bx bxs-coin-stack'></i><i class="bx bx-paperclip mr-50" style="position: relative; top: 3px; color: <?php if($pourc > 0 && $pourc < 33){echo "#ff0000";} if($pourc > 33 && $pourc < 100){echo "#ffbd00";} if($pourc >= "100"){echo "#70ff00";} ?>;"></i><small style="color: #505050;"><?php if(strlen($pourc) > 5){echo substr($pourc, 0, 5);}else{echo $pourc;} ?>%</small>&nbsp&nbsp&nbsp</a>
+                                                                        <a href="conversation.php?num=<?= $creation['id'] ?>"><i class='bx bx-diamond' style="<?php if($creation['frais'] == "" || $creation['honoraire'] == ""){echo "display: none;";}else{$frais_ex = explode('!', $creation['frais']); $honoraire_ex = explode('!', $creation['honoraire']); if($frais_ex[1] == "no" || $honoraire_ex[1] == "no"){echo "display: none;";}} ?> position: relative; top: 5px; color: #00ffdc; font-size: 20px;"></i><i class='bx bxs-coin-stack'></i><i class="bx bx-paperclip mr-50" style="position: relative; top: 3px; color: <?php if($pourc > 0 && $pourc < 33){echo "#ff0000";} if($pourc > 33 && $pourc < 100){echo "#ffbd00";} if($pourc >= "100"){echo "#70ff00";} ?>;"></i><small style="color: #505050;"><?php if(strlen($pourc) > 5){echo substr($pourc, 0, 5);}else{echo $pourc;} ?>%</small>&nbsp&nbsp&nbsp</a>
                                                                         <?php 
                                                                         
                                                                             if($creation['status_crea'] == "SARL"){

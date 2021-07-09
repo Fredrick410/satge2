@@ -134,6 +134,13 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>
                                         Tous
                                     </a>
+                                    <a href="creation-list-conversation.php" class="list-group-item pt-0 ">
+                                        <div class="fonticon-wrap d-inline mr-25">
+                                            <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                            </i>
+                                        </div>
+                                        Conversation
+                                    </a>
                                     <a href="creation-list-notification.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: label-new.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
