@@ -467,6 +467,87 @@ $(window).on("load", function() {
 
     // FIN JURIDIQUE
 
+    // DEBUT SOCIALE 
+    var analyticsBarChart = new ApexCharts(
+        document.querySelector("#analytics-bar-chart-sociale"),
+        analyticsBarChartOptions(array_demande_soc_URSSAFMSA_2021, array_envoye_soc_URSSAFMSA_2021, " Nombre demandé", " Envoyé")
+    );
+
+    analyticsBarChart.render();
+
+    // S'éxecute lorsqu'on change l'année du select dans Sociale
+    $("#id_select_sociale").change(function() {
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+        //    var titre_droite = document.getElementById("id_titre_droite").textContent;
+
+        // On récupère l'année selectionnée
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+
+        if (test_attestation == 'block') { // SOCIALE
+
+            $("#analytics-bar-chart-sociale").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_demande_soc_" + type_sociale + "_" + annee_sociale], window["array_envoye_soc_" + type_sociale + "_" + annee_sociale], " Nombre demandé", " Envoyé")
+            );
+
+            analyticsBarChart.render();
+
+
+        } else if (test_bulletin == 'block') {
+
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_envoye_bulletin_" + annee_sociale], window["array_envoye_bulletin_" + annee_sociale], " Nombre envoyé", " Prélévé")
+            );
+            analyticsBarChart.render();
+
+        } else if (test_dsn == 'block') {
+            $("#analytics-bar-chart-sociale").empty();
+
+            /* SOON    
+            var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+            var array_demande_dsn = "array_demande_dsn_" + annee_sociale;
+            var array_envoyes_dsn = "array_envoye_dsn_" + annee_sociale;
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window[array_demane_dsn], window[array_envoye_dsn], " Nombre demandé", " Envoyé")
+            );
+            analyticsBarChart.render();
+        */
+
+        }
+
+    });
+
+    $("#id_select_type_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var array_demande_soc = "array_demande_soc_" + type_sociale + "_" + annee_sociale;
+        var array_envoye_soc = "array_envoye_soc_" + type_sociale + "_" + annee_sociale;
+
+        $("#analytics-bar-chart-sociale").empty();
+
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-sociale"),
+            analyticsBarChartOptions(window[array_demande_soc], window[array_envoye_soc], " Nombre demandé", " Envoyé")
+        );
+
+        analyticsBarChart.render();
+    });
+
+    // FIN SOCIALE
+
     // Success Line Chart
     // -----------------------------
     var successLineChartOption = {
@@ -1218,6 +1299,71 @@ $(window).on("load", function() {
       return growthChartOptions
   
     }
+
+    function growthChartOptions(pourcentage, label_1) {
+
+        var growthChartOptions = {
+            chart: {
+                height: 200,
+                type: 'radialBar',
+                sparkline: {
+                    show: true
+                }
+            },
+            grid: {
+                show: false,
+            },
+            plotOptions: {
+                radialBar: {
+                    size: 100,
+                    startAngle: -135,
+                    endAngle: 135,
+                    offsetY: 40,
+                    hollow: {
+                        size: '60%',
+                    },
+                    track: {
+                        strokeWidth: '90%',
+                        background: '#fff'
+                    },
+                    dataLabels: {
+                        value: {
+                            offsetY: -10,
+                            color: '#475f7b',
+                            fontSize: '26px'
+                        },
+                        name: {
+                            fontSize: '15px',
+                            color: "#596778",
+                            offsetY: 30
+                        },
+                    }
+                },
+            },
+            colors: [$danger],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    type: 'horizontal',
+                    shadeIntensity: 0.5,
+                    gradientToColors: [$primary],
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100]
+                },
+            },
+            stroke: {
+                dashArray: 3
+            },
+            series: [pourcentage],
+            labels: [label_1],
+        }
+
+        return growthChartOptions
+
+    }
   
     document.getElementById("id_select_mois_prelevement").selectedIndex = mois_actuel;
   
@@ -1280,6 +1426,217 @@ $(window).on("load", function() {
   
     // FIN BILAN ANNUEL
   
+    // DEBUT ATTESTATION SOCIALE ENVOYE 
+
+    var mois_actuel = ("0" + (new Date().getMonth() + 1)).slice(-2);
+
+    document.getElementById("id_select_mois_sociale").selectedIndex = mois_actuel - 1;
+    var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+    var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_actuel + "_" + annee_actuelle;
+    var total_envoye = document.getElementById(id_total_envoye).value;
+
+    var growthChart = new ApexCharts(
+        document.querySelector("#growth-Chart-sociale-envoye"),
+        growthChartOptions(total_envoye, "Envoyé")
+    );
+
+    growthChart.render();
+
+    $("#id_select_sociale").change(function() {
+
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+
+        // On récupère l'année et aussi le mois selectionnée
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        if (test_attestation == 'block') {
+            var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+            var total_envoye = document.getElementById(id_total_envoye).value;
+            $("#growth-Chart-sociale-envoye").empty();
+
+            var growthChart = new ApexCharts(
+                document.querySelector("#growth-Chart-sociale-envoye"),
+                growthChartOptions(total_envoye, "Envoyé")
+            );
+
+            growthChart.render();
+
+        } else if (test_bulletin == 'block') {
+            var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+            var total_envoye = document.getElementById(id_total_envoye).value;
+            $("#growth-Chart-sociale-envoye").empty();
+
+            var growthChart = new ApexCharts(
+                document.querySelector("#growth-Chart-sociale-envoye"),
+                growthChartOptions(total_envoye, "Envoyé")
+            );
+
+            growthChart.render();
+
+        } else if (test_dsn == 'block') {
+            var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+            var total_envoye = document.getElementById(id_total_envoye).value;
+            $("#growth-Chart-sociale-envoye").empty();
+
+            var growthChart = new ApexCharts(
+                document.querySelector("#growth-Chart-sociale-envoye"),
+                growthChartOptions(total_envoye, "Envoyé")
+            );
+
+            growthChart.render();
+
+        }
+
+
+    });
+
+    $("#id_select_mois_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    $("#id_select_type_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    // FIN ATTESTATION SOCIALE ENVOYE
+
+    /**
+     * Remplace le titre, le data-chart et la donut-chart lorsque qu'on change de section entre création, modification et radiation d'entreprise
+     * 
+     * @param {string} direction // direction de la flêche cliquée
+     */
+     function traiterClicFlecheSociale(direction) {
+
+        // On récupère l'année selectionnée
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+        //    var titre_droite = document.getElementById("id_titre_droite").textContent;
+
+        // On cherche la section dans laquelle on doit se rendre
+        if (direction == "gauche") {
+            if (test_attestation == 'block') {
+                document.getElementById("id_titre_attestation").style.display = 'none';
+                document.getElementById("id_titre_dsn").style.display = 'block';
+            } else if (test_bulletin == 'block') {
+                document.getElementById("id_titre_bulletin").style.display = 'none';
+                document.getElementById("id_titre_attestation").style.display = 'block';
+            } else if (test_dsn == 'block') {
+                document.getElementById("id_titre_dsn").style.display = 'none';
+                document.getElementById("id_titre_bulletin").style.display = 'block';
+            }
+
+        } else if (direction == "droite") {
+            if (test_attestation == 'block') {
+                document.getElementById("id_titre_bulletin").style.display = 'block';
+                document.getElementById("id_titre_attestation").style.display = 'none';
+            } else if (test_bulletin == 'block') {
+                document.getElementById("id_titre_dsn").style.display = 'block';
+                document.getElementById("id_titre_bulletin").style.display = 'none';
+            } else if (test_dsn == 'block') {
+                document.getElementById("id_titre_attestation").style.display = 'block';
+                document.getElementById("id_titre_dsn").style.display = 'none';
+            }
+        }
+
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+
+        if (test_attestation == 'block') { // SOCIALE
+
+            $("#analytics-bar-chart-sociale").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_demande_soc_" + type_sociale + "_" + annee_sociale], window["array_envoye_soc_" + type_sociale + "_" + annee_sociale], " Nombre demandé", " Envoyé")
+            );
+
+            analyticsBarChart.render();
+
+
+
+        } else if (test_bulletin == 'block') {
+
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_envoye_bulletin_" + annee_sociale], window["array_envoye_bulletin_" + annee_sociale], " Nombre envoyé", " Prélévé")
+            );
+            analyticsBarChart.render();
+
+        } else if (test_dsn == 'block') {
+            $("#analytics-bar-chart-sociale").empty();
+
+            /* SOON    
+            var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+            var array_demande_dsn = "array_demande_dsn_" + annee_sociale;
+            var array_envoyes_dsn = "array_envoye_dsn_" + annee_sociale;
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window[array_demane_dsn], window[array_envoye_dsn], " Nombre demandé", " Envoyé")
+            );
+            analyticsBarChart.render();
+        */
+
+        }
+
+    }
+
+
+    // Clic sur la fleche gauche sociale
+    $("#id_fleche_gauche_sociale").click(function(e) {
+        e.preventDefault();
+        traiterClicFlecheSociale("gauche");
+    });
+
+    // Clic sur la fleche droite sociale
+    $("#id_fleche_droite_sociale").click(function(e) {
+        e.preventDefault();
+        traiterClicFlecheSociale("droite");
+    });
 
     // Widget Todo List
     // ------------------
