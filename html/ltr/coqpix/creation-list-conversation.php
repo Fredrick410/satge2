@@ -5,19 +5,6 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
-    
-    $pdoSta = $bdd->prepare('SELECT * FROM chat_crea WHERE lu = "0" AND you NOT LIKE "coqpix"');
-    $pdoSta->execute();
-    $list_msg = $pdoSta->fetchAll();
-    $count_msg = count($list_msg);
-    
-    $pdoStat = $bdd->prepare('SELECT * FROM crea_societe WHERE notification_admin >= "1"');
-    $pdoStat->execute();
-    $creat = $pdoStat->fetchAll();
-    $count = count($creat);
-
-    
-
 
 ?>
 <!DOCTYPE html>
@@ -292,16 +279,14 @@ require_once 'php/verif_session_connect_admin.php';
                                         <ul class="users-list-wrapper media-list">
                                             <?php 
                                             foreach($list_msg as $msg): 
-                                                $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y',$msg['date_crea'] ));
+                                                $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
+                                                $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
+                                                ?>                                               
                                                 
-                                                echo "<br/>$dateFormatee";
-                                                echo strtotime("-1 hour");
-                                                ?>
-                                                
-                                                
-                                                <li class="media <?php if( $dateFormatee < strtotime("-1 hour") ){ echo "bg-danger";}
-                                                                       else if( $dateFormatee < strtotime("-1 minutes") ){echo "bg-warning";}
-                                                                       else echo "mail-read";?>">
+                                                <li class="media <?php if( $dateFormatee < strtotime("-10 days") ){ echo "bg-danger";$affichage=0;}
+                                                                       else if( $dateFormatee < strtotime("-1 days") ){echo "bg-warning"; $affichage=0;}
+                                                                       else if( $dateFormatee < strtotime("-6 hours") ){echo "bg-info";$affichage=1;}
+                                                                       else{ echo "mail-read"; $affichage=1;}?>">
                                                     <div class="media-body">
                                                         <div class="user-details">
                                                             <div class="mail-items">
@@ -309,7 +294,9 @@ require_once 'php/verif_session_connect_admin.php';
                                                             </div>
                                                             <div class="mail-meta-item">
                                                                 <span class="float-right">
-                                                                    <a href="#"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span></a>
+                                                                    <a href="#"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
+                                                                    <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
+                                                                    
                                                                 </span>
                                                             </div>
                                                         </div>

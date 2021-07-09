@@ -5,11 +5,6 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
-    
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE notification_admin >= "1"');
-    $pdoSta->execute();
-    $crea = $pdoSta->fetchAll();
-    $count = count($crea);
 
 ?>
 <!DOCTYPE html>

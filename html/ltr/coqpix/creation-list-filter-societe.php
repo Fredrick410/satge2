@@ -9,12 +9,7 @@ require_once 'php/verif_session_connect_admin.php';
     $pdoSta = $bdd->prepare("SELECT * FROM crea_societe WHERE status_crea=:status_crea ");
     $pdoSta->bindValue(':status_crea', $_GET['filter']);
     $pdoSta->execute();
-    $crea = $pdoSta->fetchAll();
-
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE notification_admin >= "1"');
-    $pdoSta->execute();
     $creat = $pdoSta->fetchAll();
-    $count = count($creat);
 
 ?>
 <!DOCTYPE html>
@@ -344,7 +339,7 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- email user list start -->
                                     <div class="email-user-list list-group">
                                         <ul class="users-list-wrapper media-list">
-                                            <?php foreach($crea as $creation): ?>
+                                            <?php foreach($creat as $creation): ?>
                                                 <?php 
 
                                                     if($creation['status_crea'] == "EURL"){

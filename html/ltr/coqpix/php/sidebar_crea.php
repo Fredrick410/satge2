@@ -1,3 +1,18 @@
+<?php
+    
+    $pdoStat = $bdd->prepare('SELECT * FROM crea_societe WHERE notification_admin >= "1"');
+    $pdoStat->execute();
+    $crea = $pdoStat->fetchAll();
+    $count = count($crea);
+
+        
+    $pdoState = $bdd->prepare('SELECT * FROM chat_crea WHERE lu = "0" AND you NOT LIKE "coqpix"');
+    $pdoState->execute();
+    $list_msg = $pdoState->fetchAll();
+    $count_msg = count($list_msg);
+
+?>
+
 <div class="list-group list-group-messages">
                                     <a href="creation-list.php" class="list-group-item pt-0" id="inbox-menu">
                                         <div class="fonticon-wrap d-inline mr-25">

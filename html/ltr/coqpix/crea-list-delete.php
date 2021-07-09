@@ -8,12 +8,7 @@ require_once 'php/verif_session_connect_admin.php';
     
     $pdoSta = $bdd->prepare('SELECT * FROM delete_societe');
     $pdoSta->execute();
-    $crea = $pdoSta->fetchAll();
-
-    $pdoSta = $bdd->prepare('SELECT * FROM delete_societe WHERE notification_admin >= "1"');
-    $pdoSta->execute();
-    $creat = $pdoSta->fetchAll();
-    $count = count($creat);
+    $delete = $pdoSta->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -291,7 +286,7 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- email user list start -->
                                     <div class="email-user-list list-group">
                                         <ul class="users-list-wrapper media-list">
-                                            <?php foreach($crea as $creation): ?>
+                                            <?php foreach($delete as $creation): ?>
                                                 <?php 
 
                                                     if($creation['status_crea'] == "EURL"){
