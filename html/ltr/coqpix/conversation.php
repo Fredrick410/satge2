@@ -297,7 +297,7 @@ require_once 'php/verif_session_connect_admin.php';
                                             </a>
                                             <div class="media-body">
                                                 <h6 class="media-heading mb-0 pt-25"><a href="javaScript:void(0);"><?= $crea['name_crea'] ?></a></h6>
-                                                <span class="text-muted font-small-3">Active</span>
+                                                <span class="text-muted font-small-3">Actif</span>
                                             </div>
                                             
                                         </div>
@@ -312,7 +312,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <div class="d-flex">
                                             <input type="hidden" name="id" id="id_client" value="<?= $_GET['num'] ?>">
                                             <input type="hidden" name="author" id="author" value="<?= $crea['name_crea'] ?>">
-                                            <input type="text" name="content" id="content" class="form-control chat-message-demo mr-75" placeholder="Tappez votre message...">
+                                            <input type="text" name="content" id="content" class="form-control chat-message-demo mr-75" placeholder="Tapez votre message...">
                                             <button id="btn_submit" type="button" class="btn btn-primary glow px-1"><i class="bx bx-paper-plane"></i></button>
                                         </div>
                                     </div>

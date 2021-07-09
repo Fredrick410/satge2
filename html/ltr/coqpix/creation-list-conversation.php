@@ -446,7 +446,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                     <div class="pr-50">
                                                         <div class="avatar">
-                                                            <a href="conversationphp?num=<?= $creation['id'] ?>"><img src="../../../app-assets/images/ico/<?= $creation['img_crea'] ?>" alt="avtar img holder"></a>
+                                                            <a href="conversation.php?num=<?= $creation['id'] ?>"><img src="../../../app-assets/images/ico/<?= $creation['img_crea'] ?>" alt="avtar img holder"></a>
                                                         </div>
                                                     </div>
                                                     <div class="media-body">
