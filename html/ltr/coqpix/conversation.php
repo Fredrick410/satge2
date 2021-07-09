@@ -6,10 +6,20 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
     
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
+    $pdoSta = $bdd->prepare('SELECT * FROM chat_crea WHERE id=:num');
     $pdoSta->bindValue(':num',$_GET['num']);
     $pdoSta->execute();
-    $crea = $pdoSta->fetch();
+    $msg = $pdoSta->fetch();
+
+
+    $pdo = $bdd->prepare('SELECT * FROM chat_crea WHERE destination like :dest');
+    $pdo->bindValue(':dest',$msg['destination']);
+    $pdo->execute();
+    $discussion = $pdo->fetchAll();
+
+    $sql = $bdd->prepare('UPDATE chat_crea SET lu="1" WHERE destination like :dest');
+    $sql->bindValue(':dest',$msg['destination']);
+    $sql->execute();
 
 ?>
 <!DOCTYPE html>
@@ -80,31 +90,7 @@ require_once 'php/verif_session_connect_admin.php';
 
 
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-secondary navbar-brand-center">
-        <div class="navbar-header d-xl-block d-none">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item"><a class="navbar-brand" href="dashboard-admin.php">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
-                    </a></li>
-            </ul>
-        </div>
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php include('php/header_back.php'); ?>
     <!-- END: Header-->
 
     <!-- BEGIN: Main Menu-->
@@ -119,7 +105,7 @@ require_once 'php/verif_session_connect_admin.php';
                     .backk{font-size: 30px; color: black;}
                     .backk:hover{color: #727E8C;}
                 </style>
-                <a href="creation-list.php"><i class='bx bx-arrow-back backk'></i></a>
+                <a href="creation-list-conversation.php"><i class='bx bx-arrow-back backk'></i></a>
             </div>
             <div class="sidebar-left bg-white">
                 <div class="sidebar">
@@ -127,7 +113,7 @@ require_once 'php/verif_session_connect_admin.php';
                     <div class="compose-new-mail-sidebar">
                         <div class="card shadow-none quill-wrapper p-0">
                             <div class="card-header">
-                                <h3 class="card-title" id="emailCompose"><?= $crea['name_crea'] ?></h3>
+                                <h3 class="card-title" id="emailCompose"> test1</h3>
                                 <button type="button" class="close close-icon">
                                     <i class="bx bx-x"></i>
                                 </button>
@@ -139,37 +125,37 @@ require_once 'php/verif_session_connect_admin.php';
                                     <div class="card-body pt-0">
                                         <div class="form-group">
                                             <label>Date d'ouverture du dossier</label>
-                                            <input type="text" name="date_crea" class="form-control" value="<?= $crea['date_crea'] ?>" placeholder="Date de création" readonly>
+                                            <input type="text" name="date_crea" class="form-control" value=" test2 " placeholder="Date de création" readonly>
                                         </div>
                                         <div class="form-group pb-50">
                                             <labelledby>Nom de la société</label>
-                                            <input type="text" name="name_crea" class="form-control" value="<?= $crea['name_crea'] ?>" placeholder="Nom de la société" required>
+                                            <input type="text" name="name_crea" class="form-control" value="test3" placeholder="Nom de la société" required>
                                         </div>
                                         <div class="form-group">
                                             <label>E-mail</label>
-                                            <input type="email" name="email_crea" class="form-control" value="<?= $crea['email_crea'] ?>" placeholder="E-mail de la société" required>
+                                            <input type="email" name="email_crea" class="form-control" value="test4" placeholder="E-mail de la société" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Mot de passe (Mot de passe du compte)</label>
-                                            <input type="password" name="password_crea" class="form-control" value="<?= $crea['password_crea'] ?>" placeholder="Mot de passe" required>
+                                            <input type="password" name="password_crea" class="form-control" value="test5" placeholder="Mot de passe" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Information dirigeant</label>
-                                            <input type="text" name="nom_diri" class="form-control" value="<?= $crea['nom_diri'] ?>" placeholder="Nom du dirigeant" required>
+                                            <input type="text" name="nom_diri" class="form-control" value="test6" placeholder="Nom du dirigeant" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="prenom_diri" class="form-control" value="<?= $crea['prenom_diri'] ?>" placeholder="Prenom du dirigeant" required>
+                                            <input type="text" name="prenom_diri" class="form-control" value="test7" placeholder="Prenom du dirigeant" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="tel_diri" class="form-control" value="<?= $crea['tel_diri'] ?>" placeholder="Téléphone du dirigeant" required>
+                                            <input type="text" name="tel_diri" class="form-control" value="test8" placeholder="Téléphone du dirigeant" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="email_diri" class="form-control" value="<?= $crea['email_diri'] ?>" placeholder="E-mail du dirigeant" required>
+                                            <input type="text" name="email_diri" class="form-control" value="test9" placeholder="E-mail du dirigeant" required>
                                         </div>
                                         <div class="form-group">
                                         <label>Forme juridique :</label>
                                             <select name="status_crea" class="form-control">
-                                                <option value="<?= $crea['status_crea'] ?>"><?= $crea['status_crea'] ?></option>
+                                                <option value="test10">test11</option>
                                                 <optgroup label="----------------------">
                                                 </optgroup>
                                                 <option value="EIRL">EIRL</option>
@@ -208,12 +194,12 @@ require_once 'php/verif_session_connect_admin.php';
                                         <div class="media m-75">
                                             <a href="JavaScript:void(0);">
                                                 <div class="avatar mr-75">
-                                                    <img src="../../../app-assets/images/ico/<?= $crea['img_crea'] ?>" alt="avtar images" width="32" height="32">
+                                                    <img src="../../../app-assets/images/ico/" alt="avtar images" width="32" height="32">
                                                     <span class="avatar-status-online"></span>
                                                 </div>
                                             </a>
                                             <div class="media-body">
-                                                <h6 class="media-heading mb-0 pt-25"><a href="javaScript:void(0);"><?= $crea['name_crea'] ?></a></h6>
+                                                <span class="list-group-item-text text-truncate namecolor"><?= $msg['you'] ?></span><br/>
                                                 <span class="text-muted font-small-3">Actif</span>
                                             </div>
                                             
@@ -223,12 +209,22 @@ require_once 'php/verif_session_connect_admin.php';
                                         <div class="chat-content" id="chat-content">
                                             <!-- CLASSEMENT PAR JOURS  -->
                                             <!-- <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div> -->
+                                            <?php 
+                                            foreach($discussion as $message): 
+                                            ?>
+                                            
+                                            <a><span class="list-group-item-text text-dark text-truncate namecolor"><?= $message['you']." : ".$message['message_crea']; ?></span></a>
+                                            <span class="mail-date"><?= $message['date_crea'] ?> à <?= $message['date_h'] ?>:<?= $message['date_m'] ?></span> <br/>
+                                            
+                                            <?php
+                                            endforeach ;
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="card-footer border-top p-1">
                                         <div class="d-flex">
                                             <input type="hidden" name="id" id="id_client" value="<?= $_GET['num'] ?>">
-                                            <input type="hidden" name="author" id="author" value="<?= $crea['name_crea'] ?>">
+                                            <input type="hidden" name="author" id="author" value="test13">
                                             <input type="text" name="content" id="content" class="form-control chat-message-demo mr-75" placeholder="Tapez votre message...">
                                             <button id="btn_submit" type="button" class="btn btn-primary glow px-1"><i class="bx bx-paper-plane"></i></button>
                                         </div>
@@ -247,11 +243,11 @@ require_once 'php/verif_session_connect_admin.php';
 
     <?php
 
-    $pdo = $bdd->prepare('UPDATE crea_societe SET notification_admin=:notification_admin, message_crea=:message_crea WHERE id=:num LIMIT 1');
-    $pdo->bindValue(':num', $_GET['num']);
-    $pdo->bindValue(':notification_admin', "0");   
-    $pdo->bindValue(':message_crea', "Dossier en cours de traitement ...");
-    $pdo->execute();                                                    
+    $pdos = $bdd->prepare('UPDATE crea_societe SET notification_admin=:notification_admin, message_crea=:message_crea WHERE id=:num LIMIT 1');
+    $pdos->bindValue(':num', $_GET['num']);
+    $pdos->bindValue(':notification_admin', "0");   
+    $pdos->bindValue(':message_crea', "Dossier en cours de traitement ...");
+    $pdos->execute();                                                    
 
     ?>
 
