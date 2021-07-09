@@ -193,7 +193,8 @@ echo $result['description'];
     </div>
     <div class="row">
         <div class="col-12" id="div-service-dispo">
-            <form action="" method="POST">
+            <form action="domiciliation-contrat.php" method="POST">
+            <input hidden readonly id="id_offre" name="id_offre" type="text" value="<?= $id ?>"></input>
             <h2>Les services disponibles à cette adresse</h2>
 
     <div id="solution-logo">
