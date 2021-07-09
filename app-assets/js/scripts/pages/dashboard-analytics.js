@@ -68,6 +68,10 @@ $(window).on("load", function() {
             document.getElementById("id_legende_crea").style.display = "none";
             document.getElementById("id_legende_modif").style.display = "none";
 
+            document.getElementById("id_block_nb_radia").style.display = "block";
+            document.getElementById("id_block_nb_crea").style.display = "none";
+            document.getElementById("id_block_nb_modif").style.display = "none";
+
         } else if (titre_juridique == "Création d'entreprise") {
 
             // On remplace les charts actuels de création d'entreprise    
@@ -91,6 +95,10 @@ $(window).on("load", function() {
             // On modifie la légende du donut-chart
             document.getElementById("id_legende_modif").style.display = "none";
             document.getElementById("id_legende_crea").style.display = "block";
+
+            document.getElementById("id_block_nb_radia").style.display = "none";
+            document.getElementById("id_block_nb_crea").style.display = "block";
+            document.getElementById("id_block_nb_modif").style.display = "none";
 
         } else if (titre_juridique == "Modification d'entreprise") {
 
@@ -117,6 +125,10 @@ $(window).on("load", function() {
             document.getElementById("id_legende_crea").style.display = "none";
             document.getElementById("id_legende_modif").style.display = "block";
 
+            document.getElementById("id_block_nb_radia").style.display = "none";
+            document.getElementById("id_block_nb_crea").style.display = "none";
+            document.getElementById("id_block_nb_modif").style.display = "block";
+
         }
 
     }
@@ -131,6 +143,179 @@ $(window).on("load", function() {
     $("#id_fleche_droite_juridique").click(function(e) {
         e.preventDefault();
         traiterClicFleche("droite");
+    });
+
+    // Donut Chart
+    // ---------------------
+
+    function donutChartOptionCrea(array) {
+    
+        var donutChartOption = {
+            chart: {
+            width: 300,
+            type: 'donut',
+            },
+            dataLabels: {
+            enabled: false
+            },
+            series: [array['SARL'], array['SAS'], array['SASU'], array['SCI'], array['EIRL'], array['EI'], array['Micr']],
+            labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
+            stroke: {
+            width: 0,
+            lineCap: 'round',
+            },
+            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
+            plotOptions: {
+            pie: {
+                donut: {
+                size: '80%',
+                labels: {
+                    show: true,
+                    name: {
+                    show: true,
+                    fontSize: '15px',
+                    colors: $sub_label_color,
+                    offsetY: 20,
+                    fontFamily: 'IBM Plex Sans',
+                    },
+                    value: {
+                    show: true,
+                    fontSize: '35px',
+                    fontFamily: 'Rubik',
+                    color: $label_color,
+                    offsetY: -20,
+                    formatter: function (val) {
+                        return val
+                    }
+                    },
+                    total: {
+                    show: true,
+                    label: 'Entreprises',
+                    color: $gray_light,
+                    formatter: function (w) {
+                        return w.globals.seriesTotals.reduce(function (a, b) {
+                        return a + b
+                        }, 0)
+                    }
+                    }
+                }
+                }
+            }
+            },
+            legend: {
+            show: false
+            }
+        }
+        return donutChartOption;
+
+    }
+
+    function donutChartOptionModif(array) {
+    
+        var donutChartOption = {
+            chart: {
+            width: 300,
+            type: 'donut',
+            },
+            dataLabels: {
+            enabled: false
+            },
+            series: [array['one'], array['two'], array['three'], array['four'], array['five'], array['six'], array['seven'], array['eight']],
+            labels: ["Cession de parts / Actions", "Gérant / Président", "Siège social", "Objet social", "Forme juridique", "Dénomination", "Capital social", "Veille"],
+            stroke: {
+            width: 0,
+            lineCap: 'round',
+            },
+            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black, $magenta],
+            plotOptions: {
+            pie: {
+                donut: {
+                size: '80%',
+                labels: {
+                    show: true,
+                    name: {
+                    show: true,
+                    fontSize: '15px',
+                    colors: $sub_label_color,
+                    offsetY: 20,
+                    fontFamily: 'IBM Plex Sans',
+                    },
+                    value: {
+                    show: true,
+                    fontSize: '35px',
+                    fontFamily: 'Rubik',
+                    color: $label_color,
+                    offsetY: -20,
+                    formatter: function (val) {
+                        return val
+                    }
+                    },
+                    total: {
+                    show: true,
+                    label: 'Changements',
+                    color: $gray_light,
+                    formatter: function (w) {
+                        return w.globals.seriesTotals.reduce(function (a, b) {
+                        return a + b
+                        }, 0)
+                    }
+                    }
+                }
+                }
+            }
+            },
+            legend: {
+            show: false
+            }
+        }
+        return donutChartOption;
+
+    }
+
+    var donutChart = new ApexCharts(
+        document.querySelector("#donut-chart"),
+        donutChartOptionCrea(window["nb_crea_type_" + annee_actuelle])
+    );
+    donutChart.render();
+
+    // S'éxecute lorsqu'on change l'année du select dans Juridique
+    $("#id_select_annee_juridique").change(function() {
+
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+
+        // On récupère l'année selectionnée
+        var annee_juridique = $(this).children("option:selected").val(); 
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            // A VENIR
+
+        } else if (titre_juridique == "Création d'entreprise") { 
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#donut-chart").empty();
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOptionCrea(window["nb_crea_type_" + annee_juridique])
+            );
+
+            donutChart.render();
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            $("#donut-chart").empty();
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOptionModif(window["nb_modif_type_" + annee_juridique])
+            );
+
+            donutChart.render();
+
+        }
+      
     });
 
     // Radial-Success-chart
@@ -449,6 +634,10 @@ $(window).on("load", function() {
 
             analyticsBarChart.render();
 
+            document.getElementById("id_nb_crea_encours").innerText = nb_crea_encours[annee_juridique] + " en cours";
+            document.getElementById("id_nb_crea_valide").innerText = nb_crea_valide[annee_juridique] + " validées";
+            document.getElementById("id_nb_crea_abandon").innerText = nb_crea_delete[annee_juridique] + " abandons";
+
         } else if (titre_juridique == "Modification d'entreprise") {
 
             // On remplace le graphique par rapport à l'année sélectionnée
@@ -460,6 +649,10 @@ $(window).on("load", function() {
             );
 
             analyticsBarChart.render();
+
+            document.getElementById("id_nb_modif_encours").innerText = nb_modif_encours[annee_juridique] + " en cours";
+            document.getElementById("id_nb_modif_valide").innerText = nb_modif_valide[annee_juridique] + " validées";
+            document.getElementById("id_nb_modif_abandon").innerText = nb_modif_delete[annee_juridique] + " abandons";
 
         }
       
@@ -594,179 +787,6 @@ $(window).on("load", function() {
         successLineChartOption
     );
     successLineChart.render();
-  
-    // Donut Chart
-    // ---------------------
-
-    function donutChartOptionCrea(array) {
-    
-        var donutChartOption = {
-            chart: {
-            width: 300,
-            type: 'donut',
-            },
-            dataLabels: {
-            enabled: false
-            },
-            series: [array['SARL'], array['SAS'], array['SASU'], array['SCI'], array['EIRL'], array['EI'], array['Micr']],
-            labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
-            stroke: {
-            width: 0,
-            lineCap: 'round',
-            },
-            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
-            plotOptions: {
-            pie: {
-                donut: {
-                size: '80%',
-                labels: {
-                    show: true,
-                    name: {
-                    show: true,
-                    fontSize: '15px',
-                    colors: $sub_label_color,
-                    offsetY: 20,
-                    fontFamily: 'IBM Plex Sans',
-                    },
-                    value: {
-                    show: true,
-                    fontSize: '35px',
-                    fontFamily: 'Rubik',
-                    color: $label_color,
-                    offsetY: -20,
-                    formatter: function (val) {
-                        return val
-                    }
-                    },
-                    total: {
-                    show: true,
-                    label: 'Entreprises',
-                    color: $gray_light,
-                    formatter: function (w) {
-                        return w.globals.seriesTotals.reduce(function (a, b) {
-                        return a + b
-                        }, 0)
-                    }
-                    }
-                }
-                }
-            }
-            },
-            legend: {
-            show: false
-            }
-        }
-        return donutChartOption;
-
-    }
-
-    function donutChartOptionModif(array) {
-    
-        var donutChartOption = {
-            chart: {
-            width: 300,
-            type: 'donut',
-            },
-            dataLabels: {
-            enabled: false
-            },
-            series: [array['one'], array['two'], array['three'], array['four'], array['five'], array['six'], array['seven'], array['eight']],
-            labels: ["Cession de parts / Actions", "Gérant / Président", "Siège social", "Objet social", "Forme juridique", "Dénomination", "Capital social", "Veille"],
-            stroke: {
-            width: 0,
-            lineCap: 'round',
-            },
-            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black, $magenta],
-            plotOptions: {
-            pie: {
-                donut: {
-                size: '80%',
-                labels: {
-                    show: true,
-                    name: {
-                    show: true,
-                    fontSize: '15px',
-                    colors: $sub_label_color,
-                    offsetY: 20,
-                    fontFamily: 'IBM Plex Sans',
-                    },
-                    value: {
-                    show: true,
-                    fontSize: '35px',
-                    fontFamily: 'Rubik',
-                    color: $label_color,
-                    offsetY: -20,
-                    formatter: function (val) {
-                        return val
-                    }
-                    },
-                    total: {
-                    show: true,
-                    label: 'Changements',
-                    color: $gray_light,
-                    formatter: function (w) {
-                        return w.globals.seriesTotals.reduce(function (a, b) {
-                        return a + b
-                        }, 0)
-                    }
-                    }
-                }
-                }
-            }
-            },
-            legend: {
-            show: false
-            }
-        }
-        return donutChartOption;
-
-    }
-
-    var donutChart = new ApexCharts(
-        document.querySelector("#donut-chart"),
-        donutChartOptionCrea(window["nb_crea_type_" + annee_actuelle])
-    );
-    donutChart.render();
-
-    // S'éxecute lorsqu'on change l'année du select dans Juridique
-    $("#id_select_annee_juridique").change(function() {
-
-        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
-        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
-
-        // On récupère l'année selectionnée
-        var annee_juridique = $(this).children("option:selected").val(); 
-
-        if (titre_juridique == "Radiation d'entreprise") {
-
-            // A VENIR
-
-        } else if (titre_juridique == "Création d'entreprise") { 
-        
-            // On remplace le graphique par rapport à l'année sélectionnée
-            $("#donut-chart").empty();
-
-            var donutChart = new ApexCharts(
-                document.querySelector("#donut-chart"),
-                donutChartOptionCrea(window["nb_crea_type_" + annee_juridique])
-            );
-
-            donutChart.render();
-
-        } else if (titre_juridique == "Modification d'entreprise") {
-
-            $("#donut-chart").empty();
-
-            var donutChart = new ApexCharts(
-                document.querySelector("#donut-chart"),
-                donutChartOptionModif(window["nb_modif_type_" + annee_juridique])
-            );
-
-            donutChart.render();
-
-        }
-      
-    });
 
     // Stacked Bar Nagetive Chart
     // ----------------------------------

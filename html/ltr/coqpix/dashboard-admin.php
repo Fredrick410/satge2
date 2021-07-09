@@ -193,7 +193,7 @@ require_once 'php/verif_session_connect_admin.php';
     }
 
     // Requete SQL permettant de récupérer le nombre de modifications d'entreprise validés par mois et pour les 5 dernières années
-    $query = $bdd->prepare('SELECT substr(dte, 4,2) AS mois, count(case when substr(dte, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(dte, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(dte, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(dte, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(dte, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM acte WHERE progression = "100" and right(frais, 3) = "yes" and right(honoraire, 3) = "yes" and right(depo_greffe, 3) = "yes" and right(depo_cfe, 3) = "yes" and article_three = "yes" GROUP BY substr(dte, 4,2)');
+    $query = $bdd->prepare('SELECT substr(dte, 4,2) AS mois, count(case when substr(dte, 7) = :annee then 1 else null end) AS nb_n, count(case when substr(dte, 7) = :annee - 1 then 1 else null end) AS nb_n_1, count(case when substr(dte, 7) = :annee - 2 then 1 else null end) AS nb_n_2, count(case when substr(dte, 7) = :annee - 3 then 1 else null end) AS nb_n_3, count(case when substr(dte, 7) = :annee - 4 then 1 else null end) AS nb_n_4 FROM acte WHERE progression = "100" and right(frais, 3) = "yes" and right(honoraire, 3) = "yes" and right(depo_greffe, 3) = "yes" and right(depo_cfe, 3) = "yes" GROUP BY substr(dte, 4,2)');
     $query->execute(array(':annee' => ($annee_actuelle)));
     for ($i=0 ; $i<5 ; $i++) {
         ${'modif_valide_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
@@ -236,22 +236,6 @@ require_once 'php/verif_session_connect_admin.php';
         ${'nb_crea_type_'.($annee_actuelle-4)}[$nb_crea_type['status_crea']] = (int) $nb_crea_type['nb_n_4'];
     }
 
-    // Requete SQL permettant de recuperer le nombre de créa valides
-    $query = $bdd->query('SELECT COUNT(*) AS nb FROM crea_societe WHERE doc_pieceid!="" AND doc_cerfaM0!="" AND doc_pouvoir!="" AND doc_attestation!="" AND RIGHT(depo_cfe,3) ="yes" and RIGHT(depo_greffe,3) ="yes" AND RIGHT(frais,3)="yes" AND ((doc_cerfaMBE!="" AND doc_justificatifss!="" AND doc_statuts!="" AND doc_nomination!="" AND doc_annonce!="" AND doc_depot!="") OR (doc_xp!="" AND doc_justificatifd!="" AND doc_peirl!="" AND doc_attestation!=""))');
-    $nb_crea_valide = ($query->fetch())['nb'];
-
-    // Nombre de créations d'entreprise en cours
-    $nb_crea_en_cours = array_sum(${'nb_crea_type_'.($annee_actuelle)})
-                        + array_sum(${'nb_crea_type_'.($annee_actuelle-1)})
-                        + array_sum(${'nb_crea_type_'.($annee_actuelle-2)})
-                        + array_sum(${'nb_crea_type_'.($annee_actuelle-3)})
-                        + array_sum(${'nb_crea_type_'.($annee_actuelle-4)})
-                        - $nb_crea_valide;
-
-    // Requete SQL permettant de recuperer le nombre de créa supprimées
-    $query = $bdd->query('SELECT COUNT(*) AS nb FROM delete_societe');
-    $nb_crea_delete = ($query->fetch())['nb'];
-
     // Requete SQL permettant de recuperer le nombre de modifications d'entreprise par type de changement
     $query = $bdd->prepare('SELECT substr(dte, 7) AS annee, count(case when one = "on" then 1 else null end) AS nb_one, count(case when two = "on" then 1 else null end) AS nb_two, count(case when three = "on" then 1 else null end) AS nb_three, count(case when four = "on" then 1 else null end) AS nb_four, count(case when five = "on" then 1 else null end) AS nb_five, count(case when six = "on" then 1 else null end) AS nb_six, count(case when seven = "on" then 1 else null end) AS nb_seven, count(case when eight = "on" then 1 else null end) AS nb_eight FROM acte GROUP BY substr(dte, 7)');
     $query->execute(array(':annee' => ($annee_actuelle)));
@@ -268,6 +252,42 @@ require_once 'php/verif_session_connect_admin.php';
         ${'nb_modif_type_'.$nb_modif_type['annee']}['seven'] = (int) $nb_modif_type['nb_seven'];
         ${'nb_modif_type_'.$nb_modif_type['annee']}['eight'] = (int) $nb_modif_type['nb_eight'];
     }
+
+    // // Nombre de créations d'entreprise validées
+    $nb_crea_valide = array($annee_actuelle => array_sum(${'crea_valide_'.($annee_actuelle)}), 
+                              $annee_actuelle-1 => array_sum(${'crea_valide_'.($annee_actuelle-1)}),
+                              $annee_actuelle-2 => array_sum(${'crea_valide_'.($annee_actuelle-2)}),
+                              $annee_actuelle-3 => array_sum(${'crea_valide_'.($annee_actuelle-3)}),
+                              $annee_actuelle-4 => array_sum(${'crea_valide_'.($annee_actuelle-4)}));
+
+    // Nombre de créations d'entreprise en cours
+    $nb_crea_encours = array($annee_actuelle => array_sum(${'crea_encours_'.($annee_actuelle)}), 
+                              $annee_actuelle-1 => array_sum(${'crea_encours_'.($annee_actuelle-1)}),
+                              $annee_actuelle-2 => array_sum(${'crea_encours_'.($annee_actuelle-2)}),
+                              $annee_actuelle-3 => array_sum(${'crea_encours_'.($annee_actuelle-3)}),
+                              $annee_actuelle-4 => array_sum(${'crea_encours_'.($annee_actuelle-4)}));
+
+    // Requete SQL permettant de recuperer le nombre de créa supprimées
+    $query = $bdd->query('SELECT substr(date_crea, 7) AS annee, COUNT(*) AS nb FROM delete_societe GROUP BY substr(date_crea, 7)');
+    $query->execute(array());
+    $nb_crea_delete = array($annee_actuelle => 0, $annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0);
+    while ($crea_delete = $query->fetch()) {
+        $nb_crea_delete[$crea_delete['annee']] = (int) $crea_delete['nb'];
+    }
+
+    // Nombre de modifications d'entreprise validées
+    $nb_modif_valide = array($annee_actuelle => array_sum(${'modif_valide_'.($annee_actuelle)}), 
+                              $annee_actuelle-1 => array_sum(${'modif_valide_'.($annee_actuelle-1)}),
+                              $annee_actuelle-2 => array_sum(${'modif_valide_'.($annee_actuelle-2)}),
+                              $annee_actuelle-3 => array_sum(${'modif_valide_'.($annee_actuelle-3)}),
+                              $annee_actuelle-4 => array_sum(${'modif_valide_'.($annee_actuelle-4)}));
+
+    // Nombre de modifications d'entreprise en cours
+    $nb_modif_encours = array($annee_actuelle => array_sum(${'modif_encours_'.($annee_actuelle)}), 
+                              $annee_actuelle-1 => array_sum(${'modif_encours_'.($annee_actuelle-1)}),
+                              $annee_actuelle-2 => array_sum(${'modif_encours_'.($annee_actuelle-2)}),
+                              $annee_actuelle-3 => array_sum(${'modif_encours_'.($annee_actuelle-3)}),
+                              $annee_actuelle-4 => array_sum(${'modif_encours_'.($annee_actuelle-4)}));
 
 // FIN REQUETES JURIDIQUE
 
@@ -1225,40 +1245,78 @@ require_once 'php/verif_session_connect_admin.php';
                                         <div class="col-xl-5 col-md-12">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="card">
-                                                        <div class="card">
-                                                            <div class="card-header d-flex justify-content-between align-items-center pb-50">
-                                                                <h4 class="card-title">Créations</h4>
-                                                            </div>
-                                                            <div class="card-body p-0 pb-1">
-                                                                <ul class="list-group list-group-flush">
-                                                                    <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
-                                                                        <div class="list-left d-flex">
-                                                                            <div class="list-content">
-                                                                                <span class="list-title">Créations en cours</span>
-                                                                            </div>
+                                                    <div class="card" id="id_block_nb_crea" style="display: block;">
+                                                        <div class="card-header d-flex justify-content-between align-items-center pb-50">
+                                                            <h4 class="card-title">Créations</h4>
+                                                        </div>
+                                                        <div class="card-body p-0 pb-1">
+                                                            <ul class="list-group list-group-flush">
+                                                                <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                    <div class="list-left d-flex">
+                                                                        <div class="list-content">
+                                                                            <span class="list-title">Créations en cours</span>
                                                                         </div>
-                                                                        <span class="badge badge-light-warning float-right mt-20"><?= $nb_crea_en_cours ?> En cours</span>
-                                                                    </li>
-                                                                    <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
-                                                                        <div class="list-left d-flex">
-                                                                            <div class="list-content">
-                                                                                <span class="list-title">Créations validées totales</span>
-                                                                            </div>
+                                                                    </div>
+                                                                    <span class="badge badge-light-warning float-right mt-20" id="id_nb_crea_encours"><?= $nb_crea_encours[$annee_actuelle] ?> en cours</span>
+                                                                </li>
+                                                                <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                    <div class="list-left d-flex">
+                                                                        <div class="list-content">
+                                                                            <span class="list-title">Créations validées totales</span>
                                                                         </div>
-                                                                        <span class="badge badge-light-success float-right mt-20"><?= $nb_crea_valide ?> Validées</span>
-                                                                    </li>
-                                                                    <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
-                                                                        <div class="list-left d-flex">
-                                                                            <div class="list-content">
-                                                                                <span class="list-title">Créations abandonnées</span>
-                                                                            </div>
+                                                                    </div>
+                                                                    <span class="badge badge-light-success float-right mt-20" id="id_nb_crea_valide"><?= $nb_crea_valide[$annee_actuelle] ?> validées</span>
+                                                                </li>
+                                                                <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                    <div class="list-left d-flex">
+                                                                        <div class="list-content">
+                                                                            <span class="list-title">Créations abandonnées</span>
                                                                         </div>
-                                                                        <span class="badge badge-light-danger float-right mt-20"><?= $nb_crea_delete ?> Abandons</span>
-                                                                    </li>
-
-                                                                </ul>
-                                                            </div>
+                                                                    </div>
+                                                                    <span class="badge badge-light-danger float-right mt-20" id="id_nb_crea_abandon"><?= $nb_crea_delete[$annee_actuelle] ?> abandons</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card" id="id_block_nb_modif" style="display: none;">
+                                                        <div class="card-header d-flex justify-content-between align-items-center pb-50">
+                                                            <h4 class="card-title">Modifications</h4>
+                                                        </div>
+                                                        <div class="card-body p-0 pb-1">
+                                                            <ul class="list-group list-group-flush">
+                                                                <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                    <div class="list-left d-flex">
+                                                                        <div class="list-content">
+                                                                            <span class="list-title">Modifications en cours</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge badge-light-warning float-right mt-20" id="id_nb_modif_encours"><?= $nb_modif_encours[$annee_actuelle] ?> en cours</span>
+                                                                </li>
+                                                                <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                    <div class="list-left d-flex">
+                                                                        <div class="list-content">
+                                                                            <span class="list-title">Modifications validées totales</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge badge-light-success float-right mt-20" id="id_nb_modif_valide"><?= $nb_modif_valide[$annee_actuelle] ?> validées</span>
+                                                                </li>
+                                                                <li class="list-group-item list-group-item-action border-0 d-flex align-items-center justify-content-between">
+                                                                    <div class="list-left d-flex">
+                                                                        <div class="list-content">
+                                                                            <span class="list-title">Modifications abandonnées</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span class="badge badge-light-danger float-right mt-20" id="id_nb_modif_abandon">0 abandons</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card" id="id_block_nb_radia" style="display: none;">
+                                                        <div class="card-header d-flex justify-content-between align-items-center pb-50">
+                                                            <h4 class="card-title">Radiations</h4>
+                                                        </div>
+                                                        <div class="card-body p-0 pb-1">
+                                                            <!-- A VENIR -->
                                                         </div>
                                                     </div>
                                                     <!-- Earning Swiper Starts -->
@@ -1559,6 +1617,13 @@ require_once 'php/verif_session_connect_admin.php';
         this[modif_encours + (annee_actuelle-2)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-2)}); ?>;
         this[modif_encours + (annee_actuelle-3)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-3)}); ?>;
         this[modif_encours + (annee_actuelle-4)] = <?php echo json_encode(${'modif_encours_'.($annee_actuelle-4)}); ?>;
+
+        var nb_crea_encours = <?php echo json_encode($nb_crea_encours); ?>;
+        var nb_crea_valide = <?php echo json_encode($nb_crea_valide); ?>;
+        var nb_crea_delete = <?php echo json_encode($nb_crea_delete); ?>;
+
+        var nb_modif_encours = <?php echo json_encode($nb_modif_encours); ?>;
+        var nb_modif_valide = <?php echo json_encode($nb_modif_valide); ?>;
 
         var nb_crea_type = "nb_crea_type_";
         this[nb_crea_type + annee_actuelle] = <?php echo json_encode(${'nb_crea_type_'.($annee_actuelle)}); ?>;
