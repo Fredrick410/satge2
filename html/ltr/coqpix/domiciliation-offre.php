@@ -10,7 +10,11 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->bindValue(':num',$_SESSION['id_crea']);
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
-    
+
+    //selection des infos selon l'id
+    $id = $_GET['id'];
+    $query = $bdd->query("SELECT * FROM offre_domiciliation WHERE id like '$id'");
+    $result = $query->fetch();
 
 ?>
 <!DOCTYPE html>
@@ -67,16 +71,10 @@ require_once 'php/verif_session_crea.php';
     <!-- BEGIN: Content-->
 <div class="container-fluid">
     <br>
-    <div class="breadcrumb-wrapper col-12" ">
-        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
-            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
-            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
-            <li class="breadcrumb-item active"> Offre de domiciliation </li>
-        </ol>
-    </div>
+    
 
     <div class="row">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="height: 600px; width: 100%; background-color: grey;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
