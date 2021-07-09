@@ -140,20 +140,24 @@ input[type="radio"].solu + label:hover{
 #contrat ul li{
     list-style: none;
     width: 100%;
-    margin: 0 0 10px 0;
+    margin: 0 0 15px 0;
 }
 
 #contrat ul li button{
     right: 0;
     position: absolute;
+    background-color: #29fe8c;
+    padding: 5px 10px;
 }
 
 #contrat label{
     font-family: mukta malar medium;
     color: #051441;
+    font-size: 15px;
 }
 
 #contrat input{
     right: 0;
     position: absolute;
+    padding: 5px 10px;
 }
