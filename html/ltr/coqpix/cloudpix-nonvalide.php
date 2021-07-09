@@ -63,6 +63,15 @@ require_once 'php/verif_connexion_comptable.php';
     $pdoStattt->execute();
     $comptable = $pdoStattt->fetch();
 
+    //Récupération des documents non valides pour l'affichage des notifs
+    $pdoSt = $bdd->query('SELECT COUNT(case when type_files_fac_ventes != "" then 1 else null end) as nb_fac_ventes,
+    COUNT(case when type_files_avoir != "" then 1 else null end) as nb_avoir, 
+    COUNT(case when type_files_fac_achat != "" then 1 else null end) as nb_fac_achat,
+    COUNT(case when type_files_note != "" then 1 else null end) as nb_note,
+    COUNT(case when banque != "" then 1 else null end) as nb_banque,
+    COUNT(case when type_files_caisse_ventes != "" then 1 else null end) as nb_caisse_ventes
+    FROM `stockage_admin` WHERE send_files = "nonvalide"');
+    $nb_files = $pdoSt->fetch();
 ?>
 
 
@@ -200,12 +209,16 @@ require_once 'php/verif_connexion_comptable.php';
                                             <i class="livicon-evo" data-options="name: coins.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;"></i>
                                         </div>
                                         Factures ventes
+                                        <?php if ($nb_files['nb_fac_ventes']){?><span class="badge badge-danger badge-pill badge-round float-right"><?=$nb_files['nb_fac_ventes']?></span><?php } ?>
+
                                     </a>
                                     <a href="cloudpix-avoir.php" class="list-group-item list-group-item-action">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: box-add.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;"></i>
                                         </div>
                                         Avoir
+                                        <?php if ($nb_files['nb_avoir']){?><span class="badge badge-danger badge-pill badge-round float-right"><?=$nb_files['nb_avoir']?></span><?php } ?>
+
                                     </a>
                                     <label class="app-file-label">Achats</label>
                                     <a href="cloudpix-fac_achat.php" class="list-group-item list-group-item-action">
@@ -213,11 +226,15 @@ require_once 'php/verif_connexion_comptable.php';
                                             <i class="livicon-evo" data-options="name: us-dollar.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;"></i>
                                         </div>
                                         Factures achats
+                                        <?php if ($nb_files['nb_fac_achat']){?><span class="badge badge-danger badge-pill badge-round float-right"><?=$nb_files['nb_fac_achat']?></span><?php } ?>
+
                                     </a>
                                     <a href="cloudpix-note.php" class="list-group-item list-group-item-action">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: shoppingcart.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;"></i>
                                         </div> Note de frais
+                                        <?php if ($nb_files['nb_note']){?><span class="badge badge-danger badge-pill badge-round float-right"><?=$nb_files['nb_note']?></span><?php } ?>
+
                                     </a>
                                     <label class="app-file-label">Trésorerie</label>
                                     <a href="cloudpix-banque.php" class="list-group-item list-group-item-action">
@@ -225,12 +242,16 @@ require_once 'php/verif_connexion_comptable.php';
                                             <i class="livicon-evo" data-options="name: bank.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;"></i>
                                         </div>
                                         Relevés bancaires
+                                        <?php if ($nb_files['nb_banque']){?><span class="badge badge-danger badge-pill badge-round float-right"><?=$nb_files['nb_banque']?></span><?php } ?>
+
                                     </a>
                                     <a href="cloudpix-caisse.php" class="list-group-item list-group-item-action">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: calculator.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;"></i>
                                         </div>
                                         Relevés de caisses
+                                        <?php if ($nb_files['nb_caisse_ventes']){?><span class="badge badge-danger badge-pill badge-round float-right"><?=$nb_files['nb_caisse_ventes']?></span><?php } ?>
+
                                     </a>
                                 </div>
                                 <!-- App File Left Sidebar - Labels Content Ends -->
