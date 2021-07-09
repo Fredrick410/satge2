@@ -209,16 +209,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <div class="chat-content" id="chat-content">
                                             <!-- CLASSEMENT PAR JOURS  -->
                                             <!-- <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div> -->
-                                            <?php 
-                                            foreach($discussion as $message): 
-                                            ?>
-                                            
-                                            <a><span class="list-group-item-text text-dark text-truncate namecolor"><?= $message['you']." : ".$message['message_crea']; ?></span></a>
-                                            <span class="mail-date"><?= $message['date_crea'] ?> à <?= $message['date_h'] ?>:<?= $message['date_m'] ?></span> <br/>
-                                            
-                                            <?php
-                                            endforeach ;
-                                            ?>
+                                           
                                         </div>
                                     </div>
                                     <div class="card-footer border-top p-1">

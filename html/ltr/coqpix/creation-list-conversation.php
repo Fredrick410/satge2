@@ -274,53 +274,67 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>
                                     </div>
                                     <!-- / action right -->
-
+                                    <div class="row" >
                                     <!-- email user list start -->
-                                    <div class="email-user-list list-group">
-                                        <ul class="users-list-wrapper media-list">
-                                            <?php 
-                                            foreach($list_msg as $msg): 
-                                                $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
-                                                $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
-                                                ?>                                               
-                                                
-                                                <li class="media <?php if( $dateFormatee < strtotime("-10 days") ){ echo "bg-danger";$affichage=0;}
-                                                                       else if( $dateFormatee < strtotime("-1 days") ){echo "bg-warning"; $affichage=0;}
-                                                                       else if( $dateFormatee < strtotime("-6 hours") ){echo "bg-info";$affichage=1;}
-                                                                       else{ echo "mail-read"; $affichage=1;}?>">
-                                                    <div class="media-body">
-                                                        <div class="user-details">
-                                                            <div class="mail-items">
-                                                                <a href="conversation.php?num=<?= $msg['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $msg['you'] ?></span></a>
-                                                            </div>
-                                                            <div class="mail-meta-item">
-                                                                <span class="float-right">
-                                                                    <a href="conversation.php?num=<?= $msg['id'] ?>"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
-                                                                    <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
-                                                                    
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mail-message">
-                                                            <a href="conversation.php?num=<?= $msg['id'] ?>"><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
-                                                            <div class="mail-meta-item">    
-                                                                <span class="float-right">
-                                                                    
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            <?php endforeach; ?>                                            
-                                        </ul>
-                                        <!-- email user list end -->
+                                        <div class="email-user-list list-group col">
+                                            <ul class="users-list-wrapper media-list">
+                                                <?php 
+                                                foreach($list_msg as $msg): 
+                                                    
+                                                    $PDO = $bdd->prepare('SELECT id FROM crea_societe WHERE name_crea LIKE :nom ');
+                                                    $PDO->bindValue(':nom', $msg['you']);
+                                                    $PDO->execute();
+                                                    $id_crea = $PDO->fetch();
 
-                                        <!-- no result when nothing to show on list -->
-                                        <div class="no-results">
-                                            <i class="bx bx-error-circle font-large-2"></i>
-                                            <h5>Aucun message</h5>
+                                                    
+
+                                                    $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
+                                                    $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
+                                                    ?>                                               
+                                                    
+                                                    <li class="media <?php if( $dateFormatee < strtotime("-10 days") ){ echo "bg-danger";$affichage=0;}
+                                                                        else if( $dateFormatee < strtotime("-1 days") ){echo "bg-warning"; $affichage=0;}
+                                                                        else if( $dateFormatee < strtotime("-6 hours") ){echo "bg-info";$affichage=1;}
+                                                                        else{ echo "mail-read"; $affichage=1;}?>">
+                                                        <div class="media-body">
+                                                            <div class="user-details">
+                                                                <div class="mail-items">
+                                                                    <a href="conversation.php?num=<?= $id_crea['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $msg['you'] ?></span></a>
+                                                                </div>
+                                                                <div class="mail-meta-item">
+                                                                    <span class="float-right">
+                                                                        <a href="conversation.php?num=<?= $id_crea['id'] ?>"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
+                                                                        <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
+                                                                        
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mail-message">
+                                                                <a href="conversation.php?num=<?= $id_crea['id']?>"><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
+                                                                <div class="mail-meta-item">    
+                                                                    <span class="float-right">
+                                                                        
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>                                            
+                                            </ul>
+                                            <!-- email user list end -->
+
+                                            <!-- no result when nothing to show on list -->
+                                            <div class="no-results">
+                                                <i class="bx bx-error-circle font-large-2"></i>
+                                                <h5>Aucun message</h5>
+                                            </div>
+                                        </div>
+                                        <!-- Début conversation -->
+                                        <div class="col">
+                                            <h3>Conversation</h3>
                                         </div>
                                     </div>
+                                    <!-- FIN conversation -->
                                 </div>
                             </div>
                             <!--/ Email list Area -->

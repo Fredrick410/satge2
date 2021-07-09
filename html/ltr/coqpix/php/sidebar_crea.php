@@ -7,6 +7,8 @@
 
         
     $pdoState = $bdd->prepare('SELECT * FROM chat_crea WHERE lu = "0" AND you NOT LIKE "coqpix"');
+    //$pdoState = $bdd->prepare('SELECT DISTINCT you FROM chat_crea WHERE you NOT LIKE "coqpix"');
+   
     $pdoState->execute();
     $list_msg = $pdoState->fetchAll();
     $count_msg = count($list_msg);
