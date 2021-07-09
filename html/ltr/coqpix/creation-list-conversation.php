@@ -291,18 +291,18 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="media-body">
                                                         <div class="user-details">
                                                             <div class="mail-items">
-                                                                <a href="#"><span class="list-group-item-text text-truncate line namecolor"><?= $msg['you'] ?></span></a>
+                                                                <a href="conversation.php?num=<?= $crea['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $msg['you'] ?></span></a>
                                                             </div>
                                                             <div class="mail-meta-item">
                                                                 <span class="float-right">
-                                                                    <a href="#"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
+                                                                    <a href="conversation.php?num=<?= $crea['id'] ?>"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
                                                                     <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
                                                                     
                                                                 </span>
                                                             </div>
                                                         </div>
                                                         <div class="mail-message">
-                                                            <a href="#"><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
+                                                            <a href="conversation.php?num=<?= $crea['id'] ?>"><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
                                                             <div class="mail-meta-item">    
                                                                 <span class="float-right">
                                                                     
