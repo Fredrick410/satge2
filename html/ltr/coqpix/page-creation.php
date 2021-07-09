@@ -129,8 +129,12 @@ require_once 'php/get_documents.php';
             <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
-                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a><br><a href="domiciliation.php" type="button">Se Domicilier</a></h3>
-                    
+                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3><br>
+                    <div class="form-group">
+                        <br>
+                    </div>
+                    <br>
+                    <a href="domiciliation.php" type="button">Se Domicilier</a>
                 </div>
                 <div class="row p-0" id="solution">
                     <ul>
