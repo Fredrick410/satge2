@@ -71,13 +71,7 @@ require_once 'php/verif_session_crea.php';
     <!-- BEGIN: Content-->
 <div class="container-fluid">
     <br>
-    <div class="breadcrumb-wrapper col-12" ">
-        <ol class="breadcrumb p-0 mb-0" style="background-color: #ffffff;">
-            <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a></li>
-            <li id="lien-domi" class="breadcrumb-item"><a href="domiciliation.php" style="color: #5A8DEE;">Domiciliation</a></li>
-            <li class="breadcrumb-item active"> Offre de domiciliation </li>
-        </ol>
-    </div>
+    
 
     <div class="row">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
