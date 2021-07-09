@@ -109,3 +109,11 @@ branche de leo :
 
 	tache réalisée
 		-bouton radio sur offre-domiciliation et fix js
+
+branche de oscar :
+	tache réalisée le 08/07/2021 :
+		- page ajout document compte crea fini
+		- fix affichage info dirigeant page crea
+		- pop-up message back end dans creation société
+		- alert retirer dans la back end dans crea société
+		- ajout item conversation back end dans creation societe

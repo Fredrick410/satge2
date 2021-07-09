@@ -332,7 +332,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     $t_doc_peirl = "1";
                                                                 }
 
-                                                                $t_administration = ''.$t_doc_pieceid + $t_doc_cerfaM0 + $t_doc_xp + $t_doc_justificatifd + $t_doc_peirl.'/5';
+                                                                $t_administration = '' . ($t_doc_pieceid + $t_doc_cerfaM0 + $t_doc_xp + $t_doc_justificatifd + $t_doc_peirl) . '/5';
 
                                                                 //redaction
 
@@ -352,7 +352,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     $t_doc_attestation = "0";
                                                                 }
 
-                                                                $t_redaction = ''.$t_doc_affectation + $t_doc_pouvoir + $t_doc_attestation.'/3';
+                                                                $t_redaction = ''.($t_doc_affectation + $t_doc_pouvoir + $t_doc_attestation).'/3';
 
                                                                 // 
 
@@ -367,7 +367,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     $t_doc_annonce = "0";
                                                                 }
 
-                                                                $t_banque = ''.$t_doc_depot + $t_doc_annonce.'/2';
+                                                                $t_banque = ''.($t_doc_depot + $t_doc_annonce).'/2';
 
 
                                                             ?>

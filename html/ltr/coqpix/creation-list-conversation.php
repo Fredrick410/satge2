@@ -5,12 +5,9 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
-    
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe');
-    $pdoSta->execute();
-    $creat = $pdoSta->fetchAll();
 
 ?>
+
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -202,30 +199,6 @@ require_once 'php/verif_session_connect_admin.php';
                             <!-- Email list Area -->
                             <div class="email-app-list-wrapper">
                                 <div class="email-app-list">
-                                    <div class="form-group position-relative">
-                                        <div class="alert bg-rgba-info alert-dismissible" role="alert" style="margin: 0px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bx bx-diamond"></i>
-                                                <span>
-                                                    L'Icône diamant signifie que les frais et les honoraires de paiement ont été payé
-                                                </span>
-                                            </div>
-                                        </div> 
-                                        <div class="alert bg-rgba-secondary alert-dismissible" role="alert" style="margin: 0px;">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bx bx-paperclip mr-50"></i>
-                                                <span>
-                                                    Cette Icône va vous permettre de voir l'avancement du dossier en 3 étapes : &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #ff0000;'></i> - de 33% de l'avancement -> &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #ffbd00;'></i> - de 66% de l'avancement -> &nbsp&nbsp <i class="bx bx-paperclip mr-50" style='position: relative; top: 3px; color: #59ff00;'></i> - le dossier est validé à 100%
-                                                </span>
-                                            </div>
-                                        </div>                                                                   
-                                    </div>
                                     <div class="email-action">
                                         <!-- action left start here -->
                                         <div class="action-left d-flex align-items-center">
@@ -285,7 +258,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <i class="bx bx-menu"></i>
                                                 </div>
                                                 <fieldset class="form-group position-relative has-icon-left m-0">
-                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher un dossier">
+                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher une conversation">
                                                     <div class="form-control-position">
                                                         <i class="bx bx-search"></i>
                                                     </div>
@@ -305,110 +278,34 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- email user list start -->
                                     <div class="email-user-list list-group">
                                         <ul class="users-list-wrapper media-list">
-                                            <?php foreach($creat as $creation): ?>
-                                                <?php 
-
-                                                    if($creation['status_crea'] == "EURL"){
-                                                            $linkview = "morale";
-                                                    }else{        
-                                                        if($creation['status_crea'] == "SARL"){
-                                                            $linkview = "morale";
-                                                        }else{
-                                                            if($creation['status_crea'] == "SAS"){
-                                                                $linkview = "morale";
-                                                            }else{
-                                                                if($creation['status_crea'] == "SASU"){
-                                                                    $linkview = "morale";
-                                                                }else{
-                                                                    if($creation['status_crea'] == "SCI"){
-                                                                        $linkview = "morale";
-                                                                    }else{
-                                                                        if($creation['status_crea'] == "EIRL"){
-                                                                            $linkview = "physique";
-                                                                        }else{
-                                                                            if($creation['status_crea'] == "Micro-entreprise"){
-                                                                                $linkview = "physique";
-                                                                            }else{
-                                                                                $linkview = "physique";
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    
-                                                    ?>
-                                                <?php $pourc = "0"; if($linkview == "morale"){if($creation['doc_pieceid'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_cerfaM0'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_cerfaMBE'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_justificatifss'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_statuts'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_nomination'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_pouvoir'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_attestation'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_annonce'] !== ""){$pourc = $pourc + "7.69230769231";}if($creation['doc_depot'] !== ""){$pourc = $pourc + "7.69230769231";}if(substr($creation['frais'], -3) == "yes"){$pourc = $pourc + "7.69230769231";}if(substr($creation['depo_greffe'], -3) == "yes"){$pourc = $pourc + "7.69230769231";}if(substr($creation['depo_cfe'], -3) == "yes"){$pourc = $pourc + "7.69230769231";}} 
-                                                                    if($linkview == "physique"){if($creation['doc_pieceid'] !== ""){$pourc = $pourc + "9.09090909090";}if($creation['doc_cerfaM0'] !== ""){$pourc = $pourc + "9.09090909091";}if($creation['doc_xp'] !== ""){$pourc = $pourc + "9.09090909091";}if($creation['doc_justificatifd'] !== ""){$pourc = $pourc + "9.09090909091";}if($creation['doc_peirl'] !== ""){$pourc = $pourc + "9.09090909091";}if($creation['doc_affectation'] !== ""){$pourc = $pourc + "9.09090909091";}if($creation['doc_pouvoir'] !== ""){$pourc = $pourc + "9.09090909091";}if($creation['doc_attestation'] !== ""){$pourc = $pourc + "9.09090909091";}if(substr($creation['frais'], -3) == "yes"){$pourc = $pourc + "9.09090909091";}if(substr($creation['depo_greffe'], -3) == "yes"){$pourc = $pourc + "9.09090909091";}if(substr($creation['depo_cfe'], -3) == "yes"){$pourc = $pourc + "9.09090909091";}}
-                                                ?>
-                                                <li class="media <?php if($creation['notification_admin'] > "0"){echo "mail-read";} if($pourc >= 100){echo "none-validation";} ?>">
-                                                    <div class="user-action">
-                                                        <div class="checkbox-con mr-25">
-                                                            <div class="checkbox checkbox-shadow checkbox-sm">
-                                                                <input type="checkbox" id="checkboxsmall1">
-                                                                <label for="checkboxsmall1"></label>
-                                                            </div>
-                                                        </div>
-                                                        <span class="favorite">
-                                                            <a href="php/favo_crea.php?num=<?= $creation['id'] ?>" class="<?php if($creation['favorite_crea'] == "1"){echo "favo favoh";}else{echo "nofavo nofavoh";} ?>"><i class="bx bx<?php if($creation['favorite_crea'] == "1"){echo "s";} ?>-star"></i></a>
-                                                        </span>
-                                                    </div>
-                                                    <div class="pr-50">
-                                                        <div class="avatar">
-                                                            <a href="creation-view-<?php echo $linkview; ?>.php?num=<?= $creation['id'] ?>"><img src="../../../app-assets/images/ico/<?= $creation['img_crea'] ?>" alt="avtar img holder"></a>
-                                                        </div>
-                                                    </div>
+                                            <?php 
+                                            foreach($list_msg as $msg): 
+                                                $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
+                                                $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
+                                                ?>                                               
+                                                
+                                                <li class="media <?php if( $dateFormatee < strtotime("-10 days") ){ echo "bg-danger";$affichage=0;}
+                                                                       else if( $dateFormatee < strtotime("-1 days") ){echo "bg-warning"; $affichage=0;}
+                                                                       else if( $dateFormatee < strtotime("-6 hours") ){echo "bg-info";$affichage=1;}
+                                                                       else{ echo "mail-read"; $affichage=1;}?>">
                                                     <div class="media-body">
                                                         <div class="user-details">
                                                             <div class="mail-items">
-                                                                <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $creation['name_crea'] ?></span></a>
+                                                                <a href="conversation.php?num=<?= $crea['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $msg['you'] ?></span></a>
                                                             </div>
                                                             <div class="mail-meta-item">
                                                                 <span class="float-right">
-                                                                    <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><span class="mail-date"><?= $creation['date_crea'] ?> à <?= $creation['date_crea_h'] ?>:<?= $creation['date_crea_m'] ?></span></a>
+                                                                    <a href="conversation.php?num=<?= $crea['id'] ?>"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
+                                                                    <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
+                                                                    
                                                                 </span>
                                                             </div>
                                                         </div>
                                                         <div class="mail-message">
-                                                            <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><p class="list-group-item-text truncate mb-0"><?php if($pourc >= 100){echo "Dossier de création validé ✔️";}else{echo "Dossier en cour de traitement ... ⏳";} ?></p></a>
-                                                            <div class="mail-meta-item">
+                                                            <a href="conversation.php?num=<?= $crea['id'] ?>"><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
+                                                            <div class="mail-meta-item">    
                                                                 <span class="float-right">
-                                                                    <span class="float-right d-flex align-items-center">
-                                                                        <a href="creation-view-<?php echo $linkview;  ?>.php?num=<?= $creation['id'] ?>"><i class='bx bx-diamond' style="<?php if($creation['frais'] == "" || $creation['honoraire'] == ""){echo "display: none;";}else{$frais_ex = explode('!', $creation['frais']); $honoraire_ex = explode('!', $creation['honoraire']); if($frais_ex[1] == "no" || $honoraire_ex[1] == "no"){echo "display: none;";}} ?> position: relative; top: 5px; color: #00ffdc; font-size: 20px;"></i><i class='bx bxs-coin-stack'></i><i class="bx bx-paperclip mr-50" style="position: relative; top: 3px; color: <?php if($pourc > 0 && $pourc < 33){echo "#ff0000";} if($pourc > 33 && $pourc < 100){echo "#ffbd00";} if($pourc >= "100"){echo "#70ff00";} ?>;"></i><small style="color: #505050;"><?php if(strlen($pourc) > 5){echo substr($pourc, 0, 5);}else{echo $pourc;} ?>%</small>&nbsp&nbsp&nbsp</a>
-                                                                        <?php 
-                                                                        
-                                                                            if($creation['status_crea'] == "SARL"){
-                                                                                $bulletcolor = "success";
-                                                                            }else{
-                                                                                if($creation['status_crea'] == "SAS"){
-                                                                                    $bulletcolor = "primary";
-                                                                                }else{
-                                                                                    if($creation['status_crea'] == "SASU"){
-                                                                                        $bulletcolor = "warning";
-                                                                                    }else{
-                                                                                        if($creation['status_crea'] == "SCI"){
-                                                                                            $bulletcolor = "danger";
-                                                                                        }else{
-                                                                                            if($creation['status_crea'] == "EIRL"){
-                                                                                                $bulletcolor = "info";
-                                                                                            }else{
-                                                                                                if($creation['status_crea'] == "Micro-entreprise"){
-                                                                                                    $bulletcolor = "black";
-                                                                                                }else{
-                                                                                                    if($creation['status_crea'] == "EI"){
-                                                                                                    $bulletcolor = "light";
-                                                                                                }
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        
-                                                                        ?>
-                                                                        <span class="bullet bullet-<?php echo $bulletcolor; ?> bullet-sm"></span></a>
-                                                                    </span>
+                                                                    
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -421,7 +318,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <!-- no result when nothing to show on list -->
                                         <div class="no-results">
                                             <i class="bx bx-error-circle font-large-2"></i>
-                                            <h5>Aucune création en cour ...</h5>
+                                            <h5>Aucun message</h5>
                                         </div>
                                     </div>
                                 </div>
