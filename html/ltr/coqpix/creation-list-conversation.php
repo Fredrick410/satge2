@@ -40,6 +40,8 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-email.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-chat.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/domiciliation_Btn_Chat.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -276,47 +278,48 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- / action right -->
                                     <div class="row" >
                                     <!-- email user list start -->
-                                        <div class="email-user-list list-group col">
+                                        <div class="email-user-list list-group col-4" id="list-users">
                                             <ul class="users-list-wrapper media-list">
                                                 <?php 
                                                 foreach($list_msg as $msg): 
                                                     
-                                                    $PDO = $bdd->prepare('SELECT id FROM crea_societe WHERE name_crea LIKE :nom ');
+                                                    $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE name_crea LIKE :nom ');
                                                     $PDO->bindValue(':nom', $msg['you']);
                                                     $PDO->execute();
                                                     $id_crea = $PDO->fetch();
 
-                                                    
 
                                                     $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
                                                     $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
-                                                    ?>                                               
-                                                    
-                                                    <li class="media <?php if( $dateFormatee < strtotime("-10 days") ){ echo "bg-danger";$affichage=0;}
-                                                                        else if( $dateFormatee < strtotime("-1 days") ){echo "bg-warning"; $affichage=0;}
-                                                                        else if( $dateFormatee < strtotime("-6 hours") ){echo "bg-info";$affichage=1;}
-                                                                        else{ echo "mail-read"; $affichage=1;}?>">
+                                                    ?>      
+                                                    <li class="media" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background-color :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "#FFA899";$affichage=0;}
+                                                                        else if( $dateFormatee < strtotime("-1 days") ){echo "#FFD775"; $affichage=0;}
+                                                                        else if( $dateFormatee < strtotime("-6 hours") ){echo "#FFF58C";$affichage=1;}
+                                                                        else{ echo "mail-read"; $affichage=1;}?>;'>
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">
-                                                                    <a href="conversation.php?num=<?= $id_crea['id'] ?>"><span class="list-group-item-text text-truncate line namecolor"><?= $msg['you'] ?></span></a>
+                                                                    <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
+                                                                    <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
+                                                                    <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
                                                                 </div>
                                                                 <div class="mail-meta-item">
                                                                     <span class="float-right">
-                                                                        <a href="conversation.php?num=<?= $id_crea['id'] ?>"><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
+                                                                        <a><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
                                                                         <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
                                                                         
                                                                     </span>
                                                                 </div>
                                                             </div>
                                                             <div class="mail-message">
-                                                                <a href="conversation.php?num=<?= $id_crea['id']?>"><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
+                                                                <a><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
                                                                 <div class="mail-meta-item">    
                                                                     <span class="float-right">
                                                                         
                                                                     </span>
                                                                 </div>
                                                             </div>
+                                                           
                                                         </div>
                                                     </li>
                                                 <?php endforeach; ?>                                            
@@ -330,8 +333,40 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                         </div>
                                         <!-- Début conversation -->
-                                        <div class="col">
-                                            <h3>Conversation</h3>
+                                        <div class="col-8">
+                                            <div class="card-header border-bottom p-0">
+                                                <div class="media m-75">
+                                                    <a href="JavaScript:void(0);">
+                                                        <div class="avatar mr-75" id="avatar">
+                                                            <img src="../../../app-assets/images/ico/crea.png" alt="avtar images" width="32" height="32" class="rounded-circle">
+                                                            
+                                                        </div>
+                                                    </a>
+                                                    <div class="media-body" id="profil">
+                                                        <h6 class="media-heading mb-0 pt-25"><a></a></h6>
+                                                        <span id="corp" class="text-muted font-small-3"></span>
+                                                        <span id="badge" class=""></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="historique p-3" id="historique">
+                                                <div class="chat-content">
+        
+                                                </div>
+                                            </div>
+
+                                            <div class="message">
+                                                <input type="hidden" name="id" id="id_client" value="">
+                                                <input type="hidden" name="author" id="author" value="">
+                                                
+                                                <div class="card-footer border-top p-1 d-flex">
+                                                   
+                                                        <input type="text" id="content" class="form-control chat-message-demo mr-75" placeholder="Envoyer un message">
+                                                        <button type="button" class="btn btn-primary glow px-1" id="btn_submit"><i class="bx bx-paper-plane"></i></button>
+                                                    
+                                                </div>           
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- FIN conversation -->
@@ -371,7 +406,9 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/app-email.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/get_conv.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/chat_crea.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
