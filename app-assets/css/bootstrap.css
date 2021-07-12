@@ -1316,7 +1316,6 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(223, 156, 68, 0.5);
 }
 
-
 .btn-danger {
   color: #FFFFFF;
   background-color: #FF5B5C;
@@ -1382,40 +1381,6 @@ fieldset:disabled a.btn {
 
 .btn-light:not(:disabled):not(.disabled):active:focus, .btn-light:not(:disabled):not(.disabled).active:focus,
 .show > .btn-light.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(146, 159, 174, 0.5);
-}
-
-.btn-yellow {
-  color: #324356;
-  background-color: #ffe600;
-  border-color: #ffe600;
-}
-
-.btn-yellow:hover {
-  color: #324356;
-  background-color: #ffe600;
-  border-color: #ffe600;
-}
-
-.btn-yellow:focus, .btn-yellow.focus {
-  box-shadow: 0 0 0 0.2rem rgba(146, 159, 174, 0.5);
-}
-
-.btn-yellow.disabled, .btn-yellow:disabled {
-  color: #324356;
-  background-color: #ffe600;
-  border-color: #ffe600;
-}
-
-.btn-yellow:not(:disabled):not(.disabled):active, .btn-yellow:not(:disabled):not(.disabled).active,
-.show > .btn-yellow.dropdown-toggle {
-  color: #FFFFFF;
-  background-color: #ffe600;
-  border-color: #ffe600;
-}
-
-.btn-yellow:not(:disabled):not(.disabled):active:focus, .btn-yellow:not(:disabled):not(.disabled).active:focus,
-.show > .btn-yellow.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(146, 159, 174, 0.5);
 }
 
@@ -4141,7 +4106,8 @@ button.bg-danger:focus {
   padding-left: 3rem !important;
 }
 
-.pr-5 {
+.pr-5,
+.px-5 {
   padding-right: 4rem !important;
 }
 
@@ -4149,7 +4115,8 @@ button.bg-danger:focus {
   padding-bottom: 4rem !important;
 }
 
-.pl-5 {
+.pl-5,
+.px-5 {
   padding-left: 4rem !important;
 }
 
