@@ -21,6 +21,6 @@ if($_SESSION['candidat'] == $_GET['num']){
         }
     }
 }
+header("Location: ../rh-recrutement-view.php?num=$id");
 exit();
-
 ?>
