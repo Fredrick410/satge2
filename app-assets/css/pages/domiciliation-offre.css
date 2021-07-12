@@ -166,6 +166,10 @@ input[type="radio"].solu + label:hover{
     padding: 5px 10px;
 }
 
+#contrat-droite input:focus, #contrat-gauche input:focus{
+    outline: none;
+}
+
 @media screen and (max-width: 1700px) {
     #contrat-gauche, #contrat-droite{
         min-width: 100%;

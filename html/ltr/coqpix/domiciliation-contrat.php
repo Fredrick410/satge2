@@ -120,7 +120,7 @@ require_once 'php/verif_session_crea.php';
     <h5 id="sous-titre-contrat">Domiciliation à </h5>
             
     <div class="row card-body bg-white" id="contrat">
-        <form class="col-12" action="" method="POST">
+        <form class="col-12" action="generate-pdf.php" method="POST">
             <!--<h6>
               <i class="step-icon"></i>
               <span class="fonticon-wrap">
@@ -133,24 +133,24 @@ require_once 'php/verif_session_crea.php';
         <div class="col-6" id="contrat-gauche" >
             <ul>
                 <li>
-                    <label for="RaisonSociale">Raison Sociale</label>
-                    <input type="text" name="RaisonSociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
+                    <label for="RaisonSociale">Nom de l'entreprise</label>
+                    <input type="text" name="raisonsociale" id="raisonsociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
                 </li>
                 <li>
                     <label for="FormeJuridique">Forme Juridique</label>
-                    <input type="text" name="FormeJuridique" class="border-dark rounded-pill" readonly value="<?= $crea['status_crea'] ?>">
+                    <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" required readonly value="<?= $crea['status_crea'] ?>">
                 </li>
                 <li>
                     <label for="Capital">Capital</label>
-                    <input type="text" name="Capital" class="border-dark rounded-pill" required>
+                    <input type="text" name="capital" id="capital" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Representant">Représenté par</label>
-                    <input type="text" name="Representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                    <input type="text" name="representant" id="representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
                 </li>
                 <li>
                     <label for="RepresentantQualite">En sa qualite de</label>
-                    <input type="text" name="RepresentantQualite" class="border-dark rounded-pill" required value="Dirigeant">
+                    <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" required value="Dirigeant">
                 </li>             
             </ul>
         </div>
@@ -158,28 +158,28 @@ require_once 'php/verif_session_crea.php';
             <ul>
                 <li>
                     <label for="CodePostal">Code Postal</label>
-                    <input type="text" name="CodePostal" class="border-dark rounded-pill" required>
+                    <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Ville">Ville</label>
-                    <input type="text" name="Ville" class="border-dark rounded-pill" required>
+                    <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required>
                 </li>
                 <li>
                     <label for="Pays">Pays</label>
-                    <input type="text" name="Pays" class="border-dark rounded-pill" required value="FRANCE">
+                    <input type="text" name="pays" id="pays" class="border-dark rounded-pill" required value="FRANCE">
                 </li>
                 <li>
                     <label for="Telephone">Téléphone</label>
-                    <input type="text" name="Telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
+                    <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
                 </li>
                 <li>
                     <label for="Email">Email</label>
-                    <input type="text" name="Email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
+                    <input type="text" name="email" id="email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
                 </li>
             </ul>
         </div>
         <div id="btn" class="col-12 text-center mt-2">
-            <button class="border rounded-pill">
+            <button type="submit" class="border rounded-pill">
                 Valider les informations
             </button>
         </div>
