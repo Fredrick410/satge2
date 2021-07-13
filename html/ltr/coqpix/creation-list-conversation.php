@@ -324,7 +324,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">
-                                                                <div class="avatar mr-75" id="avatar">
+                                                                <div class="avatar mr-75">
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>

@@ -1,11 +1,12 @@
 $(document).ready(function(){
     $("#list-users ul li").click(function(){ 
         var entreprise = $(this).find("#entreprise").val();
+        var img = $(this).find("#img").val();
         $("#id_client").val($(this).attr('id'));
         $("#author").val($(this).attr('value'));
         $("#profil h6 a").html($(this).find('span').html());
         $("#corp").html(entreprise);
-        $("#avatar img").attr('src','../../../app-assets/images/ico/crea.png');
+        $("#avatar img").attr('src','../../../app-assets/images/ico/'+img);
         if(entreprise == "SARL")
             $("#badge").attr('class','bullet bullet-success bullet-sm');
         else if(entreprise == "SAS")
