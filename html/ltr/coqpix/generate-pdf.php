@@ -158,9 +158,9 @@ $br = '<br>';
  
 // Set some content to print
 $soustitre = 'Entre les soussignés : <br>
-MULTIBURO SA au capital de 4 212 080 € ayant son siège social au Le Shératan 27 bis avenue des Sources 69009 LYON immatriculée au registre du commerce de LYON sous le N° 345250153, et agréée depuis le 28 septembre 2018 par la Préfecture de Lyon, pour exercer l’ activité de domiciliation sous le n° d’ agrément 69-2018-09-28-004. Représentée par sa Directrice Générale Stéphanie AUXENFANS ou toute personne dûment habilitée. ci-après dénommé : le prestataire et le client : XXXXXXXci-après dénommé : l\'utilisateur';
+MULTIBURO SA au capital de 4 212 080 € ayant son siège social au Le Shératan 27 bis avenue des Sources 69009 LYON immatriculée au registre du commerce de LYON sous le N° 345250153, et agréée depuis le 28 septembre 2018 par la Préfecture de Lyon, pour exercer l’ activité de domiciliation sous le n° d’ agrément 69-2018-09-28-004. Représentée par sa Directrice Générale Stéphanie AUXENFANS ou toute personne dûment habilitée. ci-après dénommé : le prestataire et le client : '.$raisonsociale.' '.$formejuridique.' ci-après dénommé : l\'utilisateur :';
 
-$coordtop = '<b>Coordonnées de l\'utilisateur :</b>';
+$coordtop = 'Coordonnées de l\'utilisateur :';
 $coordleft = 'Raison Sociale : '.$raisonsociale.'
 Forme juridique : '.$formejuridique.'
 Capital : '.$capital.'
@@ -199,9 +199,9 @@ Trimestrielle
 0,00
 Liste des prix des services, Attestation adresse de comptabilité';
 
-$signature = '<label>Par la signature du présent document reprenant les conditions particulières du contrat, l\'Utilisateur reconnaît expressément avoir reçu, avoir pris connaissance, et accepter les
-conditions générales du contrat, le règlement d\'ordre intérieur, les conditions d’utilisation du service internet, et l\'annexe reprenant la liste des services Multiburo en vigueur.</label><br><br>
-<input type="checkbox" name="signature" value="1" checked="" /><label>J’autorise Multiburo à utiliser le nom et le logo de ma société dans sa communication interne et externe.</label>';
+$signature = 'Par la signature du présent document reprenant les conditions particulières du contrat, l\'Utilisateur reconnaît expressément avoir reçu, avoir pris connaissance, et accepter les
+conditions générales du contrat, le règlement d\'ordre intérieur, les conditions d’utilisation du service internet, et l\'annexe reprenant la liste des services Multiburo en vigueur.';
+$checkbox = 'J\'autorise Multiburo à utiliser le nom et le logo de ma société dans sa communication interne et externe.';
 
 $pourtopleft ='Pour MULTIBURO
 ';
@@ -211,8 +211,8 @@ Date                                                                            
 Fait à
 Signature et Cachet';
 $pourtopright = 'Pour l\'utilisateur';
-$pourright = 'Représenté par
-En sa qualité de
+$pourright = 'Représenté par                                                                                       '.$representant.'
+En sa qualité de                                                                                    '.$representantqualite.'
 Date
 Fait à
 Signature et Cachet';
@@ -243,6 +243,10 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTML($signature, true, 0, true, 0);
+$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+$pdf->CheckBox('signature', 5, false, array(), array(), 'OK');
+$pdf->writeHTMLCell(0, 0, '', '', $checkbox, 0, 1, 0, true, '', true);
+$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->MultiCell(90, 0, $pourtopleft, 1, 'L', 1, 0, '', '', true, 0, false, true, 0);
 $pdf->MultiCell(90, 0, $pourtopright, 1, 'L', 1, 1, '', '', true, 0, false, true, 0);
