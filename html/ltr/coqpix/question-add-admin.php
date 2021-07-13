@@ -305,6 +305,20 @@ $entreprise = $pdoSta->fetch();
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
         $(document).ready(function() {
             if ($('#table tr:last').attr("id") === undefined)
                 var id = 1;
@@ -326,6 +340,9 @@ $entreprise = $pdoSta->fetch();
 
                         document.getElementById("reponse").value = "";
                         document.getElementById("vraioufaux").value = "";
+                        addAlert("Réponse ajoutée", "success");
+                    } else {
+                        addAlert("Champs réponse et vrai ou faux vides.", "error");
                     }
                 <?php
                 } else {
@@ -339,6 +356,9 @@ $entreprise = $pdoSta->fetch();
 
                         document.getElementById("reponse").value = "";
                         document.getElementById("critere_reponse").value = "";
+                        addAlert("Réponse ajoutée", "success");
+                    } else {
+                        addAlert("Champs réponse et sous critère vides.", "error");
                     }
                 <?php
                 }
@@ -348,6 +368,7 @@ $entreprise = $pdoSta->fetch();
             // function to remove article if u don't want it
             $("#table").on('click', '.remCF', function() {
                 $(this).parent().parent().remove();
+                addAlert("Réponse supprimée", "success");
             });
 
             $("#critere").change(function() {
@@ -413,7 +434,13 @@ $entreprise = $pdoSta->fetch();
                         critere_reponse: critere_reponse
                     },
                     success: function(data) {
-                        window.location.href = data;
+                        addAlert("Question ajoutée", "success");
+                        window.setTimeout(function() {
+                            window.location.href = data;
+                        }, 1000);
+                    },
+                    error: function(data) {
+                        addAlert(data, "error");
                     }
                 });
             });
