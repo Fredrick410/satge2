@@ -123,3 +123,6 @@ branche de oscar :
 
 	tache réalisée le 12/07/2021 :
 		- creation pdf avec generate-pdf.php pour le contrat de domiciliation
+
+	tache réalisée le 13/07/2021 :
+		- avancée sur generate-pdf.php
