@@ -527,6 +527,7 @@ if (count($candidature) != 0) {
                                                                 if ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' and $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai') {
                                                                     $candidat++;
                                                                 } elseif ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' and $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Faux') {
+                                                                    $candidat = 0;
                                                                     break;
                                                                 }
                                                                 $k++;
@@ -739,16 +740,16 @@ if (count($candidature) != 0) {
                                                             text_purple_resp = purple_resp > 7 ? "élevée" : text_purple_resp;
 
                                                             var max_moy = getMaxTableau([moy_red, moy_green, moy_blue, moy_purple, moy_yellow]);
-                                                            document.getElementById("comment-red").innerHTML="Performance individuelle "+text_moy_red+".";
-                                                            document.getElementById("comment-blue").innerHTML="Capacité de communication interpersonnelle "+text_moy_blue+".";
-                                                            document.getElementById("comment-yellow").innerHTML="Capacité de manager "+text_moy_yellow+".";
-                                                            document.getElementById("comment-green").innerHTML="Autonomie "+text_moy_green+".";
-                                                            document.getElementById("comment-purple").innerHTML="Maîtrise de soi "+text_moy_purple+".";
+                                                            document.getElementById("comment-red").innerHTML = "Performance individuelle " + text_moy_red + "("+(moy_red*10)+"%).";
+                                                            document.getElementById("comment-blue").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "("+(moy_blue*10)+"%).";
+                                                            document.getElementById("comment-yellow").innerHTML = "Capacité de manager " + text_moy_yellow + "("+(moy_yellow*10)+"%).";
+                                                            document.getElementById("comment-green").innerHTML = "Autonomie " + text_moy_green + "("+(moy_green*10)+"%).";
+                                                            document.getElementById("comment-purple").innerHTML = "Maîtrise de soi " + text_moy_purple + "("+(moy_purple*10)+"%).";
 
                                                             // methode filter Impossible
 
                                                             var finalVar = [];
-                                                            var finalLabel=[];
+                                                            var finalLabel = [];
                                                             for (let i = 0; i < tableVar.length; i++) { // suppr colone table vide.
                                                                 var contains = tested_status.some(elem => {
                                                                     return JSON.stringify({
@@ -834,7 +835,7 @@ if (count($candidature) != 0) {
                                                             });
                                                         },
                                                         error: function(response) {
-                                                            console.log('error');
+                                                            console.log(response);
                                                         },
                                                         complete: function(response) {
                                                             console.log('complete');
@@ -1072,7 +1073,16 @@ if (count($candidature) != 0) {
 
                     doc.setFontSize(18);
                     doc.text("Résultats", doc.internal.pageSize.width / 2, 260, null, null, 'center');
-                    doc.addImage(document.getElementById('myChart' + val).toDataURL("image/png"), 'PNG', doc.internal.pageSize.width / 6, 270, 400, 400);
+                    text = [];
+                    text.push(document.querySelector('#comment-red').innerText);
+                    text.push(document.querySelector('#comment-blue').innerText);
+                    text.push(document.querySelector('#comment-yellow').innerText);
+                    text.push(document.querySelector('#comment-green').innerText);
+                    text.push(document.querySelector('#comment-purple').innerText);
+                    doc.setFontSize(12);
+                    doc.text(text, doc.internal.pageSize.width / 15, 278, null, null, 'left');
+                    
+                    doc.addImage(document.getElementById('myChart' + val).toDataURL("image/png"), 'PNG', doc.internal.pageSize.width / 6, 340, 400, 400);
                     doc.save("chart.pdf");
                 }
             }
