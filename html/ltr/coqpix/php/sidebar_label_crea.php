@@ -1,4 +1,4 @@
-<label class="sidebar-label line">Personne morale</label>
+                            <label class="sidebar-label line">Personne morale</label>
                                 <div class="list-group list-group-labels ">
                                     <a href="creation-list-filter-societe.php?filter=SARL" class="list-group-item d-flex justify-content-between align-items-center">
                                         SARL
@@ -17,7 +17,7 @@
                                         <span class="bullet bullet-danger bullet-sm"></span>
                                     </a>
                                 </div>
-                                <label class="sidebar-label line">Personne physique</label>
+                            <label class="sidebar-label line">Personne physique</label>
                                 <div class="list-group list-group-labels">
                                     <a href="creation-list-filter-societe.php?filter=EIRL" class="list-group-item d-flex justify-content-between align-items-center">
                                         EIRL

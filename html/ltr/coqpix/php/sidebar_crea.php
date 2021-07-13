@@ -16,6 +16,13 @@
 ?>
 
 <div class="list-group list-group-messages">
+                                    <a href="creation-list-conversation.php" class="list-group-item pt-0 active">
+                                        <div class="fonticon-wrap d-inline mr-25">
+                                            <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                            </i>
+                                        </div>
+                                        Conversation
+                                        <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count_msg ?></span>
                                     <a href="creation-list.php" class="list-group-item pt-0" id="inbox-menu">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: briefcase.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
@@ -23,13 +30,6 @@
                                         </div>
                                         Tous
                                     </a>
-                                    <a href="creation-list-conversation.php" class="list-group-item pt-0 ">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Conversation
-                                        <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count_msg ?></span>
                                     </a>
                                     <a href="creation-list-notification.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
@@ -60,7 +60,7 @@
                                         </div>
                                         Important
                                     </a>
-                                    <a href="crea-list-delete.php" class="list-group-item active">
+                                    <a href="crea-list-delete.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: trash.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
                                             </i>

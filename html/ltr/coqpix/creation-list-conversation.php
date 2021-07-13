@@ -278,27 +278,55 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- / action right -->
                                     <div class="row" >
                                     <!-- email user list start -->
-                                        <div class="email-user-list list-group col-4" id="list-users">
+                                        <div class="email-user-list col-4" style="overflow-x:scroll;" id="list-users">
                                             <ul class="users-list-wrapper media-list">
+                                                <script>var compte=new Array();</script>
                                                 <?php 
+                                                $expediteur = array();
+                                                $j=0;
                                                 foreach($list_msg as $msg): 
-                                                    
                                                     $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE name_crea LIKE :nom ');
                                                     $PDO->bindValue(':nom', $msg['you']);
                                                     $PDO->execute();
                                                     $id_crea = $PDO->fetch();
 
+                                                    $doublon=0;
 
                                                     $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
                                                     $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
-                                                    ?>      
-                                                    <li class="media" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background-color :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "#FFA899";$affichage=0;}
-                                                                        else if( $dateFormatee < strtotime("-1 days") ){echo "#FFD775"; $affichage=0;}
-                                                                        else if( $dateFormatee < strtotime("-6 hours") ){echo "#FFF58C";$affichage=1;}
+
+                                                    $r_valeur = Array();
+                                                    $array_unique = array_unique($expediteur); 
+
+                                                    for ($i=0; $i<count($expediteur); $i++) {
+                                                            if ($msg['you']==$expediteur[$i]){ //si l'expediteur a deja un msg non lu
+                                                                $doublon=1;
+                                                                ?>
+                                                                <script>
+                                                                    if(compte["<?=$id_crea['id']?>"]==null)
+                                                                        compte["<?=$id_crea['id']?>"]=2;
+                                                                    document.getElementById("notif<?=$id_crea['id']?>").innerHTML=compte["<?=$id_crea['id']?>"]++;
+                                                                    
+                                                                </script>
+                                                                
+                                                                <?php
+                                                                }
+                                                    }
+                                                    if($doublon==0){
+                                                        $expediteur[$j] = $msg['you'];
+                                                        $j++; ?>
+
+                                                             
+                                                    <li class="media rounded" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
+                                                                        else if( $dateFormatee < strtotime("-1 days") ){echo "rgba(255, 174, 0, 0.25)"; $affichage=0;}
+                                                                        else if( $dateFormatee < strtotime("-6 hours") ){echo "rgba(255, 232, 0, 0.25)";$affichage=1;}
                                                                         else{ echo "mail-read"; $affichage=1;}?>;'>
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">
+                                                                <div class="avatar mr-75" id="avatar">
+                                                                     <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
+                                                                </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
                                                                     <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
@@ -309,19 +337,22 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
                                                                         
                                                                     </span>
+                                                                    
                                                                 </div>
                                                             </div>
                                                             <div class="mail-message">
                                                                 <a><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
-                                                                <div class="mail-meta-item">    
-                                                                    <span class="float-right">
-                                                                        
-                                                                    </span>
+                                                                <div class="mail-meta-item">                                                             
+                                                                <span id="notif<?=$id_crea['id']?>" class="float-right badge badge-light-danger badge-pill badge-round float-right mt-50"></span> 
                                                                 </div>
                                                             </div>
                                                            
                                                         </div>
                                                     </li>
+
+                                                    <?php } ?> 
+                                                        
+                                                    
                                                 <?php endforeach; ?>                                            
                                             </ul>
                                             <!-- email user list end -->
