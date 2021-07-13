@@ -86,7 +86,7 @@ require_once 'php/config.php';
                             <div class="card">
                                 <div class="card-content">
                                     <img class="card-img-top img-fluid" src="../../../app-assets/images/slider/05.jpg" alt="Card image cap" />
-                                    <div class="card-body">
+                                    <div class="card-body text-center">
                                         <h4 class="card-title">Déclaration sociale nominative (DSN)</h4>
                                         <p class="card-text">
                                             Dans cet espace dédié vous avez accès à vos DSN, bien pratique !!!<br>
@@ -100,7 +100,7 @@ require_once 'php/config.php';
                         <div class="col-md-6 col-sm-12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="card-body">
+                                    <div class="card-body text-center">
                                         <h4 class="card-title">Mes charges sociales (URSSAF/MSA)</h4>
                                         <p class="card-text">
                                             Toutes vos déclarations sociales à portée de main.
@@ -120,7 +120,7 @@ require_once 'php/config.php';
                                 <div class="form-group text-center">
                                     <h5 style='padding-top: 10px;'>Bulletin de salaire</h5>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group text-center">
                                     <p style='padding-left: 20px;'>Faire une demande de bulletins de salaire pour l'ensemble des membres de de votre société, la demande sera traitée par nos équipes le plus rapidement possible.</p>
                                     <p style='padding-left: 20px;'>Vous avez ( <label style='color: red;'><?= $count_bulletin ?></label> ) bulletin(s) de salaire(s).</p>
                                     <div class="form-group">
@@ -134,7 +134,7 @@ require_once 'php/config.php';
                                 <div class="form-group text-center">
                                     <h5 style='padding-top: 10px;'>Attestation</h5>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group text-center">
                                     <p style='padding-left: 20px;'>Demander une attestation social sans prise de tete et très rapidement.</p>
                                     <p style='padding-left: 20px;'>Vous avez ( <label style='color: red;'> <?= $count_attestation ?> </label> ) attestation(s).</p>
                                     <div class="form-group">
