@@ -111,7 +111,7 @@ $pdoSta->execute();
                             </fieldset>
                         </div>
                         <div class="form-group">
-                            <hr>
+                            <!--<hr>-->
                         </div>
                         <div class="form-group <?php if($count_bilan > 0){echo "none-validation";} ?>">
                             <p class="text-muted">Aucun bilan pour l'année <?= $_GET['5PAx4zf27P'] ?> ...</p>
