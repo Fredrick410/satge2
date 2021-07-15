@@ -15,13 +15,13 @@ function getMessages() {
     requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_helpdesk_admin.php?id_membre="+id_membre);
 
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
-    requeteAjax.onload = () => {
+    requeteAjax.onload = function() {
 
     const resultat = JSON.parse(requeteAjax.responseText);
-    const html = resultat.reverse().map( message => {
+    const html = resultat.reverse().map(function(message) {
 
-        let droite = message.auteur !== "support" ? 'chat-left' : '';
-        let image = message.auteur !== "support" ? 'astro1.gif' : 'chatpix3.png';
+        var droite = message.auteur !== "support" ? 'chat-left' : '';
+        var image = message.auteur !== "support" ? 'astro1.gif' : 'chatpix3.png';
 
         return `
             <div class="chat ${droite}">
@@ -40,7 +40,7 @@ function getMessages() {
 
         }).join('');  
 
-        let messages = document.querySelector('.chat-content');
+        const messages = document.querySelector('.chat-content');
 
         messages.innerHTML = html;
         messages.scrollTop = messages.scrollHeight;
@@ -63,7 +63,7 @@ function postMessage(event) {
     // 2. Elle doit récupérer les données du formulaire
     // const id_client = document.querySelector('#id_client');
     // const author = document.querySelector('#author');
-    let texte = document.querySelector('#texte');
+    const texte = document.querySelector('#texte');
 
     // 3. Elle doit conditionner les données
     const data = new FormData();

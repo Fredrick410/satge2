@@ -21,19 +21,18 @@ function getMessages() {
 
     //on definit la variable bdd dans la fonction 
     global $bdd;
-    session_start();
 
     //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de donnée
 
     $id_membre = $_GET['id_membre'];
 
-    $select_messages = $bdd->prepare("SELECT * FROM support_message WHERE id_membre = :id_membre ORDER BY heure LIMIT 30");
-    $select_messages->bindValue(':auteur', $id_membre);
-    $select_messages->execute();
+    $query = $bdd->prepare("SELECT * FROM support_message WHERE id_membre = :id_membre ORDER BY heure LIMIT 30");
+    $query->bindValue(':id_membre', $id_membre);
+    $query->execute();
 
     //2 - On va traiter les resultats
 
-    $messages = $select_messages->fetchAll();
+    $messages = $query->fetchAll();
 
     //3 - On affiche les données en JSON
 
@@ -53,7 +52,7 @@ function postMessage() {
 
     $id_membre = $_POST['id_membre']; // recuperer l'id du membre selectionnee dans la liste
     $date_message = date("d-m-Y");
-    $heure = date('H:m:s');
+    $heure = date('H:i:s');
     $texte = $_POST['texte'];
     $auteur = $_POST['auteur'];
 
