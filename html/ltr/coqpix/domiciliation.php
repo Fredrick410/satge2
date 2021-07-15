@@ -11,47 +11,6 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
 
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_justificatifd'] == ""){
-        $doc_justificatifd = "0";
-    }else{
-        $doc_justificatifd = "1";
-    }
-    if($crea['doc_affectation'] == ""){
-        $doc_affectation = "0";
-    }else{
-        $doc_affectation = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
-    }
-
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -120,7 +79,7 @@ require_once 'php/verif_session_crea.php';
                         <div id="solution-logo">
                             <ul>
                                 <li>
-                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
+                                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1"), countType()' class="solu"></input>
                                     <label for="domicilia" class="">
                                         <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
                                         <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
@@ -130,7 +89,7 @@ require_once 'php/verif_session_crea.php';
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
+                                    <input type="checkbox" onclick='openGreen("green2","blue2"), countType()' id="bureau" class="solu"></input>
                                     <label for="bureau" class="">
                                         <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
                                         <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
@@ -140,7 +99,7 @@ require_once 'php/verif_session_crea.php';
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
+                                    <input type="checkbox" onclick='openGreen("green3","blue3"), countType()' id="cowork" class="solu"></input>
                                     <label for="cowork" class="">
                                         <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
                                         <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
@@ -214,8 +173,25 @@ require_once 'php/verif_session_crea.php';
         }
     }
 
-    /*function closeGreen(element1,element2) {
-    }*/
+    function countType() {
+        var bureau = document.getElementById("bureau");
+        var cowork = document.getElementById("cowork");
+        var domicilia = document.getElementById("domicilia");
+
+        var i = 0;
+
+        if (bureau.checked) {
+            i = i+1;
+        }
+        if (cowork.checked) {
+            i = i+2;
+        }
+        if (domicilia.checked) {
+            i = i+4;
+        }
+        console.log(i);
+        return i;
+    };
     
     //suggest adresse
     $(document).ready(function(){
@@ -238,7 +214,7 @@ require_once 'php/verif_session_crea.php';
             $.ajax({
             type: "POST",
             url: "php/display-offers.php",
-            data:'ville='+$("#search-box").val(),
+            data:'ville='+$("#search-box").val() + "&type=" + countType(),
             success: function(data){
                 console.log("affichage des offres");
                 $("#offre-conteneur").html(data);

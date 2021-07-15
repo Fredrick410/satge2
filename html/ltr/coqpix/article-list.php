@@ -192,14 +192,12 @@ require_once 'php/config.php';
                                                 <tr>
                                                     <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100">
                                                     </td>
-                                                    <td><a><?= $articlee['article'] ?></a>
-                                                    </td>
+                                                    <td><?= $articlee['article'] ?></td>
                                                     <td><?= $articlee['referencearticle'] ?></td>
                                                     <td><?= $typ ?></td>
                                                     <td><?= $articlee['tvavente'] ?>%</td>
                                                     <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>
-                                                    
+                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>

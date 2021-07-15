@@ -10,48 +10,7 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->bindValue(':num',$_SESSION['id_crea']);
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
-
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_justificatifd'] == ""){
-        $doc_justificatifd = "0";
-    }else{
-        $doc_justificatifd = "1";
-    }
-    if($crea['doc_affectation'] == ""){
-        $doc_affectation = "0";
-    }else{
-        $doc_affectation = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
-    }
-
+    
     //selection des infos selon l'id
     $id = $_GET['id'];
     $query = $bdd->query("SELECT * FROM offre_domiciliation WHERE id like '$id'");
@@ -111,30 +70,48 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
+    <br>
+    
 
     <div class="row">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            
+            <?php
+                $url = $result['img'];
+                $filename = "../../../src/domiciliation/page-offre/$url-3.jpg";
+
+                if (file_exists($filename)) {
+            ?>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <?php 
+                } 
+            ?>
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active" data-mdb-interval="10000000000" id="img1">
     	
-              	<img src="../../../app-assets/images/banner/banner-1.jpg" >
+              	<img src="../../../src/domiciliation/page-offre/<?php echo $result['img']; ?>-1.jpg" >
       	
             </div>
             <div class="carousel-item" data-mdb-interval="10000">
     	
-      	        <img src="../../../app-assets/images/banner/banner-2.jpg" >
+      	        <img src="../../../src/domiciliation/page-offre/<?php echo $result['img']; ?>-2.jpg" >
         
             </div>
+            <?php
+                if (file_exists($filename)) {
+            ?>
             <div class="carousel-item" data-mdb-interval="10000">
     	
-      	        <img src="../../../app-assets/images/banner/banner-3.jpg" >
+      	        <img src="../../../src/domiciliation/page-offre/<?php echo $result['img']; ?>-3.jpg" >
       	
             </div>
+            <?php
+                }
+            ?>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -162,53 +139,206 @@ echo $result['description'];
     </div>
     <div class="row">
         <div class="col-12" id="div-info">
-            <ul>
-                <li> 2 300m^2 d'espaces modulables et évolutifs</li>
-                <li> Des bureaux flexibles et personnalisables</li>
-                <li> 6 sales de réunion jusqu'à 30 personnes</li>
-                <li> Un espace de bureaux partagés lumineux</li>
-                <li> Des services de domiciliation et de bureau virtuel</li>
+            <ul> 
+                <li>
+               
+                <?php
+                    $carac = $result['caracteristique'];
+                    $carac = str_replace("\n","</li><li>",$carac);
+                    echo $carac; 
+                ?>
+                </li>
+
             </ul>
         </div>
     </div>
     <div class="row">
         <div class="col-12" id="div-service-dispo">
-            <form action="" method="POST">
+            <form action="domiciliation-contrat.php" method="POST">
+            <input hidden readonly id="id_offre" name="id_offre" type="text" value="<?= $id ?>"></input>
             <h2>Les services disponibles à cette adresse</h2>
-            <div id="solution-logo">
-                <ul>
-                <li>
-                    <input type="checkbox" id="domicilia" onclick='openGreen("green1","blue1")' class="solu"></input>
-                    <label for="domicilia" class="">
-                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
-                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
-                    </label><br>
-                    <label>
-                        <p>Domiciliation</p>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" onclick='openGreen("green2","blue2")' id="bureau" class="solu"></input>
-                    <label for="bureau" class="">
-                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
-                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
-                    </label><br>
-                    <label>
-                        <p>Bureaux privatifs</p>
-                    </label>
-                </li>
-                <li>
-                    <input type="checkbox" onclick='openGreen("green3","blue3")' id="cowork" class="solu"></input>
-                    <label for="cowork" class="">
-                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
-                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
-                    </label><br>
-                    <label>
-                        <p>Coworking</p>
-                    </label>
-                </li>
-                </ul>
-            </div>
+
+    <div id="solution-logo">
+        <ul>
+<?php 
+if($result['type']=='1'){ //bureau disponible
+?>
+
+
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
+                                    <label for="bureau" class="">
+                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Bureaux privatifs</p>
+                                    </label>
+                                </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='2'){ //coworking disponible
+?>
+
+
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
+                                    <label for="cowork" class="">
+                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Coworking</p>
+                                    </label>
+                                </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='3'){ //bureau et coworking disponible
+?>
+
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
+                                    <label for="bureau" class="">
+                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Bureaux privatifs</p>
+                                    </label>
+                                </li>
+
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
+                                    <label for="cowork" class="">
+                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Coworking</p>
+                                    </label>
+                                </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='4'){ //domiciliation disponible
+?>
+
+
+                                <li>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Domiciliation</p>
+                                    </label>
+                                </li>
+                   
+            
+<?php }?>
+<?php 
+if($result['type']=='5'){ //domiciliation et bureau disponible
+?>
+
+
+                                <li>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Domiciliation</p>
+                                    </label>
+                                </li>  
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
+                                    <label for="bureau" class="">
+                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Bureaux privatifs</p>
+                                    </label>
+                                </li>                 
+            
+<?php }?>
+<?php 
+if($result['type']=='6'){ //domiciliation et coworking disponible
+?>
+
+
+                                <li>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Domiciliation</p>
+                                    </label>
+                                </li>  
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
+                                    <label for="cowork" class="">
+                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Coworking</p>
+                                    </label>
+                                </li>               
+            
+<?php }?>
+<?php 
+if($result['type']=='7'){ //bureau,domiciliation et coworking disponible
+?>
+
+                                <li>
+                                    <input type="radio" name="choix_offre" id="domicilia" value="domicilia" onclick='openGreen(), countType()' class="solu"></input>
+                                    <label for="domicilia" class="">
+                                        <img id="blue1" src="../../../app-assets/images/pages/domiciliation.png">
+                                        <img id="green1" style="display:none;"  src="../../../app-assets/images/pages/domiciliation_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Domiciliation</p>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="bureau" value="bureau" class="solu"></input>
+                                    <label for="bureau" class="">
+                                        <img id="blue2" src="../../../app-assets/images/pages/bureau.png">
+                                        <img id="green2" style="display:none;" src="../../../app-assets/images/pages/bureau_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Bureaux privatifs</p>
+                                    </label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="choix_offre" onclick='openGreen(), countType()' id="cowork" value="cowork" class="solu"></input>
+                                    <label for="cowork" class="">
+                                        <img id="blue3"  src="../../../app-assets/images/pages/coworking.png">
+                                        <img id="green3" style="display:none;" src="../../../app-assets/images/pages/coworking_green.png">
+                                    </label><br>
+                                    <label>
+                                        <p>Coworking</p>
+                                    </label>
+                                </li>
+                   
+            
+<?php }?>
+        </ul>
+    </div>
+    
+                   
+
+
             <div class="form-group" id="div-btn-sol">
                 <button type="submit" id="btn-sol" class="btn text-dark glow position-relative border rounded-pill">Soumettre</button>
             </div>
@@ -226,16 +356,57 @@ echo $result['description'];
 <script>
 
     //changement image
-    function openGreen(element1,element2) {
-        if (document.getElementById(element1).style.display == "none" ){
-            document.getElementById(element1).style.display = "block";
-            document.getElementById(element2).style.display = "none";
+    function openGreen() {
+
+        var bureau = document.getElementById("bureau");
+        var cowork = document.getElementById("cowork");
+        var domicilia = document.getElementById("domicilia");
+        
+        if (domicilia.checked) {
+            document.getElementById("green1").style.display = "block";
+            document.getElementById("blue1").style.display = "none";
         } else {
-            document.getElementById(element1).style.display = "none";
-            document.getElementById(element2).style.display = "block";
+            document.getElementById("green1").style.display = "none";
+            document.getElementById("blue1").style.display = "block";
+        }
+
+        if (bureau.checked) {
+            document.getElementById("green2").style.display = "block";
+            document.getElementById("blue2").style.display = "none";
+        } else {
+            document.getElementById("green2").style.display = "none";
+            document.getElementById("blue2").style.display = "block";
+        }
+
+        if (cowork.checked) {
+            document.getElementById("green3").style.display = "block";
+            document.getElementById("blue3").style.display = "none";
+        } else {
+            document.getElementById("green3").style.display = "none";
+            document.getElementById("blue3").style.display = "block";
         }
     }
 
+    //determine le type
+    function countType() {
+        var bureau = document.getElementById("bureau");
+        var cowork = document.getElementById("cowork");
+        var domicilia = document.getElementById("domicilia");
+
+        var i = 0;
+
+        if (bureau.checked) {
+            i = i+1;
+        }
+        if (cowork.checked) {
+            i = i+2;
+        }
+        if (domicilia.checked) {
+            i = i+4;
+        }
+        console.log(i);
+        return i;
+    };
 </script>
 
     <!-- BEGIN: Vendor JS-->

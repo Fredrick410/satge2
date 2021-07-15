@@ -231,7 +231,7 @@ require_once 'php/verif_session_connect_admin.php';
     .icon_send:hover{color: blue;}
     .icon_send_c{color: grey; cursor: pointer;}
     .icon_send_c:hover{color: orange;}
-    .icon_verif{position: ; color: grey; font-size: 20px;}
+    .icon_verif{position: relative; color: grey; font-size: 20px;}
     .icon_verif:hover{color: green;}
     .icon_files{position: relative; left: -10px; color: green; font-size: 20px;}
     .icon_files:hover{opacity: 0.5;}
@@ -256,12 +256,12 @@ require_once 'php/verif_session_connect_admin.php';
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
+                    <ul class="nav navbar-nav float-right d-flex align-items-center">
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
+                            <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span></a>
+                            <div class="dropdown-menu dropdown-menu pb-0">
+                                <a class="dropdown-item" href="#"><i class="bx bx-user mr-50"></i> Editer Profile (SOON)</a>
+                                <a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Déconnexion</a>
                             </div>
                         </li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
@@ -618,7 +618,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <tbody>
                                             <?php foreach($portefeuille_actif as $portefeuilles_actif): 
                                             
-                                                $pdoSta = $bdd->prepare('SELECT sum(montant) as somme FROM prelevement WHERE id_session=:num AND statut="En cours" OR statut="rejeté" ');
+                                                $pdoSta = $bdd->prepare('SELECT sum(montant) as somme FROM prelevement WHERE id_session=:num AND (statut="En cours" OR statut="rejeté") ');
                                                 $pdoSta->bindValue('num', $portefeuilles_actif['id']);
                                                 $pdoSta->execute();
                                                 $sum_dette = $pdoSta->fetch();

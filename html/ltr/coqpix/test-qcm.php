@@ -19,8 +19,11 @@ if (isset($_POST['code_annonce'])) {
     $code = $_POST['code_annonce'];
     $name = $_GET['annonce'];
 
-    $query = $bdd->query("SELECT * FROM rh_annonce WHERE code_annonce = '$code'");
-    $count = $query->rowCount();
+    $query = $bdd->prepare("SELECT COUNT(*) FROM rh_annonce WHERE code_annonce = :code");
+    $query->bindValue(':code',$code);
+    $query->execute();
+
+    $count = $query->fetch();
 
     if ($count >= 1) {
         $_SESSION['invite'] = $_GET['num'];

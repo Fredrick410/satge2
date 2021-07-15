@@ -124,10 +124,12 @@ if (isset($_POST['critere'])) {
                         htmlspecialchars($_POST['vraioufaux'][$i]) //$_SESSION
                     ));
                 }
+
             } catch (PDOException $e) {
                 $response_array['status'] = 'error';
                 $response_array['message'] = $e->getMessage();
                 echo json_encode($response_array);
+               
                 exit();
             }
             $id = $_POST['idqcm'];

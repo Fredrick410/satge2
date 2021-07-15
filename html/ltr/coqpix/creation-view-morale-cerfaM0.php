@@ -5,72 +5,8 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_crea.php';
-    
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
-    $pdoSta->bindValue(':num',$_SESSION['id_crea']);
-    $pdoSta->execute();
-    $crea = $pdoSta->fetch();
+require_once 'php/get_documents.php';
 
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_cerfaMBE'] == ""){
-        $doc_cerfaMBE = "0";
-    }else{
-        $doc_cerfaMBE = "1";
-    }
-    if($crea['doc_justificatifss'] == ""){
-        $doc_justificatifss = "0";
-    }else{
-        $doc_justificatifss = "1";
-    }
-    if($crea['doc_statuts'] == ""){
-        $doc_statuts = "0";
-    }else{
-        $doc_statuts = "1";
-    }
-    if($crea['doc_nomination'] == ""){
-        $doc_nomination = "0";
-    }else{
-        $doc_nomination = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
-    }
-    if($crea['doc_depot'] == ""){
-        $doc_depot = "0";
-    }else{
-        $doc_depot = "1";
-    }
-    if($crea['doc_annonce'] == ""){
-        $doc_annonce = "0";
-    }else{
-        $doc_annonce = "1";
-    }
 
 
     //insertion piece id
@@ -193,7 +129,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/creation-view-document.css">
     <!-- END: Custom CSS-->
 
 </head>
@@ -202,85 +138,6 @@ require_once 'php/verif_session_crea.php';
 <!-- BEGIN: Body-->
 
 <body class="horizontal-layout horizontal-menu navbar-sticky content-left-sidebar email-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
-<style>
-
-
-
-.nofavo{text-decoration: none; color : #c7cfd6;}
-.nofavoh:hover{text-decoration: none; color : #ffcd02;}
-.favo{text-decoration: none; color : #ffcd02;}
-.favoh:hover{text-decoration: none; color : #c7cfd6;}
-.line{text-decoration: underline;}
-.sizeright{font-size: 12px;}
-.nonedoc {display : none;}
-.esp{color: #828D99; text-decoration: underline;}
-.esp:hover{color: #34465b; text-decoration: underline;}
-.dropzone{border: 1px dashed black;}
-.bouge{overflow-x:hidden;}
-.none-validation{display: none;}
-.block-validation{display: block;}
-.red{color: red;}
-.green{color: #41e15c;}
-
-/* styles de base si JS est activé */
-.js .input-file-container {
-	position: relative;
-	width: 225px;
-}
-
-.js .input-file-trigger {
-	display: block;
-	padding: 14px 45px;
-	background: #394C62;
-	color: #fff;
-	font-size: 1em;
-	transition: all .4s;
-	cursor: pointer;
-}
-
-.js .input-file {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 225px;
-	padding: 14px 0;
-	opacity: 0;
-	cursor: pointer;
-}
-
-/* quelques styles d'interactions */
-.js .input-file:hover + .input-file-trigger,
-.js .input-file:focus + .input-file-trigger,
-.js .input-file-trigger:hover,
-.js .input-file-trigger:focus {
-	background: #41e15c;
-	color: white;
-}
-
-/* styles du retour visuel */
-.file-return {
-	margin: 0;
-}
-
-.file-return:not(:empty) {
-	margin: 1em 0;
-}
-
-.js .file-return {
-	font-style: italic;
-	font-size: .9em;
-	font-weight: bold;
-}
-
-/* on complète l'information d'un contenu textuel uniquement lorsque le paragraphe n'est pas vide */
-.js .file-return:not(:empty):before {
-	content: "Ficher selectionné: ";
-	font-style: normal;
-	font-weight: normal;
-}
-    
-</style>
-
 
     <!-- BEGIN: Header-->
      
@@ -292,7 +149,7 @@ require_once 'php/verif_session_crea.php';
         <div class="content-area-wrapper">
             <div class="sidebar-left">
                 <div class="sidebar">
-                    <div class="sidebar-content email-app-sidebar d-flex bouge">
+                    <div class="sidebar-content email-app-sidebar d-flex bouge" id="sidebar">
                         <!-- sidebar close icon -->
                         <span class="sidebar-close-icon">
                             <i class="bx bx-x"></i>
@@ -301,8 +158,8 @@ require_once 'php/verif_session_crea.php';
                         <div class="email-app-menu">
                             <div class="sidebar-menu-list">
                                 <!-- sidebar menu  -->
-                                <div class="list-group list-group-messages">
-                                    <div class="form-group">
+                                <div class="list-group list-group-messages" id="scroll-doc">
+                                <div class="form-group">
                                         <br>
                                          <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="cursor: pointer; display:inline-block; top: 6px;"></div>
 
@@ -311,67 +168,125 @@ require_once 'php/verif_session_crea.php';
                                                         document.location.href="page-creation.php";
                                                     }
                                                 </script>
-                                        <label class="line">Administration</label>
+                                        <label class="">Retour à l'accueil</label>
                                     </div>
-                                    <a href="creation-view-morale-pieceid.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
+                                        <div class="form-group">
+                                            <label class="">Administration</label>
                                         </div>
-                                        Piece d'identitée <?php if($doc_pieceid == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-morale-cerfaM0.php" class="list-group-item active">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div> 
-                                        Cerfa M0 <?php if($doc_cerfaM0 == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-morale-cerfaMBE.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div> 
-                                        Cerfa MBE <?php if($doc_cerfaMBE == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-morale-justificatifss.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
+                                    <?php
+                                            if($doc_pieceid == "1"){ ?>
+                                            <a href="creation-view-morale-pieceid.php" id="av" class="list-group-item" >
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div>
+                                                Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-pieceid.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div>
+                                                Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                                        <?php } 
+                                            if($doc_cerfaM0 == "1"){ ?>
+                                            <a href="creation-view-morale-cerfaM0.php" id="av" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-cerfaM0.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                                        <?php } 
+                                            if($doc_cerfaMBE == "1"){ ?>
+                                            <a href="creation-view-morale-cerfaMBE.php" id="av" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Cerfa MBE <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-cerfaMBE.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Cerfa MBE <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                                        <?php } 
+                                            if($doc_justificatifss == "1"){ ?>
+                                            <a href="creation-view-morale-justificatifss.php" id="av" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Justificatif siège social <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-justificatifss.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Justificatif siège social <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                                        <?php } ?>
+                                        <div class="form-group">
+                                            <label class="">Rédaction</label>
+                                        </div>                                       
+                                        <?php 
+                                            if($doc_pouvoir == "1"){ ?>
+                                            <a href="creation-view-morale-pouvoir.php" id="av" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Pouvoir <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-pouvoir.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Pouvoir <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                                        <?php } 
+                                            if($doc_attestation == "1"){ ?>
+                                            <a href="creation-view-morale-attestation.php" id="av" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Attestation de non condamnation <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-attestation.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Attestation de non condamnation <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                                        <?php } ?>
+                                        <div class="form-group">
+                                            <label class="">Banque et Publication</label>
                                         </div>
-                                        Justificatif siege social <?php if($doc_justificatifss == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <div class="form-group">
-                                        <hr>
-                                        <label class="line">Rédaction</label>
-                                    </div>
-                                    
-                                    <a href="creation-view-morale-pouvoir.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Pouvoir <?php if($doc_pouvoir == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <a href="creation-view-morale-attestation.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Attestation de non condamnation <?php if($doc_attestation == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    <div class="form-group">
-                                        <br>
-                                        <label class="line">Banque et Publication</label>
-                                    </div>
-                                    <a href="creation-view-morale-depot.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: file-import.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Depot de capital <?php if($doc_depot == "1"){echo "✔️";}else{echo "❌";} ?>
-                                    </a>
-                                    
+                                        <?php 
+                                            if($doc_depot == "1"){ ?>
+                                            <a href="creation-view-morale-depot.php" id="av" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Dépôt de capital <img id="vx" src="../../../app-assets/images/pages/v.png">
+                                            </a>
+                                        <?php }else{ ?>
+                                            <a href="creation-view-morale-depot.php" id="ax" class="list-group-item">
+                                                <div class="fonticon-wrap d-inline mr-25">
+                                                    <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
+                                                </div> 
+                                                Dépôt de capital <img id="vx" src="../../../app-assets/images/pages/x.png">
+                                            </a>
+                            <?php       } ?>
                                 </div>
                                 <!-- sidebar menu  end-->
                             </div>
@@ -386,22 +301,23 @@ require_once 'php/verif_session_crea.php';
                     </div>
                     <div class="content-body">
                         <div class="app-content-overlay"></div>
-                        <div class="form-group text-center border">
+                        <div class="form-group text-center border-0">
                             <br>
-                            <h1>Formumaire M0 (Cerfa M0)</h1>
+                            <h1>Formulaire M0 (Cerfa M0)</h1>
                         </div>
+                        <hr>
                         <div class="form-group row align-items-start custom-line">
-                            <div class="col text-center">
-                                    <img src="../../../app-assets/images/ico/photocerfaM0.png" alt="photocerfa" class="img-fluid">    
-                                    <label class="line">Pour télécharger le cerfaM0</label><label class="livicon-evo" data-options=" name: arrow-bottom.svg; size: 25px "></label><br>
+                            <div class="col text-center border-right">
+                                    <img src="../../../app-assets/images/ico/photocerfaM0.png" alt="photocerfa" class="img-fluid h-100 p-1">    
+                                    <label id="download-doc">Pour télécharger le cerfaM0 :</label><br>
                                     <small>Selectionnez le formulaire MO qui correspond à votre forme juridique (Exemple : Formulaire MO SAS)</small><br>
                                     <a href="https://www.google.com/search?safe=strict&client=firefox-b-d&sxsrf=ALeKk02cPeAWOu4C1eIYlY5YaP4kRpMEpQ%3A1610030502622&ei=ph33X9TDJYK78gKI6ILwBg&q=Formulaire+cerfa+M0+pour&oq=Formulaire+cerfa+M0+pour&gs_lcp=CgZwc3ktYWIQAzIFCAAQzQIyBQgAEM0CMgUIABDNAjIFCAAQzQIyBQgAEM0COgQIABBHOgQIIxAnOgIIADoECAAQHjoGCAAQBRAeOgYIABAIEB46CAgAEAgQBxAeOgQIIRAKUMoYWNAgYOYjaABwAngAgAFdiAGRBJIBATaYAQCgAQGqAQdnd3Mtd2l6yAEIwAEB&sclient=psy-ab&ved=0ahUKEwjUrr6Bh4ruAhWCnVwKHQi0AG4Q4dUDCAw&uact=5"><label class="livicon-evo" data-options=" name: download.svg; size: 25px "></label></a>
                             </div>
                             <div class="col">
-                                <div class="form-group text-center line">
+                                <div class="form-group text-center">
                                     <h4>CONDITIONS D'ACCEPTATIONS</h4>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group text-justify p-2">
                                     <p>Le document demandé devra respecter l'intégralité des condictions sous peine d'un refus de création d'entreprise.</p>
                                     <p>Vous pouvez vous référencer à l'exemple fourni merci de votre compréhension.</p>
                                     <br>
@@ -417,17 +333,14 @@ require_once 'php/verif_session_crea.php';
                         </div>
                         <div class="form-group">
                             <hr>
-                            <br>
-                            <br>
-                            <br>
                         </div>
                         <div class="form-group text-center">
                             
-                            <div class="form-group">
+                            <div class="form-group my-2 mx-auto w-50">
                                 <form name="myform" action="" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="id_doc" value="<?= $_SESSION['id_crea'] ?>">
 	                                <input class="input-file" id="my-file" onchange="this.form.submit();" type="file"  name="cerfaM0" size="30" accept="image/png, image/jpg, image/jpeg, application/pdf">
-	                                <label for="my-file" class="input-file-trigger" tabindex="0">
+	                                <label for="my-file" class="input-file-trigger rounded-pill" tabindex="0">
 		                                Sélectionner un fichier ...
 	                                </label>
                                 </form>

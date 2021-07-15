@@ -94,7 +94,7 @@ $maxid = $test['MAX(id)'] + 1;
     }
 
 
-     header('Location: ../article-list.php');
+     header('Location: ../inventaire-stock.php');
 
 
 

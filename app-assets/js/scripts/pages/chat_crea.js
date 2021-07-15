@@ -6,8 +6,8 @@
  * Il nous faut une fonction pour récupérer le JSON des
  * messages et les afficher correctement
  */
-function getMessages(){
 
+function getMessages(){
   var author_id = document.getElementById("author").value;
   // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
   const requeteAjax = new XMLHttpRequest();
