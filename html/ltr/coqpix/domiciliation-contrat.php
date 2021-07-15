@@ -129,6 +129,12 @@ require_once 'php/verif_session_crea.php';
               </span>
               <span>Basic Details</span>
             </h6>-->
+            <?php $today = date("d/m/y"); ?>            
+            <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
+            <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
+            <!--<input type="text" name="duree" id="duree" readonly hidden value="<?= $result[''] ?>">
+            <input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
+            <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
         <div class="row">
         <div class="col-6" id="contrat-gauche" >
             <ul>
