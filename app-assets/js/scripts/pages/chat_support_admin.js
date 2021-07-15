@@ -93,7 +93,7 @@ getMessages();
  * des messages toutes les 5 secondes et qui donne 
  * l'illusion du temps réel.
  */
-//setInterval( function() { getMessages; }, 5000);
+const interval = window.setInterval(getMessages, 5000);
 
 document.getElementById('btn_submit').addEventListener('click', event => {
     postMessage(event);
