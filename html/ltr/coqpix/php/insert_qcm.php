@@ -5,8 +5,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
+// On verifie l'existence des parametres
 if ($_POST['libelle'] != "" and $_POST['qualitatif'] != "") {
     $qualitatif = array("Oui", "Non");
+    // On verifie la valeur de qualitatif
     if (in_array($_POST['qualitatif'], $qualitatif)) {
         try {
             $insert = $bdd->prepare("INSERT INTO qcm(libelle, auteur, qualitatif) VALUES(?, (SELECT nameentreprise FROM entreprise WHERE id = ?), ?)");

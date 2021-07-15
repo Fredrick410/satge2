@@ -17,8 +17,11 @@ function validateDate($date, $format = 'Y-m-d')
     return $d && $d->format($format) === $date;
 }
 
+// On verifie l'existance des parametres
 if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['observations']) and isset($_POST['missions']) and isset($_POST['startdte']) and isset($_POST['enddte'])) {
     if ($_POST['confirm'] == "confirm") {
+        // On verifie si les parametres sont non vides
+        // Si oui, on retourne un message d'erreur
         try {
             if (!empty($_POST['observations'])) {
                 $observations = htmlspecialchars($_POST['observations']);
@@ -39,6 +42,8 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             }
             if (!empty($_POST['startdte'])) {
                 $startdte = $_POST['startdte'];
+                // On verifie le format de date
+                // S'il est incorrect on retourne un message d'erreur
                 if (!validateDate($startdte)) {
                     $response_array['status'] = 'error';
                     $response_array['message'] = "Merci de choisir une date de prise de service valide";
@@ -53,6 +58,8 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             }
             if (!empty($_POST['enddte'])) {
                 $enddte = $_POST['enddte'];
+                // On verifie le format de date
+                // S'il est incorrect on retourne un message d'erreur
                 if (!validateDate($enddte)) {
                     $response_array['status'] = 'error';
                     $response_array['message'] = "Merci de choisir une date de prise de service valide";
@@ -71,6 +78,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             echo json_encode($response_array);
             exit();
         }
+        // On met a jour la table rh_candidature avec le nouveau statut et les observations
         try {
             $update = $bdd->prepare("UPDATE rh_candidature SET statut=:statut, observations=:observations WHERE id=:id");
             $update->bindValue(':id', htmlspecialchars($_POST['idcandidat']), PDO::PARAM_INT);
@@ -84,6 +92,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             exit();
         }
 
+        // On recupere la candidature qu'on vient de mettre a jour
         try {
             $update = $bdd->prepare("SELECT * FROM rh_candidature WHERE id=:id");
             $update->bindValue(':id', htmlspecialchars($_POST['idcandidat']), PDO::PARAM_INT);
@@ -96,6 +105,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             exit();
         }
 
+        // On cree un nouvel employe a partir de la candidature mise a jour
         try {
             $update = $bdd->prepare('INSERT INTO membres(nom, prenom, email, tel, dtenaissance, pays, langue, img_membres, name_entreprise, status_membres, role_membres, missions, startdte, enddte, id_session) VALUES (?,?,?,?,?,?,?,?,(SELECT nameentreprise FROM entreprise WHERE id = ?),?,?,?,?,?,?)');
             $update->execute(array(
@@ -123,6 +133,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
         }
     }
 }
+// On retourne un code de success
 $response_array['status'] = 'success';
 $response_array['link'] = 'rh-entretient-candidats.php';
 echo json_encode($response_array);

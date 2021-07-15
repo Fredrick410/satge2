@@ -548,23 +548,23 @@ if (count($candidature) != 0) {
                                                     <h4 id="name-candidat" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
                                                 </div>
                                                 <div class="d-flex flex-column text-justify">
-                                                    <p id="comment-red<?=$i?>">
+                                                    <p id="comment-red<?= $i ?>">
 
                                                     </p>
                                                     <br>
-                                                    <p id="comment-blue<?=$i?>">
+                                                    <p id="comment-blue<?= $i ?>">
 
                                                     </p>
                                                     <br>
-                                                    <p id="comment-yellow<?=$i?>">
+                                                    <p id="comment-yellow<?= $i ?>">
 
                                                     </p>
                                                     <br>
-                                                    <p id="comment-green<?=$i?>">
+                                                    <p id="comment-green<?= $i ?>">
 
                                                     </p>
                                                     <br>
-                                                    <p id="comment-purple<?=$i?>">
+                                                    <p id="comment-purple<?= $i ?>">
 
                                                     </p>
                                                 </div>
@@ -740,11 +740,11 @@ if (count($candidature) != 0) {
                                                             text_purple_resp = purple_resp > 7 ? "élevée" : text_purple_resp;
 
                                                             var max_moy = getMaxTableau([moy_red, moy_green, moy_blue, moy_purple, moy_yellow]);
-                                                            document.getElementById("comment-red<?=$i?>").innerHTML = "Performance individuelle " + text_moy_red + "("+(moy_red*10)+"%).";
-                                                            document.getElementById("comment-blue<?=$i?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "("+(moy_blue*10)+"%).";
-                                                            document.getElementById("comment-yellow<?=$i?>").innerHTML = "Capacité de manager " + text_moy_yellow + "("+(moy_yellow*10)+"%).";
-                                                            document.getElementById("comment-green<?=$i?>").innerHTML = "Autonomie " + text_moy_green + "("+(moy_green*10)+"%).";
-                                                            document.getElementById("comment-purple<?=$i?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "("+(moy_purple*10)+"%).";
+                                                            document.getElementById("comment-red<?= $i ?>").innerHTML = "Performance individuelle " + text_moy_red + "(" + (moy_red * 10) + "%).";
+                                                            document.getElementById("comment-blue<?= $i ?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "(" + (moy_blue * 10) + "%).";
+                                                            document.getElementById("comment-yellow<?= $i ?>").innerHTML = "Capacité de manager " + text_moy_yellow + "(" + (moy_yellow * 10) + "%).";
+                                                            document.getElementById("comment-green<?= $i ?>").innerHTML = "Autonomie " + text_moy_green + "(" + (moy_green * 10) + "%).";
+                                                            document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
 
                                                             // methode filter Impossible
 
@@ -885,26 +885,33 @@ if (count($candidature) != 0) {
                 <?php
                 }
                 ?>
-                <!-- Block level buttons start -->
-                <section id="block-level-buttons">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="card-body" style="background-color: none;">
-                                        <div class="row">
-                                            <div class="col">
-                                                <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=success"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
-                                            </div>
-                                            <div class="col">
-                                                <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=failure"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Resufer le candidat</button></a>
+                <?php
+                if ($candidature['statut'] == "En cours") {
+                ?>
+                    <!-- Block level buttons start -->
+                    <section id="block-level-buttons">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-body" style="background-color: none;">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=success"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=failure"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Resufer le candidat</button></a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+                <?php
+                }
+                ?>
             </div>
             <!-- Block level buttons end -->
         </div>
@@ -1074,14 +1081,14 @@ if (count($candidature) != 0) {
                     doc.setFontSize(18);
                     doc.text("Résultats", doc.internal.pageSize.width / 2, 260, null, null, 'center');
                     text = [];
-                    text.push(document.querySelector('#comment-red'+ val).innerText);
-                    text.push(document.querySelector('#comment-blue'+ val).innerText);
-                    text.push(document.querySelector('#comment-yellow'+ val).innerText);
-                    text.push(document.querySelector('#comment-green'+ val).innerText);
-                    text.push(document.querySelector('#comment-purple'+ val).innerText);
+                    text.push(document.querySelector('#comment-red' + val).innerText);
+                    text.push(document.querySelector('#comment-blue' + val).innerText);
+                    text.push(document.querySelector('#comment-yellow' + val).innerText);
+                    text.push(document.querySelector('#comment-green' + val).innerText);
+                    text.push(document.querySelector('#comment-purple' + val).innerText);
                     doc.setFontSize(12);
                     doc.text(text, doc.internal.pageSize.width / 15, 278, null, null, 'left');
-                    
+
                     doc.addImage(document.getElementById('myChart' + val).toDataURL("image/png"), 'PNG', doc.internal.pageSize.width / 6, 340, 400, 400);
                     doc.save("chart.pdf");
                 }

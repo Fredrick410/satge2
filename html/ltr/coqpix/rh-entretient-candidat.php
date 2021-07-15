@@ -5,17 +5,20 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect.php';
 
+// Si l'id de la candidature n'existe pas ou est non numerique on retourne a la liste des candidatures pour entretiens
 if (isset($_GET['num']) and is_numeric($_GET['num'])) {
     $id = htmlspecialchars($_GET['num']);
 } else {
     header('Location: rh-entretient-candidats.php');
 }
 
+// On recupere la candidature
 $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="success"');
 $pdoStt->bindValue(':num', $id);
 $pdoStt->execute();
 $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
 
+// Si la candidatures n'existe pas on retourne a la liste des candidatures pour entretiens
 if (count($candidature) != 0) {
     $explode = explode(';', $candidature['key_candidat']);
     $idannonce = $explode[2];
@@ -23,6 +26,9 @@ if (count($candidature) != 0) {
     $pdoStt->bindValue(':num', $idannonce);
     $pdoStt->execute();
     $missions = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+}
+else{
+    header('Location: rh-entretient-candidats.php');
 }
 
 //print("<pre>".print_r($candidature,true)."</pre>");
@@ -32,6 +38,7 @@ $pdoSta->bindValue(':num', $_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
 $pdoSta->execute();
 $entreprise = $pdoSta->fetch();
 
+// On associe les pays dont les mots sont compose d'accent, espaces ou tirets
 $pays = array(
     'bielorussie' => 'Biélorussie',
     'bosnieHerzegovine' => 'Bosnie-Herzégovine',

@@ -22,6 +22,9 @@ function passgen2($nbChar)
         'abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789("$^^ù!:;,'
     ), 1, $nbChar);
 }
+
+// On verifie si les parametres sont non vides
+// Si oui, on retourne un message d'erreur
 if(!empty($_POST['name_annonce'])){
     $name_annonce = $_POST['name_annonce'];
 }
@@ -110,12 +113,15 @@ else{
 }
 
 $img_annonce = "";
+
+// On retourne un message d'erreur si les champs dates ne sont pas numeriques
 if(!is_numeric($_POST['date_y']) or !is_numeric($_POST['date_m']) or !is_numeric($_POST['date_d'])){
     $response_array['status'] = 'error';
     $response_array['message'] = 'Merci de donner une durée de service valide.';
     echo json_encode($response_array);
     exit();
 }
+// On retourne un message d'erreur si les champs dates sont tous a 0
 if($_POST['date_y'] == 0 and $_POST['date_m'] == 0 and $_POST['date_d'] == 0){
     $response_array['status'] = 'error';
     $response_array['message'] = 'Merci de donner une durée de service valide.';
@@ -147,6 +153,8 @@ $temps_annonce = '' . $date_y . '' . $date_m . '' . $date_d . '';
 $color_annonce = $_POST['color_annonce'];
 $statut = "actif";
 
+// On insere l'annonce si au moins un qcm et une mission sont presents
+// Sinon on retourne une erreur
 if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
     try {
         $missions = $_POST['missions'];
@@ -171,6 +179,7 @@ if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
 
         $id_annonce = $bdd->lastInsertId();
 
+        // On associe les qcms et l'annonce
         foreach ($qcms as $key => $value) {
             $insert = $bdd->prepare('INSERT INTO rh_annonce_qcm VALUES(?,?)');
             $insert->execute(array(
@@ -179,6 +188,7 @@ if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
             ));
         }
 
+        // On insere les missions et on les associe a l'annonce
         foreach ($missions as $key => $value) {
             $pdo = $bdd->prepare('INSERT INTO fiche_poste(libelle, acquis, idannonce) VALUES (:libelle, :acquis, :idannonce)');
             $pdo->bindValue(':libelle', htmlspecialchars($value));
@@ -189,6 +199,7 @@ if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
 
         $link_annonce = "num=" . $id_annonce;
 
+        // On met a jour le lien de l'annonce
         $pdo = $bdd->prepare('UPDATE rh_annonce SET link=:link WHERE id=:id LIMIT 1');
         $pdo->bindValue(':link', $link_annonce);
         $pdo->bindValue(':id', $id_annonce);

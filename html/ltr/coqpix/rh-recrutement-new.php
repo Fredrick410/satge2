@@ -11,6 +11,7 @@ $pdoS->bindValue(':numentreprise', $_SESSION['id']);
 $true = $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
+// On recupere les qcms publies par coqpix ou par le client
 $pdoS = $bdd->prepare('SELECT * FROM qcm WHERE publiee = "oui" AND auteur="Auditactionplus"');
 $true = $pdoS->execute();
 $qcms_back = $pdoS->fetchAll(PDO::FETCH_ASSOC);
@@ -523,6 +524,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        // On affiche les messages d'alertes
         function addAlert(message, type) {
             if (type == "success") {
                 $('#message').html(

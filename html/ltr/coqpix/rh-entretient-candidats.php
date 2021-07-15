@@ -10,6 +10,7 @@ $pdoS->bindValue(':numentreprise', $_SESSION['id']);
 $true = $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
+// On recupere la liste des candidatures retenues pour entretien
 $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND statut="success" ORDER BY id');
 $pdoS->bindValue(':num', $_SESSION['id_session']);
 $pdoS->execute();
@@ -113,7 +114,7 @@ $count_candidature = count($candidatures);
                                         </td>
                                         <td class="text-bold-600"><?= $candidature['time_candidat'] ?></td>
                                         <td>
-                                            <a class="dropdown-item" href="rh-entretien-candidat.php?num=<?= $candidature['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                            <a class="dropdown-item" href="rh-entretient-candidat.php?num=<?= $candidature['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
