@@ -12,33 +12,33 @@ $method = "get";
 if (isset($_GET['method']) and $_GET['method'] == "post") {
     postMessage();
 } else {
-    getMessage();
+    getMessages();
 }
 
 //B- function qui va permettre de recupérer les messages.
 
-function getMessage(){
+function getMessages() {
 
     //on definit la variable bdd dans la fonction 
     global $bdd;
     session_start();
 
+    //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de donnée
 
-        //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de donnée
+    $id_membre = $_GET['id_membre'];
 
-        $id_membre = 1; // recuperer l'id du membre selectionnee dans la liste
+    $resultats = $bdd->prepare("SELECT * FROM support_message WHERE id_membre = :id_membre ORDER BY heure LIMIT 30");
+    $resultats->bindValue(':auteur', $id_membre);
+    $resultats->execute();
 
-        $resultats = $bdd->prepare("SELECT * FROM support_message WHERE id_membre = :id_membre ORDER BY heure LIMIT 30");
-        $resultats->bindValue(':auteur', $id_membre);
-        $resultats->execute();
+    //2 - On va traiter les resultats
 
-        //2 - On va traiter les resultats
+    $messages = $resultats->fetchAll();
 
-        $messages = $resultats->fetchAll();
+    //3 - On affcihe les données en JSON
 
-        //3 - On affcihe les données en JSON
+    echo json_encode($messages);
 
-        echo json_encode($messages);
 }
 
 //C- function qui va permettre d'écrire et non de recupérer des informations pour le chat.
@@ -79,7 +79,7 @@ function postMessage() {
 
     //3- Donner un statut de succes ou d'erreur au format JSON
 
-    echo json_encode(["status" => "sucess"]);
+    //echo json_encode(["status" => "sucess"]);
 
 }
 

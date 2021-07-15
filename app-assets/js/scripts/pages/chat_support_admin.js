@@ -8,7 +8,8 @@
  */
 function getMessage() {
 
-    var id_membre = 1
+    var id_membre = 1 // recuperer l'id du membre selectionnee dans la liste
+
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_helpdesk_admin.php?id_membre="+id_membre);
@@ -22,7 +23,7 @@ function getMessage() {
         var droite = message.auteur !== "support" ? 'chat-left' : '';
         var image = message.auteur !== "support" ? 'astro1.gif' : 'chatpix3.png';
 
-        return ` 
+        return `
             <div class="chat ${droite}">
                 <div class="chat-avatar">
                     <a class="avatar m-0">
@@ -73,7 +74,7 @@ function postMessage(event) {
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_helpdesk.php?method=post');
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_helpdesk_admin.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
