@@ -306,61 +306,142 @@ require_once 'php/verif_session_connect_admin.php';
 
     }
 
-    // recup attestation envoyé par mois pour growth chart
+    // PARTIE GROWTH CHART SOCIALE 
+        // Pour recuperer le nombre d'attestation URSSAF envoyé
+        $pdoSt = $bdd->prepare('SELECT substr(date_demande,4,2) AS mois, count(case when substr(date_demande,7) = :annee and upper(statut_attestation) = "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) AS nb_n, count(case when substr(date_demande,7) = :annee - 1 and upper(statut_attestation) = "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) AS nb_n_1, count(case when substr(date_demande,7) = :annee - 2 and upper(statut_attestation) = "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) AS nb_n_2, count(case when substr(date_demande,7) = :annee - 3 and upper(statut_attestation) = "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) AS nb_n_3, count(case when substr(date_demande,7) = :annee - 4 and upper(statut_attestation) = "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) AS nb_n_4 FROM attestation_sociale GROUP BY substr(date_demande,4,2)');
+        $pdoSt->execute(array(':annee' => $annee_actuelle));
+        for ($i=0 ; $i<5 ; $i++) {
+            ${'nb_att_URSSAFMSA_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+        }
+        while ($att_envoye = $query->fetch()) {
+            ${'nb_att_URSSAFMSA_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n'];
+            ${'nb_att_URSSAFMSA_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_1'];
+            ${'nb_att_URSSAFMSA_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_2'];
+            ${'nb_att_URSSAFMSA_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_3'];
+            ${'nb_att_URSSAFMSA_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_4'];
+        }
+    
+        // requete pour recuperer le pourcentage de att URSSAF/MSA envoyé
+        $query = $bdd->prepare('SELECT substr(date_demande,4,2) AS mois, round(count(case when substr(date_demande,7) = :annee and upper(statut_attestation)= "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) / count(case when type_attestation = "URSSAF/MSA" AND substr(date_demande,7) = :annee then 1 else null end) * 100) AS pourcent_n, round(count(case when substr(date_demande,7) = :annee - 1 and upper(statut_attestation)= "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) / count(case when type_attestation = "URSSAF/MSA" AND substr(date_demande,7) = :annee - 1 then 1 else null end) * 100) AS pourcent_n_1, round(count(case when substr(date_demande,7) = :annee - 2 and upper(statut_attestation)= "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) / count(case when type_attestation = "URSSAF/MSA" AND substr(date_demande,7) = :annee - 2 then 1 else null end) * 100) AS pourcent_n_2, round(count(case when substr(date_demande,7) = :annee - 3 and upper(statut_attestation)= "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) / count(case when type_attestation = "URSSAF/MSA" AND substr(date_demande,7) = :annee - 3 then 1 else null end) * 100) AS pourcent_n_3, round(count(case when substr(date_demande,7) = :annee - 4 and upper(statut_attestation)= "TERMINEE" and type_attestation = "URSSAF/MSA" then 1 else null end) / count(case when type_attestation = "URSSAF/MSA" AND substr(date_demande,7) = :annee - 4 then 1 else null end) * 100) AS pourcent_n_4 FROM attestation_sociale WHERE type_attestation = "URSSAF/MSA" GROUP BY substr(date_demande,4,2)');
+        $query->execute(array(':annee' => $annee_actuelle));
+        for ($i=0 ; $i<5 ; $i++) {
+            ${'pourcent_URSSAFMSA_'.($annee_actuelle - $i)} = array(100,100,100,100,100,100,100,100,100,100,100,100);
+        }
+        while ($att_envoye = $query->fetch()) {
+            if ($att_envoye['pourcent_n'] != null) { ${'pourcent_URSSAFMSA_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n']; }
+            if ($att_envoye['pourcent_n_1'] != null) {${'pourcent_URSSAFMSA_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_1']; }
+            if ($att_envoye['pourcent_n_2'] != null) { ${'pourcent_URSSAFMSA_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_2']; }
+            if ($att_envoye['pourcent_n_3'] != null) { ${'pourcent_URSSAFMSA_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_3']; }
+            if ($att_envoye['pourcent_n_4'] != null) { ${'pourcent_URSSAFMSA_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_4']; }
+        }
+
+        // growth chart att probtp envoyé - recup le nombre de att envoyé
+        $pdoSt = $bdd->prepare('SELECT substr(date_demande,4,2) AS mois, count(case when substr(date_demande,7) = :annee and upper(statut_attestation) = "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) AS nb_n, count(case when substr(date_demande,7) = :annee - 1 and upper(statut_attestation) = "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) AS nb_n_1, count(case when substr(date_demande,7) = :annee - 2 and upper(statut_attestation) = "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) AS nb_n_2, count(case when substr(date_demande,7) = :annee - 3 and upper(statut_attestation) = "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) AS nb_n_3, count(case when substr(date_demande,7) = :annee - 4 and upper(statut_attestation) = "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) AS nb_n_4 FROM attestation_sociale GROUP BY substr(date_demande,4,2)');
+        $pdoSt->execute(array(':annee' => $annee_actuelle));
+        for ($i=0 ; $i<5 ; $i++) {
+            ${'nb_att_PROBTP_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+        }
+        while ($att_envoye = $query->fetch()) {
+            ${'nb_att_PROBTP_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n'];
+            ${'nb_att_PROBTP_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_1'];
+            ${'nb_att_PROBTP_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_2'];
+            ${'nb_att_PROBTP_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_3'];
+            ${'nb_att_PROBTP_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_4'];
+        }
+
+        // requete pour recuperer le pourcentage de att PROBTP envoyé
+        $query = $bdd->prepare('SELECT substr(date_demande,4,2) AS mois, round(count(case when substr(date_demande,7) = :annee and upper(statut_attestation)= "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) / count(case when type_attestation = "PRO BTP" AND substr(date_demande,7) = :annee then 1 else null end) * 100) AS pourcent_n, round(count(case when substr(date_demande,7) = :annee - 1 and upper(statut_attestation)= "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) / count(case when type_attestation = "PRO BTP" AND substr(date_demande,7) = :annee - 1 then 1 else null end) * 100) AS pourcent_n_1, round(count(case when substr(date_demande,7) = :annee - 2 and upper(statut_attestation)= "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) / count(case when type_attestation = "PRO BTP" AND substr(date_demande,7) = :annee - 2 then 1 else null end) * 100) AS pourcent_n_2, round(count(case when substr(date_demande,7) = :annee - 3 and upper(statut_attestation)= "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) / count(case when type_attestation = "PRO BTP" AND substr(date_demande,7) = :annee - 3 then 1 else null end) * 100) AS pourcent_n_3, round(count(case when substr(date_demande,7) = :annee - 4 and upper(statut_attestation)= "TERMINEE" and type_attestation = "PRO BTP" then 1 else null end) / count(case when type_attestation = "PRO BTP" AND substr(date_demande,7) = :annee - 4 then 1 else null end) * 100) AS pourcent_n_4 FROM attestation_sociale WHERE type_attestation = "PRO BTP" GROUP BY substr(date_demande,4,2)');
+        $query->execute(array(':annee' => $annee_actuelle));
+        for ($i=0 ; $i<5 ; $i++) {
+            ${'pourcent_PROBTP_'.($annee_actuelle - $i)} = array(100,100,100,100,100,100,100,100,100,100,100,100);
+        }
+        while ($att_envoye = $query->fetch()) {
+            if ($att_envoye['pourcent_n'] != null) { ${'pourcent_PROBTP_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n']; }
+            if ($att_envoye['pourcent_n_1'] != null) {${'pourcent_PROBTP_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_1']; }
+            if ($att_envoye['pourcent_n_2'] != null) { ${'pourcent_PROBTP_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_2']; }
+            if ($att_envoye['pourcent_n_3'] != null) { ${'pourcent_PROBTP_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_3']; }
+            if ($att_envoye['pourcent_n_4'] != null) { ${'pourcent_PROBTP_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_4']; }
+        }
+
+        // growth chart att cibtp envoyé - recup le nombre de att envoyé
+        $pdoSt = $bdd->prepare('SELECT substr(date_donner,4,2) AS mois, count(case when substr(date_donner,7) = :annee and upper(statut_attestation) = "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) AS nb_n, count(case when substr(date_donner,7) = :annee - 1 and upper(statut_attestation) = "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) AS nb_n_1, count(case when substr(date_donner,7) = :annee - 2 and upper(statut_attestation) = "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) AS nb_n_2, count(case when substr(date_donner,7) = :annee - 3 and upper(statut_attestation) = "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) AS nb_n_3, count(case when substr(date_donner,7) = :annee - 4 and upper(statut_attestation) = "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) AS nb_n_4 FROM attestation_sociale GROUP BY substr(date_donner,4,2)');
+        $pdoSt->execute(array(':annee' => $annee_actuelle));
+        for ($i=0 ; $i<5 ; $i++) {
+            ${'nb_att_CIBTP_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+        }
+        while ($att_envoye = $query->fetch()) {
+            ${'nb_att_CIBTP_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n'];
+            ${'nb_att_CIBTP_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_1'];
+            ${'nb_att_CIBTP_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_2'];
+            ${'nb_att_CIBTP_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_3'];
+            ${'nb_att_CIBTP_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_4'];
+        }
+
+        // requete pour recuperer le pourcentage de att CIBTP envoyé
+        $query = $bdd->prepare('SELECT substr(date_demande,4,2) AS mois, round(count(case when substr(date_demande,7) = :annee and upper(statut_attestation)= "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) / count(case when type_attestation = "CIBTP" AND substr(date_demande,7) = :annee then 1 else null end) * 100) AS pourcent_n, round(count(case when substr(date_demande,7) = :annee - 1 and upper(statut_attestation)= "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) / count(case when type_attestation = "CIBTP" AND substr(date_demande,7) = :annee - 1 then 1 else null end) * 100) AS pourcent_n_1, round(count(case when substr(date_demande,7) = :annee - 2 and upper(statut_attestation)= "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) / count(case when type_attestation = "CIBTP" AND substr(date_demande,7) = :annee - 2 then 1 else null end) * 100) AS pourcent_n_2, round(count(case when substr(date_demande,7) = :annee - 3 and upper(statut_attestation)= "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) / count(case when type_attestation = "CIBTP" AND substr(date_demande,7) = :annee - 3 then 1 else null end) * 100) AS pourcent_n_3, round(count(case when substr(date_demande,7) = :annee - 4 and upper(statut_attestation)= "TERMINEE" and type_attestation = "CIBTP" then 1 else null end) / count(case when type_attestation = "CIBTP" AND substr(date_demande,7) = :annee - 4 then 1 else null end) * 100) AS pourcent_n_4 FROM attestation_sociale WHERE type_attestation = "CIBTP" GROUP BY substr(date_demande,4,2)');
+        $query->execute(array(':annee' => $annee_actuelle));
+        for ($i=0 ; $i<5 ; $i++) {
+            ${'pourcent_CIBTP_'.($annee_actuelle - $i)} = array(100,100,100,100,100,100,100,100,100,100,100,100);
+        }
+        while ($att_envoye = $query->fetch()) {
+            if ($att_envoye['pourcent_n'] != null) { ${'pourcent_CIBTP_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n']; }
+            if ($att_envoye['pourcent_n_1'] != null) {${'pourcent_CIBTP_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_1']; }
+            if ($att_envoye['pourcent_n_2'] != null) { ${'pourcent_CIBTP_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_2']; }
+            if ($att_envoye['pourcent_n_3'] != null) { ${'pourcent_CIBTP_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_3']; }
+            if ($att_envoye['pourcent_n_4'] != null) { ${'pourcent_CIBTP_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['pourcent_n_4']; }
+        }
+
+
+    // recup bulletin envoyé par mois pour growth chart
+    // growth chart bulletin envoyé - recup le nombre de bulletin envoyé
+    $pdoSt = $bdd->prepare('SELECT substr(date_donner,4,2) AS mois, count(case when substr(date_donner,7) = "2021" and upper(statut_bulletin) = "TERMINEE" then 1 else null end) AS nb_n, count(case when substr(date_donner,7) = "2021" - 1 and upper(statut_bulletin) = "TERMINEE" then 1 else null end) AS nb_n_1, count(case when substr(date_donner,7) = "2021" - 2 and upper(statut_bulletin) = "TERMINEE" then 1 else null end) AS nb_n_2, count(case when substr(date_donner,7) = "2021" - 3 and upper(statut_bulletin) = "TERMINEE" then 1 else null end) AS nb_n_3, count(case when substr(date_donner,7) = "2021" - 4 and upper(statut_bulletin) = "TERMINEE" then 1 else null end) AS nb_n_4 FROM bulletin_salaire GROUP BY substr(date_donner,4,2)');
+    $pdoSt->execute(array(':annee' => $annee_actuelle));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'nb_bulletin_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
+    }
+    while ($att_envoye = $query->fetch()) {
+        ${'nb_bulletin_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n'];
+        ${'nb_bulletin_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_1'];
+        ${'nb_bulletin_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_2'];
+        ${'nb_bulletin_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_3'];
+        ${'nb_bulletin_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_4'];
+    }
+
+    // requete pour recuperer le pourcentage de bulletin envoyé
+    $query = $bdd->prepare('SELECT substr(date_demande,4,2) AS mois, round(count(case when substr(date_demande,7) = :annee and upper(statut_bulletin)= "TERMINEE" then 1 else null end) / count(case when substr(date_demande,7) = :annee then 1 else null end) * 100) AS pourcent_n, round(count(case when substr(date_demande,7) = :annee - 1 and upper(statut_bulletin)= "TERMINEE" then 1 else null end) / count(case when substr(date_demande,7) = :annee - 1 then 1 else null end) * 100) AS pourcent_n_1, round(count(case when substr(date_demande,7) = :annee - 2 and upper(statut_bulletin)= "TERMINEE" then 1 else null end) / count(case when substr(date_demande,7) = :annee - 2 then 1 else null end) * 100) AS pourcent_n_2, round(count(case when substr(date_demande,7) = :annee - 3 and upper(statut_bulletin)= "TERMINEE" then 1 else null end) / count(case when substr(date_demande,7) = :annee - 3 then 1 else null end) * 100) AS pourcent_n_3, round(count(case when substr(date_demande,7) = :annee - 4 and upper(statut_bulletin)= "TERMINEE" then 1 else null end) / count(case when substr(date_demande,7) = :annee - 4 then 1 else null end) * 100) AS pourcent_n_4 FROM bulletin_salaire GROUP BY substr(date_demande,4,2)');
+    $query->execute(array(':annee' => $annee_actuelle));
+    for ($i=0 ; $i<5 ; $i++) {
+        ${'pourcent_bulletin_'.($annee_actuelle - $i)} = array(100,100,100,100,100,100,100,100,100,100,100,100);
+    }
+    while ($bulletin_envoye = $query->fetch()) {
+        if ($bulletin_envoye['pourcent_n'] != null) { ${'pourcent_bulletin_'.($annee_actuelle)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['pourcent_n']; }
+        if ($bulletin_envoye['pourcent_n_1'] != null) {${'pourcent_bulletin_'.($annee_actuelle-1)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['pourcent_n_1']; }
+        if ($bulletin_envoye['pourcent_n_2'] != null) { ${'pourcent_bulletin_'.($annee_actuelle-2)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['pourcent_n_2']; }
+        if ($bulletin_envoye['pourcent_n_3'] != null) { ${'pourcent_bulletin_'.($annee_actuelle-3)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['pourcent_n_3']; }
+        if ($bulletin_envoye['pourcent_n_4'] != null) { ${'pourcent_bulletin_'.($annee_actuelle-4)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['pourcent_n_4']; }
+    }
+/*
+    // recup dsn envoyé par mois pour growth  chart 
     for ($i=0 ; $i<5 ; $i++) {
 
-        // Requete SQL permettant de recuperer le nombre attestation URSSAF/MSA envoyé par annee et par mois
-        $select_att_envoye = $bdd->prepare('SELECT substr(date_donner,4,2) as mois, round(count(*) / (SELECT count(*) FROM attestation_sociale) * 100) AS att_envoye FROM attestation_sociale WHERE statut_attestation = "Terminée" AND substr(date_donner,7) =:annee AND type_attestation = "URSSAF/MSA" GROUP BY substr(date_donner,4,2)');
-        $select_att_envoye->execute(array(':annee' => $annee_actuelle - $i));
-        ${'array_att_envoye_'.($annee_actuelle - $i)} = array();
-        while ($result_att_envoye = $select_att_envoye->fetch()) {
-            ${'array_att_envoye_'.($annee_actuelle - $i)}[$result_att_envoye['mois']] = $result_att_envoye['att_envoye'];
+        $select_dsn_envoye = $bdd->prepare('SELECT date_m as mois, round(count(*) / (SELECT count(*) FROM entreprise WHERE upper(new_user) = "ACTIVE") * 100) AS dsn_envoye FROM dsn WHERE date_a = :annee GROUP BY date_m');
+        $select_dsn_envoye->execute(array(':annee' => $annee_actuelle - $i));
+        ${'array_dsn_envoye_'.($annee_actuelle - $i)} = array();
+        while ($result_dsn_envoye = $select_dsn_envoye->fetch()) {
+            ${'array_dsn_envoye_'.($annee_actuelle - $i)}[$result_dsn_envoye['mois']] = $result_dsn_envoye['dsn_envoye'];
         }
 
         for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'array_att_envoye_'.($annee_actuelle - $i)})) {
-                ${'total_envoye_URSSAFMSA_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_att_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
+            if(array_key_exists($mois[$j], ${'array_dsn_envoye_'.($annee_actuelle - $i)})) {
+                ${'dsn_envoye_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_dsn_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
             }
             else {
-                ${'total_envoye_URSSAFMSA_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
-            }
-        }
-
-        // Requete SQL permettant de recuperer le nombre attestation PROBTP envoyé par annee et par mois
-        $select_att_envoye = $bdd->prepare('SELECT substr(date_donner,4,2) as mois, round(count(*) / (SELECT count(*) FROM attestation_sociale) * 100) AS att_envoye FROM attestation_sociale WHERE statut_attestation = "Terminée" AND substr(date_donner,7) =:annee AND type_attestation = "PROBTP" GROUP BY substr(date_donner,4,2)');
-        $select_att_envoye->execute(array(':annee' => $annee_actuelle - $i));
-        ${'array_att_envoye_'.($annee_actuelle - $i)} = array();
-        while ($result_att_envoye = $select_att_envoye->fetch()) {
-            ${'array_att_envoye_'.($annee_actuelle - $i)}[$result_att_envoye['mois']] = $result_att_envoye['att_envoye'];
-        }
-
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'array_att_envoye_'.($annee_actuelle - $i)})) {
-                ${'total_envoye_PROBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_att_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
-            }
-            else {
-                ${'total_envoye_PROBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
-            }
-        }
-
-        // Requete SQL permettant de recuperer le nombre attestation CIBTP envoyé par annee et par mois
-        $select_att_envoye = $bdd->prepare('SELECT substr(date_donner,4,2) as mois, round(count(*) / (SELECT count(*) FROM attestation_sociale) * 100) AS att_envoye FROM attestation_sociale WHERE statut_attestation = "Terminée" AND substr(date_donner,7) =:annee AND type_attestation = "CIBTP" GROUP BY substr(date_donner,4,2)');
-        $select_att_envoye->execute(array(':annee' => $annee_actuelle - $i));
-        ${'array_att_envoye_'.($annee_actuelle - $i)} = array();
-        while ($result_att_envoye = $select_att_envoye->fetch()) {
-            ${'array_att_envoye_'.($annee_actuelle - $i)}[$result_att_envoye['mois']] = $result_att_envoye['att_envoye'];
-        }
-
-        for($j=0; $j<12; $j++) {
-            if (array_key_exists($mois[$j], ${'array_att_envoye_'.($annee_actuelle - $i)})) {
-                ${'total_envoye_CIBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = ${'array_att_envoye_'.($annee_actuelle - $i)}[$mois[$j]];
-            }
-            else {
-                ${'total_envoye_CIBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
+                ${'dsn_envoye_'.$mois[$j].'_'.($annee_actuelle - $i)} = '0';
             }
         }
 
     }
+*/
 
 ?>
 
@@ -1326,15 +1407,15 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <h5 class="text-white">Bulletin </h5>                                                            
                                                             </div>                      
                                                             <div class="p-2" id="id_titre_dsn" style="display: none">
-                                                                <h5 class="text-white">Dsn </h5>
+                                                                <h5 class="text-white">DSN </h5>
                                                             </div>                                                  
                                                             <div class="ml-auto p-2">
                                                                     <select style="width: 80px;" class="form-control" id="id_select_sociale">
-                                                                        <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
-                                                                        <option value="<?= $annee_actuelle-1 ?>"><?= $annee_actuelle-1 ?></option>
-                                                                        <option value="<?= $annee_actuelle-2 ?>"><?= $annee_actuelle-2 ?></option>
-                                                                        <option value="<?= $annee_actuelle-3 ?>"><?= $annee_actuelle-3 ?></option>
-                                                                        <option value="<?= $annee_actuelle-4 ?>"><?= $annee_actuelle-4 ?></option>
+                                                                    <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
+                                                                            <option value="<?= $annee_actuelle - 1 ?>"><?= $annee_actuelle - 1 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 2 ?>"><?= $annee_actuelle - 2 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 3 ?>"><?= $annee_actuelle - 3 ?></option>
+                                                                            <option value="<?= $annee_actuelle - 4 ?>"><?= $annee_actuelle - 4 ?></option>
                                                                     </select>
                                                             </div>
                                                         </div>
@@ -1367,7 +1448,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="card">                                                    
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
-                                                            <h6 class="text-white text-center"> Total </h6> 
+                                                            <h6 class="text-white text-center" id= "id_titre_total"> Total </h6> 
                                                             <?php
                                                                     for ($i=0; $i<5 ; $i++) {
                                                                         $id_count_msa = "id_count_URSSAFMSA_".($annee_actuelle - $i); ?>
@@ -1386,7 +1467,9 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <input type="hidden" id="<?= $id_count_cibtp ?>" value="<?= ${"count_cibtp_".($annee_actuelle - $i)} ?>"> <?php
                                                                     } ?>
                                                                
-                                                               <h6 class="text-center" id="id_text_count_msa"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>                                                                                              
+                                                               <h6 class="text-center" id="id_text_count_attestation" style="display: block"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>   
+                                                               <h6 class="text-center" id="id_text_count_bulletin" style="display: none"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>  
+                                                               <h6 class="text-center" id="id_text_count_dsn" style="display: none"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>                                                                                             
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1398,38 +1481,22 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-body text-center">
-                                                            <div class="dropdown">
-                                                                <?php 
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        for ($j=0; $j<12 ; $j++) {
-                                                                            $id_total_envoye = "total_envoye_URSSAFMSA_".$mois[$j]."_".($annee_actuelle - $i); ?>
-                                                                            <input type="hidden" id="<?= $id_total_envoye ?>" value="<?= ${'total_envoye_URSSAFMSA_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
-                                                                        }
-                                                                        for ($j=0; $j<12 ; $j++) {
-                                                                            $id_total_envoye = "total_envoye_PROBTP_".$mois[$j]."_".($annee_actuelle - $i); ?>
-                                                                            <input type="hidden" id="<?= $id_total_envoye ?>" value="<?= ${'total_envoye_PROBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
-                                                                        }
-                                                                        for ($j=0; $j<12 ; $j++) {
-                                                                            $id_total_envoye = "total_envoye_CIBTP_".$mois[$j]."_".($annee_actuelle - $i); ?>
-                                                                            <input type="hidden" id="<?= $id_total_envoye ?>" value="<?= ${'total_envoye_CIBTP_'.$mois[$j].'_'.($annee_actuelle - $i)} ?>"> <?php
-                                                                        }
-                                                                    } 
-                                                                ?>
-                                                                <h6 class="text-white mb-1" id= "id_titre_droite"> Attestation URSSAF </h6>
+                                                            <div class="dropdown">                                                             
+                                                                <h6 class="text-white mb-1" id= "id_titre_droite" style= "display: block;">Attestation URSSAF</h6>
                                                                 <div class="d-flex justify-content-center">
                                                                         <select style="width: 80px;" class="form-control" id="id_select_mois_sociale">
-                                                                            <option value="01">Janv</option>
-                                                                            <option value="02">Fevr</option>
-                                                                            <option value="03">Mars</option>
-                                                                            <option value="04">Avril</option>
-                                                                            <option value="05">Mai</option>
-                                                                            <option value="06">Juin</option>
-                                                                            <option value="07">Juil</option>
-                                                                            <option value="08">Aout</option>
-                                                                            <option value="09">Sept</option>
-                                                                            <option value="10">Oct</option>
-                                                                            <option value="11">Nov</option>
-                                                                            <option value="12">Dec</option>
+                                                                            <option value="0">Janv</option>
+                                                                            <option value="1">Fevr</option>
+                                                                            <option value="2">Mars</option>
+                                                                            <option value="3">Avril</option>
+                                                                            <option value="4">Mai</option>
+                                                                            <option value="5">Juin</option>
+                                                                            <option value="6">Juil</option>
+                                                                            <option value="7">Aout</option>
+                                                                            <option value="8">Sept</option>
+                                                                            <option value="9">Oct</option>
+                                                                            <option value="10">Nov</option>
+                                                                            <option value="11">Dec</option>
                                                                         </select>
                                                                 </div>
                                                             </div>
@@ -1500,6 +1567,62 @@ require_once 'php/verif_session_connect_admin.php';
         this[array_passif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 3)}); ?>;
         this[array_passif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_passif_'.($annee_actuelle - 4)}); ?>;
 
+        var pourcent_URSSAFMSA = "pourcent_URSSAFMSA_";
+        this[pourcent_URSSAFMSA + annee_actuelle] = <?php echo json_encode(${'pourcent_URSSAFMSA_'.($annee_actuelle)}); ?>;
+        this[pourcent_URSSAFMSA + (annee_actuelle-1)] = <?php echo json_encode(${'pourcent_URSSAFMSA_'.($annee_actuelle-1)}); ?>;
+        this[pourcent_URSSAFMSA + (annee_actuelle-2)] = <?php echo json_encode(${'pourcent_URSSAFMSA_'.($annee_actuelle-2)}); ?>;
+        this[pourcent_URSSAFMSA + (annee_actuelle-3)] = <?php echo json_encode(${'pourcent_URSSAFMSA_'.($annee_actuelle-3)}); ?>;
+        this[pourcent_URSSAFMSA + (annee_actuelle-4)] = <?php echo json_encode(${'pourcent_URSSAFMSA_'.($annee_actuelle-4)}); ?>;
+
+        var nb_att_URSSAFMSA = "nb_att_URSSAFMSA_";
+        this[nb_att_URSSAFMSA + annee_actuelle] = <?php echo json_encode(${'nb_att_URSSAFMSA_'.($annee_actuelle)}); ?>;
+        this[nb_att_URSSAFMSA + (annee_actuelle-1)] = <?php echo json_encode(${'nb_att_URSSAFMSA_'.($annee_actuelle-1)}); ?>;
+        this[nb_att_URSSAFMSA + (annee_actuelle-2)] = <?php echo json_encode(${'nb_att_URSSAFMSA_'.($annee_actuelle-2)}); ?>;
+        this[nb_att_URSSAFMSA + (annee_actuelle-3)] = <?php echo json_encode(${'nb_att_URSSAFMSA_'.($annee_actuelle-3)}); ?>;
+        this[nb_att_URSSAFMSA + (annee_actuelle-4)] = <?php echo json_encode(${'nb_att_URSSAFMSA_'.($annee_actuelle-4)}); ?>;
+
+        var pourcent_PROBTP = "pourcent_PROBTP_";
+        this[pourcent_PROBTP + annee_actuelle] = <?php echo json_encode(${'pourcent_PROBTP_'.($annee_actuelle)}); ?>;
+        this[pourcent_PROBTP + (annee_actuelle-1)] = <?php echo json_encode(${'pourcent_PROBTP_'.($annee_actuelle-1)}); ?>;
+        this[pourcent_PROBTP + (annee_actuelle-2)] = <?php echo json_encode(${'pourcent_PROBTP_'.($annee_actuelle-2)}); ?>;
+        this[pourcent_PROBTP + (annee_actuelle-3)] = <?php echo json_encode(${'pourcent_PROBTP_'.($annee_actuelle-3)}); ?>;
+        this[pourcent_PROBTP + (annee_actuelle-4)] = <?php echo json_encode(${'pourcent_PROBTP_'.($annee_actuelle-4)}); ?>;
+
+        var nb_att_PROBTP = "nb_att_PROBTP_";
+        this[nb_att_PROBTP + annee_actuelle] = <?php echo json_encode(${'nb_att_PROBTP_'.($annee_actuelle)}); ?>;
+        this[nb_att_PROBTP + (annee_actuelle-1)] = <?php echo json_encode(${'nb_att_PROBTP_'.($annee_actuelle-1)}); ?>;
+        this[nb_att_PROBTP + (annee_actuelle-2)] = <?php echo json_encode(${'nb_att_PROBTP_'.($annee_actuelle-2)}); ?>;
+        this[nb_att_PROBTP + (annee_actuelle-3)] = <?php echo json_encode(${'nb_att_PROBTP_'.($annee_actuelle-3)}); ?>;
+        this[nb_att_PROBTP + (annee_actuelle-4)] = <?php echo json_encode(${'nb_att_PROBTP_'.($annee_actuelle-4)}); ?>;
+
+        var pourcent_CIBTP = "pourcent_CIBTP_";
+        this[pourcent_CIBTP + annee_actuelle] = <?php echo json_encode(${'pourcent_CIBTP_'.($annee_actuelle)}); ?>;
+        this[pourcent_CIBTP + (annee_actuelle-1)] = <?php echo json_encode(${'pourcent_CIBTP_'.($annee_actuelle-1)}); ?>;
+        this[pourcent_CIBTP + (annee_actuelle-2)] = <?php echo json_encode(${'pourcent_CIBTP_'.($annee_actuelle-2)}); ?>;
+        this[pourcent_CIBTP + (annee_actuelle-3)] = <?php echo json_encode(${'pourcent_CIBTP_'.($annee_actuelle-3)}); ?>;
+        this[pourcent_CIBTP + (annee_actuelle-4)] = <?php echo json_encode(${'pourcent_CIBTP_'.($annee_actuelle-4)}); ?>;
+
+        var nb_att_CIBTP = "nb_att_CIBTP_";
+        this[nb_att_CIBTP + annee_actuelle] = <?php echo json_encode(${'nb_att_CIBTP_'.($annee_actuelle)}); ?>;
+        this[nb_att_CIBTP + (annee_actuelle-1)] = <?php echo json_encode(${'nb_att_CIBTP_'.($annee_actuelle-1)}); ?>;
+        this[nb_att_CIBTP + (annee_actuelle-2)] = <?php echo json_encode(${'nb_att_CIBTP_'.($annee_actuelle-2)}); ?>;
+        this[nb_att_CIBTP + (annee_actuelle-3)] = <?php echo json_encode(${'nb_att_CIBTP_'.($annee_actuelle-3)}); ?>;
+        this[nb_att_CIBTP + (annee_actuelle-4)] = <?php echo json_encode(${'nb_att_CIBTP_'.($annee_actuelle-4)}); ?>;
+
+        var pourcent_bulletin = "pourcent_bulletin_";
+        this[pourcent_bulletin + annee_actuelle] = <?php echo json_encode(${'pourcent_bulletin_'.($annee_actuelle)}); ?>;
+        this[pourcent_bulletin + (annee_actuelle-1)] = <?php echo json_encode(${'pourcent_bulletin_'.($annee_actuelle-1)}); ?>;
+        this[pourcent_bulletin + (annee_actuelle-2)] = <?php echo json_encode(${'pourcent_bulletin_'.($annee_actuelle-2)}); ?>;
+        this[pourcent_bulletin + (annee_actuelle-3)] = <?php echo json_encode(${'pourcent_bulletin_'.($annee_actuelle-3)}); ?>;
+        this[pourcent_bulletin + (annee_actuelle-4)] = <?php echo json_encode(${'pourcent_bulletin_'.($annee_actuelle-4)}); ?>;
+
+        var nb_att_bulletin = "nb_bulletin_";
+        this[nb_att_bulletin + annee_actuelle] = <?php echo json_encode(${'nb_bulletin_'.($annee_actuelle)}); ?>;
+        this[nb_att_bulletin + (annee_actuelle-1)] = <?php echo json_encode(${'nb_bulletin_'.($annee_actuelle-1)}); ?>;
+        this[nb_att_bulletin + (annee_actuelle-2)] = <?php echo json_encode(${'nb_bulletin_'.($annee_actuelle-2)}); ?>;
+        this[nb_att_bulletin + (annee_actuelle-3)] = <?php echo json_encode(${'nb_bulletin_'.($annee_actuelle-3)}); ?>;
+        this[nb_att_bulletin + (annee_actuelle-4)] = <?php echo json_encode(${'nb_bulletin_'.($annee_actuelle-4)}); ?>;
+
         var array_demande_soc = "array_demande_soc_URSSAFMSA_";
         var array_envoye_soc = "array_envoye_soc_URSSAFMSA_";
 
@@ -1561,7 +1684,7 @@ require_once 'php/verif_session_connect_admin.php';
         this[array_envoye_soc + (annee_actuelle - 4)] =<?php echo json_encode(${'array_envoye_bulletin_'.($annee_actuelle - 4)}); ?>;
 
     </script>
-    <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/dashboard-analytics-sociale.js"></script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
@@ -1640,20 +1763,20 @@ require_once 'php/verif_session_connect_admin.php';
             });
 
             // afficher le titre 
-            $("#id_titre_sociale").change(function()) {
-                document.getElementById("id_titre_sociale").style.display = "block";
+            $("#id_titre_attestation").change(function()) {
+                document.getElementById("id_titre_attestation").style.display = "block";
                 document.getElementById("id_titre_bulletin").style.display = "none";
                 document.getElementById("id_titre_dsn").style.display = "none";
             });
 
             $("#id_titre_bulletin").change(function()) {
-                document.getElementById("id_titre_sociale").style.display = "none";
+                document.getElementById("id_titre_attestation").style.display = "none";
                 document.getElementById("id_titre_bulletin").style.display = "block";
                 document.getElementById("id_titre_dsn").style.display = "none";
             });
 
             $("#id_titre_dsn").change(function()) {
-                document.getElementById("id_titre_sociale").style.display = "none";
+                document.getElementById("id_titre_attestation").style.display = "none";
                 document.getElementById("id_titre_bulletin").style.display = "none";
                 document.getElementById("id_titre_dsn").style.display = "block";
             });

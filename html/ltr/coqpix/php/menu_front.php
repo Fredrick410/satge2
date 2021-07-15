@@ -26,7 +26,7 @@
                     </li>
                     <li><a href="file-manager.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Cloudpix">CloudPix</span></a>
                     </li>
-                    <li><a href="#"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Chat">Chat</span></a>
+                    <li><a href="#"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Chatpix">Chat'pix</span></a>
                     </li>
                 </ul>
             </li>
