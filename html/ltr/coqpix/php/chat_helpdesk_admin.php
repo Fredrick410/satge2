@@ -35,7 +35,7 @@ function getMessages() {
 
     $messages = $resultats->fetchAll();
 
-    //3 - On affcihe les données en JSON
+    //3 - On affiche les données en JSON
 
     echo json_encode($messages);
 

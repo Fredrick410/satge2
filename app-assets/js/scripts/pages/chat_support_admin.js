@@ -6,9 +6,9 @@
  * Il nous faut une fonction pour récupérer le JSON des
  * messages et les afficher correctement
  */
-function getMessage() {
+ function getMessages() {
 
-    var id_membre = 1 // recuperer l'id du membre selectionnee dans la liste
+    var id_membre = 1; // recuperer l'id du membre selectionnee dans la liste
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
@@ -55,7 +55,6 @@ function getMessage() {
  * Il nous faut une fonction pour envoyer le nouveau
  * message au serveur et rafraichir les messages
  */
-
 function postMessage(event) {
     
     // 1. Elle doit stoper le submit du formulaire
@@ -64,12 +63,12 @@ function postMessage(event) {
     // 2. Elle doit récupérer les données du formulaire
     // const id_client = document.querySelector('#id_client');
     // const author = document.querySelector('#author');
-    const texte = document.querySelector('#texte');
+    let texte = document.querySelector('#texte');
 
     // 3. Elle doit conditionner les données
     const data = new FormData();
-    data.append('id_client', id_client.value);
-    data.append('author', "support");
+    data.append('id_membre', 1);
+    data.append('auteur', "support");
     data.append('texte', texte.value);
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
@@ -79,7 +78,7 @@ function postMessage(event) {
     requeteAjax.onload = function() {
         texte.value = '';
         texte.focus();
-        getMessage();
+        getMessages();
     }
 
     requeteAjax.send(data);
@@ -87,20 +86,15 @@ function postMessage(event) {
 
 }
 
-document.getElementById('btn_submit').addEventListener('click', event => {
-    postMessage(event);
-});
+getMessages();
 
 /**
  * Il nous faut une intervale qui demande le rafraichissement
  * des messages toutes les 5 secondes et qui donne 
  * l'illusion du temps réel.
  */
-const interval = window.setInterval(getMessages, 100000);
+setInterval( function() { getMessages; }, 5000);
 
-getMessages();
-  
-  
-  
-  
-  
+document.getElementById('btn_submit').addEventListener('click', event => {
+    postMessage(event);
+});
