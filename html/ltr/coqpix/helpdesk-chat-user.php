@@ -10,10 +10,6 @@ require_once 'php/config.php';
     $pdoS->execute();
     $entreprise = $pdoS->fetch();
     
-    // $pdoA = $bdd->prepare('UPDATE entreprise SET support_notif=:support_notif WHERE id=:num'); 
-    // $pdoA->bindValue(':num', $_GET['num']); 
-    // $pdoA->bindValue(':support_notif', "0");
-    // $pdoA->execute();
 
 ?>
 <!DOCTYPE html>
@@ -217,8 +213,6 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
-                                            <input type="hidden" name="id" id="id_client" value="<?= $entreprise['id'] ?>">
-                                            <input type="hidden" name="author" id="author" value="<?= $entreprise['nameentreprise'] ?>">
                                             <input type="text" id="content" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
                                             <button type="submit" id="btn_submit" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
