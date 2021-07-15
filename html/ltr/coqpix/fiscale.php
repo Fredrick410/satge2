@@ -80,7 +80,7 @@ require_once 'php/config.php';
                             <div class="card">
                                 <div class="card-content">
                                     <img class="card-img-top img-fluid" src="../../../app-assets/images/slider/14.jpg" alt="Card image cap" />
-                                    <div class="card-body">
+                                    <div class="card-body text-center">
                                         <h4 class="card-title">Déclaration de TVA</h4>
                                         <p class="card-text">
                                             Vous trouverez dans cet espace l'ensemble de vos déclarations TVA, trié par période mensuelle, par trimestre ou par année.
@@ -93,7 +93,7 @@ require_once 'php/config.php';
                         <div class="col-md-6 col-sm-12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="card-body">
+                                    <div class="card-body text-center">
                                         <h4 class="card-title">Autres TAXES (SOON)</h4>
                                         <p class="card-text">
                                             Vos autres déclarations Fiscales
