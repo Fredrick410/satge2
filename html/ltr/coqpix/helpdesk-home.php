@@ -124,19 +124,18 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <tbody>
                                                     <?php foreach($entreprise as $entreprises): ?>
                                                     <?php
-                                                        $destination = 'support'.$entreprises['nameentreprise'].''; 
-                                                        $pdoSta = $bdd->prepare('SELECT * FROM support_message WHERE destination=:destination');
-                                                        $pdoSta->bindValue(':destination', $destination);
-                                                        $pdoSta->execute();
-                                                        $notif = $pdoSta->fetchAll();
-                                                        $count_notif = count($notif);
+                                                        $select_nb_msg = $bdd->prepare('SELECT count(*) AS nb FROM support_message S, membres M, entreprise E WHERE S.id_membre = M.id AND M.id_session = E.id AND E.id = :id_entreprise');
+                                                        $select_nb_msg->bindValue(':id_entreprise', $entreprises['id']);
+                                                        $select_nb_msg->execute();
+                                                        $nb_msg = $select_nb_msg->fetch();
+                                                        $count_msg = $nb_msg['nb'];
                                                     ?>
                                                         <tr>
                                                             <td class="text-center"><?= $entreprises['nameentreprise'] ?></td>
                                                             <td class="text-center"><?= $entreprises['emailentreprise'] ?></td>
                                                             <td class="text-center"><?= $entreprises['telentreprise'] ?></td>
-                                                            <td class="text-center"><?= $count_notif ?> <i class='bx bx-diamond icon_diam <?php if($entreprises['support_notif'] > 0){}else{echo "none-validation";} ?>'></i>&nbsp&nbsp<small>(<p style="color: <?php if($entreprises['support_notif'] > 0){echo "red";}else{echo "#00ff13";} ?>; display: inline;"><?= $entreprises['support_notif'] ?></p>)</small></td>
-                                                            <td class="text-center"><a href="helpdesk-chat.php?num=<?= $entreprises['id'] ?>"><i class='bx bxs-paper-plane icon'></i></a></td>
+                                                            <td class="text-center"><?= $count_msg ?> <i class='bx bx-diamond icon_diam <?php if($entreprises['support_notif'] > 0){}else{echo "none-validation";} ?>'></i>&nbsp&nbsp<small>(<p style="color: <?php if($entreprises['support_notif'] > 0){echo "red";}else{echo "#00ff13";} ?>; display: inline;"><?= $entreprises['support_notif'] ?></p>)</small></td>
+                                                            <td class="text-center"><a href="helpdesk-chat-admin.php?num=<?= $entreprises['id'] ?>"><i class='bx bxs-paper-plane icon'></i></a></td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 </tbody>

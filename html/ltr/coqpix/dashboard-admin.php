@@ -833,7 +833,7 @@ require_once 'php/verif_session_connect_admin.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="swiper-gallery gallery-top">
+                        <div id="id-swiper-cube" class="swiper-gallery gallery-top">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
                                     <!-- DEBUT COMPTA -->
@@ -953,7 +953,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="card-content">
                                                             <div class="card-body py-1 px-0">
                                                                 <div class="d-flex justify-content-around">
-                                                                    <a href="#" id="id_bouton_ventes" style="
+                                                                    <a href="#" id="id_bouton_ventes" class="cliquable-cube" style="
                                                                         font-family: Rubik, Helvetica, Arial, serif;
                                                                         color: #FFFFFF;
                                                                         background-color: #5A8DEE;
@@ -966,7 +966,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             </div>
                                                                         </div>
                                                                     </a>
-                                                                    <a href="#" id="id_bouton_achats" style="
+                                                                    <a href="#" id="id_bouton_achats" class="cliquable-cube" style="
                                                                         font-family: Rubik, Helvetica, Arial, serif;
                                                                         color: #FFFFFF;
                                                                         background-color: none;
@@ -979,7 +979,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             </div>
                                                                         </div>
                                                                     </a>
-                                                                    <a href="#" id="id_bouton_tresorerie" style="
+                                                                    <a href="#" id="id_bouton_tresorerie" class="cliquable-cube" style="
                                                                         font-family: Rubik, Helvetica, Arial, serif;
                                                                         color: #FFFFFF;
                                                                         background-color: none;
@@ -1154,7 +1154,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <div class="col-md-6 col-12">
                                                                     <h6 class="mb-1"> Prélèvement réussis </h6>
                                                                     <div class="d-flex justify-content-center">
-                                                                        <select style="width: 80px;" class="form-control" id="id_select_mois_prelevement">
+                                                                        <select style="width: 80px;" class="form-control cliquable-cube" id="id_select_mois_prelevement">
                                                                             <option value="0">Janv</option>
                                                                             <option value="1">Fevr</option>
                                                                             <option value="2">Mars</option>
@@ -1168,7 +1168,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             <option value="10">Nov</option>
                                                                             <option value="11">Dec</option>
                                                                         </select>
-                                                                        <select style="width: 80px;" class="form-control" id="id_select_annee_prelevement">
+                                                                        <select style="width: 80px;" class="form-control cliquable-cube" id="id_select_annee_prelevement">
                                                                             <option value="<?= $annee_actuelle ?>"><?= $annee_actuelle ?></option>
                                                                             <option value="<?= $annee_actuelle - 1 ?>"><?= $annee_actuelle - 1 ?></option>
                                                                             <option value="<?= $annee_actuelle - 2 ?>"><?= $annee_actuelle - 2 ?></option>
@@ -1181,7 +1181,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <div class="col-md-6 col-12">
                                                                     <h6 class="mb-1"> Bilans annuels </h6>
                                                                     <div class="d-flex justify-content-center">
-                                                                        <select style="width: 80px;" class="form-control" id="id_select_bilan">
+                                                                        <select style="width: 80px;" class="form-control cliquable-cube" id="id_select_bilan">
                                                                             <option value="<?= $annee_actuelle - 1 ?>"><?= $annee_actuelle - 1 ?></option>
                                                                             <option value="<?= $annee_actuelle - 2 ?>"><?= $annee_actuelle - 2 ?></option>
                                                                             <option value="<?= $annee_actuelle - 3 ?>"><?= $annee_actuelle - 3 ?></option>
@@ -1221,14 +1221,14 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                         <div class="card-content">
                                                             <div class="card-body pb-1 d-flex">
-                                                                <div class="d-flex flex-column justify-content-center"><a class="display-block" href="#" id="id_fleche_gauche_juridique">
+                                                                <div class="d-flex flex-column justify-content-center"><a class="cliquable-cube display-block" href="#" id="id_fleche_gauche_juridique">
                                                                     <div class="round">
                                                                         <span class="line1"></span>
                                                                         <span class="line1"></span>
                                                                     </div>
                                                                 </a></div>
                                                                 <div class="flex-grow-1 mr-1" id="analytics-bar-chart-juridique"></div>
-                                                                <div class="d-flex flex-column justify-content-center"><a class="display-block" href="#" id="id_fleche_droite_juridique">
+                                                                <div class="d-flex flex-column justify-content-center"><a class="cliquable-cube display-block" href="#" id="id_fleche_droite_juridique">
                                                                     <div class="round">
                                                                         <span class="line2"></span>
                                                                         <span class="line2"></span>
@@ -1788,6 +1788,7 @@ require_once 'php/verif_session_connect_admin.php';
             });
            
         });
+
     </script>
 
 </body>

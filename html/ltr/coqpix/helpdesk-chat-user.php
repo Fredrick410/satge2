@@ -1,19 +1,19 @@
 <?php 
-require_once 'php/verif_session_connect_admin.php';
+require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
-    $pdoS->bindValue(':num',$_GET['num']);
+    $pdoS->bindValue(':num',$_SESSION['id']);
     $pdoS->execute();
     $entreprise = $pdoS->fetch();
     
-    $pdoA = $bdd->prepare('UPDATE entreprise SET support_notif=:support_notif WHERE id=:num'); 
-    $pdoA->bindValue(':num', $_GET['num']); 
-    $pdoA->bindValue(':support_notif', "0");
-    $pdoA->execute();
+    // $pdoA = $bdd->prepare('UPDATE entreprise SET support_notif=:support_notif WHERE id=:num'); 
+    // $pdoA->bindValue(':num', $_GET['num']); 
+    // $pdoA->bindValue(':support_notif', "0");
+    // $pdoA->execute();
 
 ?>
 <!DOCTYPE html>
@@ -114,7 +114,7 @@ require_once 'php/config.php';
                                 <p class="mb-2">Nom : <?= $entreprise['nom_diri'] ?><br>Prénom : <?= $entreprise['prenom_diri'] ?></p>
                                 <h6>INFORMATIONS PERSONNELLES</h6>
                                 <ul class="list-unstyled mb-2">
-                                    <li class="mb-25"><?= $entreprise['emailentreprise'] ?>/li>
+                                    <li class="mb-25"><?= $entreprise['emailentreprise'] ?></li>
                                     <li><?= $entreprise['telentreprise'] ?></li>
                                 </ul>
                             </div>
@@ -146,21 +146,11 @@ require_once 'php/config.php';
                             <ul class="chat-sidebar-list">
                                 <li>
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" height="36" width="36" alt="loading">
+                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/astro1.gif" height="36" width="36" alt="loading">
                                             <span class="avatar-status-online"></span>
                                         </div>
                                         <div class="chat-sidebar-name">
-                                            <h6 class="mb-0">Global</h6><span class="text-muted">En ligne</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/portrait/small/avatar-s-8.jpg" height="36" width="36" alt="loading">
-                                            <span class="avatar-status-busy"></span>
-                                        </div>
-                                        <div class="chat-sidebar-name">
-                                            <h6 class="mb-0">Membre N°1 (SOON)</h6><span class="text-muted">Ne pas déranger</span>
+                                            <h6 class="mb-0">Audit action plus</h6><span class="text-muted">En ligne</span>
                                         </div>
                                     </div>
                                 </li>
@@ -193,10 +183,10 @@ require_once 'php/config.php';
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
                                             <div class="avatar m-0 mr-1">
-                                                <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="36" width="36" />
+                                                <img src="../../../src/img/astro1.gif" alt="avatar" height="36" width="36" />
                                                 <span class="avatar-status-online"></span>
                                             </div>
-                                            <h6 class="mb-0">Global</h6>
+                                            <h6 class="mb-0">Audit action plus</h6>
                                         </div>
                                         <div class="chat-header-icons">
                                             <span class="chat-icon-favorite">
