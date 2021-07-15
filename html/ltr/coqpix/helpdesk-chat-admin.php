@@ -268,7 +268,6 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_support_admin.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->

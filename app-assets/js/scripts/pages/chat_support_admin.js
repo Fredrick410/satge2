@@ -6,13 +6,13 @@
  * Il nous faut une fonction pour récupérer le JSON des
  * messages et les afficher correctement
  */
- function getMessages() {
+function getMessages() {
 
     var id_membre = 1; // recuperer l'id du membre selectionnee dans la liste
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_helpdesk_admin.php?id_membre="+id_membre);
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk_admin.php?id_membre="+id_membre);
 
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = () => {
@@ -73,7 +73,7 @@ function postMessage(event) {
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_helpdesk_admin.php?method=post');
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk_admin.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
@@ -93,7 +93,7 @@ getMessages();
  * des messages toutes les 5 secondes et qui donne 
  * l'illusion du temps réel.
  */
-setInterval( function() { getMessages; }, 5000);
+//setInterval( function() { getMessages; }, 5000);
 
 document.getElementById('btn_submit').addEventListener('click', event => {
     postMessage(event);

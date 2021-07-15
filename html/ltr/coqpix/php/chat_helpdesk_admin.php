@@ -27,13 +27,13 @@ function getMessages() {
 
     $id_membre = $_GET['id_membre'];
 
-    $resultats = $bdd->prepare("SELECT * FROM support_message WHERE id_membre = :id_membre ORDER BY heure LIMIT 30");
-    $resultats->bindValue(':auteur', $id_membre);
-    $resultats->execute();
+    $select_messages = $bdd->prepare("SELECT * FROM support_message WHERE id_membre = :id_membre ORDER BY heure LIMIT 30");
+    $select_messages->bindValue(':auteur', $id_membre);
+    $select_messages->execute();
 
     //2 - On va traiter les resultats
 
-    $messages = $resultats->fetchAll();
+    $messages = $select_messages->fetchAll();
 
     //3 - On affiche les données en JSON
 
@@ -49,20 +49,13 @@ function postMessage() {
     global $bdd;
     session_start();
 
-    // //status error si il y a une erreur
-
-    // if(!array_key_exists('author', $_POST) || !array_key_exists('content', $_POST)){
-    //     echo json_encode(["status" => "error", "message" => "One field or many not been sent"]);
-    //     return;
-    // }
-
     //1- Analyer les parametres passés en POST (author, content)
 
-    $id_membre = 1; // recuperer l'id du membre selectionnee dans la liste
+    $id_membre = $_POST['id_membre']; // recuperer l'id du membre selectionnee dans la liste
     $date_message = date("d-m-Y");
     $heure = date('H:m:s');
     $texte = $_POST['texte'];
-    $auteur = "support";
+    $auteur = $_POST['auteur'];
 
     //2- Crée une requete qui permettra l'insertion des informations dans la base de donnée
 
@@ -76,10 +69,6 @@ function postMessage() {
             htmlspecialchars($auteur)
         ));
     }
-
-    //3- Donner un statut de succes ou d'erreur au format JSON
-
-    //echo json_encode(["status" => "sucess"]);
 
 }
 
