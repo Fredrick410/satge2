@@ -1,6 +1,7 @@
 <?php
 
 require_once('../../../app-assets/data/tcpdf_min/tcpdf.php');
+$certificate = "../../../app-assets/data/tcpdf_min/config/cert/tcpdf.crt";
 
 // Extend the TCPDF class to create custom Header and Footer
 class MYPDF extends TCPDF {
@@ -456,6 +457,8 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->MultiCell(90, 0, 'Pour le prestataire', 0, 'L', 1, 0, '', '', true, 0, false, true, 0);
 $pdf->MultiCell(90, 0, 'Pour l\'utilisateur', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
+$pdf->TextField('prestataire', 50, 5, array(), array(), '', '', false);
+$pdf->TextField('utilisateur', 50, 5, array(), array(), 145, '', false);
 
 $pdf->AddPage();
 
@@ -517,7 +520,6 @@ $pdf->writeHTMLCell(0, 0, '', '', $quebis, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->writeHTMLCell(0, 0, '', '', 'Fait à :', 0, 1, 0, true, '', true);
 $pdf->TextField('Fait à', 50, 5);
@@ -531,9 +533,23 @@ $pdf->TextField('Le', 50, 5);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
-$pdf->writeHTMLCell(0, 0, '', '', 'Signature', 0, 1, 0, true, '', true);
+$pdf->SetFont('helvetica', 'B', 10);
+$pdf->CheckBox('signature', 5, false, array(), array(), 'OK');
+$pdf->writeHTMLCell(0, 0, '', '', 'J\'ai lu et j\'accepte les conditions générales', 0, 1, 0, true, '', true);
+
+/*$pdf->writeHTMLCell(0, 0, '', '', 'Signature', 0, 1, 0, true, '', true);
+
+$info = array(
+    "Name" => "TCPDF",
+    "Location" => "Office",
+    "Reason" => "Testing TCPDF",
+    "ContactInfo" => "http://www.tcpdf.org",
+);
+
+$pdf->setSignature($certificate, $certificate, "", "", 2, "Oscar");
+$pdf->setSignatureAppearance(180, 60, 15, 15);
+$pdf->addEmptySignatureAppearance(180, 80, 15, 15);*/
 
 // ---------------------------------------------------------
 
