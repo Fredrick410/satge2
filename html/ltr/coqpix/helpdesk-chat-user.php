@@ -213,7 +213,7 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
-                                            <input type="text" id="content" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
+                                            <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
                                             <button type="submit" id="btn_submit" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
                                         </div>
