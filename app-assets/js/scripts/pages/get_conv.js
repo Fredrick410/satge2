@@ -23,4 +23,17 @@ $(document).ready(function(){
             $("#badge").attr('class','bullet bullet-black bullet-sm');
 
     });
- });    
+
+
+
+ });
+
+function archiver(destination){
+    $.ajax({
+        type: "POST",
+        url: "php/archiver_conv.php",
+        data:'destination='+destination,
+        success: function(){
+        }
+        });
+}

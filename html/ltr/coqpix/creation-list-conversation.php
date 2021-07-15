@@ -205,55 +205,13 @@ require_once 'php/verif_session_connect_admin.php';
                                         <!-- action left start here -->
                                         <div class="action-left d-flex align-items-center">
                                             <!-- delete unread dropdown -->
-                                            <ul class="list-inline m-0 d-flex">
-                                                <li class="list-inline-item mail-delete">
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <div class="dropdown">
-                                                        <button type="button" class="btn btn-icon dropdown-toggle action-icon" id="tag" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span class="fonticon-wrap">
-                                                                <i class="livicon-evo" data-options="name: tag.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                                                </i>
-                                                            </span>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="tag">
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-success bullet-sm"></span>
-                                                                <span>SARL</span>
-                                                            </a>
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-primary bullet-sm"></span>
-                                                                <span>SAS</span>
-                                                            </a>
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-warning bullet-sm"></span>
-                                                                <span>SASU</span>
-                                                            </a>
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-danger bullet-sm"></span>
-                                                                <span>SCI</span>
-                                                            </a>
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-info bullet-sm"></span>
-                                                                <span>EIRL</span>
-                                                            </a>
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-light bullet-sm"></span>
-                                                                <span>EI</span>
-                                                            </a>
-                                                            <a href="#" class="dropdown-item align-items-center">
-                                                                <span class="bullet bullet-black bullet-sm"></span>
-                                                                <span>Micro-entreprise</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                            
                                         </div>
                                         <!-- action left end here -->
 
                                         <!-- action right start here -->
                                         <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
+                                        
                                             <!-- search bar  -->
                                             <div class="email-fixed-search flex-grow-1">
                                                 <div class="sidebar-toggle d-block d-lg-none">
@@ -267,18 +225,13 @@ require_once 'php/verif_session_connect_admin.php';
                                                 </fieldset>
                                             </div>
                                             <!-- pagination and page count -->
-                                            <button class="btn btn-icon email-pagination-prev d-none d-sm-block">
-                                                <i class="bx bx-chevron-left"></i>
-                                            </button>
-                                            <button class="btn btn-icon email-pagination-next d-none d-sm-block">
-                                                <i class="bx bx-chevron-right"></i>
-                                            </button>
+                                            
                                         </div>
                                     </div>
                                     <!-- / action right -->
                                     <div class="row" >
                                     <!-- email user list start -->
-                                        <div class="email-user-list col-4" style="overflow-x:scroll;" id="list-users">
+                                        <div class="email-user-list col-4" style="overflow-y:scroll;" id="list-users">
                                             <ul class="users-list-wrapper media-list">
                                                 <script>var compte=new Array();</script>
                                                 <?php 
@@ -328,6 +281,14 @@ require_once 'php/verif_session_connect_admin.php';
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
+                                                                    <!--Bouton d'archivage-->
+                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver("<?=$msg['destination']?>");'>
+                                                                        <span class="fonticon-wrap">
+                                                                            <i id="img_save" class="livicon-evo" data-options="name: save.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                                                            </i>
+                                                                        </span>
+                                                                    </button>
+                                                                    <!--FIN archivage-->
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
                                                                     <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
                                                                 </div>
@@ -335,8 +296,8 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <span class="float-right">
                                                                         <a><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
                                                                         <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
-                                                                        
                                                                     </span>
+                                                                    
                                                                     
                                                                 </div>
                                                             </div>
