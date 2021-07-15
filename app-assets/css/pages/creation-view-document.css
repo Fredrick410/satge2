@@ -1,0 +1,152 @@
+
+.nofavo{text-decoration: none; color : #c7cfd6;}
+.nofavoh:hover{text-decoration: none; color : #ffcd02;}
+.favo{text-decoration: none; color : #ffcd02;}
+.favoh:hover{text-decoration: none; color : #c7cfd6;}
+.line{text-decoration: underline;}
+.sizeright{font-size: 12px;}
+.nonedoc {display : none;}
+.esp{color: #828D99; text-decoration: underline;}
+.esp:hover{color: #34465b; text-decoration: underline;}
+.dropzone{border: 1px dashed black;}
+.bouge{overflow-x:hidden;}
+.none-validation{display: none;}
+.block-validation{display: block;}
+.red{color: red;}
+.green{color: #41e15c;}
+
+/* styles de base si JS est activé */
+.js .input-file-container {
+	position: relative;
+	width: 225px;
+}
+
+.js .input-file-trigger {
+	display: block;
+	padding: 14px 45px;
+	background: #051441;
+	color: #fff;
+	font-size: 1em;
+	transition: all .4s;
+	cursor: pointer;
+}
+
+.js .input-file {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 225px;
+	padding: 14px 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+/* quelques styles d'interactions */
+.js .input-file:hover + .input-file-trigger,
+.js .input-file:focus + .input-file-trigger,
+.js .input-file-trigger:hover,
+.js .input-file-trigger:focus {
+	background: #29fe8c;
+	color: #051441;
+}
+
+/* styles du retour visuel */
+.file-return {
+	margin: 0;
+}
+
+.file-return:not(:empty) {
+	margin: 1em 0;
+}
+
+.js .file-return {
+	font-style: italic;
+	font-size: .9em;
+	font-weight: bold;
+}
+
+/* on complète l'information d'un contenu textuel uniquement lorsque le paragraphe n'est pas vide */
+.js .file-return:not(:empty):before {
+	content: "Ficher selectionné: ";
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face{
+    font-family: "mukta malar bold";
+    src: url("../Mukta_Malar/MuktaMalar-Bold.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar medium";
+    src: url("../Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
+@font-face{
+    font-family: "mukta malar light";
+    src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
+}
+
+.app-content{
+    background-color: #EDF1FF;
+}
+
+#img-doc{
+    height: 20px;
+}
+
+#scroll-doc a #vx{
+    float: right;
+    height: 20px;
+    margin-left: 10px;
+    color: #29fe8c;
+}
+
+#av{
+    background-color: #29fe8c;
+}
+
+#ax{
+    background-color: #C0C0C0;
+}
+
+#scroll-doc a{
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #051441;
+    font-family: mukta malar medium;
+}
+
+.form-group p{
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+label{
+    font-family: mukta malar medium;
+    color: #051441;
+}
+
+small{
+    font-family: mukta malar light;
+    color: #051441;
+}
+
+.form-group h1, .form-group h4{
+    font-family: mukta malar bold;
+    color: #051441;
+}
+
+#sidebar{
+    width: 360px; 
+    background-color: white;
+}
+
+#download-doc{
+    font-size: 18px;
+}
+
+#chk{
+    margin-right: 10px;
+}

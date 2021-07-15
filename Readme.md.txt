@@ -106,3 +106,23 @@ branche de leo :
 		-domiciliation-offre.php : ajout des caractéristiques
 		-fix bug page-creation-edit : on ne pouvait pas sauvegarder si on ne modifiait pas le telephone
 		-ajout des "carousel" dans la page domiciliation pour les offres
+
+	tache réalisée
+		-bouton radio sur offre-domiciliation et fix js
+
+branche de oscar :
+	tache réalisée le 08/07/2021 :
+		- page ajout document compte crea fini
+		- fix affichage info dirigeant page crea
+		- pop-up message back end dans creation société
+		- alert retirer dans la back end dans crea société
+		- ajout item conversation back end dans creation societe
+
+	tache réalisée le 09/07/2021 :
+		- front page formulaire contrat domiciliation-contrat.php
+
+	tache réalisée le 12/07/2021 :
+		- creation pdf avec generate-pdf.php pour le contrat de domiciliation
+
+	tache réalisée le 13/07/2021 :
+		- avancée sur generate-pdf.php
