@@ -209,104 +209,104 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) and $_SERVER['HTTP_X_REQUESTED_WITH
                     }
                 }
             }
-            try {
+            if( $A2 != 0){
                 $A1 = $A1/$A2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $A1 = 0;
             }
-            try {
+            if( $B2 != 0){
                 $B1 = $B1/$B2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $B1 = 0;
             }
-            try {
+            if( $C2 != 0){
                 $C1 = $C1/$C2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $C1 = 0;
             }
-            try {
+            if( $D2 != 0){
                 $D1 = $D1/$D2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $D1 = 0;
             }
-            try {
+            if( $E2 != 0){
                 $E1 = $E1/$E2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $E1 = 0;
             }
-            try {
+            if( $F2 != 0){
                 $F1 = $F1/$F2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $F1 = 0;
             }
-            try {
+            if( $G2 != 0){
                 $G1 = $G1/$G2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $G1 = 0;
             }
-            try {
+            if( $H2 != 0){
                 $H1 = $H1/$H2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $H1 = 0;
             }
-            try {
+            if( $I2 != 0){
                 $I1 = $I1/$I2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $I1 = 0;
             }
-            try {
+            if( $J2 != 0){
                 $J1 = $J1/$J2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $J1 = 0;
             }
-            try {
+            if( $K2 != 0){
                 $K1 = $K1/$K2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $K1 = 0;
             }
-            try {
+            if( $L2 != 0){
                 $L1 = $L1/$L2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $L1 = 0;
             }
-            try {
+            if( $M2 != 0){
                 $M1 = $M1/$M2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $M1 = 0;
             }
-            try {
+            if( $N2 != 0){
                 $N1 = $N1/$N2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $N1 = 0;
             }
-            try {
+            if( $O2 != 0){
                 $O1 = $O1/$O2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $O1 = 0;
             }
-            try {
+            if( $P2 != 0){
                 $P1 = $P1/$P2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $P1 = 0;
             }
-            try {
+            if( $Q2 != 0){
                 $Q1 = $Q1/$Q2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $Q1 = 0;
             }
-            try {
+            if( $R2 != 0){
                 $R1 = $R1/$R2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $R1 = 0;
             }
-            try {
+            if( $S2 != 0){
                 $S1 = $S1/$S2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $S1 = 0;
             }
-            try {
+            if( $T2 != 0){
                 $T1 = $T1/$T2;
-            } catch (DivisionByZeroError $e) {
+            } else {
                 $T1 = 0;
             }
             $max_value = max($A1, $B1, $C1, $D1, $E1, $F1, $G1, $H1, $I1, $J1, $K1, $L1, $M1, $N1, $O1, $P1, $Q1, $R1, $S1, $T1);

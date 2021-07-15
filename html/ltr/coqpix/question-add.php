@@ -462,13 +462,14 @@ $entreprise = $pdoSta->fetch();
                         critere_reponse: critere_reponse
                     },
                     success: function(data) {
-                        addAlert("Question ajoutée", "success");
-                        window.setTimeout(function() {
-                            window.location.href = data;
-                        }, 1000);
-                    },
-                    error: function(data) {
-                        addAlert(data, "error");
+                        if (data.status == "success") {
+                            addAlert("Question ajoutée", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
                     }
                 });
             });

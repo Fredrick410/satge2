@@ -20,7 +20,7 @@ if (count($qcms) != 1) {
     header('Location: rh-recrutement-entretient.php');
 }
 
-$pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
+$pdoSta = $bdd->prepare('SELECT * FROM admin WHERE id = :num');
 $pdoSta->bindValue(':num', $_SESSION['id_admin'], PDO::PARAM_INT); //$_SESSION
 $pdoSta->execute();
 $entreprise = $pdoSta->fetch();
@@ -433,14 +433,16 @@ $entreprise = $pdoSta->fetch();
                         critere: critere,
                         critere_reponse: critere_reponse
                     },
+                    dataType: "json",
                     success: function(data) {
-                        addAlert("Question ajoutée", "success");
-                        window.setTimeout(function() {
-                            window.location.href = data;
-                        }, 1000);
-                    },
-                    error: function(data) {
-                        addAlert(data, "error");
+                        if (data.status == "success") {
+                            addAlert("Question ajoutée", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
                     }
                 });
             });

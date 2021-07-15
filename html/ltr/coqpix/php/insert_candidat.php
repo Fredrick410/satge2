@@ -20,6 +20,10 @@ ini_set('display_startup_errors', TRUE);
     $qualite = $_POST['qualite'];
     $default = $_POST['default'];
     $permis_conduite = $_POST['permis_conduite'];
+    $tel_candidat = $_POST['tel_candidat'];
+    $email_candidat = $_POST['email_candidat'];
+    $dtenaissance_candidat = $_POST['dtenaissance_candidat'];
+    $pays = $_POST['pays'];
 
     $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND name_annonce=:name_annonce');
     $pdoS->bindValue(':num',$_POST['id_session']);
@@ -57,7 +61,7 @@ ini_set('display_startup_errors', TRUE);
 
     $code = ''.passgen1(10).';'.$id_session.';'.$num.'';
 
-    $insert = $bdd->prepare('INSERT INTO rh_candidature (name_annonce , num_candidat, sexe_candidat, nom_candidat, prenom_candidat, age_candidat, specialite_candidat, image_candidat, time_candidat, logiciel, langue, formationetude, interet, qualite, default_candi, cv_doc, lettredemotivation_doc, other_doc, qcm, statut, key_candidat, id_session,permis_conduite) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO rh_candidature (name_annonce , num_candidat, sexe_candidat, nom_candidat, prenom_candidat, age_candidat, tel_candidat, email_candidat, dtenaissance_candidat, pays, specialite_candidat, image_candidat, time_candidat, logiciel, langue, formationetude, interet, qualite, default_candi, cv_doc, lettredemotivation_doc, other_doc, qcm, statut, key_candidat, id_session,permis_conduite) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($name_annonce),
         htmlspecialchars($num_candidat),
@@ -65,6 +69,10 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($nom_candidat),
         htmlspecialchars($prenom_candidat),
         htmlspecialchars($age_candidat),
+        htmlspecialchars($tel_candidat),
+        htmlspecialchars($email_candidat),
+        htmlspecialchars($dtenaissance_candidat),
+        htmlspecialchars($pays),
         htmlspecialchars($specialite_candidat),
         htmlspecialchars(""),
         htmlspecialchars($time_candidat),

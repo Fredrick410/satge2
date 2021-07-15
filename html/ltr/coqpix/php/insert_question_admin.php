@@ -30,9 +30,11 @@ if (isset($_POST['critere'])) {
                             htmlspecialchars($_POST['critere']),
                             htmlspecialchars($_POST['points'])
                         ));
-                    } catch (PDOException $exception) {
-                        var_dump($exception->getMessage());
-                        echo "question-add-admin.php?id=$id";
+                    } catch (PDOException $e) {
+                        $response_array['status'] = 'error';
+                        $response_array['message'] = $e->getMessage();
+                        echo json_encode($response_array);
+                        exit();
                     }
                     $id_question = $bdd->lastInsertId();
                     try {
@@ -45,16 +47,40 @@ if (isset($_POST['critere'])) {
                                 $_POST['critere_reponse'][$i]
                             ));
                         }
-                    } catch (PDOException $exception) {
-                        var_dump($exception->getMessage());
-                        echo "question-add-admin.php?id=$id";
+                    } catch (PDOException $e) {
+                        $response_array['status'] = 'error';
+                        $response_array['message'] = $e->getMessage();
+                        echo json_encode($response_array);
+                        exit();
                     }
                     $id = $_POST['idqcm'];
-                    echo "recrutement-list-question.php?id=$id";
+                    $response_array['status'] = 'success';
+                    $response_array['link'] = "recrutement-list-question.php?id=$id";
+                    echo json_encode($response_array);
+                    exit();
+                } else {
+                    $response_array['status'] = 'error';
+                    $response_array['message'] = 'Merci d\'ajouter au moins deux réponses';
+                    echo json_encode($response_array);
                     exit();
                 }
+            } else {
+                $response_array['status'] = 'error';
+                $response_array['message'] = 'Merci de remplir tous les champs et ajouter des réponses';
+                echo json_encode($response_array);
+                exit();
             }
+        } else {
+            $response_array['status'] = 'error';
+            $response_array['message'] = 'Critere inexistant';
+            echo json_encode($response_array);
+            exit();
         }
+    } else {
+        $response_array['status'] = 'error';
+        $response_array['message'] = 'Catégorie de critere inexistante';
+        echo json_encode($response_array);
+        exit();
     }
 } elseif (isset($_POST['reponses']) and isset($_POST['vraioufaux']) and $_POST['libelle'] != "" and $_POST['idqcm'] != "" and $_POST['points'] != "") {
     if (count($_POST['reponses']) == count($_POST['vraioufaux']) and count($_POST['reponses']) >= 2) {
@@ -66,9 +92,11 @@ if (isset($_POST['critere'])) {
                     htmlspecialchars($_POST['libelle']),
                     htmlspecialchars($_POST['points'])
                 ));
-            } catch (PDOException $exception) {
-                var_dump($exception->getMessage());
-                echo "question-add-admin.php?id=$id";
+            } catch (PDOException $e) {
+                $response_array['status'] = 'error';
+                $response_array['message'] = $e->getMessage();
+                echo json_encode($response_array);
+                exit();
             }
 
             $id_question = $bdd->lastInsertId();
@@ -81,15 +109,32 @@ if (isset($_POST['critere'])) {
                         htmlspecialchars($_POST['vraioufaux'][$i]) //$_SESSION
                     ));
                 }
-            } catch (PDOException $exception) {
-                var_dump($exception->getMessage());
-                echo "question-add-admin.php?id=$id";
+            } catch (PDOException $e) {
+                $response_array['status'] = 'error';
+                $response_array['message'] = $e->getMessage();
+                echo json_encode($response_array);
+                exit();
             }
             $id = $_POST['idqcm'];
-            echo "recrutement-list-question.php?id=$id";
+            $response_array['status'] = 'success';
+            $response_array['link'] = "recrutement-list-question.php?id=$id";
+            echo json_encode($response_array);
+            exit();
+        } else {
+            $response_array['status'] = 'error';
+            $response_array['message'] = 'Merci d\'ajouter au moins une réponse vraie';
+            echo json_encode($response_array);
             exit();
         }
+    } else {
+        $response_array['status'] = 'error';
+        $response_array['message'] = 'Merci d\'ajouter au moins deux réponses';
+        echo json_encode($response_array);
+        exit();
     }
+} else {
+    $response_array['status'] = 'error';
+    $response_array['message'] = 'Merci de remplir tous les champs et ajouter des réponses';
+    echo json_encode($response_array);
+    exit();
 }
-echo "question-add-admin.php?id=$id";
-exit();

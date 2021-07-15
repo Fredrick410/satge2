@@ -90,6 +90,12 @@ $pdoSta->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
 $pdoSta->execute();
 $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
 
+$pdoSta = $bdd->prepare('SELECT * FROM admin WHERE id = :num');
+$pdoSta->bindValue(':num', $_SESSION['id_admin'], PDO::PARAM_INT); //$_SESSION
+$pdoSta->execute();
+$entreprise = $pdoSta->fetch();
+
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -531,14 +537,16 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                         critere: critere,
                         critere_reponse: critere_reponse
                     },
+                    dataType: "json",
                     success: function(data) {
-                        addAlert("Question mise a jour", "success");
-                        window.setTimeout(function() {
-                            window.location.href = data;
-                        }, 1000);
-                    },
-                    error: function(data) {
-                        addAlert(data, "error");
+                        if (data.status == "success") {
+                            addAlert("Question mise a jour", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
                     }
                 });
             });
