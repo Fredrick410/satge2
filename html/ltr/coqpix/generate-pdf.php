@@ -555,12 +555,10 @@ $pdf->addEmptySignatureAppearance(180, 80, 15, 15);*/
 
 // Close and output PDF document
 ob_clean();
-$pdf->Output('contrat_domiciliation.pdf', 'I');
+$pdf->Output('contrat_domiciliation.pdf', 'D');
 
 //============================================================+
 // END OF FILE
 //============================================================+
 
 ?>
-
-</html>

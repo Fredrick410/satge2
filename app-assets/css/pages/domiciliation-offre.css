@@ -152,6 +152,10 @@ input[type="radio"].solu + label:hover{
     background-color: #29fe8c;
     padding: 5px 10px;
 }
+/*
+#btn button:{
+    outline: none;
+}*/
 
 #contrat-droite label, #contrat-gauche label{
     font-family: mukta malar medium;
