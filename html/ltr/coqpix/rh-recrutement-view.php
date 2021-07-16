@@ -592,10 +592,10 @@ if (count($candidature) != 0) {
                                                             max_value = response['max_value'];
                                                             tested_status = response['status'];
 
-                                                            var red_deter = [response['result_rep']['parametre_rep']['A'] / max_value * 10, "Détermination"];
-                                                            var red_amb = [response['result_rep']['parametre_rep']['B'] / max_value * 10, "Ambition"];
-                                                            var red_gout = [response['result_rep']['parametre_rep']['C'] / max_value * 10, "Gout de l'effort"];
-                                                            var red_esp = [response['result_rep']['parametre_rep']['D'] / max_value * 10, "Esprit de compétition"];
+                                                            var red_deter = [response['result_rep']['parametre_rep']['A'] / max_value * 10, "Détermination", "red"];
+                                                            var red_amb = [response['result_rep']['parametre_rep']['B'] / max_value * 10, "Ambition", "red"];
+                                                            var red_gout = [response['result_rep']['parametre_rep']['C'] / max_value * 10, "Gout de l'effort", "red"];
+                                                            var red_esp = [response['result_rep']['parametre_rep']['D'] / max_value * 10, "Esprit de compétition", "red"];
 
                                                             var red = [red_deter, red_amb, red_gout, red_esp];
                                                             var sum_red = summ(red, tested_status, 0);
@@ -605,10 +605,10 @@ if (count($candidature) != 0) {
                                                                 return max != max_red;
                                                             }));
 
-                                                            var blue_ais = [response['result_rep']['parametre_rep']['E'] / max_value * 10, "Assurance en public"];
-                                                            var blue_ouv = [response['result_rep']['parametre_rep']['F'] / max_value * 10, "Ouverture aux autres"];
-                                                            var blue_dip = [response['result_rep']['parametre_rep']['G'] / max_value * 10, "Diplomatie"];
-                                                            var blue_pers = [response['result_rep']['parametre_rep']['H'] / max_value * 10, "Persuasion"];
+                                                            var blue_ais = [response['result_rep']['parametre_rep']['E'] / max_value * 10, "Assurance en public", "blue"];
+                                                            var blue_ouv = [response['result_rep']['parametre_rep']['F'] / max_value * 10, "Ouverture aux autres", "blue"];
+                                                            var blue_dip = [response['result_rep']['parametre_rep']['G'] / max_value * 10, "Diplomatie", "blue"];
+                                                            var blue_pers = [response['result_rep']['parametre_rep']['H'] / max_value * 10, "Persuasion", "blue"];
 
                                                             var blue = [blue_ais, blue_ouv, blue_dip, blue_pers];
                                                             var sum_blue = summ(blue, tested_status, 1);
@@ -618,10 +618,10 @@ if (count($candidature) != 0) {
                                                                 return max != max_blue;
                                                             }));
 
-                                                            var yellow_diri = [response['result_rep']['parametre_rep']['I'] / max_value * 10, "Diriger"];
-                                                            var yellow_rep = [response['result_rep']['parametre_rep']['J'] / max_value * 10, "Prise de responsabilités"];
-                                                            var yellow_org = [response['result_rep']['parametre_rep']['K'] / max_value * 10, "Organisation"];
-                                                            var yellow_visio = [response['result_rep']['parametre_rep']['L'] / max_value * 10, "Vision"];
+                                                            var yellow_diri = [response['result_rep']['parametre_rep']['I'] / max_value * 10, "Diriger", "yellow"];
+                                                            var yellow_rep = [response['result_rep']['parametre_rep']['J'] / max_value * 10, "Prise de responsabilités", "yellow"];
+                                                            var yellow_org = [response['result_rep']['parametre_rep']['K'] / max_value * 10, "Organisation", "yellow"];
+                                                            var yellow_visio = [response['result_rep']['parametre_rep']['L'] / max_value * 10, "Vision", "yellow"];
 
                                                             var yellow = [yellow_diri, yellow_rep, yellow_org, yellow_visio];
                                                             var sum_yellow = summ(yellow, tested_status, 2);
@@ -631,10 +631,10 @@ if (count($candidature) != 0) {
                                                                 return max != max_yellow;
                                                             }));
 
-                                                            var green_conf = [response['result_rep']['parametre_rep']['M'] / max_value * 10, "Confiance en soi"];
-                                                            var green_ind = [response['result_rep']['parametre_rep']['N'] / max_value * 10, "Indépendance d'esprit"];
-                                                            var green_crea = [response['result_rep']['parametre_rep']['O'] / max_value * 10, "Créativité"];
-                                                            var green_auto = [response['result_rep']['parametre_rep']['P'] / max_value * 10, "Autonomie"];
+                                                            var green_conf = [response['result_rep']['parametre_rep']['M'] / max_value * 10, "Confiance en soi", "green"];
+                                                            var green_ind = [response['result_rep']['parametre_rep']['N'] / max_value * 10, "Indépendance d'esprit", "green"];
+                                                            var green_crea = [response['result_rep']['parametre_rep']['O'] / max_value * 10, "Créativité", "green"];
+                                                            var green_auto = [response['result_rep']['parametre_rep']['P'] / max_value * 10, "Autonomie", "green"];
 
                                                             var green = [green_conf, green_ind, green_crea, green_auto];
                                                             var sum_green = summ(green, tested_status, 3);
@@ -644,10 +644,10 @@ if (count($candidature) != 0) {
                                                                 return max != max_green;
                                                             }));
 
-                                                            var purple_gest = [response['result_rep']['parametre_rep']['Q'] / max_value * 10, "Gestion du stress"];
-                                                            var purple_react = [response['result_rep']['parametre_rep']['R'] / max_value * 10, "Réactivité"];
-                                                            var purple_pat = [response['result_rep']['parametre_rep']['S'] / max_value * 10, "Patience"];
-                                                            var purple_resp = [response['result_rep']['parametre_rep']['T'] / max_value * 10, "Respect de la hiérarchie"];
+                                                            var purple_gest = [response['result_rep']['parametre_rep']['Q'] / max_value * 10, "Gestion du stress", "purple"];
+                                                            var purple_react = [response['result_rep']['parametre_rep']['R'] / max_value * 10, "Réactivité", "purple"];
+                                                            var purple_pat = [response['result_rep']['parametre_rep']['S'] / max_value * 10, "Patience", "purple"];
+                                                            var purple_resp = [response['result_rep']['parametre_rep']['T'] / max_value * 10, "Respect de la hiérarchie", "purple"];
 
                                                             var purple = [purple_gest, purple_react, purple_pat, purple_resp];
                                                             var sum_purple = summ(purple, tested_status, 4);
@@ -740,17 +740,32 @@ if (count($candidature) != 0) {
                                                             text_purple_resp = purple_resp > 7 ? "élevée" : text_purple_resp;
 
                                                             var max_moy = getMaxTableau([moy_red, moy_green, moy_blue, moy_purple, moy_yellow]);
-                                                            document.getElementById("comment-red<?= $i ?>").innerHTML = "Performance individuelle " + text_moy_red + "(" + (moy_red * 10) + "%).";
-                                                            document.getElementById("comment-blue<?= $i ?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "(" + (moy_blue * 10) + "%).";
-                                                            document.getElementById("comment-yellow<?= $i ?>").innerHTML = "Capacité de manager " + text_moy_yellow + "(" + (moy_yellow * 10) + "%).";
-                                                            document.getElementById("comment-green<?= $i ?>").innerHTML = "Autonomie " + text_moy_green + "(" + (moy_green * 10) + "%).";
-                                                            document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
+                                                            if(!isNaN(moy_red)){
+                                                                document.getElementById("comment-red<?= $i ?>").innerHTML = "Performance individuelle " + text_moy_red + "(" + (moy_red * 10) + "%).";
+                                                            }
+                                                            if(!isNaN(moy_blue)){
+                                                                document.getElementById("comment-blue<?= $i ?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "(" + (moy_blue * 10) + "%).";
+                                                            }
+                                                            if(!isNaN(moy_yellow)){
+                                                                document.getElementById("comment-yellow<?= $i ?>").innerHTML = "Capacité de manager " + text_moy_yellow + "(" + (moy_yellow * 10) + "%).";
+                                                            }
+                                                            if(!isNaN(moy_green)){
+                                                                document.getElementById("comment-green<?= $i ?>").innerHTML = "Autonomie " + text_moy_green + "(" + (moy_green * 10) + "%).";
+                                                            }
+                                                            if(!isNaN(moy_purple)){
+                                                                document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
+                                                            }
 
                                                             // methode filter Impossible
 
                                                             var finalVar = [];
                                                             var finalLabel = [];
-                                                            for (let i = 0; i < tableVar.length; i++) { // suppr colone table vide.
+                                                            var red = [];
+                                                            var blue = [];
+                                                            var yellow = [];
+                                                            var green = [];
+                                                            var purple = [];
+                                                            for (let i = 0; i < tableVar.length; i++) { 
                                                                 var contains = tested_status.some(elem => {
                                                                     return JSON.stringify({
                                                                         "statu": tableVar[i][1]
@@ -758,7 +773,41 @@ if (count($candidature) != 0) {
                                                                 });
                                                                 if (contains) {
                                                                     finalLabel.push(tableVar[i][1]);
-                                                                    finalVar.push(tableVar[i][0]);
+                                                                    if(tableVar[i][2] == "red"){
+                                                                        red.push(tableVar[i][0]);
+                                                                        blue.push(null);
+                                                                        yellow.push(null);
+                                                                        green.push(null);
+                                                                        purple.push(null);
+                                                                    }
+                                                                    else if(tableVar[i][2] == "blue"){
+                                                                        blue.push(tableVar[i][0]);
+                                                                        red.push(null);
+                                                                        yellow.push(null);
+                                                                        green.push(null);
+                                                                        purple.push(null);
+                                                                    }
+                                                                    else if(tableVar[i][2] == "yellow"){
+                                                                        yellow.push(tableVar[i][0]);
+                                                                        blue.push(null);
+                                                                        red.push(null);
+                                                                        green.push(null);
+                                                                        purple.push(null);
+                                                                    }
+                                                                    else if(tableVar[i][2] == "green"){
+                                                                        green.push(tableVar[i][0]);
+                                                                        blue.push(null);
+                                                                        yellow.push(null);
+                                                                        red.push(null);
+                                                                        purple.push(null);
+                                                                    }
+                                                                    else{
+                                                                        purple.push(tableVar[i][0]);
+                                                                        blue.push(null);
+                                                                        yellow.push(null);
+                                                                        green.push(null);
+                                                                        red.push(null);
+                                                                    }
                                                                 }
                                                             }
 
@@ -768,60 +817,38 @@ if (count($candidature) != 0) {
                                                                 data: {
                                                                     labels: finalLabel,
                                                                     datasets: [{
-                                                                        label: 'Résultat Test',
-                                                                        data: finalVar,
-                                                                        backgroundColor: [
-                                                                            'rgba(255, 99, 132, 0.2)',
-                                                                            'rgba(255, 99, 132, 0.2)',
-                                                                            'rgba(255, 99, 132, 0.2)',
-                                                                            'rgba(255, 99, 132, 0.2)',
-
-                                                                            'rgba(54, 162, 235, 0.2)',
-                                                                            'rgba(54, 162, 235, 0.2)',
-                                                                            'rgba(54, 162, 235, 0.2)',
-                                                                            'rgba(54, 162, 235, 0.2)',
-
-                                                                            'rgba(255, 206, 86, 0.2)',
-                                                                            'rgba(255, 206, 86, 0.2)',
-                                                                            'rgba(255, 206, 86, 0.2)',
-                                                                            'rgba(255, 206, 86, 0.2)',
-
-                                                                            'rgba(75, 192, 192, 0.2)',
-                                                                            'rgba(75, 192, 192, 0.2)',
-                                                                            'rgba(75, 192, 192, 0.2)',
-                                                                            'rgba(75, 192, 192, 0.2)',
-
-                                                                            'rgba(153, 102, 255, 0.2)',
-                                                                            'rgba(153, 102, 255, 0.2)',
-                                                                            'rgba(153, 102, 255, 0.2)',
-                                                                            'rgba(153, 102, 255, 0.2)'
-                                                                        ],
-                                                                        borderColor: [
-                                                                            'rgba(255, 99, 132, 1)',
-                                                                            'rgba(255, 99, 132, 1)',
-                                                                            'rgba(255, 99, 132, 1)',
-                                                                            'rgba(255, 99, 132, 1)',
-
-                                                                            'rgba(54, 162, 235, 1)',
-                                                                            'rgba(54, 162, 235, 1)',
-                                                                            'rgba(54, 162, 235, 1)',
-                                                                            'rgba(54, 162, 235, 1)',
-
-                                                                            'rgba(255, 206, 86, 1)',
-                                                                            'rgba(255, 206, 86, 1)',
-                                                                            'rgba(255, 206, 86, 1)',
-                                                                            'rgba(255, 206, 86, 1)',
-
-                                                                            'rgba(75, 192, 192, 1)',
-                                                                            'rgba(75, 192, 192, 1)',
-                                                                            'rgba(75, 192, 192, 1)',
-                                                                            'rgba(75, 192, 192, 1)',
-
-                                                                            'rgba(153, 102, 255, 1)',
-                                                                            'rgba(153, 102, 255, 1)',
-                                                                            'rgba(153, 102, 255, 1)',
-                                                                            'rgba(153, 102, 255, 1)'
-                                                                        ],
+                                                                        label: 'Performance individuelle',
+                                                                        data: red,
+                                                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                                                        borderColor: 'rgb(255, 99, 132)',
+                                                                        borderWidth: 1
+                                                                    },
+                                                                    {
+                                                                        label: 'Capacité de communication interpersonnelle',
+                                                                        data: blue,
+                                                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                                        borderColor: 'rgb(54, 162, 235)',
+                                                                        borderWidth: 1
+                                                                    },
+                                                                    {
+                                                                        label: 'Capacité de manager',
+                                                                        data: yellow,
+                                                                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                                                        borderColor: 'rgb(255, 206, 86)',
+                                                                        borderWidth: 1
+                                                                    },
+                                                                    {
+                                                                        label: 'Autonomie',
+                                                                        data: green,
+                                                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                                        borderColor: 'rgb(75, 192, 192)',
+                                                                        borderWidth: 1
+                                                                    },
+                                                                    {
+                                                                        label: 'Maîtrise de soi',
+                                                                        data: purple,
+                                                                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                                                        borderColor: 'rgba(153, 102, 255)',
                                                                         borderWidth: 1
                                                                     }]
                                                                 },

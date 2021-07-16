@@ -152,11 +152,11 @@ $entreprise = $pdoSta->fetch();
                                                             <label for="critere" class="col-form-label">Critère evalué</label>
                                                             <select class="form-control" name="critere" id="critere">
                                                                 <option value="">Sélectionner un critère d'évaluation</option>
-                                                                <option>paramA</option>
-                                                                <option>paramB</option>
-                                                                <option>paramC</option>
-                                                                <option>paramD</option>
-                                                                <option>paramE</option>
+                                                                <option value="paramA">Performance individuelle</option>
+                                                                <option value="paramB">Capacité de communication interpersonnelle</option>
+                                                                <option value="paramC">Capacité de manager</option>
+                                                                <option value="paramD">Autonomie</option>
+                                                                <option value="paramE">Maîtrise de soi</option>
                                                             </select>
                                                         </div>
 
