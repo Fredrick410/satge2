@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#list-users ul li").click(function(){ 
+    $("#list-users ul li").click(function(){
         var entreprise = $(this).find("#entreprise").val();
         var img = $(this).find("#img").val();
         $("#id_client").val($(this).attr('id'));

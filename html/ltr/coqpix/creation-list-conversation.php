@@ -273,7 +273,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <li class="media rounded" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-1 days") ){echo "rgba(255, 174, 0, 0.25)"; $affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-6 hours") ){echo "rgba(255, 232, 0, 0.25)";$affichage=1;}
-                                                                        else{ echo "mail-read"; $affichage=1;}?>;'>
+                                                                        else{ echo "mail-read"; $affichage=1;}?>;' onclick="getMessages();">
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">
@@ -342,17 +342,18 @@ require_once 'php/verif_session_connect_admin.php';
                                                 </div>
                                             </div>
                                             
-                                            <div class="historique p-3" id="historique">
+                                            <div class="historique p-3" id="historique" style="height:400px;">
                                                 <div class="chat-content">
-        
+                                            
+                        
                                                 </div>
                                             </div>
 
-                                            <div class="message">
+                                            <div class="position-absolute" style="width:95%;top:500px;">
                                                 <input type="hidden" name="id" id="id_client" value="">
                                                 <input type="hidden" name="author" id="author" value="">
                                                 
-                                                <div class="card-footer border-top p-1 d-flex">
+                                                <div class="card-footer border-top p-1 d-flex ">
                                                    
                                                         <input type="text" id="content" class="form-control chat-message-demo mr-75" placeholder="Envoyer un message">
                                                         <button type="button" class="btn btn-primary glow px-1" id="btn_submit"><i class="bx bx-paper-plane"></i></button>
