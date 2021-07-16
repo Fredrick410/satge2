@@ -185,7 +185,9 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label for="color_annonce">Thème de l'annonce</label><br>
-                                                <input id="color_annonce" type="color" name="color_annonce" class="form-control" required>
+                                                <div id="picker" class="d-flex justify-content-center">
+                                                </div>
+                                                <input type="hidden" id="color_annonce" name="color_annonce">
                                                 <small class="text-muted form-text">Selectionnez une couleur pour définir un thème à votre annonce de recrutement.</small>
                                             </div>
                                         </div>
@@ -506,6 +508,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/extensions/jquery.steps.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/iro.min.js"></script>
     <script src="../../../app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
     <!-- END: Page Vendor JS-->
 
@@ -520,6 +523,14 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/forms/wizard-steps.js"></script>
     <script>
+        var colorPicker = new iro.ColorPicker('#picker', {
+            // Set the size of the color picker
+            width: 200,
+        });
+        colorPicker.on('color:change', function(color) {
+            document.getElementById('color_annonce').value = color.hexString;
+        });
+
         function htmlEntities(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
