@@ -82,7 +82,6 @@ document.getElementById('btn_submit').addEventListener('click', event => {
   postMessage(event);
 });
 document.querySelector('#list-users ul li').addEventListener('click', event => {
-  console.log('affich');
   getMessages();
 });
 /**
@@ -92,6 +91,6 @@ document.querySelector('#list-users ul li').addEventListener('click', event => {
  */
 
 
-const interval = window.setInterval(getMessages, 5000);
+const interval = window.setInterval(getMessages, 1000);
 
 getMessages();
