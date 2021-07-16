@@ -22,6 +22,7 @@ $(document).ready(function(){
         else if(entreprise == "Micro-entreprise")
             $("#badge").attr('class','bullet bullet-black bullet-sm');
 
+        
     });
 
 

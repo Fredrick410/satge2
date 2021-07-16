@@ -273,7 +273,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <li class="media rounded" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-1 days") ){echo "rgba(255, 174, 0, 0.25)"; $affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-6 hours") ){echo "rgba(255, 232, 0, 0.25)";$affichage=1;}
-                                                                        else{ echo "mail-read"; $affichage=1;}?>;' onclick="getMessages();">
+                                                                        else{ echo "mail-read"; $affichage=1;}?>;'>
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">

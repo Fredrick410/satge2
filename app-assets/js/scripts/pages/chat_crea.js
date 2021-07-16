@@ -81,12 +81,17 @@ function postMessage(event){
 document.getElementById('btn_submit').addEventListener('click', event => {
   postMessage(event);
 });
-
+document.querySelector('#list-users ul li').addEventListener('click', event => {
+  console.log('affich');
+  getMessages();
+});
 /**
  * Il nous faut une intervale qui demande le rafraichissement
  * des messages toutes les 3 secondes et qui donne 
  * l'illusion du temps réel.
  */
-const interval = window.setInterval(getMessages, 1000);
+
+
+const interval = window.setInterval(getMessages, 5000);
 
 getMessages();
