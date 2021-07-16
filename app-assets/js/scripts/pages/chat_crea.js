@@ -87,6 +87,6 @@ document.getElementById('btn_submit').addEventListener('click', event => {
  * des messages toutes les 3 secondes et qui donne 
  * l'illusion du temps réel.
  */
-const interval = window.setInterval(getMessages, 5000);
+const interval = window.setInterval(getMessages, 1000);
 
 getMessages();
