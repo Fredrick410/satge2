@@ -841,11 +841,14 @@ input:focus ~ .bg-secondary {
   color: #fff !important;
 }
 
+
 /* Outline buttons */
 .btn-outline-secondary {
   border: 1px solid #475F7B;
   background-color: transparent;
   color: #475F7B !important;
+
+
 }
 
 .btn-outline-secondary:hover, .btn-outline-secondary.hover {

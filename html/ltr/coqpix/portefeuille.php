@@ -618,7 +618,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <tbody>
                                             <?php foreach($portefeuille_actif as $portefeuilles_actif): 
                                             
-                                                $pdoSta = $bdd->prepare('SELECT sum(montant) as somme FROM prelevement WHERE id_session=:num AND statut="En cours" OR statut="rejeté" ');
+                                                $pdoSta = $bdd->prepare('SELECT sum(montant) as somme FROM prelevement WHERE id_session=:num AND (statut="En cours" OR statut="rejeté") ');
                                                 $pdoSta->bindValue('num', $portefeuilles_actif['id']);
                                                 $pdoSta->execute();
                                                 $sum_dette = $pdoSta->fetch();
