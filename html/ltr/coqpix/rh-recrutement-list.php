@@ -293,7 +293,7 @@ $count_annonce = count($annonce);
     <!-- BEGIN: Page JS-->
     <script>
         $(document).ready(function() {
-            $('#table-candidatures').DataTable({
+            var table = $('#table-candidatures').DataTable({
                 dom: 'Pfrtip',
                 columnDefs: [{
                         searchPanes: {
@@ -306,20 +306,14 @@ $count_annonce = count($annonce);
                             show: true
                         },
                         targets: [4]
-                    },
-                    {
-                        searchable: false,
-                        targets: 2
-                    },
-                    {
-                        searchable: false,
-                        targets: 3
-                    },
-                    {
-                        searchable: false,
-                        targets: 5
                     }
                 ]
+            });
+            $('#table-candidatures_filter').children().children().on('keyup', function() {
+                table
+                    .columns(0)
+                    .search(this.value)
+                    .draw();
             });
         });
     </script>
