@@ -1,3 +1,8 @@
+@font-face{
+  font-family: "mukta malar medium";
+  src: url("../Mukta_Malar/MuktaMalar-Medium.ttf");
+}
+
 *{font-family: mukta malar medium;}
 *{font-size: 1em;}
 

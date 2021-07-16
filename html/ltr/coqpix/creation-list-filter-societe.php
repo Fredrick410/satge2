@@ -9,12 +9,7 @@ require_once 'php/verif_session_connect_admin.php';
     $pdoSta = $bdd->prepare("SELECT * FROM crea_societe WHERE status_crea=:status_crea ");
     $pdoSta->bindValue(':status_crea', $_GET['filter']);
     $pdoSta->execute();
-    $crea = $pdoSta->fetchAll();
-
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE notification_admin >= "1"');
-    $pdoSta->execute();
     $creat = $pdoSta->fetchAll();
-    $count = count($creat);
 
 ?>
 <!DOCTYPE html>
@@ -75,31 +70,7 @@ require_once 'php/verif_session_connect_admin.php';
 
 
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-info navbar-brand-center">
-        <div class="navbar-header d-xl-block d-none">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item"><a class="navbar-brand" href="dashboard-admin.php">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
-                    </a></li>
-            </ul>
-        </div>
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Coqpix</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php include('php/header_back.php'); ?>
     <!-- END: Header-->
 
     <!-- BEGIN: Main Menu-->
@@ -127,52 +98,7 @@ require_once 'php/verif_session_connect_admin.php';
                             </div>
                             <div class="sidebar-menu-list">
                                 <!-- sidebar menu  -->
-                                <div class="list-group list-group-messages">
-                                    <a href="creation-list.php" class="list-group-item pt-0" id="inbox-menu">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: briefcase.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Tous
-                                    </a>
-                                    <a href="creation-list-notification.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: label-new.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Notification
-                                        <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count ?></span>
-                                    </a>
-                                    <a href="creation-list-valide.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: check-alt.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div> 
-                                        Créa valide
-                                    </a>
-                                    <a href="creation-list-invalide.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: remove.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Créa non valide
-                                    </a>
-                                    <a href="crea-list-favo.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: star.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Important
-                                    </a>
-                                    <a href="crea-list-delete.php" class="list-group-item">
-                                        <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: trash.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                            </i>
-                                        </div>
-                                        Corbeille
-                                        <span class="badge badge-light-success badge-pill badge-round float-right mt-50">NEW</span>
-                                    </a>
-                                </div>
+                                <?php include('php/sidebar_crea.php'); ?>
                                 <!-- sidebar menu  end-->
 
                                 <!-- sidebar label start -->
@@ -413,7 +339,7 @@ require_once 'php/verif_session_connect_admin.php';
                                     <!-- email user list start -->
                                     <div class="email-user-list list-group">
                                         <ul class="users-list-wrapper media-list">
-                                            <?php foreach($crea as $creation): ?>
+                                            <?php foreach($creat as $creation): ?>
                                                 <?php 
 
                                                     if($creation['status_crea'] == "EURL"){
