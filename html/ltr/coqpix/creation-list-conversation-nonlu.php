@@ -6,9 +6,6 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
-$SQL2 = $bdd->prepare('SELECT * FROM chat_crea WHERE you NOT LIKE "coqpix"');
-$SQL2->execute();
-$list_msg = $SQL2->fetchAll();
 
 ?>
 
@@ -217,9 +214,9 @@ $list_msg = $SQL2->fetchAll();
                                         
                                         <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
                                             <!--<select onclick="affiche_conv();" id="type_conv" class="form-select border-1 form-control" aria-label="Default select example" style="width:20%;">
-                                                <option value="1">Conversation(s) non lue(s)</option>
+                                                <option value="1" selected>Conversation(s) non lue(s)</option>
                                                 <option value="2">Conversation(s) archivée(s)</option>
-                                                <option value="3" selected>Toutes les conversations</option>
+                                                <option value="3">Toutes les conversations</option>
                                             </select>-->
                                             <div class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><span>Filtre des conversations</span></a>
                                                 <ul class="dropdown-menu">
@@ -233,15 +230,6 @@ $list_msg = $SQL2->fetchAll();
                                             </div>
                                             <!-- search bar  -->
                                             <div class="email-fixed-search flex-grow-1">
-                                                <div class="sidebar-toggle d-block d-lg-none">
-                                                    <i class="bx bx-menu"></i>
-                                                </div>
-                                                <fieldset class="form-group position-relative has-icon-left m-0">
-                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher une conversation">
-                                                    <div class="form-control-position">
-                                                        <i class="bx bx-search"></i>
-                                                    </div>
-                                                </fieldset>
                                             </div>
                                             <!-- pagination and page count -->
                                             
@@ -260,7 +248,7 @@ $list_msg = $SQL2->fetchAll();
                                                 <?php 
                                                 $expediteur = array();
                                                 $j=0;
-                                                foreach($list_msg as $msg): 
+                                                foreach($list_msg_nonlu as $msg): 
                                                     $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE name_crea LIKE :nom ');
                                                     $PDO->bindValue(':nom', $msg['you']);
                                                     $PDO->execute();
@@ -293,7 +281,7 @@ $list_msg = $SQL2->fetchAll();
                                                         $j++; ?>
 
                                                              
-                                                    <li class="media rounded" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
+                                                    <li class="media rounded" onclick="getMessages();" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-1 days") ){echo "rgba(255, 174, 0, 0.25)"; $affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-6 hours") ){echo "rgba(255, 232, 0, 0.25)";$affichage=1;}
                                                                         else{ echo "mail-read"; $affichage=1;}?>;'>
@@ -304,7 +292,14 @@ $list_msg = $SQL2->fetchAll();
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
-                                                                   
+                                                                    <!--Bouton d'archivage-->
+                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver(`<?=$msg["destination"]?>`);'>
+                                                                        <span class="fonticon-wrap">
+                                                                            <i id="img_save" class="livicon-evo" data-options="name: save.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                                                            </i>
+                                                                        </span>
+                                                                    </button>
+                                                                    <!--FIN archivage-->
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
                                                                     <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
                                                                 </div>

@@ -10,7 +10,9 @@ function getMessages(){
   var author_id = document.getElementById("author").value;
   // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
   const requeteAjax = new XMLHttpRequest();
-  requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_crea_user.php?destination="+author_id);
+  requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_crea_user.php?destination="+author_id); //en ligne
+  //requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_crea_user.php?destination="+author_id); //en local
+
 
   // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
   requeteAjax.onload = function(){
@@ -69,7 +71,8 @@ function postMessage(event){
 
   // 4. Elle doit configurer une requête ajax en POST et envoyer les données
   const requeteAjax = new XMLHttpRequest();
-  requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_crea_user.php?task=write');
+  requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_crea_user.php?task=write'); //en ligne
+  //requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_crea_user.php?task=write'); //en local
   
   requeteAjax.onload = function(){
     content.value = '';

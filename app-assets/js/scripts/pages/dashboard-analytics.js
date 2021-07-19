@@ -22,8 +22,302 @@ $(window).on("load", function() {
     var $sub_label_color = "#596778";
     var $radial_bg = "#e7edf3";
     var $black = "#000000";
+    var $magenta = "#FF00FF";
 
-  
+    var annee_actuelle = (new Date()).getFullYear();
+    var mois_actuel = (new Date()).getMonth();
+
+    /**
+     * Remplace le titre, le data-chart et la donut-chart lorsque qu'on change de section entre création, modification et radiation d'entreprise
+     * 
+     * @param {string} direction // direction de la flêche cliquée
+     */
+    function traiterClicFleche(direction) {
+        
+        var annee_juridique = $("#id_select_annee_juridique").children("option:selected").val();
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+
+        // On cherche la section dans laquelle on doit se rendre
+        if (direction == "gauche") {
+            if (titre_juridique == "Radiation d'entreprise") {
+                titre_juridique = "Modification d'entreprise";
+            } else if (titre_juridique == "Création d'entreprise") {
+                titre_juridique = "Radiation d'entreprise";
+            } else if (titre_juridique == "Modification d'entreprise") {
+                titre_juridique = "Création d'entreprise";
+            }
+        } else if (direction == "droite")  {
+            if (titre_juridique == "Radiation d'entreprise") {
+                titre_juridique = "Création d'entreprise";
+            } else if (titre_juridique == "Création d'entreprise") {
+                titre_juridique = "Modification d'entreprise";
+            } else if (titre_juridique == "Modification d'entreprise") {
+                titre_juridique = "Radiation d'entreprise";
+            }
+        }
+
+        // On change le titre de la section
+        document.getElementById("id_titre_juridique").innerText = titre_juridique;
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            $("#analytics-bar-chart-juridique").empty();
+            $("#donut-chart").empty();
+
+            document.getElementById("id_legende_crea").style.display = "none";
+            document.getElementById("id_legende_modif").style.display = "none";
+
+            document.getElementById("id_block_nb_radia").style.display = "block";
+            document.getElementById("id_block_nb_crea").style.display = "none";
+            document.getElementById("id_block_nb_modif").style.display = "none";
+
+        } else if (titre_juridique == "Création d'entreprise") {
+
+            // On remplace les charts actuels de création d'entreprise    
+            $("#analytics-bar-chart-juridique").empty();
+            
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-juridique"),
+                analyticsBarChartOptions(window["crea_encours_" + annee_juridique], window["crea_valide_" + annee_juridique], " Demande en cours", " Validé")
+            );
+            analyticsBarChart.render();
+
+            $("#donut-chart").empty();
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOptionCrea(window["nb_crea_type_" + annee_juridique])
+            );
+
+            donutChart.render();
+
+            // On modifie la légende du donut-chart
+            document.getElementById("id_legende_modif").style.display = "none";
+            document.getElementById("id_legende_crea").style.display = "block";
+
+            document.getElementById("id_block_nb_radia").style.display = "none";
+            document.getElementById("id_block_nb_crea").style.display = "block";
+            document.getElementById("id_block_nb_modif").style.display = "none";
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            // On remplace les charts actuels de modification d'entreprise
+            $("#analytics-bar-chart-juridique").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-juridique"),
+                analyticsBarChartOptions(window["modif_encours_" + annee_juridique], window["modif_valide_" + annee_juridique], " Demande en cours", " Validé")
+            );
+
+            $("#donut-chart").empty();
+
+            analyticsBarChart.render();
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOptionModif(window["nb_modif_type_" + annee_juridique])
+            );
+
+            donutChart.render();
+
+            // On modifie la légende du donut-chart
+            document.getElementById("id_legende_crea").style.display = "none";
+            document.getElementById("id_legende_modif").style.display = "block";
+
+            document.getElementById("id_block_nb_radia").style.display = "none";
+            document.getElementById("id_block_nb_crea").style.display = "none";
+            document.getElementById("id_block_nb_modif").style.display = "block";
+
+        }
+
+    }
+
+    // Clic sur la fleche gauche
+    $("#id_fleche_gauche_juridique").click(function(e) {
+        e.preventDefault();
+        traiterClicFleche("gauche");
+    });
+
+    // Clic sur la fleche droite
+    $("#id_fleche_droite_juridique").click(function(e) {
+        e.preventDefault();
+        traiterClicFleche("droite");
+    });
+
+    // Donut Chart
+    // ---------------------
+
+    function donutChartOptionCrea(array) {
+    
+        var donutChartOption = {
+            chart: {
+            width: 300,
+            type: 'donut',
+            },
+            dataLabels: {
+            enabled: false
+            },
+            series: [array['SARL'], array['SAS'], array['SASU'], array['SCI'], array['EIRL'], array['EI'], array['Micr']],
+            labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
+            stroke: {
+            width: 0,
+            lineCap: 'round',
+            },
+            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
+            plotOptions: {
+            pie: {
+                donut: {
+                size: '80%',
+                labels: {
+                    show: true,
+                    name: {
+                    show: true,
+                    fontSize: '15px',
+                    colors: $sub_label_color,
+                    offsetY: 20,
+                    fontFamily: 'IBM Plex Sans',
+                    },
+                    value: {
+                    show: true,
+                    fontSize: '35px',
+                    fontFamily: 'Rubik',
+                    color: $label_color,
+                    offsetY: -20,
+                    formatter: function (val) {
+                        return val
+                    }
+                    },
+                    total: {
+                    show: true,
+                    label: 'Entreprises',
+                    color: $gray_light,
+                    formatter: function (w) {
+                        return w.globals.seriesTotals.reduce(function (a, b) {
+                        return a + b
+                        }, 0)
+                    }
+                    }
+                }
+                }
+            }
+            },
+            legend: {
+            show: false
+            }
+        }
+        return donutChartOption;
+
+    }
+
+    function donutChartOptionModif(array) {
+    
+        var donutChartOption = {
+            chart: {
+            width: 300,
+            type: 'donut',
+            },
+            dataLabels: {
+            enabled: false
+            },
+            series: [array['one'], array['two'], array['three'], array['four'], array['five'], array['six'], array['seven'], array['eight']],
+            labels: ["Cession de parts / Actions", "Gérant / Président", "Siège social", "Objet social", "Forme juridique", "Dénomination", "Capital social", "Veille"],
+            stroke: {
+            width: 0,
+            lineCap: 'round',
+            },
+            colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black, $magenta],
+            plotOptions: {
+            pie: {
+                donut: {
+                size: '80%',
+                labels: {
+                    show: true,
+                    name: {
+                    show: true,
+                    fontSize: '15px',
+                    colors: $sub_label_color,
+                    offsetY: 20,
+                    fontFamily: 'IBM Plex Sans',
+                    },
+                    value: {
+                    show: true,
+                    fontSize: '35px',
+                    fontFamily: 'Rubik',
+                    color: $label_color,
+                    offsetY: -20,
+                    formatter: function (val) {
+                        return val
+                    }
+                    },
+                    total: {
+                    show: true,
+                    label: 'Changements',
+                    color: $gray_light,
+                    formatter: function (w) {
+                        return w.globals.seriesTotals.reduce(function (a, b) {
+                        return a + b
+                        }, 0)
+                    }
+                    }
+                }
+                }
+            }
+            },
+            legend: {
+            show: false
+            }
+        }
+        return donutChartOption;
+
+    }
+
+    var donutChart = new ApexCharts(
+        document.querySelector("#donut-chart"),
+        donutChartOptionCrea(window["nb_crea_type_" + annee_actuelle])
+    );
+    donutChart.render();
+
+    // S'éxecute lorsqu'on change l'année du select dans Juridique
+    $("#id_select_annee_juridique").change(function() {
+
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+
+        // On récupère l'année selectionnée
+        var annee_juridique = $(this).children("option:selected").val(); 
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            // A VENIR
+
+        } else if (titre_juridique == "Création d'entreprise") { 
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#donut-chart").empty();
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOptionCrea(window["nb_crea_type_" + annee_juridique])
+            );
+
+            donutChart.render();
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            $("#donut-chart").empty();
+
+            var donutChart = new ApexCharts(
+                document.querySelector("#donut-chart"),
+                donutChartOptionModif(window["nb_modif_type_" + annee_juridique])
+            );
+
+            donutChart.render();
+
+        }
+      
+    });
+
     // Radial-Success-chart
     // --------------------------------
     var radialSuccessoptions = {
@@ -195,7 +489,7 @@ $(window).on("load", function() {
     // Bar Chart
     // ---------
  
-    function analyticsBarChartOptions(array_1, array_2) {
+    function analyticsBarChartOptions(array_1, array_2, legende_1, legende_2) {
         
         var analyticsBarChartOptions = {
             chart: {
@@ -228,10 +522,10 @@ $(window).on("load", function() {
                 },
             },
             series: [{
-                name: 'nombre valide',
+                name: legende_1,
                 data: [array_1[0], array_1[1], array_1[2], array_1[3], array_1[4], array_1[5], array_1[6], array_1[7], array_1[8], array_1[9], array_1[10], array_1[11]]
             }, {
-                name: 'passif',
+                name: legende_2,
                 data: [array_2[0], array_2[1], array_2[2], array_2[3], array_2[4], array_2[5], array_2[6], array_2[7], array_2[8], array_2[9], array_2[10], array_2[11]]
             }],
             xaxis: {
@@ -280,31 +574,172 @@ $(window).on("load", function() {
 
         return analyticsBarChartOptions
     }
+
+    // DEBUT COMPTA
   
+    // Charge le chart de l'année en cours
     var analyticsBarChart = new ApexCharts(
-        document.querySelector("#analytics-bar-chart"),
-        analyticsBarChartOptions(array_actif_2021, array_passif_2021)
-    );
-  
+        document.querySelector("#analytics-bar-chart-compta"),
+        analyticsBarChartOptions(nb_actif_2021, nb_passif_2021, " Nombre valide", " Passif")
+    ); 
     analyticsBarChart.render();
 
-    $("#id_select_portefeuille").change(function() {
+    // S'éxecute lorsqu'on change l'année du select dans Comptabilité
+    $("#id_select_annee_portefeuille").change(function() {
     
-        var annee_portefeuille = $("#id_select_portefeuille").children("option:selected").val();
-        var array_actif = "array_actif_" + annee_portefeuille;
-        var array_passif = "array_passif_" + annee_portefeuille;
+        var annee_portefeuille = $("#id_select_annee_portefeuille").children("option:selected").val();
       
-        $("#analytics-bar-chart").empty();
-      
-        var growthChart = new ApexCharts(
-            document.querySelector("#analytics-bar-chart"),
-            analyticsBarChartOptions(window[array_actif], window[array_passif])
+        // On remplace le graphique par rapport à l'année sélectionnée
+        $("#analytics-bar-chart-compta").empty(); 
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-compta"),
+            analyticsBarChartOptions(window["nb_actif_" + annee_portefeuille], window["nb_passif_" + annee_portefeuille], " Nombre valide", " Passif")
         );
+        analyticsBarChart.render();
       
-        growthChart.render();
-      
-      });
+    });
 
+    // FIN COMPTA
+
+    // DEBUT JURIDIQUE
+
+    // Charge le chart de l'année en cours
+    var analyticsBarChart = new ApexCharts(
+        document.querySelector("#analytics-bar-chart-juridique"),
+        analyticsBarChartOptions(window["crea_encours_" + annee_actuelle], window["crea_valide_" + annee_actuelle], " Demande en cours", " Validé")
+    );
+    analyticsBarChart.render();
+    
+    // S'éxecute lorsqu'on change l'année du select dans Juridique
+    $("#id_select_annee_juridique").change(function() {
+
+        // On récupère le titre pour savoir dans quelle section on se situe (Radiation, Création ou Modification)
+        var titre_juridique = document.getElementById("id_titre_juridique").textContent;
+        // On récupère l'année selectionnée
+        var annee_juridique = $(this).children("option:selected").val();
+
+        if (titre_juridique == "Radiation d'entreprise") {
+
+            // A VENIR
+
+        } else if (titre_juridique == "Création d'entreprise") {
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-juridique").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-juridique"),
+                analyticsBarChartOptions(window["crea_encours_" + annee_juridique], window["crea_valide_" + annee_juridique], " Demande en cours", " Validé")
+            );
+
+            analyticsBarChart.render();
+
+            document.getElementById("id_nb_crea_encours").innerText = nb_crea_encours[annee_juridique] + " en cours";
+            document.getElementById("id_nb_crea_valide").innerText = nb_crea_valide[annee_juridique] + " validées";
+            document.getElementById("id_nb_crea_abandon").innerText = nb_crea_delete[annee_juridique] + " abandons";
+
+        } else if (titre_juridique == "Modification d'entreprise") {
+
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-juridique").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-juridique"),
+                analyticsBarChartOptions(window["modif_encours_" + annee_juridique], window["modif_valide_" + annee_juridique], " Demande en cours", " Validé")
+            );
+
+            analyticsBarChart.render();
+
+            document.getElementById("id_nb_modif_encours").innerText = nb_modif_encours[annee_juridique] + " en cours";
+            document.getElementById("id_nb_modif_valide").innerText = nb_modif_valide[annee_juridique] + " validées";
+            document.getElementById("id_nb_modif_abandon").innerText = nb_modif_delete[annee_juridique] + " abandons";
+
+        }
+      
+    });
+
+    // FIN JURIDIQUE
+
+    // DEBUT SOCIALE 
+    var analyticsBarChart = new ApexCharts(
+        document.querySelector("#analytics-bar-chart-sociale"),
+        analyticsBarChartOptions(array_demande_soc_URSSAFMSA_2021, array_envoye_soc_URSSAFMSA_2021, " Nombre demandé", " Envoyé")
+    );
+
+    analyticsBarChart.render();
+
+    // S'éxecute lorsqu'on change l'année du select dans Sociale
+    $("#id_select_sociale").change(function() {
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+        //    var titre_droite = document.getElementById("id_titre_droite").textContent;
+
+        // On récupère l'année selectionnée
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+
+        if (test_attestation == 'block') { // SOCIALE
+
+            $("#analytics-bar-chart-sociale").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_demande_soc_" + type_sociale + "_" + annee_sociale], window["array_envoye_soc_" + type_sociale + "_" + annee_sociale], " Nombre demandé", " Envoyé")
+            );
+
+            analyticsBarChart.render();
+
+
+        } else if (test_bulletin == 'block') {
+
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_envoye_bulletin_" + annee_sociale], window["array_envoye_bulletin_" + annee_sociale], " Nombre envoyé", " Prélévé")
+            );
+            analyticsBarChart.render();
+
+        } else if (test_dsn == 'block') {
+            $("#analytics-bar-chart-sociale").empty();
+
+            /* SOON    
+            var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+            var array_demande_dsn = "array_demande_dsn_" + annee_sociale;
+            var array_envoyes_dsn = "array_envoye_dsn_" + annee_sociale;
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window[array_demane_dsn], window[array_envoye_dsn], " Nombre demandé", " Envoyé")
+            );
+            analyticsBarChart.render();
+        */
+
+        }
+
+    });
+
+    $("#id_select_type_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var array_demande_soc = "array_demande_soc_" + type_sociale + "_" + annee_sociale;
+        var array_envoye_soc = "array_envoye_soc_" + type_sociale + "_" + annee_sociale;
+
+        $("#analytics-bar-chart-sociale").empty();
+
+        var analyticsBarChart = new ApexCharts(
+            document.querySelector("#analytics-bar-chart-sociale"),
+            analyticsBarChartOptions(window[array_demande_soc], window[array_envoye_soc], " Nombre demandé", " Envoyé")
+        );
+
+        analyticsBarChart.render();
+    });
+
+    // FIN SOCIALE
 
     // Success Line Chart
     // -----------------------------
@@ -352,79 +787,6 @@ $(window).on("load", function() {
         successLineChartOption
     );
     successLineChart.render();
-  
-    // Donut Chart
-    // ---------------------
-    var $nb_SARL = parseInt(document.getElementById("nb_SARL").value);
-    var $nb_SAS = parseInt(document.getElementById("nb_SAS").value);
-    var $nb_SASU = parseInt(document.getElementById("nb_SASU").value);
-    var $nb_SCI = parseInt(document.getElementById("nb_SCI").value);
-    var $nb_EIRL = parseInt(document.getElementById("nb_EIRL").value);
-    var $nb_EI = parseInt(document.getElementById("nb_EI").value);
-    var $nb_Micro = parseInt(document.getElementById("nb_Micro").value);
-    var donutChartOption = {
-    chart: {
-      width: 300,
-      type: 'donut',
-    },
-    dataLabels: {
-      enabled: false
-    },
-      series: [$nb_SARL, $nb_SAS, $nb_SASU, $nb_SCI, $nb_EIRL, $nb_EI, $nb_Micro],
-    labels: ["SARL", "SAS", "SASU", "SCI", "EIRL", "EI", "Micro-Entreprise"],
-    stroke: {
-      width: 0,
-      lineCap: 'round',
-    },
-    colors: [$success, $primary, $warning, $danger, $info, $gray_light, $black],
-    plotOptions: {
-      pie: {
-        donut: {
-          size: '80%',
-          labels: {
-            show: true,
-            name: {
-              show: true,
-              fontSize: '15px',
-              colors: $sub_label_color,
-              offsetY: 20,
-              fontFamily: 'IBM Plex Sans',
-            },
-            value: {
-              show: true,
-              fontSize: '35px',
-              fontFamily: 'Rubik',
-              color: $label_color,
-              offsetY: -20,
-              formatter: function (val) {
-                return val
-              }
-            },
-            total: {
-              show: true,
-              label: 'Entreprises',
-              color: $gray_light,
-              formatter: function (w) {
-                return w.globals.seriesTotals.reduce(function (a, b) {
-                  return a + b
-                }, 0)
-              }
-            }
-          }
-        }
-      }
-    },
-    legend: {
-      show: false
-    }
-  }
-
-  var donutChart = new ApexCharts(
-    document.querySelector("#donut-chart"),
-    donutChartOption
-  );
-
-  donutChart.render();
 
     // Stacked Bar Nagetive Chart
     // ----------------------------------
@@ -827,8 +1189,73 @@ $(window).on("load", function() {
   
     // Growth Radial Chart
     // --------------------
+    
+    function growthChartOptionsPrelev(array_pourcent, array_nb, mois) {
   
-    function growthChartOptions(pourcentage) {
+        var growthChartOptions = {
+        chart: {
+          height: 200,
+          type: 'radialBar',
+          sparkline: {
+            show: true
+          }
+        },
+        grid: {
+          show: false,
+        },
+        plotOptions: {
+          radialBar: {
+            size: 100,
+            startAngle: -135,
+            endAngle: 135,
+            offsetY: 40,
+            hollow: {
+              size: '60%',
+            },
+            track: {
+              strokeWidth: '90%',
+              background: '#fff'
+            },
+            dataLabels: {
+              value: {
+                offsetY: -10,
+                color: '#475f7b',
+                fontSize: '26px'
+              },
+              name: {
+                fontSize: '15px',
+                color: "#596778",
+                offsetY: 30
+              },
+            }
+          },
+        },
+        colors: [$danger],
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: [$primary],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+          },
+        },
+        stroke: {
+          dashArray: 3
+        },
+        series: [array_pourcent[mois]],
+        labels: [array_nb[mois] + " prélèvem."],
+        }
+    
+        return growthChartOptions
+    
+    }
+
+    function growthChartOptionsBilan(pourcent, nb) {
   
       var growthChartOptions = {
       chart: {
@@ -885,103 +1312,352 @@ $(window).on("load", function() {
       stroke: {
         dashArray: 3
       },
-      series: [pourcentage],
-      labels: ['Growth'],
+      series: [pourcent],
+      labels: [nb + " bilans"],
       }
   
       return growthChartOptions
   
     }
+
+    function growthChartOptions(pourcentage, label_1) {
+
+        var growthChartOptions = {
+            chart: {
+                height: 200,
+                type: 'radialBar',
+                sparkline: {
+                    show: true
+                }
+            },
+            grid: {
+                show: false,
+            },
+            plotOptions: {
+                radialBar: {
+                    size: 100,
+                    startAngle: -135,
+                    endAngle: 135,
+                    offsetY: 40,
+                    hollow: {
+                        size: '60%',
+                    },
+                    track: {
+                        strokeWidth: '90%',
+                        background: '#fff'
+                    },
+                    dataLabels: {
+                        value: {
+                            offsetY: -10,
+                            color: '#475f7b',
+                            fontSize: '26px'
+                        },
+                        name: {
+                            fontSize: '15px',
+                            color: "#596778",
+                            offsetY: 30
+                        },
+                    }
+                },
+            },
+            colors: [$danger],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    type: 'horizontal',
+                    shadeIntensity: 0.5,
+                    gradientToColors: [$primary],
+                    inverseColors: true,
+                    opacityFrom: 1,
+                    opacityTo: 1,
+                    stops: [0, 100]
+                },
+            },
+            stroke: {
+                dashArray: 3
+            },
+            series: [pourcentage],
+            labels: [label_1],
+        }
+
+        return growthChartOptions
+
+    }
   
-    var annee_actuelle = (new Date()).getFullYear();
-    var mois_actuel = ("0" + (new Date().getMonth() + 1)).slice(-2);
+    document.getElementById("id_select_mois_prelevement").selectedIndex = mois_actuel;
   
     // DEBUT TAUX DE PRELEVEMENT
-  
-    document.getElementById("id_select_mois_prelevement").selectedIndex = mois_actuel - 1;
-    var id_taux_prelevement = "taux_prelevement_" + mois_actuel + "_" + annee_actuelle;
-    var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-  
+
     var growthChart = new ApexCharts(
-      document.querySelector("#growth-Chart-prelevement"),
-      growthChartOptions(taux_prelevement)
+        document.querySelector("#growth-Chart-prelevement"),
+        growthChartOptionsPrelev(window["pourcent_prelev_" + annee_actuelle], window["nb_prelev_" + annee_actuelle], mois_actuel)
     );
   
     growthChart.render();
+
+    function changerGrowthChart() {
+
+        var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
+        var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
+    
+        $("#growth-Chart-prelevement").empty();
+    
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-prelevement"),
+            growthChartOptionsPrelev(window["pourcent_prelev_" + annee_prelevement], window["nb_prelev_" + annee_prelevement], mois_prelevement)
+        );
+        
+        growthChart.render();
+
+    }
   
     $("#id_select_annee_prelevement").change(function() {
-  
-      var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
-      var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
-    
-      var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
-      var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-    
-      $("#growth-Chart-prelevement").empty();
-    
-      var growthChart = new ApexCharts(
-        document.querySelector("#growth-Chart-prelevement"),
-        growthChartOptions(taux_prelevement)
-      );
-    
-      growthChart.render();
-    
+        changerGrowthChart();
     });
     
     $("#id_select_mois_prelevement").change(function() {
-    
-      var annee_prelevement = $("#id_select_annee_prelevement").children("option:selected").val();
-      var mois_prelevement = $("#id_select_mois_prelevement").children("option:selected").val();
-    
-      var id_taux_prelevement = "taux_prelevement_" + mois_prelevement + "_" + annee_prelevement;
-      var taux_prelevement = document.getElementById(id_taux_prelevement).value;
-    
-      $("#growth-Chart-prelevement").empty();
-    
-      var growthChart = new ApexCharts(
-        document.querySelector("#growth-Chart-prelevement"),
-        growthChartOptions(taux_prelevement)
-      );
-    
-      growthChart.render();
-    
+        changerGrowthChart();
     });
   
     // FIN TAUX DE PRELEVEMENT
   
     // DEBUT BILAN ANNUEL
-  
-    var id_bilan_annuel = "bilan_annuel_" + (annee_actuelle - 1);
-    var bilan_annuel = document.getElementById(id_bilan_annuel).value;
-  
     var growthChart = new ApexCharts(
-      document.querySelector("#growth-Chart-bilan"),
-      growthChartOptions(bilan_annuel)
+        document.querySelector("#growth-Chart-bilan"),
+        growthChartOptionsBilan(pourcent_bilan[annee_actuelle - 1], nb_bilan[annee_actuelle - 1])
     );
-  
+
     growthChart.render();
   
     $("#id_select_bilan").change(function() {
     
-      var annee_bilan = $(this).children("option:selected").val();
+        var annee_bilan = $(this).children("option:selected").val();
     
-      var id_bilan_annuel = "bilan_annuel_" + annee_bilan;
-      var bilan_annuel = document.getElementById(id_bilan_annuel).value;
-    
-      $("#growth-Chart-bilan").empty();
-    
-      var growthChart = new ApexCharts(
-        document.querySelector("#growth-Chart-bilan"),
-        growthChartOptions(bilan_annuel)
-      );
-    
+        $("#growth-Chart-bilan").empty();
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-bilan"),
+            growthChartOptionsBilan(pourcent_bilan[annee_bilan], nb_bilan[annee_bilan])
+        );
+
       growthChart.render();
     
     });
   
     // FIN BILAN ANNUEL
   
-  
+    // DEBUT ATTESTATION SOCIALE ENVOYE 
+
+    var mois_actuel = ("0" + (new Date().getMonth() + 1)).slice(-2);
+
+    document.getElementById("id_select_mois_sociale").selectedIndex = mois_actuel - 1;
+    var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+    var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_actuel + "_" + annee_actuelle;
+    var total_envoye = document.getElementById(id_total_envoye).value;
+
+    var growthChart = new ApexCharts(
+        document.querySelector("#growth-Chart-sociale-envoye"),
+        growthChartOptions(total_envoye, "Envoyé")
+    );
+
+    growthChart.render();
+
+    $("#id_select_sociale").change(function() {
+
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+
+        // On récupère l'année et aussi le mois selectionnée
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        if (test_attestation == 'block') {
+            var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+            var total_envoye = document.getElementById(id_total_envoye).value;
+            $("#growth-Chart-sociale-envoye").empty();
+
+            var growthChart = new ApexCharts(
+                document.querySelector("#growth-Chart-sociale-envoye"),
+                growthChartOptions(total_envoye, "Envoyé")
+            );
+
+            growthChart.render();
+
+        } else if (test_bulletin == 'block') {
+            var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+            var total_envoye = document.getElementById(id_total_envoye).value;
+            $("#growth-Chart-sociale-envoye").empty();
+
+            var growthChart = new ApexCharts(
+                document.querySelector("#growth-Chart-sociale-envoye"),
+                growthChartOptions(total_envoye, "Envoyé")
+            );
+
+            growthChart.render();
+
+        } else if (test_dsn == 'block') {
+            var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+            var total_envoye = document.getElementById(id_total_envoye).value;
+            $("#growth-Chart-sociale-envoye").empty();
+
+            var growthChart = new ApexCharts(
+                document.querySelector("#growth-Chart-sociale-envoye"),
+                growthChartOptions(total_envoye, "Envoyé")
+            );
+
+            growthChart.render();
+
+        }
+
+
+    });
+
+    $("#id_select_mois_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    $("#id_select_type_sociale").change(function() {
+
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var mois_sociale = $("#id_select_mois_sociale").children("option:selected").val();
+
+        var id_total_envoye = "total_envoye_" + type_sociale + "_" + mois_sociale + "_" + annee_sociale;
+        var total_envoye = document.getElementById(id_total_envoye).value;
+
+        $("#growth-Chart-sociale-envoye").empty();
+
+        var growthChart = new ApexCharts(
+            document.querySelector("#growth-Chart-sociale-envoye"),
+            growthChartOptions(total_envoye, "Envoyé")
+        );
+
+        growthChart.render();
+
+    });
+
+    // FIN ATTESTATION SOCIALE ENVOYE
+
+    /**
+     * Remplace le titre, le data-chart et la donut-chart lorsque qu'on change de section entre création, modification et radiation d'entreprise
+     * 
+     * @param {string} direction // direction de la flêche cliquée
+     */
+     function traiterClicFlecheSociale(direction) {
+
+        // On récupère l'année selectionnée
+        var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+        var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
+
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+        //    var titre_droite = document.getElementById("id_titre_droite").textContent;
+
+        // On cherche la section dans laquelle on doit se rendre
+        if (direction == "gauche") {
+            if (test_attestation == 'block') {
+                document.getElementById("id_titre_attestation").style.display = 'none';
+                document.getElementById("id_titre_dsn").style.display = 'block';
+            } else if (test_bulletin == 'block') {
+                document.getElementById("id_titre_bulletin").style.display = 'none';
+                document.getElementById("id_titre_attestation").style.display = 'block';
+            } else if (test_dsn == 'block') {
+                document.getElementById("id_titre_dsn").style.display = 'none';
+                document.getElementById("id_titre_bulletin").style.display = 'block';
+            }
+
+        } else if (direction == "droite") {
+            if (test_attestation == 'block') {
+                document.getElementById("id_titre_bulletin").style.display = 'block';
+                document.getElementById("id_titre_attestation").style.display = 'none';
+            } else if (test_bulletin == 'block') {
+                document.getElementById("id_titre_dsn").style.display = 'block';
+                document.getElementById("id_titre_bulletin").style.display = 'none';
+            } else if (test_dsn == 'block') {
+                document.getElementById("id_titre_attestation").style.display = 'block';
+                document.getElementById("id_titre_dsn").style.display = 'none';
+            }
+        }
+
+        var test_attestation = document.getElementById("id_titre_attestation").style.display;
+        var test_bulletin = document.getElementById("id_titre_bulletin").style.display;
+        var test_dsn = document.getElementById("id_titre_dsn").style.display;
+
+        if (test_attestation == 'block') { // SOCIALE
+
+            $("#analytics-bar-chart-sociale").empty();
+
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_demande_soc_" + type_sociale + "_" + annee_sociale], window["array_envoye_soc_" + type_sociale + "_" + annee_sociale], " Nombre demandé", " Envoyé")
+            );
+
+            analyticsBarChart.render();
+
+
+
+        } else if (test_bulletin == 'block') {
+
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window["array_envoye_bulletin_" + annee_sociale], window["array_envoye_bulletin_" + annee_sociale], " Nombre envoyé", " Prélévé")
+            );
+            analyticsBarChart.render();
+
+        } else if (test_dsn == 'block') {
+            $("#analytics-bar-chart-sociale").empty();
+
+            /* SOON    
+            var annee_sociale = $("#id_select_sociale").children("option:selected").val();
+            var array_demande_dsn = "array_demande_dsn_" + annee_sociale;
+            var array_envoyes_dsn = "array_envoye_dsn_" + annee_sociale;
+        
+            // On remplace le graphique par rapport à l'année sélectionnée
+            $("#analytics-bar-chart-sociale").empty();
+            var analyticsBarChart = new ApexCharts(
+                document.querySelector("#analytics-bar-chart-sociale"),
+                analyticsBarChartOptions(window[array_demane_dsn], window[array_envoye_dsn], " Nombre demandé", " Envoyé")
+            );
+            analyticsBarChart.render();
+        */
+
+        }
+
+    }
+
+
+    // Clic sur la fleche gauche sociale
+    $("#id_fleche_gauche_sociale").click(function(e) {
+        e.preventDefault();
+        traiterClicFlecheSociale("gauche");
+    });
+
+    // Clic sur la fleche droite sociale
+    $("#id_fleche_droite_sociale").click(function(e) {
+        e.preventDefault();
+        traiterClicFlecheSociale("droite");
+    });
+
     // Widget Todo List
     // ------------------
     // Task List Widget - for completed todo item

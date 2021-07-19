@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include 'php/verif_session_connect.php';
 error_reporting(E_ALL);
@@ -6,10 +6,10 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise',$_SESSION['id']);
-    $true = $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+$pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+$pdoS->bindValue(':numentreprise', $_SESSION['id']);
+$true = $pdoS->execute();
+$entreprise = $pdoS->fetch();
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,11 @@ require_once 'php/config.php';
 
 <!-- BEGIN: Body-->
 
-<body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
+<body class="vertical-layout vertical-menu-modern <?php if ($entreprise['theme_web'] == "light") {
+                                                        echo "semi-";
+                                                    } ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if ($entreprise["theme_web"] == "light") {
+                                                                                                                                                                                                        echo "semi-";
+                                                                                                                                                                                                    } ?>dark-layout">
 
     <!-- BEGIN: Header-->
     <?php $btnreturn = true;
@@ -86,18 +90,17 @@ require_once 'php/config.php';
                                         <img class="card-img-top img-fluid" src="../../../app-assets/images/pages/content-img-3.jpg" alt="Card image cap">
                                         <div class="card-body">
                                             <h5 class="">e-Recrutement</h4>
-                                            <p class="card-text">
-                                                Créer vos annonces de recrutement etc...</p>
+                                                <p class="card-text">
+                                                    Créer vos annonces de recrutement etc...</p>
                                         </div>
                                     </div>
                                 </div>
                                 <script>
-
-                                function tprecrutement(){
-                                    document.location.href="rh-recrutement-new.php"; 
-                                }
-
+                                    function tprecrutement() {
+                                        document.location.href = "rh-recrutement-new.php";
+                                    }
                                 </script>
+
                                 <div class="card" onclick="tprecrutement_two()">
                                     <div class="card-content">
                                         <img class="card-img-top img-fluid" src="../../../app-assets/images/pages/content-img-4.jpg" alt="Card image cap">
@@ -110,29 +113,43 @@ require_once 'php/config.php';
                                     </div>
                                 </div>
                                 <script>
-
-                                function tprecrutement_two(){
-                                    document.location.href="rh-recrutement-list.php"; 
-                                }
-
+                                    function tprecrutement_two() {
+                                        document.location.href = "rh-recrutement-list.php";
+                                    }
                                 </script>
+
                                 <div class="card">
-                                    <div class="card-content" onclick="tprecrutement_entretient()">
+                                    <div class="card-content" onclick="tprecrutement_entretient_two()">
                                         <img class="card-img-top img-fluid" src="../../../app-assets/images/pages/content-img-1.jpg" alt="Card image cap">
                                         <div class="card-body">
-                                            <h4 class="card-title">Entretient</h4>
+                                            <h4 class="card-title">QCM de recrutement</h4>
                                             <p class="card-text">
-                                                vos options dans la création d'annonce d'entretient, avec un accompagnement de qualité
+                                                Créer vos qcms personnalisés.
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                                 <script>
+                                    function tprecrutement_entretient_two() {
+                                        document.location.href = "rh-recrutement-entretient.php";
+                                    }
+                                </script>
 
-                                function tprecrutement_entretient(){
-                                    document.location.href="rh-recrutement-entretient.php"; 
-                                }
-
+                                <div class="card">
+                                    <div class="card-content" onclick="tprecrutement_entretient()">
+                                        <img class="card-img-top img-fluid" src="../../../app-assets/images/pages/content-img-2.jpg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Entretient</h4>
+                                            <p class="card-text">
+                                                Evaluez vos candidats et constituer leur fiche de poste.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    function tprecrutement_entretient() {
+                                        document.location.href = "rh-entretient-candidats.php";
+                                    }
                                 </script>
                             </div>
                         </div>
