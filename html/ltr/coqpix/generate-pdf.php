@@ -121,7 +121,7 @@ MULTIBURO SA au capital de 4 212 080 € ayant son siège social au Le Shératan
 $coordtop = '<b>Coordonnées de l\'utilisateur :</b>';
 $coordleft = 'Raison Sociale : '.$raisonsociale.'
 Forme juridique : '.$formejuridique.'
-Capital : '.$capital.'
+Capital : '.$capital.' €
 Représenté par : '.$representant.'
 En sa qualité de : '.$representantqualite.'';
 $coordright = 'Code postal : '.$codepostal.'
@@ -555,7 +555,7 @@ $pdf->addEmptySignatureAppearance(180, 80, 15, 15);*/
 
 // Close and output PDF document
 ob_clean();
-$pdf->Output('contrat_domiciliation.pdf', 'D');
+$pdf->Output('contrat_domiciliation.pdf', 'I');
 
 //============================================================+
 // END OF FILE
