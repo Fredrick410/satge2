@@ -25,7 +25,7 @@ else
    }
    else {
    sleep(2);
-   header('Location: backend/auth-login-admin.html');
+   header('Location: ../page-not-authorized.html');
    exit;
    }
 }
