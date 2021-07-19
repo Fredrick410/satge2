@@ -1,9 +1,9 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-$from = "test@eduk-all.com";
+$from = "test@test.com";
 $to = "belloabdoul@gmail.com";
-$subject = "PHP Mail Test script";
+$subject = "PHP Mail Test";
 $message = "This is a test to check the PHP Mail functionality";
 $headers = "From:" . $from;
 mail($to, $subject, $message, $headers);
