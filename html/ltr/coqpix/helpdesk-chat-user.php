@@ -10,7 +10,6 @@ require_once 'php/config.php';
     $pdoS->execute();
     $entreprise = $pdoS->fetch();
     
-
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -63,13 +62,21 @@ require_once 'php/config.php';
         <div class="navbar-header d-xl-block d-none">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item"><a class="navbar-brand" href="#">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/chatpix4.png"></div>
-                    </a></li>
+                    <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/chatpix4.png"></div>
+                </a></li>
             </ul>
         </div>
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav bookmark-icons">                          
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                    </ul>
+                    <script>
+                        function retourn() {
+                            window.history.back();
+                        }
+                    </script>
                     <ul class="nav navbar-nav float-right d-flex align-items-center">                        
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <div class="user-nav d-lg-flex d-none"><span class="user-name">Support</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="40" width="40"></span>
@@ -87,6 +94,7 @@ require_once 'php/config.php';
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
+    <input type="hidden" id="id_session" value="<?= $_SESSION['id'] ?>">
     <div class="app-content content">
         <div class="content-area-wrapper">
             <div class="sidebar-left">
@@ -138,15 +146,15 @@ require_once 'php/config.php';
                             </div>
                         </div>
                         <div class="chat-sidebar-list-wrapper pt-2">
-                            <h6 class="px-2 pt-2 pb-25 mb-0">CHAT'PIX</h6>
+                            <h6 class="px-2 pt-2 pb-25 mb-0">SUPPORT</h6>
                             <ul class="chat-sidebar-list">
-                                <li>
+                                <li class="list_support">
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/astro1.gif" height="36" width="36" alt="loading">
+                                        <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
                                             <span class="avatar-status-online"></span>
                                         </div>
                                         <div class="chat-sidebar-name">
-                                            <h6 class="mb-0">Audit action plus</h6><span class="text-muted">En ligne</span>
+                                            <h6 class="mb-0">Audit action plus</h6><span class="text-muted">Support</span>
                                         </div>
                                     </div>
                                 </li>
@@ -179,10 +187,10 @@ require_once 'php/config.php';
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
                                             <div class="avatar m-0 mr-1">
-                                                <img src="../../../src/img/astro1.gif" alt="avatar" height="36" width="36" />
+                                                <img src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="36" width="36" />
                                                 <span class="avatar-status-online"></span>
                                             </div>
-                                            <h6 class="mb-0">Audit action plus</h6>
+                                            <h6 class="mb-0">Chat'Pix</h6>
                                         </div>
                                         <div class="chat-header-icons">
                                             <span class="chat-icon-favorite">
@@ -213,8 +221,9 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
+                                            <input type="hidden" id="auteur" value="user">
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
-                                            <button type="submit" id="btn_submit" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
+                                            <button type="submit" id="btn_submit_user" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
                                         </div>
                                     </div>
@@ -251,7 +260,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/chat_support_admin.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/chat_support.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
