@@ -164,7 +164,7 @@ $(window).on("load", function() {
 
         var analyticsBarChartOptions = {
             chart: {
-                height: 260,
+                height: 300,
                 type: 'bar',
                 toolbar: {
                     show: false
@@ -342,10 +342,13 @@ $(window).on("load", function() {
         // Changer le titre growth chart par rapport au type d'attestation sélectionnée 
         if (type_sociale == "URSSAFMSA") {
             document.getElementById("id_titre_droite").innerText = "Attestation URSSAF";
+            document.getElementById("id_count_attestation").innerText = count_URSSAF[$annee_sociale];
         } else if (type_sociale == "PROBTP") {
             document.getElementById("id_titre_droite").innerText = "Attestation PRO BTP";
+            document.getElementById("id_count_attestation").innerText = count_PROBTP[$annee_sociale];
         } else if (type_sociale == "CIBTP") {
             document.getElementById("id_titre_droite").innerText = "Attestation CIBTP";
+            document.getElementById("id_count_attestation").innerText = count_CIBTP[$annee_sociale];
         }
 
 

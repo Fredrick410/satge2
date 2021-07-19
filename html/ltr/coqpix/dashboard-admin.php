@@ -284,27 +284,16 @@ require_once 'php/verif_session_connect_admin.php';
     // FIN CHART 1, BAR CHART
 
     // Requete SQL permettant de recuperer le nombre total d'attestation demandé
-    for ($i=0 ; $i<5 ; $i++) {
-
-        $pdoSta = $bdd->prepare('SELECT * FROM attestation_sociale where type_attestation = "URSSAF/MSA" and substr(date_demande,7) =:annee');
-        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
-        $pdoSta->execute();
-        $attestation_msa = $pdoSta->fetchAll();
-        ${'count_msa_'.($annee_actuelle - $i)} = count($attestation_msa);
-
-        $pdoSta = $bdd->prepare('SELECT * FROM attestation_sociale where type_attestation = "PRO BTP" and substr(date_demande,7) =:annee');
-        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
-        $pdoSta->execute();
-        $attestation_probtp = $pdoSta->fetchAll();
-        ${'count_probtp_'.($annee_actuelle - $i)} = count($attestation_probtp);
-
-        $pdoSta = $bdd->prepare('SELECT * FROM attestation_sociale where type_attestation = "CIBTP" and substr(date_demande,7) =:annee');
-        $pdoSta->bindValue(':annee', ($annee_actuelle - $i));
-        $pdoSta->execute();
-        $attestation_cibtp = $pdoSta->fetchAll();
-        ${'count_cibtp_'.($annee_actuelle - $i)} = count($attestation_cibtp);
-
-    }
+        $query = $bdd->prepare('SELECT substr(date_demande, 7) AS annee, count(case when (type_attestation = "URSSAF/MSA") then 1 else null end) AS count_URSSAF, count(case when type_attestation = "PRO BTP" then 1 else null end) AS count_PROBTP, count(case when type_attestation = "CIBTP" then 1 else null end) AS count_CIBTP FROM attestation_sociale WHERE substr(date_demande, 7) > (:annee - 5) GROUP BY substr(date_demande, 7)');
+        $query->execute(array(':annee' => ($annee_actuelle)));
+        $count_URSSAF = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+        $count_PROBTP = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+        $count_CIBTP = array($annee_actuelle-1 => 0, $annee_actuelle-2 => 0, $annee_actuelle-3 => 0, $annee_actuelle-4 => 0, $annee_actuelle-5 => 0);
+        while ($count_attestation = $query->fetch()) {
+            $count_URSSAF[$count_attestation['annee']] = (int) $count_attestation['count_URSSAF'];
+            $count_PROBTP[$count_attestation['annee']] = (int) $count_attestation['count_PROBTP'];
+            $count_CIBTP[$count_attestation['annee']] = (int) $count_attestation['count_CIBTP'];
+        }
 
     // PARTIE GROWTH CHART SOCIALE 
         // Pour recuperer le nombre d'attestation URSSAF envoyé
@@ -399,12 +388,12 @@ require_once 'php/verif_session_connect_admin.php';
     for ($i=0 ; $i<5 ; $i++) {
         ${'nb_bulletin_'.($annee_actuelle - $i)} = array(0,0,0,0,0,0,0,0,0,0,0,0);
     }
-    while ($att_envoye = $query->fetch()) {
-        ${'nb_bulletin_'.($annee_actuelle)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n'];
-        ${'nb_bulletin_'.($annee_actuelle-1)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_1'];
-        ${'nb_bulletin_'.($annee_actuelle-2)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_2'];
-        ${'nb_bulletin_'.($annee_actuelle-3)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_3'];
-        ${'nb_bulletin_'.($annee_actuelle-4)}[array_search($att_envoye['mois'], $mois)] = (int) $att_envoye['nb_n_4'];
+    while ($bulletin_envoye = $query->fetch()) {
+        ${'nb_bulletin_'.($annee_actuelle)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['nb_n'];
+        ${'nb_bulletin_'.($annee_actuelle-1)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['nb_n_1'];
+        ${'nb_bulletin_'.($annee_actuelle-2)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['nb_n_2'];
+        ${'nb_bulletin_'.($annee_actuelle-3)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['nb_n_3'];
+        ${'nb_bulletin_'.($annee_actuelle-4)}[array_search($bulletin_envoye['mois'], $mois)] = (int) $bulletin_envoye['nb_n_4'];
     }
 
     // requete pour recuperer le pourcentage de bulletin envoyé
@@ -1448,28 +1437,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <div class="card">                                                    
                                                         <div class="card-content">
                                                             <div class="card-body pb-1">
-                                                            <h6 class="text-white text-center" id= "id_titre_total"> Total </h6> 
-                                                            <?php
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        $id_count_msa = "id_count_URSSAFMSA_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_count_msa ?>" value="<?= ${"count_msa_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
-
-                                                                    <?php
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        $id_count_probtp = "id_count_PROBTP_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_count_probtp ?>" value="<?= ${"count_probtp_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
-
-                                                                    <?php
-                                                                    for ($i=0; $i<5 ; $i++) {
-                                                                        $id_count_cibtp = "id_count_CIBTP_".($annee_actuelle - $i); ?>
-                                                                        <input type="hidden" id="<?= $id_count_cibtp ?>" value="<?= ${"count_cibtp_".($annee_actuelle - $i)} ?>"> <?php
-                                                                    } ?>
+                                                            <h6 class="text-white text-center" id= "id_titre_total"> Total </h6>                                                     
                                                                
-                                                               <h6 class="text-center" id="id_text_count_attestation" style="display: block"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>   
-                                                               <h6 class="text-center" id="id_text_count_bulletin" style="display: none"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>  
-                                                               <h6 class="text-center" id="id_text_count_dsn" style="display: none"> <?= ${'count_msa_'.$annee_actuelle} ?> </h6>                                                                                             
+                                                               <h6 class="text-center" id="id_count_attestation" style="display: block"> <?= $count_URSSAF[$annee_actuelle] ?> </h6>   
+                                                             <!--  <h6 class="text-center" id="id_text_count_bulletin" style="display: none"> </h6>  
+                                                               <h6 class="text-center" id="id_text_count_dsn" style="display: none">  </h6>      -->                                                                                       
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1554,6 +1526,10 @@ require_once 'php/verif_session_connect_admin.php';
         var annee_actuelle = (new Date()).getFullYear();
         var array_actif = "array_actif_";
         var array_passif = "array_passif_";
+
+        var count_URSSAF = <?php echo json_encode($count_URSSAF); ?>;
+        var count_PROBTP = <?php echo json_encode($count_PROBTP); ?>;
+        var count_CIBTP = <?php echo json_encode($count_CIBTP); ?>;
 
         this[array_actif + annee_actuelle] =<?php echo json_encode(${'array_actif_'.($annee_actuelle)}); ?>;
         this[array_actif + (annee_actuelle - 1)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 1)}); ?>;
@@ -1751,15 +1727,9 @@ require_once 'php/verif_session_connect_admin.php';
              $("#id_select_sociale").change(function() {                
                 var annee_sociale = $("#id_select_sociale").children("option:selected").val();
                 var type_sociale = $("#id_select_type_sociale").children("option:selected").val();
-                var id_count_total = "id_count_" + type_sociale + "_" + annee_sociale;
-                var id_count_probtp = "id_count_" + type_sociale + "_" + annee_sociale;
-                var id_count_cibtp = "id_count_" + type_sociale + "_" + annee_sociale;
-                var count_msa = document.getElementById(id_count_msa).value;
-                var count_probtp = document.getElementById(id_count_probtp).value;
-                var count_cibtp = document.getElementById(id_count_cibtp).value;
-                document.getElementById("id_text_count_msa").innerText = count_msa;
-                document.getElementById("id_text_count_probtp").innerText = count_probtp;
-                document.getElementById("id_text_count_cibtp").innerText = count_cibtp; 
+                document.getElementById("id_count_attestation").innerText = count_URSSAF[annee_sociale];
+            //    document.getElementById("id_count_encours").innerText = count_encours[annee_portefeuille];
+            //    document.getElementById("id_count_actif").innerText = count_actif[annee_portefeuille];
             });
 
             // afficher le titre 
