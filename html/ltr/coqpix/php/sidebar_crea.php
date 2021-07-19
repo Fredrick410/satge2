@@ -10,13 +10,13 @@
     //$pdoState = $bdd->prepare('SELECT DISTINCT you FROM chat_crea WHERE you NOT LIKE "coqpix"');
    
     $pdoState->execute();
-    $list_msg = $pdoState->fetchAll();
-    $count_msg = count($list_msg);
+    $list_msg_nonlu = $pdoState->fetchAll();
+    $count_msg = count($list_msg_nonlu);
 
 ?>
 
 <div class="list-group list-group-messages">
-                                    <a href="creation-list-conversation.php" class="list-group-item pt-0 active">
+                                    <a href="creation-list-conversation-nonlu.php" class="list-group-item pt-0 active">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>

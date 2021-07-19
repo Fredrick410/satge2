@@ -38,3 +38,12 @@ function archiver(destination){
         }
         });
 }
+function retablir(destination){
+    $.ajax({
+        type: "POST",
+        url: "php/retablir_conv.php",
+        data:'destination='+destination,
+        success: function(){
+        }
+        });
+}

@@ -6,9 +6,6 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
 
-$SQL2 = $bdd->prepare('SELECT * FROM chat_crea WHERE you NOT LIKE "coqpix"');
-$SQL2->execute();
-$list_msg = $SQL2->fetchAll();
 
 ?>
 
@@ -217,9 +214,9 @@ $list_msg = $SQL2->fetchAll();
                                         
                                         <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
                                             <!--<select onclick="affiche_conv();" id="type_conv" class="form-select border-1 form-control" aria-label="Default select example" style="width:20%;">
-                                                <option value="1">Conversation(s) non lue(s)</option>
+                                                <option value="1" selected>Conversation(s) non lue(s)</option>
                                                 <option value="2">Conversation(s) archivée(s)</option>
-                                                <option value="3" selected>Toutes les conversations</option>
+                                                <option value="3">Toutes les conversations</option>
                                             </select>-->
                                             <div class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><span>Filtre des conversations</span></a>
                                                 <ul class="dropdown-menu">
@@ -255,8 +252,13 @@ $list_msg = $SQL2->fetchAll();
                                                 function affiche_conv(){
                                                     var select = document.getElementById("type_conv");
                                                     var choice = select.selectedIndex;
-                                                    //select.options[choice];
-                                                    document.getElementById("list").innerHTML +="";
+                                                    if(select.options[choice]==1){
+                                                    <?php header('Location: creation-list-conversation-nonlu.php');?>}
+                                                    if(select.options[choice]==2){
+                                                    <?php header('Location: creation-list-conversation-lu.php');?>}
+                                                    if(select.options[choice]==3){
+                                                    <?php header('Location: creation-list-conversation.php');?>}
+
                                                     
                                                 }
                                                 var compte=new Array();
@@ -267,7 +269,7 @@ $list_msg = $SQL2->fetchAll();
                                                 <?php 
                                                 $expediteur = array();
                                                 $j=0;
-                                                foreach($list_msg as $msg): 
+                                                foreach($list_msg_nonlu as $msg): 
                                                     $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE name_crea LIKE :nom ');
                                                     $PDO->bindValue(':nom', $msg['you']);
                                                     $PDO->execute();
