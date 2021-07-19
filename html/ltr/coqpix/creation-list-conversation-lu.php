@@ -253,13 +253,6 @@ $list_msg_lu = $SQL->fetchAll();
                                     <div class="row" >
                                     <!-- email user list start -->
                                     <script>
-                                                function affiche_conv(){
-                                                    var select = document.getElementById("type_conv");
-                                                    var choice = select.selectedIndex;
-                                                    //select.options[choice];
-                                                    //document.getElementById("list").innerHTML +="";
-                                                    
-                                                }
                                                 var compte=new Array();
                                     </script>
                                         <div class="email-user-list col-4" style="overflow-y:scroll;" id="list-users">
@@ -312,14 +305,14 @@ $list_msg_lu = $SQL->fetchAll();
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
-                                                                    <!--Bouton d'archivage-->
-                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver("<?=$msg['destination']?>");'>
+                                                                    <!--Bouton nonlu-->
+                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="unsave"  onclick='retablir(`<?=$msg["destination"]?>`);'>
                                                                         <span class="fonticon-wrap">
-                                                                            <i id="img_save" class="livicon-evo" data-options="name: save.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                                                            <i id="img_save" class="livicon-evo" data-options="name: bell.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                                                             </i>
                                                                         </span>
                                                                     </button>
-                                                                    <!--FIN archivage-->
+                                                                    <!--FIN nonlu-->
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
                                                                     <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
                                                                 </div>

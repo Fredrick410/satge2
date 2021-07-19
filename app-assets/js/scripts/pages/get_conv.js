@@ -29,21 +29,19 @@ $(document).ready(function(){
 
  });
 
+
 function archiver(destination){
     $.ajax({
         type: "POST",
         url: "php/archiver_conv.php",
         data:'destination='+destination,
-        success: function(){
-        }
         });
 }
+
 function retablir(destination){
     $.ajax({
         type: "POST",
         url: "php/retablir_conv.php",
         data:'destination='+destination,
-        success: function(){
-        }
         });
 }

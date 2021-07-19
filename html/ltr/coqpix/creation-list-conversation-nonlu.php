@@ -230,15 +230,6 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                             <!-- search bar  -->
                                             <div class="email-fixed-search flex-grow-1">
-                                                <div class="sidebar-toggle d-block d-lg-none">
-                                                    <i class="bx bx-menu"></i>
-                                                </div>
-                                                <fieldset class="form-group position-relative has-icon-left m-0">
-                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher une conversation">
-                                                    <div class="form-control-position">
-                                                        <i class="bx bx-search"></i>
-                                                    </div>
-                                                </fieldset>
                                             </div>
                                             <!-- pagination and page count -->
                                             
@@ -249,18 +240,6 @@ require_once 'php/verif_session_connect_admin.php';
                                     <div class="row" >
                                     <!-- email user list start -->
                                     <script>
-                                                function affiche_conv(){
-                                                    var select = document.getElementById("type_conv");
-                                                    var choice = select.selectedIndex;
-                                                    if(select.options[choice]==1){
-                                                    <?php header('Location: creation-list-conversation-nonlu.php');?>}
-                                                    if(select.options[choice]==2){
-                                                    <?php header('Location: creation-list-conversation-lu.php');?>}
-                                                    if(select.options[choice]==3){
-                                                    <?php header('Location: creation-list-conversation.php');?>}
-
-                                                    
-                                                }
                                                 var compte=new Array();
                                     </script>
                                         <div class="email-user-list col-4" style="overflow-y:scroll;" id="list-users">
@@ -302,7 +281,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         $j++; ?>
 
                                                              
-                                                    <li class="media rounded" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
+                                                    <li class="media rounded" onclick="getMessages();" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-1 days") ){echo "rgba(255, 174, 0, 0.25)"; $affichage=0;}
                                                                         else if( $dateFormatee < strtotime("-6 hours") ){echo "rgba(255, 232, 0, 0.25)";$affichage=1;}
                                                                         else{ echo "mail-read"; $affichage=1;}?>;'>
@@ -314,7 +293,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
                                                                     <!--Bouton d'archivage-->
-                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver("<?=$msg['destination']?>");'>
+                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver(`<?=$msg["destination"]?>`);'>
                                                                         <span class="fonticon-wrap">
                                                                             <i id="img_save" class="livicon-evo" data-options="name: save.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                                                             </i>
