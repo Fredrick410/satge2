@@ -162,14 +162,14 @@
                             <?php       } 
                                 } else { 
                                             if($doc_pieceid == "1"){ ?>  
-                                            <a href="creation-view-morale-pieceid.php" id="av" class="list-group-item" >
+                                            <a href="creation-view-physique-pieceid.php" id="av" class="list-group-item" >
                                                 <div class="fonticon-wrap d-inline mr-25">
                                                     <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
                                                 </div>
                                                 Pièce d'identitée <img id="vx" src="../../../app-assets/images/pages/v.png">
                                             </a>
                                         <?php }else{ ?>
-                                            <a href="creation-view-morale-pieceid.php" id="ax" class="list-group-item">
+                                            <a href="creation-view-physique-pieceid.php" id="ax" class="list-group-item">
                                                 <div class="fonticon-wrap d-inline mr-25">
                                                     <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
                                                 </div>
@@ -177,14 +177,14 @@
                                             </a>
                                         <?php } 
                                             if($doc_cerfaM0 == "1"){ ?>
-                                            <a href="creation-view-morale-cerfaM0.php" id="av" class="list-group-item">
+                                            <a href="creation-view-physique-cerfaM0.php" id="av" class="list-group-item">
                                                 <div class="fonticon-wrap d-inline mr-25">
                                                     <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
                                                 </div> 
                                                 Cerfa M0 <img id="vx" src="../../../app-assets/images/pages/v.png">
                                             </a>
                                         <?php }else{ ?>
-                                            <a href="creation-view-morale-cerfaM0.php" id="ax" class="list-group-item">
+                                            <a href="creation-view-physique-cerfaM0.php" id="ax" class="list-group-item">
                                                 <div class="fonticon-wrap d-inline mr-25">
                                                     <img src="../../../app-assets/images/pages/doc.png" id="img-doc">
                                                 </div> 

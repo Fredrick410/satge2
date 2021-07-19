@@ -9,7 +9,7 @@ ini_set('display_startup_errors', TRUE);
         $pdo = $bdd->prepare('DELETE FROM question WHERE id=:id');
         $pdo->bindValue(':id', $_GET['id']);
         $pdo->execute();
-        $id = $_GET['idqcm'];
+        $id = htmlspecialchars($_GET['idqcm']);
         header("Location: ../rh-recrutement-entretient-question.php?id=$id");
         exit();
 ?>

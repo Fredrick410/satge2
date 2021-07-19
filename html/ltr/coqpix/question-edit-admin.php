@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'rh');
 require_once 'php/verif_session_connect_admin.php';
 
 if (!isset($_GET['id'])) {
@@ -45,7 +46,7 @@ $pdoSta->execute();
 $question = $pdoSta->fetch();
 
 try {
-    if (count($question) != 4) {
+    if (count($question) != 5) {
         if (!isset($_GET['idqcm'])) {
             header('Location: recrutement-list.php.php');
         } elseif (empty($_GET['idqcm'])) {
@@ -90,6 +91,12 @@ $pdoSta->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
 $pdoSta->execute();
 $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
 
+$pdoSta = $bdd->prepare('SELECT * FROM admin WHERE id = :num');
+$pdoSta->bindValue(':num', $_SESSION['id_admin'], PDO::PARAM_INT); //$_SESSION
+$pdoSta->execute();
+$entreprise = $pdoSta->fetch();
+
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -102,7 +109,7 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Recrutement - Coqpix</title>
+    <title>Modifier une question - <?= $question['libelle'] ?></title>
     <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -209,9 +216,44 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                         <input class="form-control" type="text" name="libelle" id="libelle" value="<?= $question['libelle'] ?>" placeholder="Qui êtes vous?">
                                                     </div>
 
+                                                    <?php
+                                                    if ($qcms[0]['qualitatif'] == "Oui") {
+                                                    ?>
+
+                                                        <div class="form-group">
+                                                            <label for="critere" class="col-form-label">Critère evalué</label>
+                                                            <select class="form-control" name="critere" id="critere">
+                                                                <option value="">Selectionner un critère d'évaluation</option>
+                                                                <option <?php if ($question['statu'] == "paramA") {
+                                                                            echo "selected";
+                                                                        } ?>>paramA</option>
+                                                                <option <?php if ($question['statu'] == "paramB") {
+                                                                            echo "selected";
+                                                                        } ?>>paramB</option>
+                                                                <option <?php if ($question['statu'] == "paramC") {
+                                                                            echo "selected";
+                                                                        } ?>>paramC</option>
+                                                                <option <?php if ($question['statu'] == "paramD") {
+                                                                            echo "selected";
+                                                                        } ?>>paramD</option>
+                                                                <option <?php if ($question['statu'] == "paramE") {
+                                                                            echo "selected";
+                                                                        } ?>>paramE</option>
+                                                                <option <?php if ($question['statu'] == "paramF") {
+                                                                            echo "selected";
+                                                                        } ?>>paramF</option>
+                                                            </select>
+                                                        </div>
+
+                                                    <?php
+                                                    }
+                                                    ?>
+
                                                     <div class="form-group">
                                                         <label for="points" class="col-form-label">Points</label>
-                                                        <input class="form-control" type="number" value="<?= $question['points'] ?>" step="1" name="points" id="points" placeholder="1">
+                                                        <input class="form-control" type="number" value="<?= $question['points'] ?>" step="1" name="points" <?php if ($qcms[0]['qualitatif'] == "Oui") {
+                                                                                                                                                                echo "disabled";
+                                                                                                                                                            } ?> id="points" placeholder="1">
                                                     </div>
 
                                                     <div class="form-group">
@@ -220,19 +262,34 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                                 <label for="reponse">Réponse</label>
                                                                 <input name="reponse" id="reponse" type="text" class="form-control" placeholder="Je suis ... ">
                                                             </div>
-                                                            <div class="col-12 form-group">
-                                                                <label for="vraioufaux">Vrai ou faux :</label>
-                                                                <select name="vraioufaux" id="vraioufaux" class="form-control">
-                                                                    <option value="">Choisissez Vrai ou Faux</option>
-                                                                    <option>Vrai</option>
-                                                                    <option>Faux</option>
-                                                                </select>
-                                                            </div>
+                                                            <?php
+                                                            if ($qcms[0]['qualitatif'] == "Non") {
+                                                            ?>
+                                                                <div class="col-12 form-group">
+                                                                    <label for="vraioufaux">Vrai ou faux :</label>
+                                                                    <select name="vraioufaux" id="vraioufaux" class="form-control">
+                                                                        <option value="">Choisissez Vrai ou Faux</option>
+                                                                        <option>Vrai</option>
+                                                                        <option>Faux</option>
+                                                                    </select>
+                                                                </div>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+                                                                <div class="col-12 form-group">
+                                                                    <label for="critere_reponse" class="col-form-label">Sous critère evalué</label>
+                                                                    <select class="form-control" name="critere_reponse" id="critere_reponse">
+                                                                        <option value="">Sélectionner un sous critère</option>
+                                                                    </select>
+                                                                </div>
+                                                            <?php
+                                                            }
+                                                            ?>
                                                             <div class="col-12 form-group">
                                                                 <div class="col p-0">
                                                                     <button class="btn btn-light-primary btn-sm" type="button">
                                                                         <i class="bx bx-plus"></i>
-                                                                        <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+                                                                        <span id="button_send" class="invoice-repeat-btn">Ajouter la réponse</span>
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -240,7 +297,7 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="reponses" class="col-form-label">Liste des réponses</label>
+                                                        <label class="col-form-label">Liste des réponses</label>
                                                         <table id="table" name="table" class="table table-bordered">
                                                             <style>
                                                                 .red {
@@ -251,17 +308,40 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
                                                                     text-decoration: underline;
                                                                 }
                                                             </style>
-                                                            <tbody>
+                                                            <thead>
                                                                 <tr>
                                                                     <th>Libellé de la réponse</th>
-                                                                    <th>Vrai ou faux :</th>
+                                                                    <?php
+                                                                    if ($qcms[0]['qualitatif'] == "Non") {
+                                                                    ?>
+                                                                        <th>Vrai ou faux :</th>
+                                                                    <?php
+                                                                    } else {
+                                                                    ?>
+                                                                        <th>Sous critère evalué</th>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                    <th></th>
                                                                 </tr>
+                                                            </thead>
+                                                            <tbody>
                                                                 <?php
                                                                 for ($i = 1; $i <= count($reponses); $i++) {
                                                                 ?>
                                                                     <tr valign="top" id="<?= $i ?>">
                                                                         <td id="reponse<?= $i ?>"><?= $reponses[$i - 1]['libelle'] ?></td>
-                                                                        <td id="vraioufaux<?= $i ?>" class="line"><?= $reponses[$i - 1]['vrai_ou_faux'] ?></td>
+                                                                        <?php
+                                                                        if ($qcms[0]['qualitatif'] == "Non") {
+                                                                        ?>
+                                                                            <td id="vraioufaux<?= $i ?>" class="line"><?= $reponses[$i - 1]['vrai_ou_faux'] ?></td>
+                                                                        <?php
+                                                                        } else {
+                                                                        ?>
+                                                                            <td id="critere_reponse<?= $i ?>" class="line"><?= $reponses[$i - 1]['statu'] ?></td>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
                                                                         <td>
                                                                             <a href="javascript:void(0);" class="remCF">
                                                                                 <i class='bx bx-x red'></i>
@@ -326,7 +406,153 @@ $reponses = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/app-add_question-admin.js"></script>
+    <script>
+        function htmlEntities(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
+        $(document).ready(function() {
+            if ($('#table tr:last').attr("id") === undefined)
+                var id = 1;
+            else {
+                var id = $('#table tr:last').attr("id");
+                id++;
+            }
+            /*Assigning id and class for tr and td tags for separation.*/
+            $("#button_send").click(function() {
+                <?php
+                if ($qcms[0]['qualitatif'] == "Non") {
+                ?>
+                    if (htmlEntities($("#reponse").val()) != '' && $("#vraioufaux").val() != '') {
+                        var newid = id++;
+                        $("#table tbody").append(`<tr valign="top" id="${newid}">
+            <td id="reponse${newid}">${htmlEntities($("#reponse").val())}</td>
+            <td id="vraioufaux${newid}" class="line">${$("#vraioufaux").val()}</td>
+            <td><a href="javascript:void(0);" class="remCF"><i class='bx bx-x red'></i></a></td></tr>`);
+
+                        document.getElementById("reponse").value = "";
+                        document.getElementById("vraioufaux").value = "";
+                        addAlert("Réponse ajoutée", "success");
+                    } else {
+                        addAlert("Champs réponse et vrai ou faux vides.", "error");
+                    }
+                <?php
+                } else {
+                ?>
+                    if (htmlEntities($("#reponse").val()) != '' && $("#critere_reponse").val() != '') {
+                        var newid = id++;
+                        $("#table tbody").append(`<tr valign="top" id="${newid}">
+            <td id="reponse${newid}">${htmlEntities($("#reponse").val())}</td>
+            <td id="critere_reponse${newid}" class="line">${$("#critere_reponse").val()}</td>
+            <td><a href="javascript:void(0);" class="remCF"><i class='bx bx-x red'></i></a></td></tr>`);
+
+                        document.getElementById("reponse").value = "";
+                        document.getElementById("critere_reponse").value = "";
+                        addAlert("Réponse ajoutée", "success");
+                    } else {
+                        addAlert("Champs réponse et sous critère vides.", "error");
+                    }
+                <?php
+                }
+                ?>
+            });
+
+            // function to remove article if u don't want it
+            $("#table").on('click', '.remCF', function() {
+                $(this).parent().parent().remove();
+                addAlert("Réponse supprimée", "success");
+            });
+
+            $("#critere").change(function() {
+                critere = document.getElementById("critere").value;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_sous_groupe.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        critere: critere,
+                    },
+                    success: function(data) {
+                        document.getElementById("critere_reponse").innerHTML = data;
+                        $("#table tbody").empty();
+                    }
+                });
+            });
+
+            /*crating new click event for update button this will update the database*/
+            $("#button_update").click(function() {
+                var lastRowId = $('#table tr:last').attr("id"); /*finds id of the last row inside table*/
+                var reponses = new Array();
+                var vraioufaux = new Array();
+                var critere_reponse = new Array();
+                <?php
+                if ($qcms[0]['qualitatif'] == "Non") {
+                ?>
+                    for (var i = 1; i <= lastRowId; i++) {
+                        if ($("#" + "reponse" + i).html() !== undefined)
+                            reponses.push($("#" + "reponse" + i).html());
+                        if ($("#" + "vraioufaux" + i).html() !== undefined)
+                            vraioufaux.push($("#" + "vraioufaux" + i).html());
+                    }
+                <?php
+                } else {
+                ?>
+                    for (var i = 1; i <= lastRowId; i++) {
+                        if ($("#" + "reponse" + i).html() !== undefined)
+                            reponses.push($("#" + "reponse" + i).html());
+                        if ($("#" + "critere_reponse" + i).html() !== undefined)
+                            critere_reponse.push($("#" + "critere_reponse" + i).html());
+                    }
+                <?php
+                }
+                ?>
+
+                var idquestion = document.getElementById("idquestion").value;
+                var libelle = document.getElementById("libelle").value;
+                var points = document.getElementById("points").value;
+                if (document.getElementById("critere") != null)
+                    var critere = document.getElementById("critere").value;
+
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/edit_question_admin.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        reponses: reponses,
+                        vraioufaux: vraioufaux,
+                        idquestion: idquestion,
+                        libelle: libelle,
+                        points: points,
+                        critere: critere,
+                        critere_reponse: critere_reponse
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            addAlert("Question mise a jour", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     <!-- END: Page JS-->
 
 </body>

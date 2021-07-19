@@ -80,16 +80,8 @@ require_once 'php/config.php';
                             <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
                         </ul>
                         <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
-                        </ul>
-                        <script>
-                            function retourn() {
-                                window.history.back();
-                            }
-                        </script> 
-                        <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul> 
+                        </ul>
                     </div>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
@@ -261,7 +253,7 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>Prix de vente HT :</label>
-                                                            <input name="prixvente" type="number" class="form-control" step="any" placeholder="Prix de vente de l'article" value="<?= $article['prixvente'] ?>">
+                                                            <input name="prixvente" type="number" step="any" class="form-control" placeholder="Prix de vente de l'article" value="<?= $article['prixvente'] ?>">
                                                         </div>
                                                         <div class="controls"> 
                                                             <?php                             
@@ -290,7 +282,7 @@ require_once 'php/config.php';
                                                         </div>
                                                         <div class="controls">
                                                             <label>Cout d'achat HT :</label>
-                                                            <input name="coutachat" type="number" class="form-control" step="any" placeholder="Cout d'achat de l'article" value="<?= $article['coutachat'] ?>">
+                                                            <input name="coutachat" type="number" step="any" class="form-control" placeholder="Cout d'achat de l'article" value="<?= $article['coutachat'] ?>">
                                                         </div>
                                                         <div class="controls">
                                                             <?php                             

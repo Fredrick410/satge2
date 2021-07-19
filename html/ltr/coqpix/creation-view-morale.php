@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'juriste');
 require_once 'php/verif_session_connect_admin.php';
     
     $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
@@ -333,7 +334,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     $t_doc_justificatifss = "0";
                                                                 }
 
-                                                                $t_administration = ''.$t_doc_pieceid + $t_doc_cerfaM0 + $t_doc_cerfaMBE + $t_doc_justificatifss.'/4';
+                                                                $t_administration = '' . ($t_doc_pieceid + $t_doc_cerfaM0 + $t_doc_cerfaMBE + $t_doc_justificatifss) . '/4';
 
                                                                 //redaction
 
@@ -358,7 +359,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     $t_doc_attestation = "0";
                                                                 }
 
-                                                                $t_redaction = ''.$t_doc_statuts + $t_doc_nomination + $t_doc_pouvoir + $t_doc_attestation.'/4';
+                                                                $t_redaction = '' . ($t_doc_statuts + $t_doc_nomination + $t_doc_pouvoir + $t_doc_attestation) . '/4';
 
                                                                 // 
 
@@ -373,7 +374,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     $t_doc_annonce = "0";
                                                                 }
 
-                                                                $t_banque = ''.$t_doc_depot + $t_doc_annonce.'/2';
+                                                                $t_banque = '' . ($t_doc_depot + $t_doc_annonce) . '/2';
 
 
                                                             ?>

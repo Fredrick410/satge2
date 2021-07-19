@@ -77,8 +77,8 @@
                                                                 <label class="checkboxsmall" for="exampleCheck1"><small>Rester connecté</small></label>
                                                             </div>
                                                         </div>
-                                                        <!-- MOT DE PASSE OUBLIER A FAIRE -->
-                                                        <!-- <div class="text-right"><a href="auth-forgot-password.html" class="card-link"><small>Mot de passe oublié?</small></a></div> -->
+                                                        <!-- MOT DE PASSE OUBLIER -->
+                                                        <div class="text-right"><a href="html/ltr/coqpix/reset-password.php" class="card-link"><small>Mot de passe oublié?</small></a></div>
                                                     </div>
                                                     <input type="submit" value="Se connecter" class="btn btn-primary glow w-100 position-relative">
                                                 </form>

@@ -4,24 +4,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'comptable');
 require_once 'php/verif_session_connect_admin.php';
-    
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "prospect"');
-    $pdoSta->execute();
-    $portefeuille_prospect = $pdoSta->fetchAll();
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif"');
-    $pdoSta->execute();
-    $portefeuille_actif = $pdoSta->fetchAll();
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "encours"');
-    $pdoSta->execute();
-    $portefeuille_encours = $pdoSta->fetchAll();
-
-    $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "passif"');
-    $pdoSta->execute();
-    $portefeuille_passif = $pdoSta->fetchAll();
-
+require_once 'php/portefeuille.php';
 ?>
 
 <!DOCTYPE html>

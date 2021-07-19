@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'comptable');
 require_once 'php/verif_session_connect_admin.php';
     
     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "prospect" || statut = "prospect!validation"');
@@ -618,7 +619,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <tbody>
                                             <?php foreach($portefeuille_actif as $portefeuilles_actif): 
                                             
-                                                $pdoSta = $bdd->prepare('SELECT sum(montant) as somme FROM prelevement WHERE id_session=:num AND statut="En cours" OR statut="rejeté" ');
+                                                $pdoSta = $bdd->prepare('SELECT sum(montant) as somme FROM prelevement WHERE id_session=:num AND (statut="En cours" OR statut="rejeté") ');
                                                 $pdoSta->bindValue('num', $portefeuilles_actif['id']);
                                                 $pdoSta->execute();
                                                 $sum_dette = $pdoSta->fetch();

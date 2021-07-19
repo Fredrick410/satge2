@@ -5,82 +5,13 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_crea.php';
+require_once 'php/get_documents_physique.php';
+require_once 'php/get_documents.php';
     
     $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
     $pdoSta->bindValue(':num',$_SESSION['id_crea'], PDO::PARAM_INT);
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
-
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_cerfaMBE'] == ""){
-        $doc_cerfaMBE = "0";
-    }else{
-        $doc_cerfaMBE = "1";
-    }
-    if($crea['doc_justificatifd'] == ""){
-        $doc_justificatifd = "0";
-    }else{
-        $doc_justificatifd = "1";
-    }
-    if($crea['doc_justificatifss'] == ""){
-        $doc_justificatifss = "0";
-    }else{
-        $doc_justificatifss = "1";
-    }
-    if($crea['doc_statuts'] == ""){
-        $doc_statuts = "0";
-    }else{
-        $doc_statuts = "1";
-    }
-    if($crea['doc_nomination'] == ""){
-        $doc_nomination = "0";
-    }else{
-        $doc_nomination = "1";
-    }
-    if($crea['doc_affectation'] == ""){
-        $doc_affectation = "0";
-    }else{
-        $doc_affectation = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
-    }
-    if($crea['doc_depot'] == ""){
-        $doc_depot = "0";
-    }else{
-        $doc_depot = "1";
-    }
-    if($crea['doc_annonce'] == ""){
-        $doc_annonce = "0";
-    }else{
-        $doc_annonce = "1";
-    }
 
     if(!empty($_GET['suppression'])){
         $disparition = "harrypottergood";
@@ -160,7 +91,7 @@ require_once 'php/verif_session_crea.php';
                     <span class="user-status">En ligne</span>
                 </a>
                 <div class="dropdown-menu pb-0" style="margin-left: 40%;">
-                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Paramètre du compte</a>
+                    <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Information entreprise/dirigeant</a>
                     <div class="dropdown-divider my-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="php/disconnect.php"><i class="bx bx-log-out mr-50"></i> Se déconnecter</a>
                 </div>
             </div>
@@ -170,11 +101,11 @@ require_once 'php/verif_session_crea.php';
                             <div class="form-group" id="info-gauche">
                                 <div class="form-row m-0 p-2">
                                     <label>Prénom du dirigeant</label>
-                                    <input type="text" name="prenom_diri" class="form-control" placeholder="Prénom du dirigeant" value="<?= $crea['prenom_diri'] ?>" readonly>
+                                    <p name="prenom_diri" class="form-control"> <?= $crea['prenom_diri'] ?> </p>
                                 </div>
                                 <div class="form-row m-0 p-2">
                                     <label>E-mail <span style="text-transform: lowercase;">(identifiant de connexion)</span></label>
-                                    <input type="email" name="email_crea" class="form-control" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" readonly>
+                                    <p name="email_crea" class="form-control"> <?= $crea['email_diri'] ?> </p>
                                 </div>
                             </div>
                         </li>
@@ -182,12 +113,11 @@ require_once 'php/verif_session_crea.php';
                             <div class="form-group" id="info-droite">
                                 <div class="form-row m-0 p-2">
                                     <label>Nom du dirigeant</label>
-                                    <input type="text" name="nom_diri" class="form-control" placeholder="Nom du dirigeant" value="<?= $crea['nom_diri'] ?>" readonly>
+                                    <p name="nom_diri" class="form-control"> <?= $crea['nom_diri'] ?> </p>
                                 </div>
                                 <div class="form-row m-0 p-2">
                                     <label>Téléphone du dirigeant</label>
-                                    <input onchange='process(event)' type="text" name="tel_temp" id="tel_temp" class="form-control" value="<?= $crea['tel_diri'] ?>" readonly>
-                                    <input type="text" name="tel_diri" id="tel_diri" hidden required>
+                                    <p name="tel_diri" class="form-control"> <?= $crea['tel_diri'] ?> </p>
                                 </div> 
                             </div> 
                         </li>
@@ -199,8 +129,12 @@ require_once 'php/verif_session_crea.php';
             <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
-                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a><br><a href="domiciliation.php" type="button">Se Domicilier</a></h3>
-                    
+                    <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3><br>
+                    <div class="form-group">
+                        <br>
+                    </div>
+                    <br>
+                    <a href="domiciliation.php" type="button">Se Domicilier</a>
                 </div>
                 <div class="row p-0" id="solution">
                     <ul>
@@ -260,22 +194,7 @@ require_once 'php/verif_session_crea.php';
             }
         }
 
-        //telephone
-        const phoneInputField = document.querySelector("#tel_temp");
-        const phoneInput = window.intlTelInput(phoneInputField, {
-            preferredCountries: ["fr"],
-            utilsScript: 
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
-        function process(event) {
-            event.preventDefault();
-
-            const phoneNumber = phoneInput.getNumber();
-
-           
-            document.getElementById("tel_diri").value=`${phoneNumber}`;
-        }
+        
   
     </script>
 

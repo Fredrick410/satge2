@@ -15,8 +15,8 @@ ini_set('display_startup_errors', TRUE);
     $update = $bdd->prepare('UPDATE membres SET img_membres = ? WHERE id = ?');
     $update->execute(array(
 
-        ($_FILES['images']['name']),
-        ($_POST['id'])
+        htmlspecialchars($_FILES['images']['name']),
+        htmlspecialchars($_POST['id'])
             
     ));
 
