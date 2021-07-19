@@ -117,7 +117,7 @@ require_once 'php/verif_session_crea.php';
     <!-- BEGIN: Content-->
 <div class="container-fluid">
     <h2 id="titre-contrat">Création du contrat</h2>
-    <h5 id="sous-titre-contrat">Domiciliation à </h5>
+    <h5 id="sous-titre-contrat">Domiciliation à <?= $result['titre'] ?> </h5>
             
     <div class="row card-body bg-white" id="contrat">
         <form class="col-12" action="generate-pdf.php" method="POST">

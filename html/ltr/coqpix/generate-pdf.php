@@ -201,7 +201,7 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTML($signature, true, 0, true, 0);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->CheckBox('signature', 5, false, array(), array(), 'OK');
+$pdf->CheckBox('signature', 5, true, array(), array(), 'OK');
 $pdf->writeHTMLCell(0, 0, '', '', $checkbox, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
@@ -539,7 +539,7 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->SetFont('helvetica', 'B', 10);
-$pdf->CheckBox('signature', 5, false, array(), array(), 'OK');
+$pdf->CheckBox('signature', 5, true, array(), array(), 'OK');
 $pdf->writeHTMLCell(0, 0, '', '', 'J\'ai lu et j\'accepte les conditions générales', 0, 1, 0, true, '', true);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
