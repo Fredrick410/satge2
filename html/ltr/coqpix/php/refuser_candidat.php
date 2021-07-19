@@ -62,14 +62,14 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
         $entreprise = $pdoS->fetch();
 
         if ($candidature['statut'] == "Refusé après entretien") {
-            $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",<br><br>
-            Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".<br><br>
-            Nous avons attentivement traité votre candidature, mais nous ne pouvons malheureusement pas donner suite. Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.
-            Bonne chance pour votre recherche d'emploi.<br><br>
-            Merci encore pour l'intérêt que vous avez porté à notre entreprise.<br><br>
-            Bien Cordialement<br><br>
+            $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\r\n
+            Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\r\n
+            Nous avons attentivement traité votre candidature, mais nous ne pouvons malheureusement pas donner suite. Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.\r\n
+            Bonne chance pour votre recherche d'emploi.\r\n
+            Merci encore pour l'intérêt que vous avez porté à notre entreprise.\r\n
+            Bien Cordialement\r\n
                     
-            La Direction des Ressources Humaines.<br><br>
+            La Direction des Ressources Humaines.\r\n
             Coqpix.";
         }
 

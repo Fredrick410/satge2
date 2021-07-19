@@ -43,22 +43,22 @@ if ($_SESSION['candidat'] == $_GET['num']) {
             $entreprise = $pdoS->fetch();
 
             if ($candidature['statut'] == "success") {
-                $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",<br><br>
-                Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien en visio d'1/2 heure.<br><br>
-                Merci de me confirmer votre disponibilité.<br><br>
-                Bien Cordialement<br><br>
+                $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\r\n
+                Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien en visio d'1/2 heure.\r\n
+                Merci de me confirmer votre disponibilité.\r\n
+                Bien Cordialement\r\n
                         
-                Le Service des Ressources Humaines.<br><br>
+                Le Service des Ressources Humaines.\r\n
                 Coqpix.";
             } else if ($etape == "failure") {
-                $message = "Bonjour $prenom $nom,<br><br>
-                Merci d'avoir candidaté au poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".<br><br>
-                Nous avons attentivement étudié votre profil mais nous ne pouvons malheureusement pas donner suite. Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.
-                Bonne chance pour votre recherche d'emploi.<br><br>
-                Merci encore pour l'intérêt que vous avez porté à notre entreprise.<br><br>
-                Bien Cordialement<br><br>
+                $message = "Bonjour $prenom $nom,\r\n
+                Merci d'avoir candidaté au poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\r\n
+                Nous avons attentivement étudié votre profil mais nous ne pouvons malheureusement pas donner suite. Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.\r\n
+                Bonne chance pour votre recherche d'emploi.\r\n
+                Merci encore pour l'intérêt que vous avez porté à notre entreprise.\r\n
+                Bien Cordialement\r\n
                         
-                La Service des Ressources Humaines.<br><br>
+                La Service des Ressources Humaines.\r\n
                 Coqpix.";
             }
 
