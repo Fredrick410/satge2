@@ -163,12 +163,12 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
         $entreprise = $pdoS->fetch();
 
         if ($candidature['statut'] == "Refusé après entretien") {
-            $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\r\n
-            Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\r\n, j'ai le plaisir de vous annoncer que votre candidature a été retenu.\r\n
+            $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n
+            Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\n\n, j'ai le plaisir de vous annoncer que votre candidature a été retenu.\n\n
             Vous pouvez nous transmettre les documents pour la signature de la convention de stage.
-            Merci de me confirmer votre disponibilité.\r\n
-            Bien Cordialement\r\n   
-            La Direction des Ressources Humaines.\r\n
+            Merci de me confirmer votre disponibilité.\n\n
+            Bien Cordialement\n\n   
+            La Direction des Ressources Humaines.\n\n
             Coqpix.";
         }
 
