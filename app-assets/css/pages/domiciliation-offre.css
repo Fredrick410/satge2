@@ -139,6 +139,8 @@ input[type="radio"].solu + label:hover{
 
 #contrat h3 {
     margin-bottom: 20px;
+    font-family: mukta malar bold;
+    color: #051441;
 }
 
 #contrat-gauche, #contrat-droite{
@@ -194,6 +196,8 @@ input[type="radio"].solu + label:hover{
 
 #attestation h3, #condition h3 {
     margin-bottom: 20px;
+    font-family: mukta malar bold;
+    color: #051441;
 }
 
 #attestation label, #condition label {
@@ -205,14 +209,31 @@ input[type="radio"].solu + label:hover{
 
 #attestation input[type=text] {
     width: 90%;
+    padding: 5px 10px;
+    margin-bottom: 10px;
 }
 
-#attestation input[type=radio], #attestation label {
-    display: inline-block;
+#attestation input[type=text]:focus {
+    outline: none;
 }
 
-#condition input {
+#attestation pre {
+    background-color: white;
+    white-space: pre-wrap;
+    overflow: hidden;
+    font-family: mukta malar medium;
+    color: #051441;
+    font-size: 15px;
+    margin-top: 5px;
+}
 
+#condition input[type=text] {
+    padding: 5px 10px;
+    margin-left: 20px;
+}
+
+#condition input[type=text]:focus {
+    outline: none;
 }
 
 @media screen and (max-width: 1700px) {
