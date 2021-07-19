@@ -161,15 +161,15 @@ if (auteur == "support") {
 
 } else {
 
-    const id_membre = document.getElementById("id_session");
-
     setInterval(function() {
+        const id_membre = document.getElementById("id_session").value;
         getMessages(auteur, id_membre);  
     }, 5000);
 
 }
 
 $(".list_support").click(function() {
+    const id_membre = document.getElementById("id_session").value;
     getMessages(auteur, id_membre);
 });
 
@@ -191,6 +191,7 @@ $("#btn_submit_admin").click(function(event) {
 });
 
 $("#btn_submit_user").click(function(event) {
+    const id_membre = document.getElementById("id_session").value;
     postMessage(event, "user", id_membre);
 });
 

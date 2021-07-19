@@ -44,7 +44,7 @@ function getMessages() {
     echo json_encode($messages);
 
     //4 - On désactive les notifications
-    if ($auteur = "support") {
+    if ($auteur == "support") {
         $query = $bdd->prepare('UPDATE support_message SET lu_support = 1 WHERE id_membre = :id_membre');
         $query->bindValue(':id_membre', $id_membre);
         $query->execute();

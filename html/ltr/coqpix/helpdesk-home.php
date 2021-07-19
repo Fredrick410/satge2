@@ -128,7 +128,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         $count_notifs = $nb_msg['nb_notifs'];
 
                                                     ?>
-                                                        <tr class="<?php if ($count_notifs > 0) { echo "bg-primary bg-light"; } ?>">
+                                                        <tr class="<?php //if ($count_notifs > 0) { echo "bg-primary bg-light"; } ?>">
                                                             <td class="text-center"><?= $entreprises['nameentreprise'] ?></td>
                                                             <td class="text-center"><?= $entreprises['emailentreprise'] ?></td>
                                                             <td class="text-center"><?= $entreprises['telentreprise'] ?></td>
