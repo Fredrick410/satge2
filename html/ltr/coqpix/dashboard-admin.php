@@ -188,7 +188,7 @@ require_once 'php/verif_session_connect_admin.php';
         ${'crea_encours_'.($annee_actuelle)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n'] - ${'crea_valide_'.($annee_actuelle)}[array_search($total_crea['mois'], $mois)];
         ${'crea_encours_'.($annee_actuelle-1)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_1'] - ${'crea_valide_'.($annee_actuelle-1)}[array_search($total_crea['mois'], $mois)];
         ${'crea_encours_'.($annee_actuelle-2)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_2'] - ${'crea_valide_'.($annee_actuelle-2)}[array_search($total_crea['mois'], $mois)];
-        ${'crea_encours_'.($annee_actuelle-3)}[array_search($total_crea['mois'], $mois)] = (int) $crea_valide['nb_n_3'] - ${'crea_valide_'.($annee_actuelle-3)}[array_search($total_crea['mois'], $mois)];
+        ${'crea_encours_'.($annee_actuelle-3)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_3'] - ${'crea_valide_'.($annee_actuelle-3)}[array_search($total_crea['mois'], $mois)];
         ${'crea_encours_'.($annee_actuelle-4)}[array_search($total_crea['mois'], $mois)] = (int) $total_crea['nb_n_4'] - ${'crea_valide_'.($annee_actuelle-4)}[array_search($total_crea['mois'], $mois)];
     }
 
@@ -238,7 +238,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     // Requete SQL permettant de recuperer le nombre de modifications d'entreprise par type de changement
     $query = $bdd->prepare('SELECT substr(dte, 7) AS annee, count(case when one = "on" then 1 else null end) AS nb_one, count(case when two = "on" then 1 else null end) AS nb_two, count(case when three = "on" then 1 else null end) AS nb_three, count(case when four = "on" then 1 else null end) AS nb_four, count(case when five = "on" then 1 else null end) AS nb_five, count(case when six = "on" then 1 else null end) AS nb_six, count(case when seven = "on" then 1 else null end) AS nb_seven, count(case when eight = "on" then 1 else null end) AS nb_eight FROM acte GROUP BY substr(dte, 7)');
-    $query->execute(array(':annee' => ($annee_actuelle)));
+    $query->execute();
     for ($i=0 ; $i<5 ; $i++) {
         ${'nb_modif_type_'.($annee_actuelle - $i)} = array('one'=>0, 'two'=>0, 'three'=>0, 'four'=>0, 'five'=>0, 'six'=>0, 'seven'=>0, 'eight'=>0);
     }
