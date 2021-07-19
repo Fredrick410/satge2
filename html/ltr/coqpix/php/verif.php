@@ -103,12 +103,12 @@ if ($count == 1) {
 } else {
   $query_c = $bdd->prepare("SELECT * FROM membres WHERE email = :pseudo AND password_membre = :pass");
   $query_c->bindValue(':pseudo', $pseudo);
-  $query_c->bindValue(':pass', $pass);
+  $query_c->bindValue(':pass', $pass_hash);
   $query_c->execute();
   $count_c = $query_c->rowCount();
 
   if ($count_c == "1") {
-    $pdopass = $bdd->prepare("SELECT status_membres as new_user FROM membres WHERE emaile =:pseudo");
+    $pdopass = $bdd->prepare("SELECT status_membres as new_user FROM membres WHERE email =:pseudo");
     $pdopass->bindValue(':pseudo', $pseudo);
     $pdopass->execute();
     $verife = $pdopass->fetch();
