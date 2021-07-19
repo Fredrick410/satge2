@@ -122,7 +122,7 @@ if ($count == 1) {
     if ($verife['new_user'] == $video) {
 
 
-      $selectid = $bdd->prepare("SELECT id_session, id, role_membres FROM entreprise WHERE email =:pseudo");
+      $selectid = $bdd->prepare("SELECT id_session, id, role_membres FROM membres WHERE email =:pseudo");
       $selectid->bindValue(':pseudo', $pseudo);
       $selectid->execute();
       $viewid = $selectid->fetch();
@@ -142,7 +142,7 @@ if ($count == 1) {
     if ($verife['new_user'] == $oui) {
 
 
-      $selectid = $bdd->prepare("SELECT id_session, id, role_membres FROM entreprise WHERE email =:pseudo");
+      $selectid = $bdd->prepare("SELECT id_session, id, role_membres FROM membres WHERE email =:pseudo");
       $selectid->bindValue(':pseudo', $pseudo);
       $selectid->execute();
       $viewid = $selectid->fetch();
@@ -161,7 +161,7 @@ if ($count == 1) {
 
     if ($verife['new_user'] == $non) {
 
-      $selectid = $bdd->prepare("SELECT id_session, id, role_membres FROM entreprise WHERE email =:pseudo");
+      $selectid = $bdd->prepare("SELECT id_session, id, role_membres FROM membres WHERE email =:pseudo");
       $selectid->bindValue(':pseudo', $pseudo);
       $selectid->execute();
       $viewid = $selectid->fetch();
