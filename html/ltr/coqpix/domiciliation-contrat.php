@@ -217,7 +217,7 @@ require_once 'php/verif_session_crea.php';
                                 <label for="adresse_factures"> - Que la comptabilité et les factures de la société susnommée sont conservées à l’adresse suivante :</label>
                             </li>
                             <li>
-                                <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill" required>
+                                <input type="text" name="adresse_factures" id="adresse_factures" placeholder="entrez une adresse" class="border-dark rounded-pill" required>
                             </li>
                             <li>
                                 - Que je m’engage, en cas de vérification, à mettre ces documents à la disposition de l’administration à l’adresse de domiciliation, sous peine d’encourir les sanctions prévues à l’article L74 du livre des procédures fiscales en cas d’opposition à contrôle fiscal.
@@ -226,7 +226,7 @@ require_once 'php/verif_session_crea.php';
                                 <pre><input type="radio" id="emploie" name="salarie" value="emploie" required>  Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :</pre>
                             </li>
                             <li>
-                                <input type="text" name="adresse_salarie" id="adresse_salarie" class="border-dark rounded-pill">
+                                <input type="text" name="adresse_salarie" id="adresse_salarie" placeholder="entrez la/les adresse(s)" class="border-dark rounded-pill">
                             </li>
                             <li>
                                 <pre><input type="radio" id="pas_emploie" name="salarie" value="pas_emploie" required>  Que la société susnommée n’emploie pas de salariés</pre>
@@ -245,7 +245,7 @@ require_once 'php/verif_session_crea.php';
                     <ul>
                         <li>
                             <label for="Fait_a">Fait à</label>
-                            <input type="text" name="Fait_a" id="Fait_a" class="border-dark rounded-pill" required>
+                            <input type="text" name="Fait_a" id="Fait_a" placeholder="entrez une ville" class="border-dark rounded-pill" required>
                         </li>
                         <li>
                             <label for="Le">Le</label>
@@ -261,7 +261,8 @@ require_once 'php/verif_session_crea.php';
                         </li>
                         <li>
                             <label for="Signature">Signature Numérique</label>
-                            <input type="text" name="signature" id="signature" class="border-dark rounded-pill" required>
+                            <input type="text" name="signature" id="signature" placeholder="prénom et nom" class="border-dark rounded-pill" required>
+                            <p></p>
                         </li>
                     </ul>
                     <div id="btn" class="col-12 text-center mt-2">
