@@ -121,7 +121,7 @@ MULTIBURO SA au capital de 4 212 080 € ayant son siège social au Le Shératan
 $coordtop = '<b>Coordonnées de l\'utilisateur :</b>';
 $coordleft = 'Raison Sociale : '.$raisonsociale.'
 Forme juridique : '.$formejuridique.'
-Capital : '.$capital.'
+Capital : '.$capital.' €
 Représenté par : '.$representant.'
 En sa qualité de : '.$representantqualite.'';
 $coordright = 'Code postal : '.$codepostal.'
@@ -166,13 +166,13 @@ $pourleft = 'Représenté par Madame Nadia TERKI
 En sa qualité de Responsable Centre
 Date 
 Fait à
-Signature et Cachet';
+Signature :';
 $pourtopright = 'Pour l\'utilisateur';
 $pourright = 'Représenté par '.$representant.'
 En sa qualité de '.$representantqualite.'
 Date '.$date.'
 Fait à '.$ville.'
-Signature et Cachet';
+Signature :';
 
 // Print text 
 $pdf->writeHTMLCell(0, 0, '', '', $soustitre, 0, 1, 0, true, '', true);
@@ -201,7 +201,7 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTML($signature, true, 0, true, 0);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->CheckBox('signature', 5, false, array(), array(), 'OK');
+$pdf->CheckBox('signature', 5, true, array(), array(), 'OK');
 $pdf->writeHTMLCell(0, 0, '', '', $checkbox, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
@@ -211,6 +211,11 @@ $pdf->MultiCell(90, 0, $pourtopright, 1, 'L', 1, 1, '', '', true, 0, false, true
 $pdf->SetFont('helvetica', '', 8);
 $pdf->MultiCell(90, 0, $pourleft, 1, 'L', 1, 0, '', '', true, 0, false, true, 0);
 $pdf->MultiCell(90, 0, $pourright, 1, 'L', 1, 1, '', '', true, 0, false, true, 0);
+$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+$pdf->AddFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf','', '../../../app-assets/data/tcpdf_min/fonts/Holligate.php');
+$pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
+$pdf->TextField('prestataire', 50, 10, array(), array(), '', '', false);
+$pdf->TextField('utilisateur1', 50, 10, array(), array(), 145, '', false);
 
 $pdf->AddPage();
 
@@ -457,8 +462,9 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->MultiCell(90, 0, 'Pour le prestataire', 0, 'L', 1, 0, '', '', true, 0, false, true, 0);
 $pdf->MultiCell(90, 0, 'Pour l\'utilisateur', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
-$pdf->TextField('prestataire', 50, 5, array(), array(), '', '', false);
-$pdf->TextField('utilisateur', 50, 5, array(), array(), 145, '', false);
+$pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
+$pdf->TextField('prestataire2', 50, 10, array(), array(), '', '', false);
+$pdf->TextField('utilisateur2', 50, 10, array(), array(), 145, '', false);
 
 $pdf->AddPage();
 
@@ -509,7 +515,7 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->RadioButton('salarie', 5, array(), array(), 'oui');
 $pdf->writeHTMLCell(0, 0, '', '', $que, 0, 1, 0, true, '', true);
 $pdf->Ln(2);
-$pdf->TextField('address', 180, 18, array('multiline'=>true, 'lineWidth'=>0, 'borderStyle'=>'none'), array());
+$pdf->TextField('address1', 180, 18, array('multiline'=>true, 'lineWidth'=>0, 'borderStyle'=>'none'), array());
 $pdf->Ln(19);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
@@ -517,7 +523,6 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->RadioButton('salarie', 5, array(), array(), 'non');
 $pdf->writeHTMLCell(0, 0, '', '', $quebis, 0, 1, 0, true, '', true);
 
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
@@ -532,11 +537,17 @@ $pdf->TextField('Le', 50, 5);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->SetFont('helvetica', 'B', 10);
-$pdf->CheckBox('signature', 5, false, array(), array(), 'OK');
+$pdf->CheckBox('signature', 5, true, array(), array(), 'OK');
 $pdf->writeHTMLCell(0, 0, '', '', 'J\'ai lu et j\'accepte les conditions générales', 0, 1, 0, true, '', true);
+
+$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+
+$pdf->SetFont('helvetica', '', 10);
+$pdf->MultiCell(147, 0, 'Signature', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
+$pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
+$pdf->TextField('utilisateur3', 50, 10, array(), array(), 145, '', false);
 
 /*$pdf->writeHTMLCell(0, 0, '', '', 'Signature', 0, 1, 0, true, '', true);
 
@@ -562,5 +573,3 @@ $pdf->Output('contrat_domiciliation.pdf', 'I');
 //============================================================+
 
 ?>
-
-</html>

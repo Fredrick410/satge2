@@ -117,81 +117,164 @@ require_once 'php/verif_session_crea.php';
     <!-- BEGIN: Content-->
 <div class="container-fluid">
     <h2 id="titre-contrat">Création du contrat</h2>
-    <h5 id="sous-titre-contrat">Domiciliation à </h5>
+    <h5 id="sous-titre-contrat">Domiciliation à <?php echo $result['titre'] ?></h5>
             
-    <div class="row card-body bg-white" id="contrat">
-        <form class="col-12" action="generate-pdf.php" method="POST">
-            <!--<h6>
-              <i class="step-icon"></i>
-              <span class="fonticon-wrap">
-                <i class="livicon-evo"
-                  data-options="name:user.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-              </span>
-              <span>Basic Details</span>
-            </h6>-->
-            <?php $today = date("d/m/y"); ?>            
-            <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
-            <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
-            <!--<input type="text" name="duree" id="duree" readonly hidden value="<?= $result[''] ?>">
-            <input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
-            <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
-        <div class="row">
-        <div class="col-6" id="contrat-gauche" >
-            <ul>
-                <li>
-                    <label for="RaisonSociale">Nom de l'entreprise</label>
-                    <input type="text" name="raisonsociale" id="raisonsociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
-                </li>
-                <li>
-                    <label for="FormeJuridique">Forme Juridique</label>
-                    <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" required readonly value="<?= $crea['status_crea'] ?>">
-                </li>
-                <li>
-                    <label for="Capital">Capital</label>
-                    <input type="text" name="capital" id="capital" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Representant">Représenté par</label>
-                    <input type="text" name="representant" id="representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
-                </li>
-                <li>
-                    <label for="RepresentantQualite">En sa qualite de</label>
-                    <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" required value="Dirigeant">
-                </li>             
-            </ul>
+    <form class="col-12" action="generate-pdf.php" method="POST">
+        <div class="row card-body bg-white" id="contrat">
+            <h3>Informations Générales</h3>
+            <div class="col-12">
+                <!--<h6>
+                  <i class="step-icon"></i>
+                  <span class="fonticon-wrap">
+                    <i class="livicon-evo"
+                      data-options="name:user.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
+                  </span>
+                  <span>Basic Details</span>
+                </h6>-->
+                <?php $today = date("d/m/y"); 
+                $cd = $result['titre']; 
+                $codepostal = substr($cd, -5, 5); ?>            
+                <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
+                <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
+                <!--<input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
+                <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
+                <div class="row">
+                    <div class="col-6" id="contrat-gauche" >
+                        <ul>
+                            <li>
+                                <label for="RaisonSociale">Nom de l'entreprise</label>
+                                <input type="text" name="raisonsociale" id="raisonsociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
+                            </li>
+                            <li>
+                                <label for="FormeJuridique">Forme Juridique</label>
+                                <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" required readonly value="<?= $crea['status_crea'] ?>">
+                            </li>
+                            <li>
+                                <label for="Capital">Capital</label>
+                                <input type="text" name="capital" id="capital" class="border-dark rounded-pill" required>
+                            </li>
+                            <li>
+                                <label for="Representant">Représenté par</label>
+                                <input type="text" name="representant" id="representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="RepresentantQualite">En sa qualite de</label>
+                                <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" required value="Dirigeant">
+                            </li>             
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <label for="CodePostal">Code Postal</label>
+                                <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required value="<?= $codepostal ?>">
+                            </li>
+                            <li>
+                                <label for="Ville">Ville</label>
+                                <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required value="<?= $result['ville'] ?>">
+                            </li>
+                            <li>
+                                <label for="Pays">Pays</label>
+                                <input type="text" name="pays" id="pays" class="border-dark rounded-pill" required value="FRANCE">
+                            </li>
+                            <li>
+                                <label for="Telephone">Téléphone</label>
+                                <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="Email">Email</label>
+                                <input type="text" name="email" id="email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-6" id="contrat-droite">
-            <ul>
-                <li>
-                    <label for="CodePostal">Code Postal</label>
-                    <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Ville">Ville</label>
-                    <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Pays">Pays</label>
-                    <input type="text" name="pays" id="pays" class="border-dark rounded-pill" required value="FRANCE">
-                </li>
-                <li>
-                    <label for="Telephone">Téléphone</label>
-                    <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
-                </li>
-                <li>
-                    <label for="Email">Email</label>
-                    <input type="text" name="email" id="email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
-                </li>
-            </ul>
+
+        
+
+        <div class="row card-body bg-white" id="attestation">
+            <h3>Attestation</h3>
+            <div class="col-12">
+                <div class="row" id="">
+                    <label>
+                        <ul>
+                            <li>
+                                Je soussigné(e) <?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>
+                            </li>
+                            <li>
+                                Agissant en qualité de dirigeant
+                            </li>
+                            <li>
+                                Pour la société <?= $crea['name_crea'] ?>
+                            </li>
+                            <li>
+                                Dont le siège social est <?= $result['adresse'] ?>
+                            </li>
+                            <li>
+                                Attestation sur l'honneur :
+                            <li>
+                                <label for="adresse_factures"> - Que la comptabilité et les factures de la société susnommée sont conservées à l’adresse suivante :</label>
+                            </li>
+                            <li>
+                                <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill" required>
+                            </li>
+                            <li>
+                                - Que je m’engage, en cas de vérification, à mettre ces documents à la disposition de l’administration à l’adresse de domiciliation, sous peine d’encourir les sanctions prévues à l’article L74 du livre des procédures fiscales en cas d’opposition à contrôle fiscal.
+                            </li>
+                            <li>
+                                <input type="radio" id="emploie" name="salarie" value="emploie" required>
+                                <label for="emploie">Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :</label>
+                            </li>
+                            <li>
+                                <input type="text" name="adresse_salarie" id="adresse_salarie" class="border-dark rounded-pill">
+                            </li>
+                            <li>
+                                <input type="radio" id="pas_emploie" name="salarie" value="pas_emploie" required>
+                                <label for="pas_emploie">Que la société susnommée n’emploie pas de salariés</label>
+                            </li>
+                        </ul>
+                    </label>
+                    
+                </div>
+            </div>
         </div>
-        <div id="btn" class="col-12 text-center mt-2">
-            <button type="submit" class="border rounded-pill">
-                Valider les informations
-            </button>
+
+        <div class="row card-body bg-white" id="condition">
+            <h3>Conditions Générales</h3>
+            <div class="col-12">
+                <div class="row" id="">
+                    <ul>
+                        <li>
+                            <label for="Fait_a">Fait à</label>
+                            <input type="text" name="Fait_a" id="Fait_a" class="border-dark rounded-pill" required>
+                        </li>
+                        <li>
+                            <label for="Le">Le</label>
+                            <input type="text" name="Le" id="Le" class="border-dark rounded-pill" required value="<?= $today ?>">
+                        </li>
+                        <li>
+                            <input type="checkbox" name="conditions-logo" id="conditions-logo" required>
+                            <label for="conditions-logo">J'autorise Multiburo à utiliser le nom et le logo de ma société dans sa communication interne et externe.</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="conditions" id="conditions" required>
+                            <label for="conditions">J'ai pris connaissance, et j'accepte les <a href="conditions.php" target="_blank">conditions générales</a> du contrat.</label>
+                        </li>
+                        <li>
+                            <label for="Signature">Signature Numérique</label>
+                            <input type="text" name="signature" id="signature" class="border-dark rounded-pill" required>
+                        </li>
+                    </ul>
+                    <div id="btn" class="col-12 text-center mt-2">
+                        <button type="submit" class="border rounded-pill">
+                            Valider les informations
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        </div>
-        </form>
-    </div>
+    </form>
 
     <div class="row">
         
