@@ -197,8 +197,8 @@ require_once 'php/verif_session_crea.php';
             <h3>Attestation</h3>
             <div class="col-12">
                 <div class="row" id="contrat-gauche">
-                    
-                        <ul><label for="adresse_factures">
+                    <label>
+                        <ul>
                             <li>
                                 Je soussigné(e) <?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>
                             </li>
@@ -214,13 +214,27 @@ require_once 'php/verif_session_crea.php';
                             <li>
                                 Attestation sur l'honneur :
                             <li>
-                                 - Que la comptabilité et les factures de la société susnommée sont conservées à l’adresse suivante :
-                            </li></label>
+                                <label for="adresse_factures"> - Que la comptabilité et les factures de la société susnommée sont conservées à l’adresse suivante :</label>
+                            </li>
                             <li>
                                 <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill" required>
                             </li>
+                            <li>
+                                - Que je m’engage, en cas de vérification, à mettre ces documents à la disposition de l’administration à l’adresse de domiciliation, sous peine d’encourir les sanctions prévues à l’article L74 du livre des procédures fiscales en cas d’opposition à contrôle fiscal.
+                            </li>
+                            <li>
+                                <input type="radio" id="emploie" name="salarie" value="emploie" required>
+                                <label for="emploie">Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :</label>
+                            </li>
+                            <li>
+                                <input type="text" name="adresse_salarie" id="adresse_salarie" class="border-dark rounded-pill">
+                            </li>
+                            <li>
+                                <input type="radio" id="pas_emploie" name="salarie" value="pas_emploie" required>
+                                <label for="pas_emploie">Que la société susnommée n’emploie pas de salariés</label>
+                            </li>
                         </ul>
-                    
+                    </label>
                     
                 </div>
             </div>
@@ -245,7 +259,7 @@ require_once 'php/verif_session_crea.php';
                         </li>
                         <li>
                             <input type="checkbox" name="conditions" id="conditions" required>
-                            <label for="conditions">J'ai pris connaissance, et j'accepte les <a href="">conditions générales</a> du contrat.</label>
+                            <label for="conditions">J'ai pris connaissance, et j'accepte les <a href="conditions.php" target="_blank">conditions générales</a> du contrat.</label>
                         </li>
                         <li>
                             <label for="Signature">Signature Numérique</label>
