@@ -5,10 +5,14 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
-    $pdoS->bindValue(':num',$_SESSION['id']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+    $select_entreprise = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
+    $select_entreprise->bindValue(':num',$_SESSION['id']);
+    $select_entreprise->execute();
+    $entreprise = $select_entreprise->fetch();
+
+    $select_membre = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
+    $select_membre->bindValue(':num', $_SESSION['id']);
+    $select_membre->execute();
     
 ?>
 <!DOCTYPE html>
@@ -146,6 +150,24 @@ require_once 'php/config.php';
                             </div>
                         </div>
                         <div class="chat-sidebar-list-wrapper pt-2">
+                            <h6 class="px-2 pt-2 pb-25 mb-0">CHAT INTERNE</h6>
+                            <ul class="chat-sidebar-list">
+                                <?php while ($membre = $select_membre->fetch()) { ?>
+                                <li class="">
+                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
+                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                    <input type="hidden" value="<?= $membre['id'] ?>">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
+                                            <span class="avatar-status-busy"></span>
+                                        </div>
+                                        <div class="chat-sidebar-name">
+                                            <h6 class="mb-0"><?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?></h6><span class="text-muted"><?= $membre['role_membres'] ?></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php } ?>
+                            </ul>
                             <h6 class="px-2 pt-2 pb-25 mb-0">SUPPORT</h6>
                             <ul class="chat-sidebar-list">
                                 <li class="list_support">
@@ -223,7 +245,7 @@ require_once 'php/config.php';
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
                                             <input type="hidden" id="auteur" value="user">
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
-                                            <button type="submit" id="btn_submit_user" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
+                                            <button type="submit" class="btn-envoyer-msg btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
                                         </div>
                                     </div>

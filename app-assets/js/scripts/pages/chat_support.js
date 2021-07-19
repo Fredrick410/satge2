@@ -154,7 +154,7 @@ if (auteur == "support") {
 
     setInterval(function() {
 
-        var id = document.getElementById("id_header_chat").value;
+        let id = document.getElementById("id_header_chat").value;
         getMessages(auteur, id);
     
     }, 5000);
@@ -162,15 +162,15 @@ if (auteur == "support") {
 } else {
 
     setInterval(function() {
-        const id_membre = document.getElementById("id_session").value;
-        getMessages(auteur, id_membre);  
+        let id = document.getElementById("id_session").value;
+        getMessages(auteur, id);  
     }, 5000);
 
 }
 
 $(".list_support").click(function() {
-    const id_membre = document.getElementById("id_session").value;
-    getMessages(auteur, id_membre);
+    let id = document.getElementById("id_session").value;
+    getMessages(auteur, id);
 });
 
 $(".list_membres").click(function() {
@@ -185,17 +185,21 @@ $(".list_membres").click(function() {
     getMessages(auteur, id)
 });
 
-$("#btn_submit_admin").click(function(event) {
-    var id = document.getElementById("id_header_chat").value;
-    postMessage(event, "support", id);
+// S'execute lorsqu'on appuie sur "Envoyer" un message
+$(".btn-envoyer-msg").click(function(event) {
+
+    if (auteur == "support") {
+        let id = document.getElementById("id_header_chat").value;
+        postMessage(event, "support", id);
+    } else {
+        let id = document.getElementById("id_session").value;
+        postMessage(event, "user", id);
+    }
+
 });
 
-$("#btn_submit_user").click(function(event) {
-    const id_membre = document.getElementById("id_session").value;
-    postMessage(event, "user", id_membre);
-});
-
-$("#delete_chat").click(function(event) {
+// S'execute lorsqu'on veut supprimer les messages chat (uniquement côté back)
+$("#delete_chat").click(function() {
     var id = document.getElementById("id_header_chat").value;
     deleteMessages(id);
 });

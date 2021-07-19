@@ -239,7 +239,7 @@ require_once 'php/config.php';
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
                                             <input type="hidden" id="auteur" value="support">
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
-                                            <button type="submit" id="btn_submit_admin" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
+                                            <button type="submit" class="btn-envoyer-msg btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
                                         </div>
                                     </div>
