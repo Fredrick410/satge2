@@ -105,6 +105,7 @@ $pays = $_POST['pays'];
 $telephone = $_POST['telephone'];
 $email = $_POST['email'];
 $date = $_POST['date'];
+$sign = $_POST['signature'];
 
 //info bdd
 $adresse = $_POST['adresse'];
@@ -159,7 +160,7 @@ Liste des prix des services, Attestation adresse de comptabilité';
 
 $signature = 'Par la signature du présent document reprenant les conditions particulières du contrat, l\'Utilisateur reconnaît expressément avoir reçu, avoir pris connaissance, et accepter les
 conditions générales du contrat, le règlement d\'ordre intérieur, les conditions d’utilisation du service internet, et l\'annexe reprenant la liste des services Multiburo en vigueur.';
-$checkbox = '<b>J\'autorise Multiburo à utiliser le nom et le logo de ma société dans sa communication interne et externe.</b>';
+$checkbox = 'J\'autorise Multiburo à utiliser le nom et le logo de ma société dans sa communication interne et externe.';
 
 $pourtopleft ='Pour MULTIBURO';
 $pourleft = 'Représenté par Madame Nadia TERKI
@@ -201,8 +202,10 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTML($signature, true, 0, true, 0);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+$pdf->SetFont('helvetica', 'B', 10);
 $pdf->CheckBox('signature', 5, true, array(), array(), 'OK');
 $pdf->writeHTMLCell(0, 0, '', '', $checkbox, 0, 1, 0, true, '', true);
+$pdf->SetFont('helvetica', '', 8);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->SetFont('helvetica', 'B', 8);
@@ -212,10 +215,11 @@ $pdf->SetFont('helvetica', '', 8);
 $pdf->MultiCell(90, 0, $pourleft, 1, 'L', 1, 0, '', '', true, 0, false, true, 0);
 $pdf->MultiCell(90, 0, $pourright, 1, 'L', 1, 1, '', '', true, 0, false, true, 0);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->AddFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf','', '../../../app-assets/data/tcpdf_min/fonts/Holligate.php');
 $pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
 $pdf->TextField('prestataire', 50, 10, array(), array(), '', '', false);
-$pdf->TextField('utilisateur1', 50, 10, array(), array(), 145, '', false);
+$pdf->MultiCell(90, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 
 $pdf->AddPage();
 
@@ -446,25 +450,23 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
+$FaitA = $_POST['Fait_a'];
+
 $pdf->writeHTMLCell(0, 0, '', '', 'Fait à :', 0, 1, 0, true, '', true);
-$pdf->TextField('Fait à', 50, 5);
+$pdf->writeHTMLCell(0, 0, '', '', $FaitA, 0, 1, 0, true, '', true);
 $pdf->Ln(2);
 
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-
 $pdf->writeHTMLCell(0, 0, '', '', 'Le :', 0, 1, 0, true, '', true);
-$pdf->TextField('Le', 50, 5);
+$pdf->writeHTMLCell(0, 0, '', '', $date, 0, 1, 0, true, '', true);
 
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->MultiCell(90, 0, 'Pour le prestataire', 0, 'L', 1, 0, '', '', true, 0, false, true, 0);
-$pdf->MultiCell(90, 0, 'Pour l\'utilisateur', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
+$pdf->MultiCell(90, 10, 'Pour l\'utilisateur', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 $pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
 $pdf->TextField('prestataire2', 50, 10, array(), array(), '', '', false);
-$pdf->TextField('utilisateur2', 50, 10, array(), array(), 145, '', false);
+$pdf->MultiCell(125, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 
 $pdf->AddPage();
 
@@ -489,6 +491,9 @@ $que = 'Que la société susnommée emploie des salariés et je tiens l’ensemb
 
 $quebis = 'Que la société susnommée n’emploie pas de salariés';
 
+$adressfacture = $_POST['adresse_factures'];
+$adresssalarie = $_POST['adresse_salarie'];
+
 // Print text
 $pdf->Ln(10);
 $pdf->SetFont('helvetica', '', 20);
@@ -503,20 +508,21 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->writeHTMLCell(0, 0, '', '', $attest, 0, 1, 0, true, '', true);
 $pdf->Ln(2);
-$pdf->TextField('address', 180, 18, array('multiline'=>true, 'lineWidth'=>0, 'borderStyle'=>'none'), array());
-$pdf->Ln(19);
+$pdf->writeHTMLCell(0, 0, '', '', $adressfacture, 0, 1, 0, true, '', true);
+$pdf->Ln(5);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->writeHTMLCell(0, 0, '', '', $engage, 0, 1, 0, true, '', true);
+$pdf->Ln(5);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->RadioButton('salarie', 5, array(), array(), 'oui');
 $pdf->writeHTMLCell(0, 0, '', '', $que, 0, 1, 0, true, '', true);
 $pdf->Ln(2);
-$pdf->TextField('address1', 180, 18, array('multiline'=>true, 'lineWidth'=>0, 'borderStyle'=>'none'), array());
-$pdf->Ln(19);
+$pdf->writeHTMLCell(0, 0, '', '', $adresssalarie, 0, 1, 0, true, '', true);
+$pdf->Ln(5);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
@@ -527,16 +533,12 @@ $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->writeHTMLCell(0, 0, '', '', 'Fait à :', 0, 1, 0, true, '', true);
-$pdf->TextField('Fait à', 50, 5);
-
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+$pdf->writeHTMLCell(0, 0, '', '', $FaitA, 0, 1, 0, true, '', true);
 $pdf->Ln(2);
 
 $pdf->writeHTMLCell(0, 0, '', '', 'Le :', 0, 1, 0, true, '', true);
-$pdf->TextField('Le', 50, 5);
-
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
+$pdf->writeHTMLCell(0, 0, '', '', $date, 0, 1, 0, true, '', true);
+$pdf->Ln(4);
 
 $pdf->SetFont('helvetica', 'B', 10);
 $pdf->CheckBox('signature', 5, true, array(), array(), 'OK');
@@ -545,9 +547,9 @@ $pdf->writeHTMLCell(0, 0, '', '', 'J\'ai lu et j\'accepte les conditions génér
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
 $pdf->SetFont('helvetica', '', 10);
-$pdf->MultiCell(147, 0, 'Signature', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
+$pdf->MultiCell(147, 10, 'Signature', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 $pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
-$pdf->TextField('utilisateur3', 50, 10, array(), array(), 145, '', false);
+$pdf->MultiCell(145, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 
 /*$pdf->writeHTMLCell(0, 0, '', '', 'Signature', 0, 1, 0, true, '', true);
 
