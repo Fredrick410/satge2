@@ -193,10 +193,10 @@ require_once 'php/verif_session_crea.php';
 
         
 
-        <div class="row card-body bg-white" id="contrat">
+        <div class="row card-body bg-white" id="attestation">
             <h3>Attestation</h3>
             <div class="col-12">
-                <div class="row" id="contrat-gauche">
+                <div class="row" id="">
                     <label>
                         <ul>
                             <li>
@@ -240,10 +240,10 @@ require_once 'php/verif_session_crea.php';
             </div>
         </div>
 
-        <div class="row card-body bg-white" id="contrat">
+        <div class="row card-body bg-white" id="condition">
             <h3>Conditions Générales</h3>
             <div class="col-12">
-                <div class="row" id="contrat-gauche">
+                <div class="row" id="">
                     <ul>
                         <li>
                             <label for="Fait_a">Fait à</label>
