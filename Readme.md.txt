@@ -126,3 +126,6 @@ branche de oscar :
 
 	tache réalisée le 13/07/2021 :
 		- avancée sur generate-pdf.php
+
+	tache réalisée le 19/07/2021 :
+		- 
