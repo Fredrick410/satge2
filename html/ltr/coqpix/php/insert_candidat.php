@@ -108,15 +108,15 @@ $pdoSta->bindValue(':num', $num);
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
 
-$sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+$sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
-$message = "Bonjour $prenom $nom,<br><br>
-        Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".<br><br>
-        Votre candidature au poste de " . $annonce['poste'] . " leur a bien été transmise.<br><br>
-        L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.<br><br>
-        A bientôt !<br><br>
-        La Direction des Ressources Humaines.<br><br>
-        Coqpix.";
+$message = "Bonjour $prenom_candidat $nom_candidat,\n\n
+    Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n\n
+    Votre candidature au poste de " . $annonce['poste'] . " leur a bien été transmise.\n\n
+    L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n\n
+    A bientôt !\n\n
+    La Direction des Ressources Humaines.\n\n
+    Coqpix.";
 
 $mail = [
     'nom_recepteur' => $nom_candidat . " " . $prenom_candidat,
