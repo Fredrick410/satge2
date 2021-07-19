@@ -129,11 +129,12 @@ require_once 'php/verif_session_crea.php';
               </span>
               <span>Basic Details</span>
             </h6>-->
-            <?php $today = date("d/m/y"); ?>            
+            <?php $today = date("d/m/y"); 
+            $cd = $result['titre']; 
+            $codepostal = substr($cd, -5, 5); ?>            
             <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
             <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
-            <!--<input type="text" name="duree" id="duree" readonly hidden value="<?= $result[''] ?>">
-            <input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
+            <!--<input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
             <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
         <div class="row">
         <div class="col-6" id="contrat-gauche" >
@@ -164,11 +165,11 @@ require_once 'php/verif_session_crea.php';
             <ul>
                 <li>
                     <label for="CodePostal">Code Postal</label>
-                    <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required>
+                    <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required value="<?= $codepostal ?>">
                 </li>
                 <li>
                     <label for="Ville">Ville</label>
-                    <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required>
+                    <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required value="<?= $result['ville'] ?>">
                 </li>
                 <li>
                     <label for="Pays">Pays</label>
