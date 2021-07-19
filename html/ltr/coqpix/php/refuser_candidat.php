@@ -10,10 +10,9 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
     if ($_POST['refuse'] == "refuse") {
         // On verifie si les parametres sont non vides
         // Si oui, on retourne un message d'erreur
-        if(!empty($_POST['observations'])){
+        if (!empty($_POST['observations'])) {
             $observations = htmlspecialchars($_POST['observations']);
-        }
-        else{
+        } else {
             $response_array['status'] = 'error';
             $response_array['message'] = "Merci de mettre une observation";
             echo json_encode($response_array);
@@ -28,10 +27,64 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
             $update->execute();
         } catch (Exception $e) {
             $response_array['status'] = 'error';
-            $response_array['message'] = $e -> getMessage();
+            $response_array['message'] = $e->getMessage();
             echo json_encode($response_array);
             exit();
         }
+        try {
+            $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num');
+            $pdoStt->bindValue(':num', htmlspecialchars($_POST['idcandidat']), PDO::PARAM_INT);
+            $pdoStt->execute();
+            $candidature = $pdoStt->fetch();
+        } catch (PDOException $exception) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $e->getMessage();
+            echo json_encode($response_array);
+            exit();
+        }
+        $explode = explode(';', $candidature['key_candidat']);
+        $num = $explode[2];
+        try {
+            $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
+            $pdoSta->bindValue(':num', $num);
+            $pdoSta->execute();
+            $annonce = $pdoSta->fetch();
+        } catch (PDOException $exception) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $e->getMessage();
+            echo json_encode($response_array);
+            exit();
+        }
+
+        $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+        $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
+        $true = $pdoS->execute();
+        $entreprise = $pdoS->fetch();
+
+        if ($candidature['statut'] == "Refusé après entretien") {
+            $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",<br><br>
+            Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".<br><br>
+            Nous avons attentivement traité votre candidature, mais nous ne pouvons malheureusement pas donner suite. Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.
+            Bonne chance pour votre recherche d'emploi.<br><br>
+            Merci encore pour l'intérêt que vous avez porté à notre entreprise.<br><br>
+            Bien Cordialement<br><br>
+                    
+            La Direction des Ressources Humaines.<br><br>
+            Coqpix.";
+        }
+
+        $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+
+        $mail = [
+            'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
+            'adresse_recepteur' => $candidature['email_candidat'],
+            'nom_emetteur' => "Service des ressources humaines",
+            'adresse_emetteur' => "hr@coqpix.com",
+            'sujet' => $sujet,
+            'message' => $message
+        ];
+
+        email($mail);
     }
 }
 // On retourne un code de success

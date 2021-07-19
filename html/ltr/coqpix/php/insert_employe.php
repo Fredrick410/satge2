@@ -87,7 +87,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             $update->execute();
         } catch (Exception $e) {
             $response_array['status'] = 'error';
-            $response_array['message'] = $e -> getMessage();
+            $response_array['message'] = $e->getMessage();
             echo json_encode($response_array);
             exit();
         }
@@ -100,7 +100,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             $candidature = $update->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             $response_array['status'] = 'error';
-            $response_array['message'] = $e -> getMessage();
+            $response_array['message'] = $e->getMessage();
             echo json_encode($response_array);
             exit();
         }
@@ -127,10 +127,62 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             ));
         } catch (Exception $e) {
             $response_array['status'] = 'error';
-            $response_array['message'] = $e -> getMessage();
+            $response_array['message'] = $e->getMessage();
             echo json_encode($response_array);
             exit();
         }
+
+        try {
+            $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num');
+            $pdoStt->bindValue(':num', htmlspecialchars($_POST['idcandidat']), PDO::PARAM_INT);
+            $pdoStt->execute();
+            $candidature = $pdoStt->fetch();
+        } catch (PDOException $exception) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $e->getMessage();
+            echo json_encode($response_array);
+            exit();
+        }
+        $explode = explode(';', $candidature['key_candidat']);
+        $num = $explode[2];
+        try {
+            $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
+            $pdoSta->bindValue(':num', $num);
+            $pdoSta->execute();
+            $annonce = $pdoSta->fetch();
+        } catch (PDOException $exception) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $e->getMessage();
+            echo json_encode($response_array);
+            exit();
+        }
+
+        $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+        $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
+        $true = $pdoS->execute();
+        $entreprise = $pdoS->fetch();
+
+        if ($candidature['statut'] == "Refusé après entretien") {
+            $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",<br><br>
+            Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".<br><br>, j'ai le plaisir de vous annoncer que votre candidature a été retenu, vous pouvez nous transmettre les documents pour la signature de la convention de stage.
+            Merci de me confirmer votre disponibilité.<br><br>
+            Bien Cordialement<br><br>   
+            La Direction des Ressources Humaines.<br><br>
+            Coqpix.";
+        }
+
+        $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+
+        $mail = [
+            'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
+            'adresse_recepteur' => $candidature['email_candidat'],
+            'nom_emetteur' => "Service des ressources humaines",
+            'adresse_emetteur' => "hr@coqpix.com",
+            'sujet' => $sujet,
+            'message' => $message
+        ];
+
+        email($mail);
     }
 }
 // On retourne un code de success

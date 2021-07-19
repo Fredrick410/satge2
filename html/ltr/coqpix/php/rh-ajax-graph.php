@@ -1,5 +1,5 @@
 <?php
-
+require_once 'php/verif_session_connect.php';
 require_once 'config.php';
 
 const HTTP_OK = 200;

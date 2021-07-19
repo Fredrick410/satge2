@@ -1,6 +1,5 @@
 <?php
-    
-session_start();
+require_once 'php/verif_session_connect_admin.php';
 require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
