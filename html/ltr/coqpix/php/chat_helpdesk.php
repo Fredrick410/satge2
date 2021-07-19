@@ -7,101 +7,98 @@ require_once 'config.php';
 
 //A - on analyse la requete via l'URL
 
-$task = "list";
+$method = "get";
 
-if(array_key_exists("task", $_GET)){
-    $task = $_GET['task'];
+if (isset($_GET['method']) and $_GET['method'] === "post") {
+    postMessage();
+} else {
+    getMessages();
 }
 
-if($task == "write"){
-    postMessage();
-}else{
-    getMessage();
+if (isset($_GET['delete']) and $_GET['delete'] === 'yes') {
+    deleteMessages();
 }
 
 //B- function qui va permettre de recupérer les messages.
 
+function getMessages() {
 
-function getMessage(){
     //on definit la variable bdd dans la fonction 
     global $bdd;
-    session_start();
 
+    //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de données
 
-        //1 - On fait une requete qui va permettre d'afficher les 20 dernieres message de la base de donnée
+    $auteur = htmlspecialchars($_GET['auteur']);
+    $id_membre = htmlspecialchars($_GET['id_membre']);
 
-        $destination = 'support'.$_GET['destination'];
+    $query = $bdd->prepare('SELECT date_message, heure, texte, auteur FROM support_message WHERE id_membre = :id_membre ORDER BY date_message DESC, heure DESC LIMIT 30');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->execute();
 
-        $resultats = $bdd->prepare("SELECT * FROM support_message WHERE destination = :destination ORDER BY id DESC LIMIT 30");
-        $resultats->bindValue(':destination',$destination);
-        $resultats->execute();
+    //2 - On va traiter les resultats
 
-        //2 - On va traiter les resultats
+    $messages = $query->fetchAll();
 
-        $messages = $resultats->fetchAll();
+    //3 - On affiche les données en JSON
 
-        //3 - On affcihe les données en JSON
+    echo json_encode($messages);
 
-        echo json_encode($messages);
+    //4 - On désactive les notifications
+    if ($auteur == "support") {
+        $query = $bdd->prepare('UPDATE support_message SET lu_support = 1 WHERE id_membre = :id_membre');
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+    } else {
+        $query = $bdd->prepare('UPDATE support_message SET lu_user = 1 WHERE id_membre = :id_membre');
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+    }
+
 }
 
 //C- function qui va permettre d'écrire et non de recupérer des informations pour le chat.
 
-function postMessage(){
+function postMessage() {
+
     //on definit la variable bdd dans la function 
     global $bdd;
-    session_start();
-
-    //status error si il y a une erreur
-
-    if(!array_key_exists('author', $_POST) || !array_key_exists('content', $_POST)){
-        echo json_encode(["status" => "error", "message" => "One field or many not been sent"]);
-        return;
-    }
 
     //1- Analyer les parametres passés en POST (author, content)
 
-    $destination = 'support'.$_POST['author'];
-    $date_crea = date("d-m-Y");
-    $date_h = date("H") + "2";
-    if($date_h == "24"){
-        $date_h = "00";
-    }
-    $date_m = date("i");
-    $content = $_POST['content'];
-    $you = "support";
-    $id_client = $_SESSION['id_session'];
+    $id_membre = $_POST['id_membre']; // Recuperer l'id du membre selectionnee dans la liste
+    $date_message = date('Y-m-d');
+    $heure = date('H:i:s', strtotime('+2 hours'));
+    $texte = $_POST['texte'];
+    $auteur = $_POST['auteur'];
 
-    //2- Crée une requete qui permettra l'insertion des informations dans la base de donnée
+    //2- Crée une requete qui permettra l'insertion des informations dans la base de données
 
-    if($content !== ""){
-        $query = $bdd->prepare('INSERT INTO support_message (destination, date_message, date_h, date_m, message_support, you) VALUES(?,?,?,?,?,?)');
+    if ($texte !== "") {
+        $query = $bdd->prepare('INSERT INTO support_message (id_membre, date_message, heure, texte, auteur) VALUES(?,?,?,?,?)');
         $query->execute(array(
-            htmlspecialchars($destination),
-            htmlspecialchars($date_crea),
-            htmlspecialchars($date_h),
-            htmlspecialchars($date_m),
-            htmlspecialchars($content),
-            htmlspecialchars($you)
+            htmlspecialchars($id_membre),
+            htmlspecialchars($date_message),
+            htmlspecialchars($heure),
+            htmlspecialchars($texte),
+            htmlspecialchars($auteur)
         ));
-
-        $pdoSta = $bdd->prepare('SELECT support_notif, helpdesk_notif FROM entreprise WHERE id = :num');
-        $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-        $pdoSta->execute(); 
-        $entreprise = $pdoSta->fetch();
-
-        $notification = $entreprise['helpdesk_notif'] + 1;
-
-        $pdo = $bdd->prepare('UPDATE entreprise SET helpdesk_notif=:helpdesk_notif WHERE id=:num LIMIT 1');
-        $pdo->bindValue(':helpdesk_notif', $notification);
-        $pdo->bindValue(':num', $_SESSION['id_session']);    
-        $pdo->execute();
     }
-    //3- Donner un statut de succes ou d'erreur au format JSON
 
-    echo json_encode(["status" => "sucess"]);
 }
 
+function deleteMessages() {
 
+    //on definit la variable bdd dans la function 
+    global $bdd;
+
+    //1- Analyer les parametres passés en POST
+    $id_membre = htmlspecialchars($_POST['id_membre']); // Recuperer l'id du membre selectionnee dans la liste
+
+    //2- Crée une requete qui permettra la suppression des messages dans la base de données
+    $query = $bdd->prepare('DELETE FROM support_message WHERE id_membre = :id_membre');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->execute();
+
+}
 
 ?>

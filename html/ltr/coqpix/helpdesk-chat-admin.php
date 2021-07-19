@@ -5,15 +5,16 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
-    $pdoS->bindValue(':num',$_GET['num']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
-    
-    $pdoA = $bdd->prepare('UPDATE entreprise SET support_notif=:support_notif WHERE id=:num'); 
-    $pdoA->bindValue(':num', $_GET['num']); 
-    $pdoA->bindValue(':support_notif', "0");
-    $pdoA->execute();
+    // Requete permettant de recuperer les infos sur l'entreprise
+    $select_entreprise = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
+    $select_entreprise->bindValue(':num',$_GET['num']);
+    $select_entreprise->execute();
+    $entreprise = $select_entreprise->fetch();
+
+    // Requete permettant de recuperer les membres de l'emtreprise
+    $select_membre = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
+    $select_membre->bindValue(':num', $_GET['num']);
+    $select_membre->execute();
 
 ?>
 <!DOCTYPE html>
@@ -74,6 +75,9 @@ require_once 'php/config.php';
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav bookmark-icons">                          
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link" href="helpdesk-home.php" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                    </ul>
                     <ul class="nav navbar-nav float-right d-flex align-items-center">                        
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <div class="user-nav d-lg-flex d-none"><span class="user-name">Support</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="40" width="40"></span>
@@ -114,7 +118,7 @@ require_once 'php/config.php';
                                 <p class="mb-2">Nom : <?= $entreprise['nom_diri'] ?><br>Prénom : <?= $entreprise['prenom_diri'] ?></p>
                                 <h6>INFORMATIONS PERSONNELLES</h6>
                                 <ul class="list-unstyled mb-2">
-                                    <li class="mb-25"><?= $entreprise['emailentreprise'] ?>/li>
+                                    <li class="mb-25"><?= $entreprise['emailentreprise'] ?></li>
                                     <li><?= $entreprise['telentreprise'] ?></li>
                                 </ul>
                             </div>
@@ -141,29 +145,34 @@ require_once 'php/config.php';
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="chat-sidebar-list-wrapper pt-2">
-                            <h6 class="px-2 pt-2 pb-25 mb-0">CHAT'PIX</h6>
+                        <div class="chat-sidebar-list-wrapper">
+                            <h6 class="px-2 pt-2">SUPPORT</h6>
                             <ul class="chat-sidebar-list">
-                                <li>
+                                <!-- <li>
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" height="36" width="36" alt="loading">
+                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/astro1.gif" height="36" width="36" alt="loading">
                                             <span class="avatar-status-online"></span>
                                         </div>
                                         <div class="chat-sidebar-name">
                                             <h6 class="mb-0">Global</h6><span class="text-muted">En ligne</span>
                                         </div>
                                     </div>
-                                </li>
-                                <li>
+                                </li> -->
+                                <?php while ($membre = $select_membre->fetch()) { ?>
+                                <li class="list_membres">
+                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
+                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                    <input type="hidden" value="<?= $membre['id'] ?>">
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/portrait/small/avatar-s-8.jpg" height="36" width="36" alt="loading">
+                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
                                             <span class="avatar-status-busy"></span>
                                         </div>
                                         <div class="chat-sidebar-name">
-                                            <h6 class="mb-0">Membre N°1 (SOON)</h6><span class="text-muted">Ne pas déranger</span>
+                                            <h6 class="mb-0"><?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?></h6><span class="text-muted"><?= $membre['role_membres'] ?></span>
                                         </div>
                                     </div>
                                 </li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -193,10 +202,11 @@ require_once 'php/config.php';
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
                                             <div class="avatar m-0 mr-1">
-                                                <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="36" width="36" />
-                                                <span class="avatar-status-online"></span>
+                                                <img id="img_header_chat" src="" alt="avatar" height="36" width="36" />
+                                                <span class="avatar-status-busy"></span>
                                             </div>
-                                            <h6 class="mb-0">Global</h6>
+                                            <h6 id="nom_header_chat" class="mb-0"></h6>
+                                            <input id="id_header_chat" type="hidden" value="">
                                         </div>
                                         <div class="chat-header-icons">
                                             <span class="chat-icon-favorite">
@@ -207,7 +217,7 @@ require_once 'php/config.php';
                                                 </i>
                                                 <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-pin mr-25"></i> Pin to top</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-trash mr-25"></i> Delete chat</a>
+                                                    <a id="delete_chat" class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-trash mr-25"></i> Delete chat</a>
                                                     <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-block mr-25"></i> Block</a>
                                                 </span>
                                             </span>
@@ -219,7 +229,7 @@ require_once 'php/config.php';
                                     <div class="card-content">
                                         <div class="card-body chat-container">
                                             <div class="chat-content">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -227,10 +237,9 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
-                                            <input type="hidden" name="id" id="id_client" value="<?= $entreprise['id'] ?>">
-                                            <input type="hidden" name="author" id="author" value="<?= $entreprise['nameentreprise'] ?>">
-                                            <input type="text" id="content" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
-                                            <button type="submit" id="btn_submit" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
+                                            <input type="hidden" id="auteur" value="support">
+                                            <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
+                                            <button type="submit" id="btn_submit_admin" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
                                         </div>
                                     </div>
@@ -267,7 +276,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/chat_support_admin.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/chat_support.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

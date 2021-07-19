@@ -6,9 +6,9 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/verif_session_connect_admin.php';
     
-    $pdoSta = $bdd->prepare('SELECT * FROM entreprise');
-    $pdoSta->execute();
-    $entreprise = $pdoSta->fetchAll();
+    $select_entreprise = $bdd->prepare('SELECT DISTINCT E.id, E.nameentreprise, E.emailentreprise, E.telentreprise FROM entreprise E');
+    $select_entreprise->execute();
+    $entreprise = $select_entreprise->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -67,24 +67,19 @@ require_once 'php/verif_session_connect_admin.php';
         <div class="navbar-header d-xl-block d-none">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item"><a class="navbar-brand" href="#">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/chatpix4.png"></div>
-                    </a></li>
+                    <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/chatpix4.png"></div>
+                </a></li>
             </ul>
         </div>
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav bookmark-icons">                          
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link" href="dashboard-admin.php" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
                     </ul>
-                    <script>
-                        function retourn() {
-                            window.history.back();
-                        }
-                    </script>
                     <ul class="nav navbar-nav float-right d-flex align-items-center">                        
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-lg-flex d-none"><span class="user-name">Support</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="40" width="40"></span></a>
+                            <div class="user-nav d-lg-flex d-none"><span class="user-name">Support</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="40" width="40"></span></a>
                             <div class="dropdown-menu dropdown-menu pb-0">
                                 <a class="dropdown-item" href="#"><i class="bx bx-user mr-50"></i> Editer Profile (SOON)</a>
                                 <a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Déconnexion</a>
@@ -117,26 +112,29 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <th class="text-center">Nom Société</th>
                                                         <th class="text-center">E-Mail</th>
                                                         <th class="text-center">Téléphone</th>
-                                                        <th class="text-center">Messages & Notifications</th>
+                                                        <th class="text-center">Messages</th>
+                                                        <th class="text-center">Notifications</th>
                                                         <th class="text-center">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach($entreprise as $entreprises): ?>
                                                     <?php
-                                                        $destination = 'support'.$entreprises['nameentreprise'].''; 
-                                                        $pdoSta = $bdd->prepare('SELECT * FROM support_message WHERE destination=:destination');
-                                                        $pdoSta->bindValue(':destination', $destination);
-                                                        $pdoSta->execute();
-                                                        $notif = $pdoSta->fetchAll();
-                                                        $count_notif = count($notif);
+                                                        $select_nb_msg = $bdd->prepare('SELECT count(*) AS nb_msg, count(case when lu_support = 0 and auteur = "user" then 1 else null end) AS nb_notifs FROM support_message S, membres M, entreprise E WHERE S.id_membre = M.id AND M.id_session = E.id AND E.id = :id_entreprise');
+                                                        $select_nb_msg->bindValue(':id_entreprise', $entreprises['id']);
+                                                        $select_nb_msg->execute();
+                                                        $nb_msg = $select_nb_msg->fetch();
+                                                        $count_msg = $nb_msg['nb_msg'];
+                                                        $count_notifs = $nb_msg['nb_notifs'];
+
                                                     ?>
-                                                        <tr>
+                                                        <tr class="<?php //if ($count_notifs > 0) { echo "bg-primary bg-light"; } ?>">
                                                             <td class="text-center"><?= $entreprises['nameentreprise'] ?></td>
                                                             <td class="text-center"><?= $entreprises['emailentreprise'] ?></td>
                                                             <td class="text-center"><?= $entreprises['telentreprise'] ?></td>
-                                                            <td class="text-center"><?= $count_notif ?> <i class='bx bx-diamond icon_diam <?php if($entreprises['support_notif'] > 0){}else{echo "none-validation";} ?>'></i>&nbsp&nbsp<small>(<p style="color: <?php if($entreprises['support_notif'] > 0){echo "red";}else{echo "#00ff13";} ?>; display: inline;"><?= $entreprises['support_notif'] ?></p>)</small></td>
-                                                            <td class="text-center"><a href="helpdesk-chat.php?num=<?= $entreprises['id'] ?>"><i class='bx bxs-paper-plane icon'></i></a></td>
+                                                            <td class="text-center"><?= $count_msg ?></td>
+                                                            <td class="text-center"><?php if ($count_notifs > 0) { ?><span class="badge badge-pill badge-primary"><?= $count_notifs ?></span><?php } ?></td>
+                                                            <td class="text-center"><a href="helpdesk-chat-admin.php?num=<?= $entreprises['id'] ?>"><i class='bx bxs-paper-plane icon'></i></a></td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 </tbody>
