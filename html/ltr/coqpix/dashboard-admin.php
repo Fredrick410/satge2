@@ -1595,12 +1595,6 @@ require_once 'php/verif_session_connect_admin.php';
         var count_URSSAF = <?php echo json_encode($count_URSSAF); ?>;
         var count_PROBTP = <?php echo json_encode($count_PROBTP); ?>;
         var count_CIBTP = <?php echo json_encode($count_CIBTP); ?>;
-
-        this[array_actif + annee_actuelle] =<?php echo json_encode(${'array_actif_'.($annee_actuelle)}); ?>;
-        this[array_actif + (annee_actuelle - 1)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 1)}); ?>;
-        this[array_actif + (annee_actuelle - 2)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 2)}); ?>;
-        this[array_actif + (annee_actuelle - 3)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 3)}); ?>;
-        this[array_actif + (annee_actuelle - 4)] =<?php echo json_encode(${'array_actif_'.($annee_actuelle - 4)}); ?>;
         var annee_actuelle = (new Date()).getFullYear();
 
         var count_prospect = <?php echo json_encode($count_prospect); ?>;
@@ -1805,6 +1799,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     </script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-analytics-sociale.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/dashboard-analytics.js"></script>
     <script src="../../../app-assets/js/scripts/pages/dashboard-ecommerce.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/swiper.js"></script>
     <script src="../../../app-assets/js/scripts/extensions/dashboard.js"></script>
@@ -1867,19 +1862,19 @@ require_once 'php/verif_session_connect_admin.php';
             });
 
             // afficher le titre 
-            $("#id_titre_attestation").change(function()) {
+            $("#id_titre_attestation").change(function() {
                 document.getElementById("id_titre_attestation").style.display = "block";
                 document.getElementById("id_titre_bulletin").style.display = "none";
                 document.getElementById("id_titre_dsn").style.display = "none";
             });
 
-            $("#id_titre_bulletin").change(function()) {
+            $("#id_titre_bulletin").change(function() {
                 document.getElementById("id_titre_attestation").style.display = "none";
                 document.getElementById("id_titre_bulletin").style.display = "block";
                 document.getElementById("id_titre_dsn").style.display = "none";
             });
 
-            $("#id_titre_dsn").change(function()) {
+            $("#id_titre_dsn").change(function() {
                 document.getElementById("id_titre_attestation").style.display = "none";
                 document.getElementById("id_titre_bulletin").style.display = "none";
                 document.getElementById("id_titre_dsn").style.display = "block";
