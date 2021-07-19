@@ -154,8 +154,10 @@ $(document).ready(function () {
         watchSlidesProgress: true,
     });
     var galleryTop = new Swiper('.gallery-top', {
+        
+        shortSwipes: false,
         spaceBetween: 10,
-	effect: 'cube',
+	    effect: 'cube',
         grabCursor: true,
         cubeEffect: {
             shadow: false,
