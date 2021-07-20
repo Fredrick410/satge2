@@ -159,10 +159,10 @@ require_once 'php/config.php';
                                     </div>
                                 </li> -->
                                 <?php while ($membre = $select_membre->fetch()) { ?>
-                                <li class="list_membres">
-                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
-                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                <li class="chat-support">
                                     <input type="hidden" value="<?= $membre['id'] ?>">
+                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
                                             <span class="avatar-status-busy"></span>
@@ -202,11 +202,11 @@ require_once 'php/config.php';
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
                                             <div class="avatar m-0 mr-1">
-                                                <img id="img_header_chat" src="" alt="avatar" height="36" width="36" />
+                                                <img id="img_chat_back" src="" alt="avatar" height="36" width="36" />
                                                 <span class="avatar-status-busy"></span>
                                             </div>
-                                            <h6 id="nom_header_chat" class="mb-0"></h6>
-                                            <input id="id_header_chat" type="hidden" value="">
+                                            <h6 id="nom_chat_back" class="mb-0"></h6>
+                                            <input id="id_chat_back" type="hidden" value="">
                                         </div>
                                         <div class="chat-header-icons">
                                             <span class="chat-icon-favorite">

@@ -150,47 +150,52 @@ function postMessage(event, auteur, id_membre) {
 
 const auteur = document.getElementById("auteur").value
 
-if (auteur == "support") {
+// S'execute lorsqu'on clique sur un contact dans "SUPPORT"
+$(".chat-support").click(function() {
 
-    setInterval(function() {
+    // Si on dans le back
+    if (auteur == "support") {
 
-        let id = document.getElementById("id_header_chat").value;
+        let id = $(this).children('input:nth(0)').val();
+        let nom = $(this).children('input:nth(1)').val();
+        let img = $(this).children('input:nth(2)').val();
+
+        document.getElementById("id_chat_back").value = id;
+        document.getElementById("nom_chat_back").innerHTML = nom;
+        document.getElementById("img_chat_back").src = "../../../src/img/" + img;
+
         getMessages(auteur, id);
-    
-    }, 5000);
 
-} else {
+        // Fonction qui recharge les messages toutes les 5 secondes
+        setInterval(function() {
+            let id = document.getElementById("id_chat_back").value;
+             getMessages(auteur, id);
+        }, 5000);
 
-    setInterval(function() {
+    // Si on dans le front
+    } else {
+
         let id = document.getElementById("id_session").value;
-        getMessages(auteur, id);  
-    }, 5000);
+        getMessages(auteur, id);
 
-}
+        // Fonction qui recharge les messages toutes les 5 secondes
+        setInterval(function() {
+            let id = document.getElementById("id_session").value;
+            getMessages(auteur, id);  
+        }, 5000);
+    }
 
-$(".list_support").click(function() {
-    let id = document.getElementById("id_session").value;
-    getMessages(auteur, id);
-});
-
-$(".list_membres").click(function() {
-    let img = $(this).children('input:nth(0)').val();
-    let nom = $(this).children('input:nth(1)').val();
-    let id = $(this).children('input:nth(2)').val();
-
-    document.getElementById("img_header_chat").src = "../../../src/img/" + img;
-    document.getElementById("nom_header_chat").innerHTML = nom;
-    document.getElementById("id_header_chat").value = id;
-
-    getMessages(auteur, id)
 });
 
 // S'execute lorsqu'on appuie sur "Envoyer" un message
 $(".btn-envoyer-msg").click(function(event) {
 
+    // Si on dans le back
     if (auteur == "support") {
-        let id = document.getElementById("id_header_chat").value;
+        let id = document.getElementById("id_chat_back").value;
         postMessage(event, "support", id);
+
+    // Si on dans le front
     } else {
         let id = document.getElementById("id_session").value;
         postMessage(event, "user", id);
@@ -200,6 +205,6 @@ $(".btn-envoyer-msg").click(function(event) {
 
 // S'execute lorsqu'on veut supprimer les messages chat (uniquement côté back)
 $("#delete_chat").click(function() {
-    var id = document.getElementById("id_header_chat").value;
+    var id = document.getElementById("id_chat_back").value;
     deleteMessages(id);
 });

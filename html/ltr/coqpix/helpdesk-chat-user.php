@@ -170,7 +170,7 @@ require_once 'php/config.php';
                             </ul>
                             <h6 class="px-2 pt-2 pb-25 mb-0">SUPPORT</h6>
                             <ul class="chat-sidebar-list">
-                                <li class="list_support">
+                                <li class="chat-support">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
                                             <span class="avatar-status-online"></span>
