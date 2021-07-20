@@ -24,17 +24,17 @@ function getMessages(auteur, id_membre) {
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
-        let last_date = new Date(0);
-        let next_date = new Date(0);
-        const date_auj = new Date();
-        const date_hier = new Date();
+        var last_date = new Date(0);
+        var next_date = new Date(0);
+        var date_auj = new Date();
+        var date_hier = new Date();
         date_hier.setDate(date_hier.getDate()-1);
 
         const resultat = JSON.parse(requeteAjax.responseText);
         const html = resultat.reverse().map(function(message) {
 
             var droite = message.auteur !== auteur ? 'chat-left' : '';
-            var image = message.auteur !== "support" ? 'astro1.gif' : 'chatpix3.png';
+            var image = message.auteur !== "support" ? "../../../src/img/"+message.img_membres : "../../../app-assets/images/ico/chatpix3.png";
 
             next_date = new Date(message.date_message);
         

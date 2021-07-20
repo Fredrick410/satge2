@@ -31,7 +31,7 @@ function getMessages() {
     $auteur = htmlspecialchars($_GET['auteur']);
     $id_membre = htmlspecialchars($_GET['id_membre']);
 
-    $query = $bdd->prepare('SELECT date_message, heure, texte, auteur FROM support_message WHERE id_membre = :id_membre ORDER BY date_message DESC, heure DESC LIMIT 30');
+    $query = $bdd->prepare('SELECT S.date_message, S.heure, S.texte, S.auteur, M.img_membres FROM support_message S, membres M WHERE S.id_membre = :id_membre AND S.id_membre = M.id ORDER BY date_message DESC, heure DESC LIMIT 30');
     $query->bindValue(':id_membre', $id_membre);
     $query->execute();
 
