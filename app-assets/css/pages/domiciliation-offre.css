@@ -13,6 +13,11 @@
     src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
 }
 
+@font-face{
+    font-family: "holligate";
+    src: url("../../data/tcpdf_min/fonts/holligate.ttf");
+}
+
 .container-fluid {
     padding-top: 68px;
 }
@@ -234,6 +239,12 @@ input[type="radio"].solu + label:hover{
 
 #condition input[type=text]:focus {
     outline: none;
+}
+
+#appercu {
+    font-family: holligate;
+    font-size: 3em;
+    color: black;
 }
 
 @media screen and (max-width: 1700px) {
