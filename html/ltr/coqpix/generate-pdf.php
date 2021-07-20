@@ -106,6 +106,7 @@ $telephone = $_POST['telephone'];
 $email = $_POST['email'];
 $date = $_POST['date'];
 $sign = $_POST['signature'];
+$id_crea = $_POST['id_crea'];
 
 //info bdd
 $adresse = $_POST['adresse'];
@@ -558,7 +559,7 @@ $pdf->MultiCell(145, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 // Close and output PDF document
 ob_clean();
 $dir = realpath(__DIR__ . '/../../..');
-$pdf->Output($dir.'\src\domiciliation\pdf\contrat_domiciliation.pdf', 'F');
+$pdf->Output($dir.'\src\domiciliation\pdf\contrat_domiciliation_idcrea'.$id_crea.'.pdf', 'F');
 
 //============================================================+
 // END OF FILE
