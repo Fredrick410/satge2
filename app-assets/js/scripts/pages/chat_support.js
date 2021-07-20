@@ -1,6 +1,6 @@
-/**
- * Codons un chat en HTML/CSS/Javascript avec nos amis PHP et MySQL
- */
+// ===============================
+// ---------- FONCTIONS ----------
+// ===============================
 
 /**
  * Il nous faut une fonction pour récupérer le JSON des
@@ -19,7 +19,7 @@ function getMessages(auteur, id_membre) {
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk.php?auteur="+auteur+"&id_membre="+id_membre);
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?id_membre="+id_membre+"&auteur="+auteur);
 
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
@@ -60,7 +60,7 @@ function getMessages(auteur, id_membre) {
                 <div class="chat ${droite}">
                     <div class="chat-avatar">
                         <a class="avatar m-0">
-                            <img src="../../../app-assets/images/ico/${image}" alt="avatar" height="36" width="36" />
+                            <img src="${image}" alt="avatar" height="36" width="36" />
                         </a>
                     </div>
                     <div class="chat-body">
@@ -107,7 +107,7 @@ function postMessage(event, auteur, id_membre) {
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk.php?method=post');
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
@@ -135,7 +135,7 @@ function postMessage(event, auteur, id_membre) {
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk.php?delete=yes');
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?delete=yes');
 
     requeteAjax.onload = function() {
         texte.value = '';
@@ -147,6 +147,10 @@ function postMessage(event, auteur, id_membre) {
     return false;
 
 }
+
+// ================================
+// ---------- EVENEMENTS ----------
+// ================================
 
 const auteur = document.getElementById("auteur").value
 

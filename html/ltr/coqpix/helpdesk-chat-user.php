@@ -152,10 +152,10 @@ require_once 'php/config.php';
                             <h6 class="px-2 pt-2">CHAT INTERNE</h6>
                             <ul class="chat-sidebar-list">
                                 <?php while ($membre = $select_membre->fetch()) { ?>
-                                <li class="">
-                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
-                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                <li class="chat-interne">
                                     <input type="hidden" value="<?= $membre['id'] ?>">
+                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
                                             <span class="avatar-status-busy"></span>
