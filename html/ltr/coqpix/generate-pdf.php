@@ -552,24 +552,13 @@ $pdf->MultiCell(147, 10, 'Signature', 0, 'R', 1, 1, '', '', true, 0, false, true
 $pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
 $pdf->MultiCell(145, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 
-/*$pdf->writeHTMLCell(0, 0, '', '', 'Signature', 0, 1, 0, true, '', true);
-
-$info = array(
-    "Name" => "TCPDF",
-    "Location" => "Office",
-    "Reason" => "Testing TCPDF",
-    "ContactInfo" => "http://www.tcpdf.org",
-);
-
-$pdf->setSignature($certificate, $certificate, "", "", 2, "Oscar");
-$pdf->setSignatureAppearance(180, 60, 15, 15);
-$pdf->addEmptySignatureAppearance(180, 80, 15, 15);*/
 
 // ---------------------------------------------------------
 
 // Close and output PDF document
 ob_clean();
-$pdf->Output('contrat_domiciliation.pdf', 'I');
+$dir = realpath(__DIR__ . '/../../..');
+$pdf->Output($dir.'\src\domiciliation\pdf\contrat_domiciliation.pdf', 'F');
 
 //============================================================+
 // END OF FILE
