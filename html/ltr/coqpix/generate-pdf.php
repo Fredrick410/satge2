@@ -518,16 +518,17 @@ $pdf->Ln(5);
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 
-$pdf->RadioButton('salarie', 5, array(), array(), 'oui');
+
+if ($_POST['salarie'] == 'emploie'){
 $pdf->writeHTMLCell(0, 0, '', '', $que, 0, 1, 0, true, '', true);
 $pdf->Ln(2);
 $pdf->writeHTMLCell(0, 0, '', '', $adresssalarie, 0, 1, 0, true, '', true);
 $pdf->Ln(5);
-
-$pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
-
-$pdf->RadioButton('salarie', 5, array(), array(), 'non');
+}
+if ($_POST['salarie'] == 'pas_emploie'){
 $pdf->writeHTMLCell(0, 0, '', '', $quebis, 0, 1, 0, true, '', true);
+}
+
 
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
 $pdf->writeHTMLCell(0, 0, '', '', $br, 0, 1, 0, true, '', true);
