@@ -15,7 +15,7 @@ function getDateEnLettres(date) {
 
 }
 
-function getMessages(auteur, id_membre) {
+function getMessagesSupport(auteur, id_membre) {
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
@@ -50,6 +50,7 @@ function getMessages(auteur, id_membre) {
                     date_msg = `
                         <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`
                 }
+
             } else {
                 date_msg = '';
             }
@@ -91,7 +92,7 @@ function getMessages(auteur, id_membre) {
  * Il nous faut une fonction pour envoyer le nouveau
  * message au serveur et rafraichir les messages
  */
-function postMessage(event, auteur, id_membre) {
+function postMessageSupport(event, auteur, id_membre) {
     
     // 1. Elle doit stoper le submit du formulaire
     event.preventDefault();
@@ -112,7 +113,7 @@ function postMessage(event, auteur, id_membre) {
     requeteAjax.onload = function() {
         texte.value = '';
         texte.focus();
-        getMessages(auteur, id_membre);
+        getMessagesSupport(auteur, id_membre);
     }
 
     requeteAjax.send(data);
@@ -140,7 +141,7 @@ function postMessage(event, auteur, id_membre) {
     requeteAjax.onload = function() {
         texte.value = '';
         texte.focus();
-        getMessages(auteur, id_membre);
+        getMessagesSupport(auteur, id_membre);
     }
 
     requeteAjax.send(data);
@@ -160,7 +161,7 @@ $(".chat-support").click(function() {
     // Si on dans le back
     if (auteur == "support") {
 
-        let id = $(this).children('input:nth(0)').val();
+        var id = $(this).children('input:nth(0)').val();
         let nom = $(this).children('input:nth(1)').val();
         let img = $(this).children('input:nth(2)').val();
 
@@ -168,25 +169,23 @@ $(".chat-support").click(function() {
         document.getElementById("nom_chat_back").innerHTML = nom;
         document.getElementById("img_chat_back").src = "../../../src/img/" + img;
 
-        getMessages(auteur, id);
+        getMessagesSupport(auteur, id);
 
         // Fonction qui recharge les messages toutes les 5 secondes
-        setInterval(function() {
-            let id = document.getElementById("id_chat_back").value;
-             getMessages(auteur, id);
-        }, 5000);
+
 
     // Si on dans le front
     } else {
 
-        let id = document.getElementById("id_session").value;
-        getMessages(auteur, id);
+        document.getElementById("id_chat_front").value = '';
+        document.getElementById("nom_chat_front").innerHTML = "Support";
+        document.getElementById("img_chat_front").src = "../../../app-assets/images/ico/chatpix3.png";
+
+        var id = document.getElementById("id_session").value;
+        getMessagesSupport(auteur, id);
 
         // Fonction qui recharge les messages toutes les 5 secondes
-        setInterval(function() {
-            let id = document.getElementById("id_session").value;
-            getMessages(auteur, id);  
-        }, 5000);
+        
 
         document.getElementById("type_chat_front").value = "support";
     }
@@ -199,7 +198,7 @@ $(".btn-envoyer-msg").click(function(event) {
     // Si on dans le back
     if (auteur == "support") {
         let id = document.getElementById("id_chat_back").value;
-        postMessage(event, "support", id);
+        postMessageSupport(event, "support", id);
     // Si on dans le front
     } else {
         var type_chat = document.getElementById("type_chat_front").value
@@ -207,7 +206,7 @@ $(".btn-envoyer-msg").click(function(event) {
         // On vérifie que le chat sélectionné est bien le support
         if (type_chat == "support") {
             let id = document.getElementById("id_session").value;
-            postMessage(event, "user", id);
+            postMessageSupport(event, "user", id);
         }
     }
 

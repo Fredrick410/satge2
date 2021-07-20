@@ -71,7 +71,7 @@ function postMessage() {
     //2- Crée une requete qui permettra l'insertion des informations dans la base de données
 
     if ($texte !== "") {
-        $query = $bdd->prepare('INSERT INTO message (id_membre_from, id_membre_to, date_message, heure, texte) VALUES (?,?,?,?,?)');
+        $query = $bdd->prepare('INSERT INTO message (id_membre_from, id_membre_to, date_message, heure_message, texte) VALUES (?,?,?,?,?)');
         $query->execute(array(
             htmlspecialchars($id_membre_1),
             htmlspecialchars($id_membre_2),

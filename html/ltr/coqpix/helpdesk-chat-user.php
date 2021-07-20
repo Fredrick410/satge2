@@ -158,7 +158,7 @@ require_once 'php/config.php';
                                     <input type="hidden" value="<?= $membre['img_membres'] ?>">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
-                                            <span class="avatar-status-busy"></span>
+                                            <!-- <span class="avatar-status-busy"></span> -->
                                         </div>
                                         <div class="chat-sidebar-name">
                                             <h6 class="mb-0"><?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?></h6><span class="text-muted"><?= $membre['role_membres'] ?></span>
@@ -172,7 +172,7 @@ require_once 'php/config.php';
                                 <li class="chat-support">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
-                                            <span class="avatar-status-online"></span>
+                                            <!-- <span class="avatar-status-busy"></span> -->
                                         </div>
                                         <div class="chat-sidebar-name">
                                             <h6 class="mb-0">Audit action plus</h6><span class="text-muted">Support</span>
@@ -208,10 +208,11 @@ require_once 'php/config.php';
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
                                             <div class="avatar m-0 mr-1">
-                                                <img src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="36" width="36" />
-                                                <span class="avatar-status-online"></span>
+                                                <img id="img_chat_front" src="" alt="avatar" height="36" width="36" />
+                                                <!-- <span class="avatar-status-busy"></span> -->
                                             </div>
-                                            <h6 class="mb-0">Chat'Pix</h6>
+                                            <h6 id="nom_chat_front" class="mb-0"></h6>
+                                            <input id ="id_chat_front" type="hidden" value=""> 
                                         </div>
                                         <div class="chat-header-icons">
                                             <span class="chat-icon-favorite">
@@ -284,6 +285,7 @@ require_once 'php/config.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_support.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/chat_interne.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

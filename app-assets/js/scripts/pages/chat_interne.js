@@ -50,6 +50,7 @@ function getMessages(id_membre_1, id_membre_2) {
                     date_msg = `
                         <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`
                 }
+
             } else {
                 date_msg = '';
             }
@@ -112,7 +113,7 @@ function postMessage(event, id_membre_1, id_membre_2) {
     requeteAjax.onload = function() {
         texte.value = '';
         texte.focus();
-        getMessages(auteur, id_membre_1, id_membre_2);
+        getMessages(id_membre_1, id_membre_2);
     }
 
     requeteAjax.send(data);
@@ -125,22 +126,34 @@ $(".chat-interne").click(function() {
 
     var id_session = document.getElementById("id_session").value;
 
-    let id = $(this).children('input:nth(0)').val();
+    var id = $(this).children('input:nth(0)').val();
     let nom = $(this).children('input:nth(1)').val();
     let img = $(this).children('input:nth(2)').val();
 
-    document.getElementById("id_chat_back").value = id;
-    document.getElementById("nom_chat_back").innerHTML = nom;
-    document.getElementById("img_chat_back").src = "../../../src/img/" + img;
+    document.getElementById("id_chat_front").value = id;
+    document.getElementById("nom_chat_front").innerHTML = nom;
+    document.getElementById("img_chat_front").src = "../../../src/img/" + img;
 
     getMessages(id_session, id);
 
-    // Fonction qui recharge les messages toutes les 5 secondes
-    setInterval(function() {
-        let id = document.getElementById("id_chat_back").value;
-        getMessages(id_session, id);
-    }, 5000);
+    // // Fonction qui recharge les messages toutes les 5 secondes
+    // setInterval(function() {
+    //     getMessages(id_session, id);
+    // }, 5000);
 
     document.getElementById("type_chat_front").value = "interne";
+
+});
+
+// S'execute lorsqu'on appuie sur "Envoyer" un message
+$(".btn-envoyer-msg").click(function(event) {
+    var type_chat = document.getElementById("type_chat_front").value
+
+    // On vérifie que le chat sélectionné est bien le support
+    if (type_chat == "interne") {
+        let id_session = document.getElementById("id_session").value;
+        let id = document.getElementById("id_chat_front").value;
+        postMessage(event, id_session, id);
+    }
 
 });

@@ -165,7 +165,7 @@ require_once 'php/config.php';
                                     <input type="hidden" value="<?= $membre['img_membres'] ?>">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
-                                            <span class="avatar-status-busy"></span>
+                                            <!-- <span class="avatar-status-busy"></span> -->
                                         </div>
                                         <div class="chat-sidebar-name">
                                             <h6 class="mb-0"><?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?></h6><span class="text-muted"><?= $membre['role_membres'] ?></span>
@@ -203,7 +203,7 @@ require_once 'php/config.php';
                                             </div>
                                             <div class="avatar m-0 mr-1">
                                                 <img id="img_chat_back" src="" alt="avatar" height="36" width="36" />
-                                                <span class="avatar-status-busy"></span>
+                                                <!-- <span class="avatar-status-busy"></span> -->
                                             </div>
                                             <h6 id="nom_chat_back" class="mb-0"></h6>
                                             <input id="id_chat_back" type="hidden" value="">
