@@ -241,10 +241,11 @@ input[type="radio"].solu + label:hover{
     outline: none;
 }
 
-#appercu {
+#apercu {
     font-family: holligate;
     font-size: 3em;
     color: black;
+    margin-left: 20px;
 }
 
 #condition p {
