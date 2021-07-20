@@ -22,6 +22,16 @@
     padding-top: 68px;
 }
 
+#retour {
+    margin: 20px;
+    color: #051441;
+}
+
+#retour p {
+    font-family: mukta malar light;
+    font-size: 22px;
+}
+
 .carousel{
     margin: 50px auto;
 }
@@ -136,7 +146,7 @@ input[type="radio"].solu + label:hover{
 
 #contrat{
     width: 60%;
-    margin: 100px auto;
+    margin: 75px auto;
     padding: 60px;
     border-radius: 50px;
     box-shadow: 0px 0px 10px #051441;
@@ -187,7 +197,7 @@ input[type="radio"].solu + label:hover{
 
 #attestation, #condition {
     width: 60%;
-    margin: 100px auto;
+    margin: 75px auto;
     padding: 60px;
     border-radius: 50px;
     box-shadow: 0px 0px 10px #051441;
@@ -245,6 +255,31 @@ input[type="radio"].solu + label:hover{
     font-family: holligate;
     font-size: 3em;
     color: black;
+}
+
+#condition p {
+    font-family: holligate;
+}
+
+.condition {
+    width: 65%;
+    margin: 75px auto;
+    padding: 60px;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px #051441;
+}
+
+.condition h5 {
+    font-family: mukta malar bold;
+    color: #051441;
+    text-transform: uppercase;
+    font-size: 18px;
+}
+
+.condition p {
+    font-family: mukta malar medium;
+    color: #051441;
+    font-size: 13px;
 }
 
 @media screen and (max-width: 1700px) {
