@@ -98,7 +98,6 @@ require_once 'php/config.php';
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
-    <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
     <div class="app-content content">
         <div class="content-area-wrapper">
             <div class="sidebar-left">
@@ -149,8 +148,8 @@ require_once 'php/config.php';
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="chat-sidebar-list-wrapper pt-2">
-                            <h6 class="px-2 pt-2 pb-25 mb-0">CHAT INTERNE</h6>
+                        <div class="chat-sidebar-list-wrapper">
+                            <h6 class="px-2 pt-2">CHAT INTERNE</h6>
                             <ul class="chat-sidebar-list">
                                 <?php while ($membre = $select_membre->fetch()) { ?>
                                 <li class="">
@@ -168,7 +167,7 @@ require_once 'php/config.php';
                                 </li>
                                 <?php } ?>
                             </ul>
-                            <h6 class="px-2 pt-2 pb-25 mb-0">SUPPORT</h6>
+                            <h6 class="px-2 pt-2">SUPPORT</h6>
                             <ul class="chat-sidebar-list">
                                 <li class="chat-support">
                                     <div class="d-flex align-items-center">
@@ -243,7 +242,9 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
+                                            <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
                                             <input type="hidden" id="auteur" value="user">
+                                            <input type="hidden" id="type_chat_front" value="">
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
                                             <button type="submit" class="btn-envoyer-msg btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>

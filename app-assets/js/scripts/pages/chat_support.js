@@ -183,22 +183,28 @@ $(".chat-support").click(function() {
             let id = document.getElementById("id_session").value;
             getMessages(auteur, id);  
         }, 5000);
+
+        document.getElementById("type_chat_front").value = "support";
     }
 
 });
 
 // S'execute lorsqu'on appuie sur "Envoyer" un message
 $(".btn-envoyer-msg").click(function(event) {
-
+        
     // Si on dans le back
     if (auteur == "support") {
         let id = document.getElementById("id_chat_back").value;
         postMessage(event, "support", id);
-
     // Si on dans le front
     } else {
-        let id = document.getElementById("id_session").value;
-        postMessage(event, "user", id);
+        var type_chat = document.getElementById("type_chat_front").value
+
+        // On vérifie que le chat sélectionné est bien le support
+        if (type_chat == "support") {
+            let id = document.getElementById("id_session").value;
+            postMessage(event, "user", id);
+        }
     }
 
 });
