@@ -241,6 +241,12 @@ input[type="radio"].solu + label:hover{
     outline: none;
 }
 
+#appercu {
+    font-family: holligate;
+    font-size: 3em;
+    color: black;
+}
+
 #condition p {
     font-family: holligate;
 }

@@ -272,8 +272,11 @@ require_once 'php/verif_session_crea.php';
                         </li>
                         <li>
                             <label for="Signature">Signature Numérique</label>
-                            <input type="text" name="signature" id="signature" placeholder="prénom et nom" class="border-dark rounded-pill" required>
-                            <p></p>
+                            <input type="text" name="signature" id="signature" class="border-dark rounded-pill" required placeholder="prénom et nom"  onkeyup="appercu.innerHTML=this.value">
+                        </li>
+                        <li>
+                            <label for="appercu">Apperçu</label>
+                            <span id="appercu" readonly></span>
                         </li>
                     </ul>
                     <div id="btn" class="col-12 text-center mt-2">
