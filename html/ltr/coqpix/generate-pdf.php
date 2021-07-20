@@ -487,9 +487,9 @@ $attest = 'Attestation sur l\'honneur :<br>
 
 $engage = '&nbsp;&nbsp;-&nbsp;&nbsp; Que je m’engage, en cas de vérification, à mettre ces documents à la disposition de l’administration à l’adresse de domiciliation, sous peine d’encourir les sanctions prévues à l’article L74 du livre des procédures fiscales en cas d’opposition à contrôle fiscal.';
 
-$que = 'Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :';
+$que = '&nbsp;&nbsp;-&nbsp;&nbsp; Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :';
 
-$quebis = 'Que la société susnommée n’emploie pas de salariés';
+$quebis = '&nbsp;&nbsp;-&nbsp;&nbsp; Que la société susnommée n’emploie pas de salariés';
 
 $adressfacture = $_POST['adresse_factures'];
 $adresssalarie = $_POST['adresse_salarie'];

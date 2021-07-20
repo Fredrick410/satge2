@@ -118,19 +118,19 @@ require_once 'php/verif_session_crea.php';
 <div class="container-fluid">
     <br>
     <div class="form-group">
-         <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="cursor: pointer; display:inline-block; top: 6px;"></div>
+         <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="color: #051441; cursor: pointer; display:inline-block; top: 6px;"></div>
                 <script>
                     function retourn() {
                         document.location.href="domiciliation-offre.php?id=<?= $id ?>";
                     }
                 </script>
-        <label class="">Retour à offre domiciliation</label>
+        <label class="" style="color: #051441;">Retour à offre domiciliation</label>
     </div>
 
     <h2 id="titre-contrat">Création du contrat</h2>
     <h5 id="sous-titre-contrat">Domiciliation à <?php echo $result['titre'] ?></h5>
             
-    <form class="col-12" action="generate-pdf.php" method="POST">
+    <form class="col-12" action="generate-pdf.php" target="_blank" method="POST">
         <div class="row card-body bg-white" id="contrat">
             <h3>Informations Générales</h3>
             <div class="col-12">
@@ -211,16 +211,16 @@ require_once 'php/verif_session_crea.php';
                     <label>
                         <ul>
                             <li>
-                                Je soussigné(e) <input class="border-dark rounded-pill ml-1 px-1" value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                                Je soussigné(e) <input type="text" class="border-dark rounded-pill ml-1 px-1" style="outline: none;" value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
                             </li>
                             <li>
-                                Agissant en qualité de <input class="border-dark rounded-pill ml-1 px-1" value="dirigeant">
+                                Agissant en qualité de <input type="text" class="border-dark rounded-pill ml-1 px-1" style="outline: none;" value="dirigeant">
                             </li>
                             <li>
-                                Pour la société <input class="border-dark rounded-pill ml-1 px-1" value="<?= $crea['name_crea'] ?>">
+                                Pour la société <input type="text" class="border-dark rounded-pill ml-1 px-1" style="outline: none;" value="<?= $crea['name_crea'] ?>">
                             </li>
                             <li>
-                                Dont le siège social est <input class="border-dark rounded-pill ml-1 px-1 w-50" value="<?= $result['adresse'] ?>">
+                                Dont le siège social est <input type="text" class="border-dark rounded-pill ml-1 px-1 w-50" style="outline: none;" value="<?= $result['adresse'] ?>">
                             </li>
                             <li>
                                 Attestation sur l'honneur :
@@ -228,7 +228,7 @@ require_once 'php/verif_session_crea.php';
                                 <label for="adresse_factures"> - Que la comptabilité et les factures de la société susnommée sont conservées à l’adresse suivante :</label>
                             </li>
                             <li>
-                                <input type="text" name="adresse_factures" id="adresse_factures" placeholder="entrez une adresse" class="border-dark rounded-pill" required>
+                                <input type="text"  name="adresse_factures" id="adresse_factures" placeholder="entrez une adresse" class="border-dark rounded-pill" required>
                             </li>
                             <li>
                                 - Que je m’engage, en cas de vérification, à mettre ces documents à la disposition de l’administration à l’adresse de domiciliation, sous peine d’encourir les sanctions prévues à l’article L74 du livre des procédures fiscales en cas d’opposition à contrôle fiscal.
@@ -237,7 +237,7 @@ require_once 'php/verif_session_crea.php';
                                 <pre><input type="radio" id="emploie" name="salarie" value="emploie" required>  Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :</pre>
                             </li>
                             <li>
-                                <input type="text" name="adresse_salarie" id="adresse_salarie" placeholder="entrez la/les adresse(s)" class="border-dark rounded-pill">
+                                <input type="text"  name="adresse_salarie" id="adresse_salarie" placeholder="entrez la/les adresse(s)" class="border-dark rounded-pill">
                             </li>
                             <li>
                                 <pre><input type="radio" id="pas_emploie" name="salarie" value="pas_emploie" required>  Que la société susnommée n’emploie pas de salariés</pre>

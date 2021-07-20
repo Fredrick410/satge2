@@ -162,11 +162,8 @@ input[type="radio"].solu + label:hover{
 #btn button{
     background-color: #29fe8c;
     padding: 5px 10px;
-}
-/*
-#btn button:{
     outline: none;
-}*/
+}
 
 #contrat-droite label, #contrat-gauche label{
     font-family: mukta malar medium;
@@ -213,7 +210,6 @@ input[type="radio"].solu + label:hover{
 }
 
 #attestation input[type=text] {
-    width: 90%;
     padding: 5px 10px;
     margin-bottom: 10px;
 }
@@ -273,6 +269,10 @@ input[type="radio"].solu + label:hover{
     font-size: 13px;
 }
 
+#adresse_salarie, #adresse_factures {
+    width: 90%;
+}
+
 @media screen and (max-width: 1700px) {
     #contrat-gauche, #contrat-droite{
         min-width: 100%;
@@ -280,9 +280,24 @@ input[type="radio"].solu + label:hover{
 }
 
 @media screen and (max-width: 1000px) {
-    #contrat-droite label, #contrat-droite input, #contrat-gauche label, #contrat-gauche input{
+    #contrat-droite label, #contrat-droite input, #contrat-gauche label, #contrat-gauche input, #attestation label {
         min-width: 90%;
         left: 0;
+        position: relative;
+    }
+    #attestation input[type=text] {
+        min-width: 90%;
+        left: -15px;
+        position: relative;
+    }
+    #attestation #adresse_salarie, #attestation #adresse_factures {
+        min-width: 90%;
+        left: 0;
+        position: relative;
+    }
+    #condition input[type=text] {
+        min-width: 90%;
+        left: -15px;
         position: relative;
     }
 }
