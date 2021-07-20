@@ -22,16 +22,6 @@
     padding-top: 68px;
 }
 
-#retour {
-    margin: 20px;
-    color: #051441;
-}
-
-#retour p {
-    font-family: mukta malar light;
-    font-size: 22px;
-}
-
 .carousel{
     margin: 50px auto;
 }
@@ -255,6 +245,7 @@ input[type="radio"].solu + label:hover{
     font-family: holligate;
     font-size: 3em;
     color: black;
+    margin-left: 20px;
 }
 
 #condition p {
