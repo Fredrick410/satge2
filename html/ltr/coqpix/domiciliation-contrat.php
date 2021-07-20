@@ -116,6 +116,17 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
+    <br>
+    <div class="form-group">
+         <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="cursor: pointer; display:inline-block; top: 6px;"></div>
+                <script>
+                    function retourn() {
+                        document.location.href="domiciliation-offre.php?id=<?= $id ?>";
+                    }
+                </script>
+        <label class="">Retour à offre domiciliation</label>
+    </div>
+
     <h2 id="titre-contrat">Création du contrat</h2>
     <h5 id="sous-titre-contrat">Domiciliation à <?php echo $result['titre'] ?></h5>
             
@@ -257,7 +268,7 @@ require_once 'php/verif_session_crea.php';
                         </li>
                         <li>
                             <input type="checkbox" name="conditions" id="conditions" required>
-                            <label for="conditions">J'ai pris connaissance, et j'accepte les <a href="conditions.php" target="_blank">conditions générales</a> du contrat.</label>
+                            <label for="conditions">J'ai pris connaissance, et j'accepte les <a href="domiciliation-contrat-conditions.php" target="_blank">conditions générales</a> du contrat.</label>
                         </li>
                         <li>
                             <label for="Signature">Signature Numérique</label>
