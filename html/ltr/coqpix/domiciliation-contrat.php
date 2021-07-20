@@ -279,6 +279,7 @@ require_once 'php/verif_session_crea.php';
                             <span id="apercu" readonly></span>
                         </li>
                     </ul>
+                    <input type="text" name="id_crea" id="id_crea" readonly hidden value="<?= $_SESSION['id_crea'] ?>">
                     <div id="btn" class="col-12 text-center mt-2">
                         <button type="submit" class="border rounded-pill">
                             Valider les informations

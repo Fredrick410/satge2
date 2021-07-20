@@ -106,6 +106,7 @@ $telephone = $_POST['telephone'];
 $email = $_POST['email'];
 $date = $_POST['date'];
 $sign = $_POST['signature'];
+$id_crea = $_POST['id_crea'];
 
 //info bdd
 $adresse = $_POST['adresse'];
@@ -569,7 +570,8 @@ $pdf->addEmptySignatureAppearance(180, 80, 15, 15);*/
 
 // Close and output PDF document
 ob_clean();
-$pdf->Output('contrat_domiciliation.pdf', 'I');
+$dir = realpath(__DIR__ . '/../../..');
+$pdf->Output($dir.'\src\domiciliation\pdf\contrat_domiciliation_idcrea'.$id_crea.'.pdf', 'F');
 
 //============================================================+
 // END OF FILE
