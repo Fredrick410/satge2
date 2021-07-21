@@ -161,7 +161,7 @@ require_once 'php/verif_session_crea.php';
                                                             <input type="hidden" name="id" value="<?= $crea['id'] ?>">
                                                             <div class="row">
                                                             <input name="status_crea" value="<?= $crea['status_crea'] ?>" hidden>
-                                                            
+
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <div class="controls">
@@ -191,6 +191,14 @@ require_once 'php/verif_session_crea.php';
                                                                         <div class="controls">
                                                                             <label>E-mail (Identifiant de connexion)</label>
                                                                             <input type="email" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Adresse du dirigeant</label>
+                                                                            <input type="text" name="adresse_diri" class="form-control border rounded-pill border-dark" placeholder="Ex: 2 Rue de Rivoli, 75004 Paris" value="<?= $crea['adresse_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
