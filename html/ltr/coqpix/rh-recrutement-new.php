@@ -70,72 +70,6 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                                                                                                                                                                     } ?>dark-layout">
 
     <!-- BEGIN: Header-->
-    <div class="header-navbar-shadow"></div>
-    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
-                        </ul>
-                        <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour">
-                                    <div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div>
-                                </a></li>
-                        </ul>
-                        <script>
-                            function retourn() {
-                                window.history.back();
-                            }
-                        </script>
-                        <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix">
-                                    <div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div>
-                                </a></li>
-                        </ul>
-                    </div>
-                    <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us mr-50"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i> Portuguese</a></div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                        </li>
-                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>
-                            <!--NOTIFICATION-->
-                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                                <li class="dropdown-menu-header">
-                                    <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
-                                </li>
-                                <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                        <!-- CONTENUE ONE -->
-                                    </a>
-                                    <div class="d-flex justify-content-between cursor-pointer">
-                                        <div class="media d-flex align-items-center border-0">
-                                            <div class="media-left pr-0">
-                                                <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="39" width="39"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading"><span class="text-bold-500">Nouveaux compte</span> création du compte</h6><small class="notification-text">Aujourd'hui, 19h30</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-sm-flex d-none"><span class="user-name"><?= $entreprise['nameentreprise']; ?></span><span class="user-status text-muted">En ligne</span></div><span><img class="round" src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <?php include('php/header_action.php') ?>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
     <?php $btnreturn = true;
     include('php/menu_header_front.php'); ?>
     <!-- END: Header-->
@@ -159,48 +93,46 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="wizard-vertical">
+                            <form class="wizard-horizontal">
                                 <!-- step 1 -->
-                                <h3>
-                                    <span class="fonticon-wrap mr-1">
-                                        <i class="livicon-evo" data-options="name:gear.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
+                                <h1>
                                     <span class="icon-title">
-                                        <span class="d-block">Paramètre principaux</span>
-                                        <small class="text-muted">Configurez les détails de votre annonce ici.</small>
+                                        <span class="d-block">Détails de l'annonce</span>
                                     </span>
-                                </h3>
+                                </h1>
                                 <!-- step 1 end-->
                                 <!-- step 1 content -->
                                 <fieldset class="pt-0">
                                     <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="name_annonce">Nom de l'annonce </label>
-                                                <input id="name_annonce" type="text" name="name_annonce" class="form-control" placeholder="Entrez le nom de votre annonce" required>
-                                                <small class="text-muted form-text">Entrez votre nom d'annonce s'il vous plait.</small>
+                                        <div class="col-sm-6">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="name_annonce">Nom de l'annonce </label>
+                                                    <input id="name_annonce" type="text" name="name_annonce" class="form-control" placeholder="Entrez le nom de votre annonce" required>
+                                                    <small class="text-muted form-text">Entrez votre nom d'annonce s'il vous plait.</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="description_annonce">Description de l'annonce </label>
+                                                    <input id="description_annonce" type="text" name="description_annonce" class="form-control" placeholder="Description de l'annonce">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="code_annonce">Code de partage</label>
+                                                    <input id="code_annonce" type="text" name="code_annonce" class="form-control" placeholder="Entrez votre code de partage">
+                                                    <small class="text-muted form-text">Code de partage va permettre de donner accès a l'annonce de recrutement en externe.</small>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="color_annonce">Thème de l'annonce</label><br>
                                                 <div id="picker" class="d-flex justify-content-center">
                                                 </div>
                                                 <input type="hidden" id="color_annonce" name="color_annonce">
                                                 <small class="text-muted form-text">Selectionnez une couleur pour définir un thème à votre annonce de recrutement.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="description_annonce">Description de l'annonce </label>
-                                                <input id="description_annonce" type="text" name="description_annonce" class="form-control" placeholder="Description de l'annonce">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="code_annonce">Code de partage</label>
-                                                <input id="code_annonce" type="text" name="code_annonce" class="form-control" placeholder="Entrez votre code de partage">
-                                                <small class="text-muted form-text">Code de partage va permettre de donner accès a l'annonce de recrutement en externe.</small>
                                             </div>
                                         </div>
                                     </div>
@@ -222,19 +154,12 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </fieldset>
                                 <!-- step 1 content end-->
-                                <div class="form-group">
-                                    <hr>
-                                </div>
                                 <!-- step 2 -->
-                                <h3>
-                                    <span class="fonticon-wrap mr-1">
-                                        <i class="livicon-evo" data-options="name:users.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
+                                <h1>
                                     <span class="icon-title">
                                         <span class="d-block">Profil des candidats</span>
-                                        <small class="text-muted">Cherche le candidat parfais.</small>
                                     </span>
-                                </h3>
+                                </h1>
                                 <!-- step 2 end-->
                                 <!-- step 2 content -->
                                 <fieldset class="pt-0">
@@ -307,7 +232,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                     <div class="col">
                                                         <div class="row">
                                                             <div class="col">
-                                                                <input id="date_m" type="number" name="date_m" class="form-control" placeholder="0">
+                                                                <input id="date_m" type="number" name="date_m" class="form-control" value="0">
                                                             </div>
                                                             <div class="col">
                                                                 <label style="position: relative; top: 10px;">Mois</label>
@@ -317,7 +242,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                     <div class="col">
                                                         <div class="row">
                                                             <div class="col">
-                                                                <input id="date_d" type="number" name="date_d" class="form-control" placeholder="0">
+                                                                <input id="date_d" type="number" name="date_d" class="form-control" value="0">
                                                             </div>
                                                             <div class="col">
                                                                 <label style="position: relative; top: 10px;">Jours</label>
@@ -330,22 +255,15 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </fieldset>
                                 <!-- step 2 content end-->
-                                <div class="form-group">
-                                    <hr>
-                                </div>
-                                <!-- section 3 -->
-                                <h3>
-                                    <span class="fonticon-wrap mr-1">
-                                        <i class="livicon-evo" data-options="name:notebook.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
+                                <!-- step 3 -->
+                                <h1>
                                     <span class="icon-title">
-                                        <span class="d-block">Qcm RH</span>
-                                        <small class="text-muted">Sélectionnez un ou plusieurs qcm pour tester vos candidats.</small>
+                                        <span class="d-block">Qcm Généraux</span>
                                     </span>
-                                </h3>
-                                <!-- section 3 end-->
-                                <!-- Switch Icons Starts -->
-                                <section id="switch-icons">
+                                </h1>
+                                <!-- step 3 end-->
+                                <!-- step 3 content -->
+                                <fieldset class="pt-0">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="d-flex justify-content-start flex-wrap">
@@ -371,35 +289,17 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                             </div>
                                         </div>
                                     </div>
-                                </section>
-                                <!-- Switch Icons Ends -->
-                                <style>
-                                    .btconf {
-                                        background-color: #34465b;
-                                        color: white;
-                                    }
-
-                                    .btconf:hover {
-                                        background-color: #3fff21;
-                                        color: white;
-                                    }
-                                </style>
-                                <div class="form-group">
-                                    <hr>
-                                </div>
-                                <!-- section 3 -->
-                                <h3>
-                                    <span class="fonticon-wrap mr-1">
-                                        <i class="livicon-evo" data-options="name:notebook.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
+                                </fieldset>
+                                <!-- step 3 content end -->
+                                <!-- step 4 -->
+                                <h1>
                                     <span class="icon-title">
                                         <span class="d-block">Nos qcm</span>
-                                        <small class="text-muted">Sélectionnez un ou plusieurs qcm pour tester vos candidats.</small>
                                     </span>
-                                </h3>
-                                <!-- section 3 end-->
-                                <!-- Switch Icons Starts -->
-                                <section id="switch-icons">
+                                </h1>
+                                <!-- step 4 end-->
+                                <!-- step 4 content -->
+                                <fieldset class="pt-0">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="d-flex justify-content-start flex-wrap">
@@ -425,20 +325,17 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                             </div>
                                         </div>
                                     </div>
-                                </section>
-                                <!-- section 3 -->
-                                <h3>
-                                    <span class="fonticon-wrap mr-1">
-                                        <i class="livicon-evo" data-options="name:notebook.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
+                                </fieldset>
+                                <!-- step 4 content end-->
+                                <!-- step 5 -->
+                                <h1>
                                     <span class="icon-title">
                                         <span class="d-block">Fiche de poste</span>
-                                        <small class="text-muted">Définissez les missions ou compétences de ce poste.</small>
                                     </span>
-                                </h3>
-                                <!-- section 3 end-->
-                                <!-- Switch Icons Starts -->
-                                <section id="switch-icons">
+                                </h1>
+                                <!-- step 5 end -->
+                                <!-- step 5 content -->
+                                <fieldset class="pt-0">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
@@ -482,19 +379,15 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                             </div>
                                         </div>
                                     </div>
-                                </section>
-                                <div class="form-group">
-                                    <button name="insert" id="button_save" type="button" value="Ajouter" class="btn col-12 btconf">Confirmation de l'annonce</button>
-                                </div>
+                                </fieldset>
+                                <!-- step 5 content end -->
                             </form>
                         </div>
                     </div>
                 </div>
             </section>
             <!-- vertical Wizard end-->
-
         </div>
-    </div>
     </div>
     <!-- END: Content-->
 
@@ -520,8 +413,80 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/forms/wizard-steps.js"></script>
     <script>
+        function submit() {
+
+            var lastRowId = $('#table tr:last').attr("id"); /*finds id of the last row inside table*/
+            var missions = new Array();
+            for (var i = 1; i <= lastRowId; i++) {
+                if ($("#" + "mission" + i).html() !== undefined)
+                    missions.push($("#" + "mission" + i).html());
+            }
+
+            var name_annonce = document.getElementById("name_annonce").value;
+            var color_annonce = document.getElementById("color_annonce").value;
+            var description_annonce = document.getElementById("description_annonce").value;
+            var code_annonce = document.getElementById("code_annonce").value;
+            var email_annonce = document.getElementById("email_annonce").value;
+            var tel_annonce = document.getElementById("tel_annonce").value;
+            var age_annonce = document.getElementById("age_annonce").value;
+            var niveau_annonce = document.getElementById("niveau_annonce").value;
+            var poste_annonce = document.getElementById("poste_annonce").value;
+            var pays_annonce = document.getElementById("pays_annonce").value;
+            var date_y = document.getElementById("date_y").value;
+            var date_m = document.getElementById("date_m").value;
+            var date_d = document.getElementById("date_d").value;
+            var valid = 0;
+            var qcms = [];
+            var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+            if (checkboxes.length > 0) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    qcms.push(checkboxes[i].value);
+                }
+            }
+
+
+            if (qcms.length != 0) {
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_rh_annonce.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        missions: missions,
+                        name_annonce: name_annonce,
+                        color_annonce: color_annonce,
+                        description_annonce: description_annonce,
+                        code_annonce: code_annonce,
+                        email_annonce: email_annonce,
+                        tel_annonce: tel_annonce,
+                        age_annonce: age_annonce,
+                        niveau_annonce: niveau_annonce,
+                        poste_annonce: poste_annonce,
+                        pays_annonce: pays_annonce,
+                        date_y: date_y,
+                        date_m: date_m,
+                        date_d: date_d,
+                        qcms: qcms
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            addAlert("Annonce ajoutée", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    },
+                    error: function(data) {
+                        addAlert(data.message, "error");
+                    }
+                });
+            } else {
+                addAlert("Merci de choisir au moins un qcm", "error");
+            }
+        }
+
         var colorPicker = new iro.ColorPicker('#picker', {
             // Set the size of the color picker
             width: 200,
@@ -577,79 +542,132 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
             });
 
             /*crating new click event for save button this will save to the database*/
-            $("#button_save").click(function() {
+        });
+        //    Wizard tabs with icons setup
+        // ------------------------------
+        $(".wizard-horizontal").steps({
+            headerTag: "h1",
+            bodyTag: "fieldset",
+            transitionEffect: "fade",
+            titleTemplate: '<span class="step">#index#</span> #title#',
+            labels: {
+                finish: 'Submit'
+            },
+            onFinished: function(event, currentIndex) {
+                submit();
+            }
+        });
+        //        vertical Wizard       //
+        // ------------------------------
+        $(".wizard-vertical").steps({
+            headerTag: "h1",
+            bodyTag: "fieldset",
+            transitionEffect: "fade",
+            enableAllSteps: true,
+            stepsOrientation: "vertical",
+            labels: {
+                finish: 'Submit'
+            },
+            onFinished: function(event, currentIndex) {
+                alert("Form submitted.");
+            }
+        });
 
-                var lastRowId = $('#table tr:last').attr("id"); /*finds id of the last row inside table*/
-                var missions = new Array();
-                for (var i = 1; i <= lastRowId; i++) {
-                    if ($("#" + "mission" + i).html() !== undefined)
-                        missions.push($("#" + "mission" + i).html());
+
+        //       Validate steps wizard //
+        // -----------------------------
+        // Show form
+        var stepsValidation = $(".wizard-validation");
+        var form = stepsValidation.show();
+
+        stepsValidation.steps({
+            headerTag: "h1",
+            bodyTag: "fieldset",
+            transitionEffect: "fade",
+            titleTemplate: '<span class="step">#index#</span> #title#',
+            labels: {
+                finish: 'Submit'
+            },
+            onStepChanging: function(event, currentIndex, newIndex) {
+                // Allways allow previous action even if the current form is not valid!
+                if (currentIndex > newIndex) {
+                    return true;
                 }
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinishing: function(event, currentIndex) {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+            },
+            onFinished: function(event, currentIndex) {
+                submit();
+            }
+        });
 
-                var name_annonce = document.getElementById("name_annonce").value;
-                var color_annonce = document.getElementById("color_annonce").value;
-                var description_annonce = document.getElementById("description_annonce").value;
-                var code_annonce = document.getElementById("code_annonce").value;
-                var email_annonce = document.getElementById("email_annonce").value;
-                var tel_annonce = document.getElementById("tel_annonce").value;
-                var age_annonce = document.getElementById("age_annonce").value;
-                var niveau_annonce = document.getElementById("niveau_annonce").value;
-                var poste_annonce = document.getElementById("poste_annonce").value;
-                var pays_annonce = document.getElementById("pays_annonce").value;
-                var date_y = document.getElementById("date_y").value;
-                var date_m = document.getElementById("date_m").value;
-                var date_d = document.getElementById("date_d").value;
-                var valid = 0;
-                var qcms = [];
-                var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
-                if (checkboxes.length > 0) {
-                    for (var i = 0; i < checkboxes.length; i++) {
-                        qcms.push(checkboxes[i].value);
-                    }
+        // Initialize validation
+        stepsValidation.validate({
+            ignore: 'input[type=hidden]', // ignore hidden fields
+            errorClass: 'danger',
+            successClass: 'success',
+            highlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            unhighlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            rules: {
+                email: {
+                    email: true
                 }
-
-
-                if (qcms.length != 0) {
-                    $.ajax({
-                        url: "../../../html/ltr/coqpix/php/insert_rh_annonce.php", //new path, save your work first before u try
-                        type: "POST",
-                        data: {
-                            missions: missions,
-                            name_annonce: name_annonce,
-                            color_annonce: color_annonce,
-                            description_annonce: description_annonce,
-                            code_annonce: code_annonce,
-                            email_annonce: email_annonce,
-                            tel_annonce: tel_annonce,
-                            age_annonce: age_annonce,
-                            niveau_annonce: niveau_annonce,
-                            poste_annonce: poste_annonce,
-                            pays_annonce: pays_annonce,
-                            date_y: date_y,
-                            date_m: date_m,
-                            date_d: date_d,
-                            qcms: qcms
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status == "success") {
-                                addAlert("Annonce ajoutée", "success");
-                                window.setTimeout(function() {
-                                    window.location.href = data.link;
-                                }, 1000);
-                            } else {
-                                addAlert(data.message, "error");
-                            }
-                        },
-                        error: function(data) {
-                            addAlert(data.message, "error");
-                        }
-                    });
-                } else {
-                    addAlert("Merci de choisir au moins un qcm", "error");
-                }
+            }
+        });
+        // live Icon color change on state change
+        $(document).ready(function() {
+            $(".current").find(".step-icon").addClass("bx bx-time-five");
+            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#5A8DEE'
             });
         });
+        // Icon change on state
+        // if click on next button icon change
+        $(".actions [href='#next']").click(function() {
+            $(".done").find(".step-icon").removeClass("bx bx-time-five").addClass("bx bx-check-circle");
+            $(".current").find(".step-icon").removeClass("bx bx-check-circle").addClass("bx bx-time-five");
+            // live icon color change on next button's on click
+            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#5A8DEE'
+            });
+            $(".current").prev("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#39DA8A'
+            });
+        });
+        $(".actions [href='#previous']").click(function() {
+            // live icon color change on next button's on click
+            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#5A8DEE'
+            });
+            $(".current").next("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#adb5bd'
+            });
+        });
+        // if click on  submit   button icon change
+        $(".actions [href='#finish']").click(function() {
+            $(".done").find(".step-icon").removeClass("bx-time-five").addClass("bx bx-check-circle");
+            $(".last.current.done").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#39DA8A'
+            });
+        });
+        // add primary btn class
+        $('.actions a[role="menuitem"]').addClass("btn btn-primary");
+        $('.icon-tab [role="menuitem"]').addClass("glow ");
+        $('.wizard-vertical [role="menuitem"]').removeClass("btn-primary").addClass("btn-light-primary");
+    </script>
+    <script>
+
     </script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
