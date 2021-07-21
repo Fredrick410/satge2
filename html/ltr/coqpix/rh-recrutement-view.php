@@ -444,7 +444,7 @@ if (count($candidature) != 0) {
                 ?>
                     <!-- Modal -->
                     <div class="modal fade" id="qcm<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="modalQcm<?= $i ?>" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle">Resultats du qcm : <?= $qcms[$i]['libelle'] ?></h5>
