@@ -369,6 +369,7 @@ if ($annonce['code_annonce'] == "") {
                     dataType: 'json',
                     success: function(data) {
                         if (data.status == 'success') {
+                            console.log(data.link);
                             window.location.href = data.link;
                         }
                     }
