@@ -29,26 +29,6 @@ html body .content .content-wrapper .content-header-title {
     border-right: 1px solid #051441;
 }
 
-html body .content .content-wrapper .breadcrumb-wrapper .breadcrumb .breadcrumb-item a, html body .content .content-wrapper .breadcrumb-wrapper .breadcrumb .breadcrumb-item a i {
-    color: #051441;
-    background-color: #edf1ff;
-}
-
-html body .content .content-wrapper .breadcrumb-wrapper .breadcrumb .breadcrumb-item + .breadcrumb-item:before {
-    color: #051441;
-    padding-right: 9px;
-}
-
-.breadcrumb {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 1.05rem 1.67rem;
-    margin-bottom: 1rem;
-    list-style: none;
-    background-color: #edf1ff;
-    border-radius: 0.267rem;
-}
-
 .nav-pills .nav-link, .nav-pills .show > .nav-link {
     color: #051441;
     background-color: #edf1ff;

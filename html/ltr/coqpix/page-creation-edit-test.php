@@ -93,13 +93,14 @@ require_once 'php/verif_session_crea.php';
                 <div class="content-header-left col-12 mb-2 mt-1">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <div class="breadcrumb-wrapper col-12">
-                                <ol class="breadcrumb p-0 mb-0">
-                                    <li class="breadcrumb-item"><a href="page-creation.php"><i class="bx bx-home-alt"></i></a>
-                                    </li>
-                                    <li class="breadcrumb-item active"> Retour à l'accueil
-                                    </li>
-                                </ol>
+                            <div class="form-group">
+                                 <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="color: #051441; cursor: pointer; display:inline-block; top: 6px;"></div>
+                                        <script>
+                                            function retourn() {
+                                                document.location.href="page-creation.php";
+                                            }
+                                        </script>
+                                <label class="" style="color: #051441;">Retour à l'accueil</label>
                             </div>
                         </div>
                     </div>
@@ -116,13 +117,13 @@ require_once 'php/verif_session_crea.php';
                                     <ul class="nav nav-pills flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link d-flex align-items-center active" id="account-pill-dirigeant" data-toggle="pill" href="#account-vertical-dirigeant" aria-expanded="true">
-                                                <i class="bx bx-cog"></i>
+                                                <i class="bx bx-user"></i>
                                                 <span>Dirigeant</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link d-flex align-items-center" id="account-pill-entreprise" data-toggle="pill" href="#account-vertical-entreprise" aria-expanded="true">
-                                                <i class="bx bx-cog"></i>
+                                            <a class="nav-link d-flex align-items-center" id="account-pill-entreprise" data-toggle="pill" href="#account-vertical-entreprise" aria-expanded="false">
+                                                <i class="bx bx-buildings"></i>
                                                 <span>Entreprise</span>
                                             </a>
                                         </li>
@@ -159,6 +160,7 @@ require_once 'php/verif_session_crea.php';
                                                         <form action="php/edit_crea_client.php" method="POST">
                                                             <input type="hidden" name="id" value="<?= $crea['id'] ?>">
                                                             <div class="row">
+                                                            <input name="status_crea" value="<?= $crea['status_crea'] ?>" hidden>
 
                                                                 <div class="col-12">
                                                                     <div class="form-group">
@@ -189,6 +191,14 @@ require_once 'php/verif_session_crea.php';
                                                                         <div class="controls">
                                                                             <label>E-mail (Identifiant de connexion)</label>
                                                                             <input type="email" name="email_crea" class="form-control border rounded-pill border-dark" placeholder="Email de connexion" value="<?= $crea['email_crea'] ?>" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Adresse du dirigeant</label>
+                                                                            <input type="text" name="adresse_diri" class="form-control border rounded-pill border-dark" placeholder="Ex: 2 Rue de Rivoli, 75004 Paris" value="<?= $crea['adresse_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -241,10 +251,10 @@ require_once 'php/verif_session_crea.php';
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <!--<div role="tabpanel" class="tab-pane fade" id="account-vertical-entreprise" aria-labelledby="account-pill-entreprise" aria-expanded="false">
-                                                        <form>
+                                                    <div class="tab-pane fade" id="account-vertical-entreprise" role="tabpanel" aria-labelledby="account-pill-entreprise" aria-expanded="false">
+                                                        <form action="php/edit_crea_entreprise.php" method="POST">
+                                                            <input type="hidden" name="id" value="<?= $crea['id'] ?>">
                                                             <div class="row">
-
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <div class="controls">
@@ -278,10 +288,9 @@ require_once 'php/verif_session_crea.php';
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                </div>
                                                             </div>
                                                         </form>
-                                                    </div>-->
+                                                    </div>
                                                     <div class="tab-pane fade" id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
                                                         <form action="php/edit_password_crea.php" method="POST">
                                                             <input name="id" type="hidden" value="<?= $crea['id'] ?>">
