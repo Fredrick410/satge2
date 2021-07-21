@@ -51,7 +51,7 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                 "Service des Ressources Humaines.\n\n" .
                 "Envoyé par Coqpix.";
             } else if ($etape == "failure") {
-                $message = "Bonjour $prenom $nom,\n\n" .
+                $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
                 "Merci d'avoir candidaté au poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\n\n" .
                 "Nous avons attentivement étudié votre profil mais nous ne pouvons malheureusement pas donner suite.\n\n".
                 "Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.\n\n" .
