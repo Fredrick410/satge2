@@ -358,7 +358,7 @@ if ($annonce['code_annonce'] == "") {
         $(document).ready(function() {
             /*creating a new click event for each toogle this will save to the database*/
             $('#confirm').click(function() {
-                key = <?= htmlspecialchars($_GET['key']) ?>
+                key = '<?= htmlspecialchars($_GET['key']) ?>';
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/fin_candidature.php", //new path, save your work first before u try
                     type: "POST",
