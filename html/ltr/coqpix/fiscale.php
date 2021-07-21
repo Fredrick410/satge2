@@ -85,7 +85,7 @@ require_once 'php/config.php';
                                         <p class="card-text">
                                             Vous trouverez dans cet espace l'ensemble de vos déclarations TVA, trié par période mensuelle, par trimestre ou par année.
                                         </p>
-                                        <a href="tva-espace.php"><button class="btn btn-info block">Mon espace</button></a>
+                                        <a href="tva-espace.php"><button class="btn btn-primary block">Mon espace</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,8 @@ require_once 'php/config.php';
                                         <p class="card-text">
                                             Vos autres déclarations Fiscales
                                         </p>
-                                        <a href="other_df.php"><button class="btn btn-warning block">Continuer</button></a>
+                                        <br><br>
+                                        <a href="other_df.php"><button class="btn btn-primary block">Continuer</button></a>
                                     </div>
                                     <img class="card-img-bottom img-fluid" src="../../../app-assets/images/slider/15.jpg" alt="Card image cap">
                                 </div>
@@ -107,8 +108,8 @@ require_once 'php/config.php';
                     </div>
                 </section>
                 <!-- Basic Card types section end -->
-                <section>
-                    <div class="form-group col-12">
+                <section class= "col-md-14">
+                    <div class="form-group">
                         <div class="card">
                             <div class="form-group text-center">
                                 <h5 style='padding-top: 10px;'>Demander une attestation (fiscale)</h5>
@@ -117,7 +118,7 @@ require_once 'php/config.php';
                                 <p style='padding-left: 20px;'>Facilitez-vous la vie avec audit action en utilisant l'option demande d'attestation fiscale, nos équipes traiteront vos demandes en temps record et sans prise de tête.</p>
                                 <p style='padding-left: 20px;'>Vous avez ( <label style='color: red;'><?= $count_attestation ?></label> ) attestation(s).</p>
                                 <div class="form-group">
-                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="attestation-fiscale.php"><button class="btn btn-dark mr-1 mb-1">Demander une attestation</button></a>
+                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="attestation-fiscale.php"><button class="btn btn-primary block">Demander une attestation</button></a>
                                 </div>   
                             </div>
                         </div>

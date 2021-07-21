@@ -65,33 +65,35 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Content-->
     <div class="app-content content">
-        <div class="content-wrapper" style="position: relative;">
+        <div class="content-wrapper" style="position: relatif;">
             <div class="form-group">
-                <br><br><br><br><br>
+                
             </div>
             <div class="content-body">
                 <div class="row text-center">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>Basculer sur iLovePDF</h3>                       
                         </div>
-                        <a href="https://www.ilovepdf.com/fr" target="_blank"><div class="form-group" style="cursor: pointer;">
+                        <a href="https://www.ilovepdf.com/fr" target="_blank">
+                        <div class="form-group" style="cursor: pointer;" >
                             <div class="card text-center">
                                 <div class="card-content">
                                     <div class="card-body">
                                         <img src="../../../src/img/ilovePDF.png" class="img-fluid" alt="element 02" class="mb-1">
-                                        <h4>Tous les outils pour éditer des PDF.</h4>
+                                        <h4> <br> Tous les outils pour éditer des PDF.</h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div></a>
-                    <div class="col-md-4">
+                        </a>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>Basculer sur iLoveIMG</h3>                       
                         </div>
                         <a href="https://www.iloveimg.com/fr" target="_blank"><div class="form-group" style="cursor: pointer;">
-                            <div class="card text-center">
+                            <div class="card text-center h-100">
                                 <div class="card-content">
                                     <div class="card-body">
                                         <img src="../../../src/img/iloveIMG.png" class="img-fluid" alt="element 02" class="mb-1">
@@ -101,7 +103,7 @@ require_once 'php/config.php';
                             </div>
                         </div></a>
                     </div>
-                    <div class="col-md-4">
+                    <div class="mx-auto col-md-8">
                         <div class="form-group">
                             <h3>Indemnités kilométriques</h3>                       
                         </div>
@@ -110,7 +112,7 @@ require_once 'php/config.php';
                                 <div class="card-content">
                                     <div class="card-body">
                                         <img src="../../../src/img/kilom.png" class="img-fluid" alt="image de l'autre appli" class="mb-1">
-                                        <h4>Calculer vos indemnités kilométriques.</h4>
+                                        <h4><br>Calculer vos indemnités kilométriques.</h4>
                                     </div>
                                 </div>
                             </div>

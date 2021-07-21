@@ -89,15 +89,15 @@ $pdoSta->execute();
                 <div class="form-group">
                     <p>L'upload de votre liasse fiscale, varie en fonction de la cloture d'exercice.</p>
                 </div>
-                <div class="row" style="margin-top: 100px;">
-                    <div class="col text-center" style="padding-top: 140px;">
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col text-center" style="padding-top: 10px;">
                         <div class="form-group">
                             <p class="lead" style="margin-left: 20px;">
-                                Selectionner une année 😜
+                                Selectionner une année 😜 
                             </p>
                         </div>
                         <div class="form-group">
-                            <fieldset class="form-group col">
+                            <fieldset class="mx-auto form-group col-md-6">
                                 <select id="select_annee" onchange="select_annee()" class="custom-select">
                                     <option selected value="<?= $_GET['5PAx4zf27P'] ?>"><?= $_GET['5PAx4zf27P'] ?> <?php if($_GET['5PAx4zf27P'] == date('Y')){echo "(Année actuelle)";} ?></option>
                                     <optgroup></optgroup>
@@ -118,7 +118,7 @@ $pdoSta->execute();
                         </div>
                         <div class="form-group <?php if($count_bilan <= 0){echo "none-validation";} ?>">
                                 <?php foreach($bilan as $bilans): ?>
-                                    <div class="card bg-transparent col-12" style="border-right: none; border-bottom: none; border-top: none; border-left: 5px solid green;" >
+                                    <div class="card col-md-12" style="border-right: none; border-bottom: none; border-top: none; border-left: 0px solid green;" >
                                         <div class="card-content">
                                             <div class="card-body">
                                                 <div class="form-group">
@@ -144,14 +144,15 @@ $pdoSta->execute();
                                 <?php endforeach;  ?>
                             </div>
                         </div>
-                        <div class="col">
-                            <img src="../../../src/img/bilan-bg.jpg" alt="error img">
+                        <div class="">
+                            <img class="img-fluid" src="../../../src/img/bilan-bg.jpg" alt="error img">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <footer><br></footer>
     <!-- END: Content-->
 
     <!-- BEGIN: Vendor JS-->
