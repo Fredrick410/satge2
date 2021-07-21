@@ -38,7 +38,7 @@
 </head>
 <!-- END: Head-->
 
-<body class="vertical-layout vertical-menu-modern semi-dark-layout 1-column  navbar-sticky footer-static bg-auth-image  blank-page blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column" data-layout="semi-dark-layout">
+<body class="vertical-layout vertical-menu-modern semi-dark-layout 1-column  navbar-sticky footer-static bg-auth-image blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column" data-layout="semi-dark-layout">
     <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
@@ -47,28 +47,29 @@
             </div>
             <div class="content-body">
                 <!-- login page start --> 
-                <section id="auth-login" class="row flexbox-container">
-                    <div class="col-xl-8 col-11">
-                        <div class="card bg-authentication mb-0">
+                <section id="auth-login" class="flexbox-container row">
+                    <div class="col-10">
+                        <div class="">
                             <div class="row m-0"> 
+                                <div class="col-1 "></div>
                                 <!-- left section-login -->
-                                <div class="col-md-6 col-12 px-0">
-                                    <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
-                                        <div class="card-header pb-1">
-                                            <div class="card-title">
-                                                <h4 class="text-center mb-2">Connectez-vous</h4>
+                                <div class="col-12 col-md-5 px-0">
+                                    <div class=" mb-0 p-2 h-100">
+                                        <div class=" pb-1">
+                                            <div class="">
+                                                <img class="logocoq" src="app-assets/images/logo/coqpix2.png" />
                                             </div>
                                         </div>
-                                        <div class="card-content">
-                                            <div class="card-body">
+                                        <div class="">
+                                            <div class="">
                                                 
                                                 <form action="html/ltr/coqpix/php/verif.php" method="GET">
                                                     <div class="form-group mb-50">
-                                                        <label class="text-bold-600" for="exampleInputEmail1">Adresse Email :</label>
-                                                        <input name="emailentreprise" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email"  required></div>
+                                                        <label class="h3" for="exampleInputEmail1" ><div class="textlowercase">E-Mail :</div></label>
+                                                        <input name="emailentreprise" type="email" class="form-control rounded-pill" id="exampleInputEmail1" placeholder="Adresse email"  required></div>
                                                     <div class="form-group">
-                                                        <label class="text-bold-600" for="exampleInputPassword1">Mot de passe :</label>
-                                                        <input name="passwordentreprise" type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe" required>
+                                                        <label class="h3" for="exampleInputPassword1">Mot de passe :</label>
+                                                        <input name="passwordentreprise" type="password" class="form-control rounded-pill" id="exampleInputPassword1" placeholder="Mot de passe" required>
                                                     </div>
                                                     <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
                                                         <div class="text-left">
@@ -80,18 +81,18 @@
                                                         <!-- MOT DE PASSE OUBLIER -->
                                                         <div class="text-right"><a href="html/ltr/coqpix/reset-password.php" class="card-link"><small>Mot de passe oublié?</small></a></div>
                                                     </div>
-                                                    <input type="submit" value="Se connecter" class="btn btn-primary glow w-100 position-relative">
+                                                    <input type="submit" value="Se connecter" class="btn rounded-pill btn-primary glow w-75 position-relative">
                                                 </form>
-                                                <hr>
-                                                <div class="text-center"><small class="mr-25">Contactez contact@auditactionplus.com pour créer un compte.</small></div>
+                                                <button type="button" class="btn rounded-pill btn-primary w-75 mt-2">S'inscrire</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- right section image -->
+                                <div class="col-6"></div>
+                                <!-- right section image
                                 <div class="col-md-6 d-md-block d-none p-3 text-center"><style>.all{width:100%; height: 100%;}</style>
-                                        <a href="html/ltr/coqpix/backend/auth-login-admin.html"><img class="img-fluid" src="app-assets/images/pages/login.png" alt="branding logo"></a>
-                                </div>
+                                    <a href="html/ltr/coqpix/backend/auth-login-admin.html"><img class="img-fluid" src="app-assets/images/pages/login.png" alt="branding logo"></a>
+                                </div> -->
                             </div>
                         </div>
                         <!-- livicon pour hrref admin connexion A FAIRE -->
@@ -99,6 +100,7 @@
                             <a href="html/ltr/coqpix/backend/auth-login-admin.php"><div class="livicon-evo pull-right " data-options=" name: desktop.svg; size: 30px "></div></a>
                         </div> -->
                     </div>
+                    <div class="col-2"> BY AA </div> 
                 </section>
                 <!-- login page ends -->
 
