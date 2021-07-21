@@ -55,8 +55,15 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
         'message' => $message
     ];
 
-    email($mail);
-
-    header("Location: rh-recrutement-view.phg?num=$id");
+    $sent = email($mail);
+    if ($sent) {
+        $response_array['status'] = 'success';
+        $response_array['link'] = 'https://www.google.com/';
+    }
+    else{
+        $response_array['status'] = 'error';
+    }
+    header('Content-type: application/json');
+    echo json_encode($response_array);
     exit();
 }

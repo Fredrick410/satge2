@@ -7,7 +7,6 @@ ini_set('display_startup_errors', TRUE);
 
     if(!empty($_GET['id'] != "")) {
         $id = htmlspecialchars($_GET['id']);
-        var_dump($id);
         try {
             $publier = $bdd->prepare("SELECT * FROM qcm WHERE id = :id");
             $publier->bindValue(':id', $id);

@@ -161,14 +161,14 @@ if ($annonce['code_annonce'] == "") {
                                                                                                                             } else {
                                                                                                                                 echo 'Mr ' . $candidat['nom_candidat'] . '';
                                                                                                                             } ?> <p style="display: inline; color: <?php if ($annonce['statut'] == "actif") {
-                                                                                                                                                                                                                                                                                                                echo "green";
-                                                                                                                                                                                                                                                                                                            } else {
-                                                                                                                                                                                                                                                                                                                echo 'red';
-                                                                                                                                                                                                                                                                                                            } ?>;">(<?php if ($annonce['statut'] == "actif") {
-                                                                                                                                                                                                                                                                                                                                                                                            echo "Actif";
-                                                                                                                                                                                                                                                                                                                                                                                        } else {
-                                                                                                                                                                                                                                                                                                                                                                                            echo 'En pause';
-                                                                                                                                                                                                                                                                                                                                                                                        } ?>)</p>
+                                                                                                                                                                        echo "green";
+                                                                                                                                                                    } else {
+                                                                                                                                                                        echo 'red';
+                                                                                                                                                                    } ?>;">(<?php if ($annonce['statut'] == "actif") {
+                                                                                                                                                                                echo "Actif";
+                                                                                                                                                                            } else {
+                                                                                                                                                                                echo 'En pause';
+                                                                                                                                                                            } ?>)</p>
                         </h5>
                     </div>
                     <div class="form-group" style='padding-left: 20px;'>
@@ -316,10 +316,10 @@ if ($annonce['code_annonce'] == "") {
                                         <i class="bx bx-x d-block d-sm-none"></i>
                                         <span class="d-none d-sm-block">Annuler</span>
                                     </button>
-                                    <a href="https://www.google.com/"><button type="button" id="confirm" class="btn btn-success ml-1">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Confirmer</span>
-                                        </button></a>
+                                    <button type="button" id="confirm" class="btn btn-success ml-1">
+                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Confirmer</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -358,13 +358,19 @@ if ($annonce['code_annonce'] == "") {
         $(document).ready(function() {
             /*creating a new click event for each toogle this will save to the database*/
             $('#confirm').click(function() {
-                key = <?=htmlspecialchars($_GET['key'])?>
+                key = <?= htmlspecialchars($_GET['key']) ?>
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/fin_candidature.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
                         done: "oui",
                         key: key
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            window.location.href = data.link;
+                        }
                     }
                 });
             });
