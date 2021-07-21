@@ -19,13 +19,21 @@ if (!isset($authorised_roles)){
    //pas de contrainte de rôle définie
 }
 else
-{  
-   if (in_array($_SESSION['role'], $authorised_roles)){
-      //le role est bien dans la liste des roles authorisés
-   }
+{  if (substr($_SESSION['role'],0,1) && in_array("comptable", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
+   elseif (substr($_SESSION['role'],1,2) && in_array("juriste", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
+   elseif (substr($_SESSION['role'],2,3) && in_array("gestionnaire_social", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
+   elseif (substr($_SESSION['role'],3,4) && in_array("gestionnaire_fiscal", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
    else {
    sleep(2);
-   header('Location: ../page-not-authorized.html');
+   header('Location: page-not-authorized.html');
    exit;
    }
 }
