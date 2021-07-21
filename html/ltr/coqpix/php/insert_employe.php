@@ -168,7 +168,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             Vous pouvez nous transmettre les documents pour la signature de la convention de stage.
             Merci de me confirmer votre disponibilité.\n
             Bien Cordialement\n   
-            La Direction des Ressources Humaines.\n
+            Service des Ressources Humaines.\n
             Coqpix.";
         }
 

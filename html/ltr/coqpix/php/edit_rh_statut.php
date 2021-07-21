@@ -48,7 +48,7 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                 Merci de me confirmer votre disponibilité.\n
                 Bien Cordialement\n
                         
-                Le Service des Ressources Humaines.\n
+                Service des Ressources Humaines.\n
                 Coqpix.";
             } else if ($etape == "failure") {
                 $message = "Bonjour $prenom $nom,\n
@@ -58,7 +58,7 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                 Merci encore pour l'intérêt que vous avez porté à notre entreprise.\n
                 Bien Cordialement\n
                         
-                La Service des Ressources Humaines.\n
+                Service des Ressources Humaines.\n
                 Coqpix.";
             }
 

@@ -36,7 +36,7 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
             $pdoStt->bindValue(':num', htmlspecialchars($_POST['idcandidat']), PDO::PARAM_INT);
             $pdoStt->execute();
             $candidature = $pdoStt->fetch();
-        } catch (PDOException $exception) {
+        } catch (PDOException $e) {
             $response_array['status'] = 'error';
             $response_array['message'] = $e->getMessage();
             echo json_encode($response_array);
@@ -49,7 +49,7 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
             $pdoSta->bindValue(':num', $num);
             $pdoSta->execute();
             $annonce = $pdoSta->fetch();
-        } catch (PDOException $exception) {
+        } catch (PDOException $e) {
             $response_array['status'] = 'error';
             $response_array['message'] = $e->getMessage();
             echo json_encode($response_array);
@@ -69,7 +69,7 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
             Merci encore pour l'intérêt que vous avez porté à notre entreprise.\n
             Bien Cordialement\n
                     
-            La Direction des Ressources Humaines.\n
+            Service des Ressources Humaines.\n
             Coqpix.";
         }
 

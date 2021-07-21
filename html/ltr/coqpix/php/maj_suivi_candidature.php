@@ -18,8 +18,9 @@ if($_SESSION['candidat'] == $_POST['num']){
                 $query = "UPDATE rh_candidature SET " .$_POST['type_suivi']. "='non' WHERE id=?";
             }
             try {
-                $query = $bdd->prepare();
-                $query->bindValue(':id', htmlspecialchars($_POST['num']), PDO::PARAM_INT);
+                $update = $bdd->prepare($query);
+                $update->bindValue(':id', htmlspecialchars($_POST['num']), PDO::PARAM_INT);
+                $update->execute();
             } catch (PDOException $exception) {
                 var_dump($exception->getMessage());
             }
@@ -28,5 +29,3 @@ if($_SESSION['candidat'] == $_POST['num']){
 }
 header("Location: rh-recrutement-view.phg?num=$id");
 exit();
-
-?>

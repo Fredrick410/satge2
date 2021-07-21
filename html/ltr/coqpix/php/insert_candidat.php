@@ -108,26 +108,5 @@ $pdoSta->bindValue(':num', $num);
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
 
-$sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
-
-$message = "Bonjour $prenom_candidat $nom_candidat,\n
-    Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n
-    Votre candidature au poste de " . $annonce['poste'] . " leur a bien été transmise.\n
-    L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n
-    A bientôt !\n
-    La Direction des Ressources Humaines.\n
-    Coqpix.";
-
-$mail = [
-    'nom_recepteur' => $nom_candidat . " " . $prenom_candidat,
-    'adresse_recepteur' => $email_candidat,
-    'nom_emetteur' => "Service des ressources humaines",
-    'adresse_emetteur' => "hr@coqpix.com",
-    'sujet' => $sujet,
-    'message' => $message
-];
-
-email($mail);
-
 header('Location: ../test-qcm.php?key=' . $code . '');
 exit();
