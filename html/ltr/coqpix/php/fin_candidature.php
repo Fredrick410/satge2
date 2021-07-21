@@ -37,33 +37,21 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
     $true = $pdoS->execute();
     $entreprise = $pdoS->fetch();
 
-    if ($candidature['statut'] == "Refusé après entretien") {
-        $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n
+    $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n
         Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n
         Votre candidature au poste de " . $annonce['poste'] . " leur a bien été transmise.\n
         L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n
         A bientôt !\n
         Service des Ressources Humaines.\n
         Coqpix.";
-    }
 
-    $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
-
-    $mail = [
-        'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
-        'adresse_recepteur' => $candidature['email_candidat'],
-        'nom_emetteur' => "Service des ressources humaines",
-        'adresse_emetteur' => "hr@coqpix.com",
-        'sujet' => $sujet,
-        'message' => $message
-    ];
+    $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
     $sent = email($mail);
     if ($sent) {
         $response_array['status'] = 'success';
         $response_array['link'] = 'https://www.google.com/';
-    }
-    else{
+    } else {
         $response_array['status'] = 'error';
     }
     echo json_encode($response_array);
