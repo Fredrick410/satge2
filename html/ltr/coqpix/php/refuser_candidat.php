@@ -4,6 +4,7 @@ require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+include 'mail.php';
 
 // On verifie l'existance des parametres
 if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['observations'])) {
