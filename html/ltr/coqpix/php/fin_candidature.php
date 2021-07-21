@@ -12,8 +12,11 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
         $pdoStt->bindValue(':num', $key, PDO::PARAM_STR);
         $pdoStt->execute();
         $candidature = $pdoStt->fetch();
-    } catch (PDOException $exception) {
-        var_dump($e->GetMessage());
+    } catch (PDOException $e) {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $e->GetMessage();
+        echo json_encode($response_array);
+        exit();
     }
     $explode = explode(';', $candidature['key_candidat']);
     $num = $explode[2];
@@ -22,7 +25,7 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
         $pdoSta->bindValue(':num', $num);
         $pdoSta->execute();
         $annonce = $pdoSta->fetch();
-    } catch (PDOException $exception) {
+    } catch (PDOException $e) {
         $response_array['status'] = 'error';
         $response_array['message'] = $e->GetMessage();
         echo json_encode($response_array);
@@ -63,7 +66,6 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
     else{
         $response_array['status'] = 'error';
     }
-    header('Content-type: application/json');
     echo json_encode($response_array);
     exit();
 }
