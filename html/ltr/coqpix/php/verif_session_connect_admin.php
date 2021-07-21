@@ -19,16 +19,16 @@ if (!isset($authorised_roles)){
    //pas de contrainte de rôle définie
 }
 else
-{  if (substr($_SESSION['role'],0,1) && in_array("comptable", $authorised_roles)){
+{  if (substr($_SESSION['role'],0,1) == '1' && in_array("comptable", $authorised_roles)){
       //le comptable a accès à cette page
    }  
-   elseif (substr($_SESSION['role'],1,2) && in_array("juriste", $authorised_roles)){
+   elseif (substr($_SESSION['role'],1,2) == '1' && in_array("juriste", $authorised_roles)){
       //le comptable a accès à cette page
    }  
-   elseif (substr($_SESSION['role'],2,3) && in_array("gestionnaire_social", $authorised_roles)){
+   elseif (substr($_SESSION['role'],2,3) == '1' && in_array("gestionnaire_social", $authorised_roles)){
       //le comptable a accès à cette page
    }  
-   elseif (substr($_SESSION['role'],3,4) && in_array("gestionnaire_fiscal", $authorised_roles)){
+   elseif (substr($_SESSION['role'],3,4) == '1' && in_array("gestionnaire_fiscal", $authorised_roles)){
       //le comptable a accès à cette page
    }  
    else {

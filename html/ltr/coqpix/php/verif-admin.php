@@ -24,7 +24,7 @@ ini_set('display_startup_errors', TRUE);
  if($count == 1) 
  { 
 
-        $selectid = $bdd->prepare("SELECT id, perm_comptable, perm_juriste, perm_social, perm__fiscal FROM admin WHERE emailentreprise =:pseudo");
+        $selectid = $bdd->prepare("SELECT id, perm_comptable, perm_juriste, perm_social, perm_fiscal FROM admin WHERE emailentreprise =:pseudo");
         $selectid->bindValue(':pseudo', $pseudo);
         $selectid->execute();
         $viewid = $selectid->fetch();
