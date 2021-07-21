@@ -1,11 +1,6 @@
 /* Authentication page css */
 /*-------------------------*/
 
-html body.bg-auth-image {
-  background: url(../../app-assets/images/pages/connexion.jpg) no-repeat center center;
-  background-size: cover;
-}
-
 .bg-authentication {
   background-color: #F2F4F4;
 }
