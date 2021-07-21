@@ -39,13 +39,13 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
     $true = $pdoS->execute();
     $entreprise = $pdoS->fetch();
 
-    $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n
-        Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n
-        Votre candidature au poste de " . $annonce['poste'] . " leur a bien été transmise.\n
-        L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n
-        A bientôt !\n
-        Service des Ressources Humaines.\n
-        Coqpix.";
+    $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n".
+        "Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n".
+        "Votre candidature au poste de " . $annonce['poste'] . " leur a bien été transmise.\n".
+        "L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n".
+        "A bientôt !\n".
+        "Service des Ressources Humaines.\n".
+        "Coqpix.";
 
     $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
