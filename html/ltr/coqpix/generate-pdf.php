@@ -107,6 +107,7 @@ $email = $_POST['email'];
 $date = $_POST['date'];
 $sign = $_POST['signature'];
 $id_crea = $_POST['id_crea'];
+$status_crea = $_POST['status_crea'];
 
 //info bdd
 $adresse = $_POST['adresse'];
@@ -572,16 +573,29 @@ $pdf->addEmptySignatureAppearance(180, 80, 15, 15);*/
 ob_clean();
 $dir = realpath(__DIR__ . '/../../..');
 $file_name = 'contrat_domiciliation_idcrea'.$id_crea.'_date-'.date("H-i-s").'.pdf';
-$pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'F');
 
+if ($status_crea == 'morale') {
+    $pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'F');
+}elseif ($status_crea == 'physique') {
+    $pdf->Output($dir.'/src/crea_societe/justificatifd/'.$file_name, 'F');
+}
 //============================================================+
 // END OF FILE
 //============================================================+
+
 require_once 'php/verif_session_crea.php';
 require_once 'php/config.php';
-$update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifss = ? WHERE id = ?');
-$update->execute(array( ($file_name), $id_crea  ));
 
-header('Location: creation-view-morale-justificatifss');
+if ($status_crea == 'morale') {
 
+    $update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifss = ? WHERE id = ?');
+    $update->execute(array( ($file_name), $id_crea  ));
+    header('Location: creation-view-morale-justificatifss');
+
+}elseif ($status_crea == 'physique') {
+
+    $update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifd = ? WHERE id = ?');
+    $update->execute(array( ($file_name), $id_crea  ));
+    header('Location: creation-view-physique-justificatifd');
+}
 ?>

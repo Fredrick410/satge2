@@ -16,45 +16,34 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
 
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_justificatifd'] == ""){
-        $doc_justificatifd = "0";
-    }else{
-        $doc_justificatifd = "1";
-    }
-    if($crea['doc_affectation'] == ""){
-        $doc_affectation = "0";
-    }else{
-        $doc_affectation = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
+    if($crea['status_crea'] == "EURL"){
+        $linkview = "morale";
+    }else{        
+        if($crea['status_crea'] == "SARL"){
+            $linkview = "morale";
+        }else{
+            if($crea['status_crea'] == "SAS"){
+                $linkview = "morale";
+            }else{
+                if($crea['status_crea'] == "SASU"){
+                    $linkview = "morale";
+                }else{
+                    if($crea['status_crea'] == "SCI"){
+                        $linkview = "morale";
+                    }else{
+                        if($crea['status_crea'] == "EIRL"){
+                            $linkview = "physique";
+                        }else{
+                            if($crea['status_crea'] == "Micro-entreprise"){
+                                $linkview = "physique";
+                            }else{
+                                $linkview = "physique";
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //selection des infos selon l'id
@@ -280,6 +269,7 @@ require_once 'php/verif_session_crea.php';
                         </li>
                     </ul>
                     <input type="text" name="id_crea" id="id_crea" readonly hidden value="<?= $_SESSION['id_crea'] ?>">
+                    <input type="text" name="status_crea" id="status_crea" readonly hidden value="<?= $linkview ?>">
                     <div id="btn" class="col-12 text-center mt-2">
                         <button type="submit" class="border rounded-pill">
                             Valider les informations
