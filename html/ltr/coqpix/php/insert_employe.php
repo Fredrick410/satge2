@@ -164,7 +164,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
         $entreprise = $pdoS->fetch();
 
         $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ",\n j'ai le plaisir de vous annoncer que votre candidature a été retenu.\n\n" .
+        "Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ", j'ai le plaisir de vous annoncer que votre candidature a été retenu.\n\n" .
         "Vous pouvez nous transmettre les documents pour la signature de la convention de stage.\n\n" .
         "Bien Cordialement\n\n" .
         "Service des Ressources Humaines.\n\n" .
