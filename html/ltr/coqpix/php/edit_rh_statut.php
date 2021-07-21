@@ -9,7 +9,7 @@ include 'mail.php';
 $id = $_SESSION['candidat'];
 if ($_SESSION['candidat'] == $_GET['num']) {
     if (isset($_GET['type'])) {
-        $type = array("success", "failure");
+        $type = array("Admis à entretien", "Refusé avant entretien");
         if (in_array($_GET['type'], $type)) {
             try {
                 $update = $bdd->prepare("UPDATE rh_candidature SET statut=:statut WHERE id=:id");
@@ -43,14 +43,14 @@ if ($_SESSION['candidat'] == $_GET['num']) {
             $true = $pdoS->execute();
             $entreprise = $pdoS->fetch();
 
-            if ($candidature['statut'] == "success") {
+            if ($candidature['statut'] == "Admis à entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
                 "Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien en visio d'une demi-heure.\n\n" .
                 "Merci de me confirmer votre disponibilité.\n\n" .
                 "Bien Cordialement\n\n" .
                 "Service des Ressources Humaines.\n\n" .
                 "Envoyé par Coqpix.";
-            } else if ($candidature['statut'] == "failure") {
+            } else if ($candidature['statut'] == "Refusé avant entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
                 "Merci d'avoir candidaté au poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\n\n" .
                 "Nous avons attentivement étudié votre profil mais nous ne pouvons malheureusement pas donner suite.\n\n".

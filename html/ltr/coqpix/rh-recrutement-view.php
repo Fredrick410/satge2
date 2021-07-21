@@ -924,10 +924,10 @@ if (count($candidature) != 0) {
                                         <div class="card-body" style="background-color: none;">
                                             <div class="row">
                                                 <div class="col">
-                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=success"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?=htmlentities("Admis à entretien")?>"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=failure"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Resufer le candidat</button></a>
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?=htmlentities("Refusé avant entretien")?>"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Refuser le candidat</button></a>
                                                 </div>
                                             </div>
                                         </div>

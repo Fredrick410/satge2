@@ -11,7 +11,7 @@ $true = $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
 // On recupere la liste des candidatures retenues pour entretien
-$pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND statut="success" ORDER BY id');
+$pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND statut="Admis à entretien" ORDER BY id');
 $pdoS->bindValue(':num', $_SESSION['id_session']);
 $pdoS->execute();
 $candidatures = $pdoS->fetchAll();
