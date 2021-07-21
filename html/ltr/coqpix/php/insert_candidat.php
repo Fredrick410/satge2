@@ -4,7 +4,6 @@ require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-include('mail.php');
 
 $name_annonce =  $_POST['name_annonce'];
 $nom_candidat = $_POST['nom_candidat'];
