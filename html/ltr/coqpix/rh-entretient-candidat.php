@@ -13,7 +13,7 @@ if (isset($_GET['num']) and is_numeric($_GET['num'])) {
 }
 
 // On recupere la candidature
-$pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="success"');
+$pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="Admis à entretien"');
 $pdoStt->bindValue(':num', $id);
 $pdoStt->execute();
 $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
