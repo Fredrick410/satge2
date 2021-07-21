@@ -559,10 +559,17 @@ $pdf->MultiCell(145, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
 // Close and output PDF document
 ob_clean();
 $dir = realpath(__DIR__ . '/../../..');
-$pdf->Output($dir.'\src\domiciliation\pdf\contrat_domiciliation_idcrea'.$id_crea.'.pdf', 'F');
+$file_name = 'contrat_domiciliation_idcrea'.$id_crea.'_date-'.date("H-i-s").'.pdf';
+$pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'F');
 
 //============================================================+
 // END OF FILE
 //============================================================+
+require_once 'php/verif_session_crea.php';
+require_once 'php/config.php';
+$update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifss = ? WHERE id = ?');
+$update->execute(array( ($file_name), $id_crea  ));
+
+header('Location: creation-view-morale-justificatifss');
 
 ?>
