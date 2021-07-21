@@ -32,8 +32,10 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
         exit();
     }
 
+    $num = $explode[1];
+
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
+    $pdoS->bindValue(':numentreprise', $num);
     $true = $pdoS->execute();
     $entreprise = $pdoS->fetch();
 

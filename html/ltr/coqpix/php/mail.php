@@ -31,7 +31,7 @@ function email($mail) {
     $header .= 'Reply-To: ' . $sender . "\r\n";
     $header .= 'X-Mailer: PHP ' . phpversion();
   
-    if (mail($recipient, $subject, base64_encode(wordwrap($mail['message'])), $header)) {
+    if (mail($recipient, $subject, base64_encode($mail['message']), $header)) {
       return true;
     } else {
       return false;
