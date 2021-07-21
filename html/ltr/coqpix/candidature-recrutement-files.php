@@ -176,7 +176,7 @@ if ($annonce['code_annonce'] == "") {
                             <h4>CONDITIONS D'ACCEPTATIONS</h4>
                         </div>
                         <div class="form-group">
-                            <p>Les documents demandé devront respecter l'intégralité des condictions sous peine d'un refus de création d'entreprise.</p>
+                            <p>Les documents demandé devront respecter l'intégralité des conditions sous peine d'un refus de création d'entreprise.</p>
                             <div class="form-group">
                                 <p>Les documents devront :</p>
                                 <label> - Être fournie sous un format numérique de préférence en PDF. (PNG, JPG, JPEG)</label><br>
