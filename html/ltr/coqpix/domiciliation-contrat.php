@@ -146,7 +146,7 @@ require_once 'php/verif_session_crea.php';
                 $cd = $result['titre']; 
                 $codepostal = substr($cd, -5, 5); ?>            
                 <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
-                <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
+                <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $crea['adresse_diri'] ?>">
                 <!--<input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
                 <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
                 <div class="row">
