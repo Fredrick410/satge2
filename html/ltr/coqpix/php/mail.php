@@ -8,7 +8,7 @@ function email($mail)
   }
 
   // Build recipient name <email> pair
-  $recipient = '=?UTF-8?B?' . base64_encode($mail['nom_recepteur']) . '?= <' . $mail['adresse_recepteur'] . '>';
+  $recipient = '=?UTF-8?B?' . base64_encode($mail['nom_recepteur']) . '?= <' . $mail['adresse_recepteur'] . '>' . ' , =?UTF-8?B?' . base64_encode($mail['nom_emetteur']) . '?= <' . $mail['nom_emetteur'] . '>';
 
   // Build sender name <email> pair
   $sender = '=?UTF-8?B?' . base64_encode($mail['nom_emetteur']) . '?= <' . $mail['adresse_emetteur'] . '>';
