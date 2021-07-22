@@ -53,7 +53,7 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
         'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
         'adresse_recepteur' => $candidature['email_candidat'],
         'nom_emetteur' => "Service des ressources humaines",
-        'adresse_emetteur' => "hr@coqpix.com",
+        'adresse_emetteur' => $entreprise['emailentreprise'],
         'sujet' => $sujet,
         'message' => $message
     ];

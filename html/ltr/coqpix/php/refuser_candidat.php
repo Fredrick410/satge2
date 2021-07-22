@@ -80,7 +80,7 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
             'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
             'adresse_recepteur' => $candidature['email_candidat'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => "hr@coqpix.com",
+            'adresse_emetteur' => $entreprise['emailentreprise'],
             'sujet' => $sujet,
             'message' => $message
         ];

@@ -62,13 +62,13 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                 "Envoyé par Coqpix.";
             }
 
-            $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+            $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
             $mail = [
                 'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
                 'adresse_recepteur' => $candidature['email_candidat'],
                 'nom_emetteur' => "Service des ressources humaines",
-                'adresse_emetteur' => "hr@coqpix.com",
+                'adresse_emetteur' => $entreprise['emailentreprise'],
                 'sujet' => $sujet,
                 'message' => $message
             ];
