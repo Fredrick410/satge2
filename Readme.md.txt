@@ -130,3 +130,7 @@ branche de oscar :
 	tache réalisée le 19/07/2021 :
 		- avancée formulaire contrat
 		- contrat (signature, lien des infos, ...)
+
+	tache réalisée le 23/07/2021 :
+		- changement du contrat en fiche de renseignement pour multiburo
+		- formulaire refait pour la fiche de renseignement
