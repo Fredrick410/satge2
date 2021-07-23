@@ -14,7 +14,7 @@ class MYPDF extends TCPDF {
         // Set font
         $this->SetFont('helvetica', '', 15);
         // Title
-        $this->Cell(0, 15, 'Fiche de renseignement : domiciliation d\'entreprise', 0, 1, 'C', 0, '', 1, false, $calign='T', $valign='M');
+        $this->Cell(0, 15, 'Domiciliation d\'entreprise : fiche de renseignement', 0, 1, 'C', 0, '', 1, false, $calign='T', $valign='M');
     }
 
     // Page footer
@@ -35,7 +35,7 @@ $pdf = new MYPDF('p', 'mm', 'A4', true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('');
-$pdf->SetTitle('Fiche de renseignement : domiciliation d\'entreprise');
+$pdf->SetTitle('Domiciliation d\'entreprise : fiche de renseignement');
 $pdf->SetSubject('');
 $pdf->SetKeywords('');
 
@@ -89,11 +89,22 @@ $adresseds = $_POST['adresseds'];
 $telephoneds = $_POST['telephoneds'];
 $emailds = $_POST['emailds'];
 $adressfactures = $_POST['adresse_factures'];
-$envoifactures = $_POST['envoi_factures'];
+$choixenvoi = $_POST['choixenvoi'];
+if ($_POST['choixenvoi'] == 'mail'){
+    $envoifactures = $_POST['envoi_factures'];
+}
+if ($_POST['choixenvoi'] == 'courrier'){
+    $envoifactures = $_POST['envoi_factures1'];
+}
 $contactfacture = $_POST['contactfacture'];
 $telephone = $_POST['telephone'];
 $email = $_POST['email'];
 
+$reglement = $_POST['reglement'];
+$nombanque = $_POST['nombanque'];
+$adressebanque = $_POST['adressebanque'];
+$iban = $_POST['iban'];
+$bic = $_POST['bic'];
  
 // create columns content
 $left_column = '
@@ -127,7 +138,7 @@ Centre Multiburo :<br>
 Réexpédition du courrier :<br>
 Scan courrier :<br>
 Adresse de facturation (siège social) :<br><br>
-Envoi factures :<br><br><br><br>
+Envoi factures : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Par '.$choixenvoi.' :<br><br><br><br>
 Société représentée par (Nom, Prénom) :<br>
 En sa qualité de :<br>
 Nationalité :<br>
@@ -169,8 +180,30 @@ $right_column1 = '
 '.$emailds.'<br>
 '.$contactfacture.'<br>
 '.$telephone.'<br>
-'.$email.'<br>
+'.$email.'<br><br><br><br><br>
+'.$reglement.'<br>
+'.$nombanque.'<br>
+'.$adressebanque.'<br><br>
+'.$iban.'<br>
+'.$bic.'<br>
+';
 
+$afournir = '
+<b>DOCUMENTS A FOURNIR</b><br>
+<b style="font-size: 9px;">Conformément aux exigences légales sur la mise en conformité des dossiers clients domiciliés, NCI / Multiburo se verra dans l\'obligation de résilier votre contrat si vous ne nous faites pas parvenir ces documents dans un délai maximum de 60 jours à compter de la signature du contrat.</b><br>
+- Copie de la CNI en cours de validité du signataire du contrat ou copie du passeport en cours de validité du signataire du contrat<br>
+- Pouvoir du représentant légal (si ce n’est pas le signataire du contrat)<br>
+- Justificatif de domicile du représentant légal datant de moins de 3 mois (facture électricité, bail,…)<br>
+- Justificatif des coordonnées téléphoniques du signataire de moins de 3 mois (facture téléphone)<br>
+- Document prouvant la validité du numéro de TVA intracommunautaire (VIES)<br>
+- Copie des statuts ou projets de statut<br>
+- Pour les sociétés étrangères : Justificatif local d’enregistrement de la société dans le pays d’origine<br><br>
+<b>DOCUMENTS SUPPLEMENTAIRES A FOURNIR (POUR LES CLIENTS DOMICILIES EN FRANCE)</b><br>
+- Extrait Kbis de moins de 3 mois ou justificatif local d’enregistrement de la société dans le pays d’origine (pour les sociétés étrangères)<br>
+- Nouvel extrait Kbis à nous fournir dans le mois suivant la signature du contrat, en cas de changement de siège social<br>
+- Déclaration Bénéficiare Effectif (DBE) Multiburo rempli et signé par le client ou Cerfa Déclaration Bénéficiare Effectif (DBE) remis par le client lui-même<br>
+- Relevé Identité Bancaire (RIB)<br><br><br>
+<b>A REMPLIR PAR MULTIBURO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N° JDE:_______________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; N° du contrat:_____________</b>
 ';
 
 // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
@@ -193,6 +226,9 @@ $y = $pdf->getY()+5;
 
 $pdf->writeHTMLCell(90, '', '', $y, $left_column1, 0, 0, 1, true, 'L', true);
 $pdf->writeHTMLCell(90, '', '', '', $right_column1, 0, 1, 1, true, 'J', true);
+$pdf->Ln(2);
+
+$pdf->writeHTML($afournir, true, false, true, false, '');
 
 // reset pointer to the last page
 $pdf->lastPage();

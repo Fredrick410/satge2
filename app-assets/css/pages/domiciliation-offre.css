@@ -152,11 +152,33 @@ input[type="radio"].solu + label:hover{
     margin-bottom: 10px;
 }
 
-
 #contrat ul li{
     list-style: none;
     width: 100%;
     margin: 0 0 15px 0;
+}
+
+#contrat label{
+    font-family: mukta malar medium;
+    color: #051441;
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+#contrat input[type=radio] {
+   position: absolute;
+   left: 15%;
+   top: 9px;
+}
+
+#contrat input{
+    right: 40px;
+    position: absolute;
+    padding: 5px 10px;
+}
+
+#contrat input:focus{
+    outline: none;
 }
 
 #btn button{
@@ -165,142 +187,32 @@ input[type="radio"].solu + label:hover{
     outline: none;
 }
 
-#contrat-droite label, #contrat-gauche label{
-    font-family: mukta malar medium;
-    color: #051441;
-    font-size: 15px;
-    margin-top: 5px;
-}
 
-#contrat-droite input, #contrat-gauche input{
-    right: 40px;
-    position: absolute;
-    padding: 5px 10px;
-}
-
-#contrat-droite input:focus, #contrat-gauche input:focus{
-    outline: none;
-}
-
-#attestation, #condition {
-    width: 60%;
-    margin: 75px auto;
-    padding: 60px;
-    border-radius: 50px;
-    box-shadow: 0px 0px 10px #051441;
-}
-
-#attestation ul li, #condition ul li {
-    list-style: none;
-    width: 100%;
-    margin: 0 0 15px 0;
-}
-
-#attestation h3, #condition h3 {
-    margin-bottom: 20px;
-    font-family: mukta malar bold;
-    color: #051441;
-}
-
-#attestation label, #condition label {
-    font-family: mukta malar medium;
-    color: #051441;
-    font-size: 15px;
-    margin-top: 5px;
-}
-
-#attestation input[type=text] {
-    padding: 5px 10px;
-    margin-bottom: 10px;
-}
-
-#attestation input[type=text]:focus {
-    outline: none;
-}
-
-#attestation pre {
-    background-color: white;
-    white-space: pre-wrap;
-    overflow: hidden;
-    font-family: mukta malar medium;
-    color: #051441;
-    font-size: 15px;
-    margin-top: 5px;
-}
-
-#condition input[type=text] {
-    padding: 5px 10px;
-    margin-left: 20px;
-}
-
-#condition input[type=text]:focus {
-    outline: none;
-}
-
-#apercu {
-    font-family: holligate;
-    font-size: 3em;
-    color: black;
-    margin-left: 20px;
-}
-
-#condition p {
-    font-family: holligate;
-}
-
-.condition {
-    width: 65%;
-    margin: 75px auto;
-    padding: 60px;
-    border-radius: 50px;
-    box-shadow: 0px 0px 10px #051441;
-}
-
-.condition h5 {
-    font-family: mukta malar bold;
-    color: #051441;
-    text-transform: uppercase;
-    font-size: 18px;
-}
-
-.condition p {
-    font-family: mukta malar medium;
-    color: #051441;
-    font-size: 13px;
-}
-
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1900px) {
     #contrat-gauche, #contrat-droite{
         min-width: 100%;
     }
 }
 
-@media screen and (max-width: 1000px) {
-    #contrat-droite label, #contrat-droite input, #contrat-gauche label, #contrat-gauche input, #attestation label {
+@media screen and (max-width: 1250px) {
+    #contrat label, #contrat input {
         min-width: 90%;
         left: 0;
         position: relative;
     }
-    #attestation input[type=text] {
-        min-width: 90%;
-        left: -15px;
-        position: relative;
-    }
-    #attestation #adresse_salarie, #attestation #adresse_factures {
-        min-width: 90%;
-        left: 0;
-        position: relative;
-    }
-    #condition input[type=text] {
-        min-width: 90%;
-        left: -15px;
-        position: relative;
+    #contrat input[type=radio] {
+        left: 15%;
+        position: absolute;
+        min-width: 0;
     }
 }
 
 @media screen and (max-width: 800px) {
     #contrat{
         padding: 30px 10px;
+    }
+    #contrat h3 {
+        margin-left: 30px;
     }
 }
 
