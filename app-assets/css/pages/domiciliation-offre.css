@@ -269,10 +269,6 @@ input[type="radio"].solu + label:hover{
     font-size: 13px;
 }
 
-#adresse_salarie, #adresse_factures {
-    width: 90%;
-}
-
 @media screen and (max-width: 1700px) {
     #contrat-gauche, #contrat-droite{
         min-width: 100%;

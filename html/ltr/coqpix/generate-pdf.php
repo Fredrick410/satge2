@@ -68,29 +68,32 @@ $pdf->SetFont('helvetica', '', 8);
 $pdf->AddPage();
 
 //info du formulaire
+$id_crea = $_POST['id_crea'];
 $raisonsociale = $_POST['raisonsociale'];
-$adresse = $_POST['adresse'];
+$adressess = $_POST['adressess'];
 $formejuridique = $_POST['formejuridique'];
 $capital = $_POST['capital'];
-/*$tva = $_POST['tva'];
-$activite = $_POST['activite'];*/
+$tva = $_POST['tva'];
+$activite = $_POST['activite'];
+
 $representant = $_POST['representant'];
 $representantqualite = $_POST['representantqualite'];
-$codepostal = $_POST['codepostal'];
-$ville = $_POST['ville'];
-$pays = $_POST['pays'];
+$nationalite = $_POST['nationalite'];
+$datedebut = $_POST['datedebut'];
+$dureecontrat = $_POST['dureecontrat']; 
+$servicechoisi = $_POST['servicechoisi'];
+$centremultiburo = $_POST['centremultiburo'];
+$reexpedition = $_POST['reexpedition'];
+$scancourrier = $_POST['scancourrier'];
+$adresseds = $_POST['adresseds'];
+$telephoneds = $_POST['telephoneds'];
+$emailds = $_POST['emailds'];
+$adressfactures = $_POST['adresse_factures'];
+$envoifactures = $_POST['envoi_factures'];
+$contactfacture = $_POST['contactfacture'];
 $telephone = $_POST['telephone'];
 $email = $_POST['email'];
-$date = $_POST['date'];
-$sign = $_POST['signature'];
-$id_crea = $_POST['id_crea'];
-$FaitA = $_POST['Fait_a'];
-$quantite = $_POST['']; 
-$dureecontrat = $_POST['']; 
-$prix = $_POST[''];
-$prixtotechht = $_POST[''];
-$adressfacture = $_POST['adresse_factures'];
-$adresssalarie = $_POST['adresse_salarie'];
+
  
 // create columns content
 $left_column = '
@@ -109,20 +112,14 @@ Fax : +33(0)5 67 31 45 99<br>
 Email : nadia.terki@multiburo.com';
 
 $left_column1 = '
-<style>
-    h4 {
-        text-decoration: underline;
-    }
-</style>
-
-<h4>INFORMATIONS SUR VOTRE SOCIETE</h4>
+<b>INFORMATIONS SUR VOTRE SOCIETE</b><br><br>
 Nom de la société :<br>
 Adresse du siège social à ce jour :<br>
 Forme juridique :<br>
 Capital :<br>
 TVA intra-communautaire :<br>
-Activité de la société :<br>
-<h4>INFORMATIONS SUR VOTRE CONTRAT</h4>
+Activité de la société :<br><br>
+<b>INFORMATIONS SUR VOTRE CONTRAT</b><br><br>
 Date de début du contrat :<br>
 Durée du contrat :<br>
 Service choisi :<br>
@@ -130,7 +127,7 @@ Centre Multiburo :<br>
 Réexpédition du courrier :<br>
 Scan courrier :<br>
 Adresse de facturation (siège social) :<br><br>
-Envoi factures :<br><br><br>
+Envoi factures :<br><br><br><br>
 Société représentée par (Nom, Prénom) :<br>
 En sa qualité de :<br>
 Nationalité :<br>
@@ -140,25 +137,40 @@ Email du signataire :<br>
 Contact pour la facturation (Nom et Prénom) :<br>
 Téléphone :<br>
 Email :<br>
-Mode de règlement :<br>
 <p style="text-decoration: underline;">Coordonnées bancaires :</p>
+Mode de règlement :<br>
 Nom de la banque :<br>
 Adresse de la banque :<br><br>
 IBAN :<br>
 BIC :<br>';
 
 $right_column1 = '
-<style>
-    h4 {
-        text-decoration: underline;
-    }
-</style>
-
-<h4></h4>
+<br><br><br>
 '.$raisonsociale.'<br>
-'.$adresse.'<br>
+'.$adressess.'<br>
 '.$formejuridique.'<br>
 '.$capital.'<br>
+'.$tva.'<br>
+'.$activite.'<br>
+<br><br><br>
+'.$datedebut.'<br>
+'.$dureecontrat.'<br>
+'.$servicechoisi.'<br>
+'.$centremultiburo.'<br>
+'.$reexpedition.'<br>
+'.$scancourrier.'<br>
+'.$adressfactures.'<br><br>
+'.$envoifactures.'<br><br><br><br>
+'.$representant.'<br>
+'.$representantqualite.'<br>
+'.$nationalite.'<br>
+'.$adresseds.'<br><br>
+'.$telephoneds.'<br>
+'.$emailds.'<br>
+'.$contactfacture.'<br>
+'.$telephone.'<br>
+'.$email.'<br>
+
 ';
 
 // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
