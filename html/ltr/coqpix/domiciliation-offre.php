@@ -71,7 +71,15 @@ require_once 'php/verif_session_crea.php';
     <!-- BEGIN: Content-->
 <div class="container-fluid">
     <br>
-    
+    <div class="form-group">
+         <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="color: #051441; cursor: pointer; display:inline-block; top: 6px;"></div>
+                <script>
+                    function retourn() {
+                        document.location.href="domiciliation.php";
+                    }
+                </script>
+        <label class="" style="color: #051441;">Retour à domiciliation</label>
+    </div>
 
     <div class="row">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

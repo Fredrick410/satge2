@@ -128,4 +128,5 @@ branche de oscar :
 		- avancée sur generate-pdf.php
 
 	tache réalisée le 19/07/2021 :
-		- 
+		- avancée formulaire contrat
+		- contrat (signature, lien des infos, ...)
