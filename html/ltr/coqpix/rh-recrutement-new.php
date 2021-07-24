@@ -152,6 +152,47 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <label for="type_contrat">Type de contract</label>
+
+                                                <div>
+                                                    <input type="checkbox" value="CDI" class="form-check-input" name="type_contrat[]">
+                                                    <label>CDI</label>
+
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="CDD" class="form-check-input" name="type_contrat[]">
+                                                    <label>CDD</label>
+
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="Contrat d'Apprentisage" class="form-check-input" name="type_contrat[]">
+                                                    <label>Contrat d'appentisage</label>
+
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="Contrat d'Alternance" class="form-check-input" name="type_contrat[]">
+                                                    <label>Contrat d'Alternance</label>
+
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="Temps plein" class="form-check-input" name="type_contrat[]">
+                                                    <label>Temps plein</label>
+
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" value="Temps partiel" class="form-check-input" name="type_contrat[]">
+                                                    <label>Temps partiel</label>
+
+                                                </div>
+
+                                            </div>
+                                            <small class="text-muted form-text">Veuillez cocher le ou les type(s) de contrat.</small>
+                                        </div>
+                                    </div>
+
                                 </fieldset>
                                 <!-- step 1 content end-->
                                 <!-- step 2 -->
@@ -436,12 +477,21 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
             var date_y = document.getElementById("date_y").value;
             var date_m = document.getElementById("date_m").value;
             var date_d = document.getElementById("date_d").value;
+            var type_contrat = document.getElementById("type_contrat").value;
             var valid = 0;
             var qcms = [];
-            var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+            var checkboxes = document.querySelectorAll('input[type=checkbox name=qcms[]]:checked');
             if (checkboxes.length > 0) {
                 for (var i = 0; i < checkboxes.length; i++) {
                     qcms.push(checkboxes[i].value);
+                }
+            }
+
+            var annonce = [];
+            var checkboxes = document.querySelectorAll('input[type=checkbox name=annonce[]]:checked');
+            if (checkboxes.length > 0) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    annonce.push(checkboxes[i].value);
                 }
             }
 

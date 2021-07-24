@@ -51,14 +51,14 @@ function findCalendar(id) {
   calendar = new CalendarInfo();
   id += 1;
   calendar.id = String(id);
-  calendar.name = 'My Calendar';
+  calendar.name = 'Mes Entretiens';
   calendar.color = infoColor;
   calendar.bgColor = infoLight;
   calendar.dragBgColor = infoColor;
   calendar.borderColor = infoColor;
   addCalendar(calendar);
 
-  calendar = new CalendarInfo();
+  /* calendar = new CalendarInfo();
   id += 1;
   calendar.id = String(id);
   calendar.name = 'Company';
@@ -126,5 +126,5 @@ function findCalendar(id) {
   calendar.bgColor = veryLightBlue;
   calendar.dragBgColor = veryLightBlue;
   calendar.borderColor = primaryLight;
-  addCalendar(calendar);
+  addCalendar(calendar); */
 })();

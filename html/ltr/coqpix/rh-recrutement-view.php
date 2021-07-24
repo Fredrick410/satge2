@@ -136,6 +136,9 @@ if (count($candidature) != 0) {
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/calendars/tui-time-picker.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/calendars/tui-date-picker.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/calendars/tui-calendar.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -149,6 +152,7 @@ if (count($candidature) != 0) {
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/calendars/app-calendar.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -194,7 +198,7 @@ if (count($candidature) != 0) {
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header text-center">
-                                    <h5 class="">Progression du candidat - <?= $pourc ?>%</h4>
+                                    <h5 class="">Progression du candidat - <?= $pourc ?>%</h5>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -223,7 +227,7 @@ if (count($candidature) != 0) {
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-12 col-sm-12 col-md-4 ">
+                                            <div class="col-12 col-sm-12 col-md-3">
                                                 <div class="list-group" role="tablist">
                                                     <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab">Profiles</a>
                                                     <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab">Références</a>
@@ -232,7 +236,7 @@ if (count($candidature) != 0) {
                                                     <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Options</a>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-sm-12 col-md-8 mt-1">
+                                            <div class="col-12 col-sm-12 col-md-9">
                                                 <div class="tab-content text-justify" id="nav-tabContent">
                                                     <div class="tab-pane show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                                                         <div class="row">
@@ -318,10 +322,10 @@ if (count($candidature) != 0) {
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/cv/<?= str_replace(" ", "%20", $candidature['cv_doc']) ?>" target="_blank" rel="noopener noreferrer"><i class='bx bx-show-alt' style=""></i> Prévisualiser</a>
                                                                         </div>
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/cv/<?= str_replace(" ", "%20", $candidature['cv_doc']) ?>" target="_blank" rel="noopener noreferrer" download><i class='bx bx-download' style=""></i> Télécharger</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -337,10 +341,10 @@ if (count($candidature) != 0) {
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/lettredemotivation/<?= str_replace(" ", "%20", $candidature['lettredemotivation_doc']) ?>" target="_blank" rel="noopener noreferrer"><i class='bx bx-show-alt' style=""></i> Prévisualiser</a>
                                                                         </div>
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/lettredemotivation/<?= str_replace(" ", "%20", $candidature['lettredemotivation_doc']) ?>" target="_blank" rel="noopener noreferrer" download><i class='bx bx-download' style=""></i> Télécharger</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -356,10 +360,10 @@ if (count($candidature) != 0) {
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/other/<?= str_replace(" ", "%20", $candidature['other_doc']) ?>" target="_blank" rel="noopener noreferrer"><i class='bx bx-show-alt' style=""></i> Prévisualiser</a>
                                                                         </div>
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/other/<?= str_replace(" ", "%20", $candidature['other_doc']) ?>" target="_blank" rel="noopener noreferrer" download><i class='bx bx-download' style=""></i> Télécharger</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -367,7 +371,7 @@ if (count($candidature) != 0) {
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                                                        <div class="form-group">
+                                                        <!--<div class="form-group">
                                                             <div class="form-group text-center">
                                                                 <label>Paramètres et options</label>
                                                             </div>
@@ -425,6 +429,119 @@ if (count($candidature) != 0) {
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>-->
+                                                        <!-- calendar Wrapper  -->
+                                                        <div class="calendar-wrapper position-relative">
+                                                            <!-- calendar app overlay -->
+                                                            <div class="app-content-overlay"></div>
+                                                            <!-- calendar sidebar start -->
+                                                            <div id="sidebar" class="sidebar">
+                                                                <div class="sidebar-new-schedule">
+                                                                    <!-- create new schedule button -->
+                                                                    <button id="btn-new-schedule" type="button" class="btn btn-primary btn-block sidebar-new-schedule-btn">
+                                                                        New schedule
+                                                                    </button>
+                                                                </div>
+                                                                <!-- sidebar calendar labels -->
+                                                                <div id="sidebar-calendars" class="sidebar-calendars">
+                                                                    <div>
+                                                                        <div class="sidebar-calendars-item">
+                                                                            <!-- view All checkbox -->
+                                                                            <div class="checkbox">
+                                                                                <input type="checkbox" class="checkbox-input tui-full-calendar-checkbox-square" id="checkbox1" value="all" checked>
+                                                                                <label for="checkbox1">View all</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="calendarList" class="sidebar-calendars-d1"></div>
+                                                                </div>
+                                                                <!-- / sidebar calendar labels -->
+                                                            </div>
+                                                            <!-- calendar sidebar end -->
+                                                            <!-- calendar view start  -->
+                                                            <div class="calendar-view">
+                                                                <div class="calendar-action d-flex align-items-center flex-wrap">
+                                                                    <!-- sidebar toggle button for small sceen -->
+                                                                    <button class="btn btn-icon sidebar-toggle-btn">
+                                                                        <i class="bx bx-menu font-large-1"></i>
+                                                                    </button>
+                                                                    <!-- dropdown button to change calendar-view -->
+                                                                    <div class="dropdown d-inline mr-75">
+                                                                        <button id="dropdownMenu-calendarType" class="btn btn-action dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                            <i id="calendarTypeIcon" class="bx bx-calendar-alt"></i>
+                                                                            <span id="calendarTypeName">Dropdown</span>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="dropdownMenu-calendarType">
+                                                                            <li role="presentation">
+                                                                                <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-daily">
+                                                                                    <i class="bx bx-calendar-alt mr-50"></i>
+                                                                                    <span>Daily</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li role="presentation">
+                                                                                <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-weekly">
+                                                                                    <i class='bx bx-calendar-event mr-50'></i>
+                                                                                    <span>Weekly</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li role="presentation">
+                                                                                <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-monthly">
+                                                                                    <i class="bx bx-calendar mr-50"></i>
+                                                                                    <span>Month</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li role="presentation">
+                                                                                <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-weeks2">
+                                                                                    <i class='bx bx-calendar-check mr-50'></i>
+                                                                                    <span>2 weeks</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li role="presentation">
+                                                                                <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-weeks3">
+                                                                                    <i class='bx bx-calendar-check mr-50'></i>
+                                                                                    <span>3 weeks</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li role="presentation" class="dropdown-divider"></li>
+                                                                            <li role="presentation">
+                                                                                <div role="menuitem" data-action="toggle-workweek" class="dropdown-item">
+                                                                                    <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-workweek" checked>
+                                                                                    <span class="checkbox-title bg-primary"></span>
+                                                                                    <span>Show weekends</span>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li role="presentation">
+                                                                                <div role="menuitem" data-action="toggle-start-day-1" class="dropdown-item">
+                                                                                    <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-start-day-1">
+                                                                                    <span class="checkbox-title"></span>
+                                                                                    <span>Start Week on Monday</span>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li role="presentation">
+                                                                                <div role="menuitem" data-action="toggle-narrow-weekend" class="dropdown-item">
+                                                                                    <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-narrow-weekend">
+                                                                                    <span class="checkbox-title"></span>
+                                                                                    <span>Narrower than weekdays</span>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <!-- calenadar next and previous navigate button -->
+                                                                    <span id="menu-navi" class="menu-navigation">
+                                                                        <button type="button" class="btn btn-action move-today mr-50 px-75" data-action="move-today">Today</button>
+                                                                        <button type="button" class="btn btn-icon btn-action  move-day mr-50 px-50" data-action="move-prev">
+                                                                            <i class="bx bx-chevron-left" data-action="move-prev"></i>
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-icon btn-action move-day mr-50 px-50" data-action="move-next">
+                                                                            <i class="bx bx-chevron-right" data-action="move-next"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                    <span id="renderRange" class="render-range"></span>
+                                                                </div>
+                                                                <!-- calendar view  -->
+                                                                <div id="calendar" class="calendar-content"></div>
+                                                            </div>
+                                                            <!-- calendar view end  -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -443,11 +560,11 @@ if (count($candidature) != 0) {
                     $score = 0;
                 ?>
                     <!-- Modal -->
-                    <div class="modal fade" id="qcm<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="modalQcm<?= $i ?>" aria-hidden="true">
+                    <div class="modal fade" id="qcm<?= $i ?>" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Resultats du qcm : <?= $qcms[$i]['libelle'] ?></h5>
+                                    <h5 class="modal-title">Resultats du qcm : <?= $qcms[$i]['libelle'] ?></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -458,8 +575,8 @@ if (count($candidature) != 0) {
                                         if ($qcms[$i]['qualitatif'] == "Non") {
                                         ?>
                                             <div class="col-12">
-                                                <h3 id="name-qcm" class="d-flex justify-content-center"><?= $qcms[$i]['libelle'] ?></h3>
-                                                <h4 id="name-candidat" class="d-flex justify-content-center" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
+                                                <h3 id="name-qcm<?= $i ?>" class="d-flex justify-content-center"><?= $qcms[$i]['libelle'] ?></h3>
+                                                <h4 id="name-candidat<?= $i ?>" class="d-flex justify-content-center" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
                                                 <table class="table table-bordered" id="table<?= $i ?>" style="width:100%">
                                                     <thead>
                                                         <tr>
@@ -544,8 +661,8 @@ if (count($candidature) != 0) {
                                         ?>
                                             <div class="col-4">
                                                 <div class="d-flex flex-column align-items-center">
-                                                    <h3 id="name-qcm"><?= $qcms[$i]['libelle'] ?></h3>
-                                                    <h4 id="name-candidat" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
+                                                    <h3 id="name-qcm<?= $i ?>"><?= $qcms[$i]['libelle'] ?></h3>
+                                                    <h4 id="name-candidat<?= $i ?>" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
                                                 </div>
                                                 <div class="d-flex flex-column text-justify">
                                                     <p id="comment-red<?= $i ?>">
@@ -740,19 +857,19 @@ if (count($candidature) != 0) {
                                                             text_purple_resp = purple_resp > 7 ? "élevée" : text_purple_resp;
 
                                                             var max_moy = getMaxTableau([moy_red, moy_green, moy_blue, moy_purple, moy_yellow]);
-                                                            if(!isNaN(moy_red)){
+                                                            if (!isNaN(moy_red)) {
                                                                 document.getElementById("comment-red<?= $i ?>").innerHTML = "Performance individuelle " + text_moy_red + "(" + (moy_red * 10) + "%).";
                                                             }
-                                                            if(!isNaN(moy_blue)){
+                                                            if (!isNaN(moy_blue)) {
                                                                 document.getElementById("comment-blue<?= $i ?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "(" + (moy_blue * 10) + "%).";
                                                             }
-                                                            if(!isNaN(moy_yellow)){
+                                                            if (!isNaN(moy_yellow)) {
                                                                 document.getElementById("comment-yellow<?= $i ?>").innerHTML = "Capacité de manager " + text_moy_yellow + "(" + (moy_yellow * 10) + "%).";
                                                             }
-                                                            if(!isNaN(moy_green)){
+                                                            if (!isNaN(moy_green)) {
                                                                 document.getElementById("comment-green<?= $i ?>").innerHTML = "Autonomie " + text_moy_green + "(" + (moy_green * 10) + "%).";
                                                             }
-                                                            if(!isNaN(moy_purple)){
+                                                            if (!isNaN(moy_purple)) {
                                                                 document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
                                                             }
 
@@ -765,7 +882,7 @@ if (count($candidature) != 0) {
                                                             var yellow = [];
                                                             var green = [];
                                                             var purple = [];
-                                                            for (let i = 0; i < tableVar.length; i++) { 
+                                                            for (let i = 0; i < tableVar.length; i++) {
                                                                 var contains = tested_status.some(elem => {
                                                                     return JSON.stringify({
                                                                         "statu": tableVar[i][1]
@@ -773,35 +890,31 @@ if (count($candidature) != 0) {
                                                                 });
                                                                 if (contains) {
                                                                     finalLabel.push(tableVar[i][1]);
-                                                                    if(tableVar[i][2] == "red"){
+                                                                    if (tableVar[i][2] == "red") {
                                                                         red.push(tableVar[i][0]);
                                                                         blue.push(null);
                                                                         yellow.push(null);
                                                                         green.push(null);
                                                                         purple.push(null);
-                                                                    }
-                                                                    else if(tableVar[i][2] == "blue"){
+                                                                    } else if (tableVar[i][2] == "blue") {
                                                                         blue.push(tableVar[i][0]);
                                                                         red.push(null);
                                                                         yellow.push(null);
                                                                         green.push(null);
                                                                         purple.push(null);
-                                                                    }
-                                                                    else if(tableVar[i][2] == "yellow"){
+                                                                    } else if (tableVar[i][2] == "yellow") {
                                                                         yellow.push(tableVar[i][0]);
                                                                         blue.push(null);
                                                                         red.push(null);
                                                                         green.push(null);
                                                                         purple.push(null);
-                                                                    }
-                                                                    else if(tableVar[i][2] == "green"){
+                                                                    } else if (tableVar[i][2] == "green") {
                                                                         green.push(tableVar[i][0]);
                                                                         blue.push(null);
                                                                         yellow.push(null);
                                                                         red.push(null);
                                                                         purple.push(null);
-                                                                    }
-                                                                    else{
+                                                                    } else {
                                                                         purple.push(tableVar[i][0]);
                                                                         blue.push(null);
                                                                         yellow.push(null);
@@ -817,40 +930,41 @@ if (count($candidature) != 0) {
                                                                 data: {
                                                                     labels: finalLabel,
                                                                     datasets: [{
-                                                                        label: 'Performance individuelle',
-                                                                        data: red,
-                                                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                                                        borderColor: 'rgb(255, 99, 132)',
-                                                                        borderWidth: 1
-                                                                    },
-                                                                    {
-                                                                        label: 'Capacité de communication interpersonnelle',
-                                                                        data: blue,
-                                                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                                                        borderColor: 'rgb(54, 162, 235)',
-                                                                        borderWidth: 1
-                                                                    },
-                                                                    {
-                                                                        label: 'Capacité de manager',
-                                                                        data: yellow,
-                                                                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                                                                        borderColor: 'rgb(255, 206, 86)',
-                                                                        borderWidth: 1
-                                                                    },
-                                                                    {
-                                                                        label: 'Autonomie',
-                                                                        data: green,
-                                                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                                                        borderColor: 'rgb(75, 192, 192)',
-                                                                        borderWidth: 1
-                                                                    },
-                                                                    {
-                                                                        label: 'Maîtrise de soi',
-                                                                        data: purple,
-                                                                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                                                                        borderColor: 'rgba(153, 102, 255)',
-                                                                        borderWidth: 1
-                                                                    }]
+                                                                            label: 'Performance individuelle',
+                                                                            data: red,
+                                                                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                                                            borderColor: 'rgb(255, 99, 132)',
+                                                                            borderWidth: 1
+                                                                        },
+                                                                        {
+                                                                            label: 'Capacité de communication interpersonnelle',
+                                                                            data: blue,
+                                                                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                                            borderColor: 'rgb(54, 162, 235)',
+                                                                            borderWidth: 1
+                                                                        },
+                                                                        {
+                                                                            label: 'Capacité de manager',
+                                                                            data: yellow,
+                                                                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                                                            borderColor: 'rgb(255, 206, 86)',
+                                                                            borderWidth: 1
+                                                                        },
+                                                                        {
+                                                                            label: 'Autonomie',
+                                                                            data: green,
+                                                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                                            borderColor: 'rgb(75, 192, 192)',
+                                                                            borderWidth: 1
+                                                                        },
+                                                                        {
+                                                                            label: 'Maîtrise de soi',
+                                                                            data: purple,
+                                                                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                                                            borderColor: 'rgba(153, 102, 255)',
+                                                                            borderWidth: 1
+                                                                        }
+                                                                    ]
                                                                 },
                                                                 options: {
                                                                     scales: {
@@ -924,10 +1038,10 @@ if (count($candidature) != 0) {
                                         <div class="card-body" style="background-color: none;">
                                             <div class="row">
                                                 <div class="col">
-                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?=htmlentities("Admis à entretien")?>"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?= htmlentities("Admis à entretien") ?>"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?=htmlentities("Refusé avant entretien")?>"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Refuser le candidat</button></a>
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?= htmlentities("Refusé avant entretien") ?>"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Refuser le candidat</button></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -943,7 +1057,6 @@ if (count($candidature) != 0) {
             <!-- Block level buttons end -->
         </div>
     </div>
-    </div>
     <!-- END: Content-->
 
     <!-- BEGIN: Vendor JS-->
@@ -954,6 +1067,14 @@ if (count($candidature) != 0) {
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
+    <script src="../../../app-assets/vendors/js/calendar/tui-code-snippet.min.js"></script>
+    <script src="../../../app-assets/vendors/js/calendar/tui-dom.js"></script>
+    <script src="../../../app-assets/vendors/js/calendar/tui-time-picker.min.js"></script>
+    <script src="../../../app-assets/vendors/js/calendar/tui-date-picker.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/moment.min.js"></script>
+    <script src="../../../app-assets/vendors/js/calendar/chance.min.js"></script>
+    <script src="../../../app-assets/vendors/js/calendar/tui-calendar.min.js"></script>
+    <script src="../../../cuba/assets/js/bootstrap/popper.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -1133,6 +1254,9 @@ if (count($candidature) != 0) {
             ?>
         });
     </script>
+    <script src="../../../app-assets/js/scripts/extensions/calendar/calendars-data.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/calendar/schedules.js"></script>
+    <script src="../../../app-assets/js/scripts/extensions/calendar/app-calendar.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
