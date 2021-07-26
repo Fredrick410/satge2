@@ -318,6 +318,7 @@ $entreprise = $pdoSta->fetch();
         var debut_entretien = '';
         var fin_entretien = '';
         var lieu_entretien = '';
+        var titre_entretien = '';
 
         function ScheduleInfo() {
             this.id = null;
@@ -455,26 +456,26 @@ $entreprise = $pdoSta->fetch();
                     debut_entretien = (new Date(e.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
                     fin_entretien = (new Date(e.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
                     lieu_entretien = e.schedule.location;
-                    console.log(e.schedule.id);
-                    /*$.ajax({
+                    id_entretien = e.schedule.id;
+                    $.ajax({
                         url: "../../../html/ltr/coqpix/php/edit_entretien.php", //new path, save your work first before u try
                         type: "POST",
                         data: {
-                            titre_entretien: schedule.title,
+                            titre_entretien: titre_entretien,
                             debut_entretien: debut_entretien,
                             fin_entretien: fin_entretien,
                             lieu_entretien,
-                            id_candidature: id_candidature
+                            id_entretien: id_entretien
                         },
                         dataType: "json",
                         success: function(data) {
                             if (data.status == "success") {
-                                addAlert("Entretien ajouté", "success");
+                                addAlert("Entretien mis a jour", "success");
                             } else {
                                 addAlert(data.message, "error");
                             }
                         }
-                    });*/
+                    });
                     cal.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
                 },
                 'beforeDeleteSchedule': function(e) {
@@ -641,16 +642,16 @@ $entreprise = $pdoSta->fetch();
                     schedule.bgColor = calendar.bgColor;
                     schedule.borderColor = calendar.borderColor;
                 }
-
-                debut_entretien = (new Date(schedule.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
-                fin_entretien = (new Date(schedule.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
+                titre_entretien = schedule.title;
+                // On convertis en YYYY-MM-DD HH:mm:ss UTC et on ajoute le decalage horaire
+                debut_entretien = moment(new Date(schedule.start).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");;
+                fin_entretien = moment( new Date(schedule.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");;
                 lieu_entretien = schedule.location;
-
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_entretien.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
-                        titre_entretien: schedule.title,
+                        titre_entretien: titre_entretien,
                         debut_entretien: debut_entretien,
                         fin_entretien: fin_entretien,
                         lieu_entretien,

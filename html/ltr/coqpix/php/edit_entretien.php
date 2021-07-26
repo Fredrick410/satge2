@@ -14,15 +14,15 @@ function validateDate($date, $format = 'Y-m-d H:i')
 }
 
 // On verifie l'existance des parametres
-if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and isset($_POST['debut_entretien']) and isset($_POST['fin_entretien']) and isset($_POST['lieu_entretien'])) {
+if (isset($_POST['id_entretien']) and isset($_POST['titre_entretien']) and isset($_POST['debut_entretien']) and isset($_POST['fin_entretien']) and isset($_POST['lieu_entretien'])) {
     // On verifie si les parametres sont non vides
     // Si oui, on retourne un message d'erreur
     try {
-        if (!empty($_POST['id_candidature'])) {
-            $id_candidature = htmlspecialchars($_POST['id_candidature']);
+        if (!empty($_POST['id_entretien'])) {
+            $id_entretien = htmlspecialchars($_POST['id_entretien']);
         } else {
             $response_array['status'] = 'error';
-            $response_array['message'] = "Candidat inexistant";
+            $response_array['message'] = "Entretien inexistant";
             echo json_encode($response_array);
             exit();
         }
@@ -81,21 +81,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         exit();
     }
 
-    // On verifie l'existence du candidat
-    try {
-        $update = $bdd->prepare("SELECT * FROM rh_candidature WHERE id=:id");
-        $update->bindValue(':id', $id_candidature, PDO::PARAM_INT);
-        $update->execute();
-        $candidature = $update->fetch(PDO::FETCH_ASSOC);
-        echo "ok";
-    } catch (Exception $e) {
-        $response_array['status'] = 'error';
-        $response_array['message'] = $e->getMessage();
-        echo json_encode($response_array);
-        exit();
-    }
-
-    // Si la candidature existe on cree l'entretien
+    // On met a jour l'entretien
     try {
         $update = $bdd->prepare('UPDATE entretien SET titre_entretien = ?, debut_entretien = ?, fin_entretien = ?, lieu_entretien = ? WHERE id_entretien = ?');
         $update->execute(array(
@@ -103,8 +89,21 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
             $debut_entretien,
             $fin_entretien,
             $lieu_entretien,
-            $candidature['id']
+            $id_entretien
         ));
+    } catch (Exception $e) {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $e->getMessage();
+        echo json_encode($response_array);
+        exit();
+    }
+
+    // On verifie l'existence du candidat
+    try {
+        $update = $bdd->prepare("SELECT * FROM rh_candidature WHERE id=(SELECT id_candidature FROM entretien WHERE id_entretien = :id)");
+        $update->bindValue(':id', $id_entretien, PDO::PARAM_INT);
+        $update->execute();
+        $candidature = $update->fetch(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         $response_array['status'] = 'error';
         $response_array['message'] = $e->getMessage();
@@ -118,7 +117,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
     $entreprise = $pdoSta->fetch();
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformement a vos disponibilite, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "Conformement a ce qui était retenu, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";

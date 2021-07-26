@@ -87,7 +87,6 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         $update->bindValue(':id', $id_candidature, PDO::PARAM_INT);
         $update->execute();
         $candidature = $update->fetch(PDO::FETCH_ASSOC);
-        echo "ok";
     } catch (Exception $e) {
         $response_array['status'] = 'error';
         $response_array['message'] = $e->getMessage();
