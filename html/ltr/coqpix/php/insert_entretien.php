@@ -60,8 +60,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         }
         if (!empty($_POST['titre_entretien'])) {
             $titre_entretien = htmlspecialchars($_POST['titre_entretien']);
-        }
-        else{
+        } else {
             $response_array['status'] = 'error';
             $response_array['message'] = "Merci d'entrer un titre";
             echo json_encode($response_array);
@@ -69,8 +68,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         }
         if (!empty($_POST['lieu_entretien'])) {
             $lieu_entretien = htmlspecialchars($_POST['lieu_entretien']);
-        }
-        else{
+        } else {
             $response_array['status'] = 'error';
             $response_array['message'] = "Merci d'entrer un lieu";
             echo json_encode($response_array);
@@ -113,6 +111,11 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         echo json_encode($response_array);
         exit();
     }
+
+    $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
+    $pdoSta->bindValue(':num', $_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
+    $pdoSta->execute();
+    $entreprise = $pdoSta->fetch();
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
         "Conformement a vos disponibilite, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
