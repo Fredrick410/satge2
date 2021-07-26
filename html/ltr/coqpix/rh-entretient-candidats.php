@@ -1,5 +1,5 @@
 <?php
-include 'php/verif_session_connect.php';
+require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
@@ -155,7 +155,10 @@ $count_candidature = count($candidatures);
                                         </td>
                                         <td class="text-bold-600"><?= $candidature['time_candidat'] ?></td>
                                         <td>
-                                            <a class="dropdown-item" href="rh-entretient-candidat.php?num=<?= $candidature['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                            <div class="invoice-action"><br>
+                                                <a class="invoice-action-view mr-1" href="rh-entretient-candidat.php?num=<?= $candidature['id'] ?>">Voir <i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                                <a class="invoice-action-view mr-1" href="rh-calendar-candidat.php?num=<?= $candidature['id'] ?>">Programmer un entretien <i class='bx bx-edit' style="position: relative; top: 3px;"></i></a>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

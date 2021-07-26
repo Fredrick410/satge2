@@ -18,7 +18,7 @@ $pdoStt->bindValue(':num', $id);
 $pdoStt->execute();
 $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
 
-// Si la candidatures n'existe pas on retourne a la liste des candidatures pour entretiens
+// Si la candidature n'existe pas on retourne a la liste des candidatures pour entretiens
 if (count($candidature) != 0) {
     $explode = explode(';', $candidature['key_candidat']);
     $idannonce = $explode[2];

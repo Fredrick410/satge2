@@ -205,7 +205,7 @@ $count_annonce = count($annonce);
                                                     <td class="text-bold-600"><?= $candidatures_limit['time_candidat'] ?></td>
                                                     <td class="text-success"><?= $candidatures_limit['statut'] ?></td>
                                                     <td>
-                                                        <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures_limit['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                                        <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures_limit['id'] ?>">Voir &nbsp;&nbsp;&nbsp;<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -246,7 +246,7 @@ $count_annonce = count($annonce);
                                                     <td class="text-bold-600"><?= $candidatures['time_candidat'] ?></td>
                                                     <td class="text-success"><?= $candidatures['statut'] ?></td>
                                                     <td>
-                                                        <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                                        <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures['id'] ?>">Voir &nbsp;&nbsp;&nbsp;<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
