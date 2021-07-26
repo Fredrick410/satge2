@@ -39,6 +39,18 @@ if (isset($_POST['id_entretien'])) {
         exit();
     }
 
+    try {
+        $update = $bdd->prepare("SELECT * FROM entretien WHERE id_entretien=:id");
+        $update->bindValue(':id', $id_entretien, PDO::PARAM_INT);
+        $update->execute();
+        $entretien = $update->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $e->getMessage();
+        echo json_encode($response_array);
+        exit();
+    }
+
     // On met a jour l'entretien
     try {
         $update = $bdd->prepare('DELETE FROM entretien WHERE id_entretien = :id');
@@ -71,12 +83,12 @@ if (isset($_POST['id_entretien'])) {
     }
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformement a ce qui était retenu, l'entretien devant avoir lieu le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . " a été annulé.\n\n" .
+        "Conformement a ce qui était retenu, l'entretien devant avoir lieu le " . explode(" ", $entretien['debut_entretien'])[0] . " de " . explode(" ", $entretien['debut_entretien'])[1] . " a " . explode(" ", $entretien['fin_entretien'])[1] . " a été annulé.\n\n" .
         "Bien Cordialement\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
 
-    $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+    $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
     $mail = [
         'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
