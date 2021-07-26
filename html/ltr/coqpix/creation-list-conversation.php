@@ -99,7 +99,7 @@ $list_msg = $SQL2->fetchAll();
                                     Nouveau
                                 </button>
                             </div>
-                            <div class="sidebar-menu-list">
+                            <div class="sidebar-menu-list" >
                                 <!-- sidebar menu  -->
                                 <?php include('php/sidebar_crea.php'); ?>
                                 <!-- sidebar menu  end-->
@@ -238,7 +238,7 @@ $list_msg = $SQL2->fetchAll();
                                                     <i class="bx bx-menu"></i>
                                                 </div>
                                                 <fieldset class="form-group position-relative has-icon-left m-0">
-                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher une conversation">
+                                                    <input type="text" class="form-control" id="conv-search" placeholder="Rechercher une conversation">
                                                     <div class="form-control-position">
                                                         <i class="bx bx-search"></i>
                                                     </div>
@@ -419,6 +419,7 @@ $list_msg = $SQL2->fetchAll();
     <script src="../../../app-assets/js/scripts/pages/get_conv.js"></script>
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_crea.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-email.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

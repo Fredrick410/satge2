@@ -14,6 +14,11 @@
     $count_msg = count($list_msg_nonlu);
 
 ?>
+<style>
+.sidebar-menu-list {
+    overflow-y:scroll
+};
+</style>
 
 <div class="list-group list-group-messages">
                                     <a href="creation-list-conversation-nonlu.php" class="list-group-item pt-0 active">
