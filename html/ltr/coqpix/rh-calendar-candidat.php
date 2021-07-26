@@ -145,6 +145,9 @@ $entreprise = $pdoSta->fetch();
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-body">
+                <div id="message">
+
+                </div>
                 <div>
                     <h4>Liste des entretiens de <?php if ($candidature['sexe_candidat'] == "homme") {
                                                     echo "Mr";
@@ -280,6 +283,7 @@ $entreprise = $pdoSta->fetch();
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/calendar/tui-code-snippet.min.js"></script>
     <script src="../../../app-assets/vendors/js/calendar/tui-dom.js"></script>
+    <script src="../../../app-assets/vendors/js/calendar/chance.min.js"></script>
     <script src="../../../app-assets/vendors/js/calendar/tui-time-picker.min.js"></script>
     <script src="../../../app-assets/vendors/js/calendar/tui-date-picker.min.js"></script>
     <script src="../../../app-assets/vendors/js/extensions/moment.min.js"></script>
@@ -296,6 +300,20 @@ $entreprise = $pdoSta->fetch();
 
     <!-- BEGIN: Page JS-->
     <script>
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
         // Gestion du calendrier
         'use strict';
 
@@ -579,6 +597,31 @@ $entreprise = $pdoSta->fetch();
                     schedule.bgColor = calendar.bgColor;
                     schedule.borderColor = calendar.borderColor;
                 }
+
+                var id_candidature = <?= $candidature['id'] ?>;
+                var debut_entretien = (new Date(schedule.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " "); 
+                var fin_entretien = (new Date(schedule.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " "); 
+                var lieu_entretien = schedule.location;
+
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_entretien.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        titre_entretien: schedule.title,
+                        debut_entretien: debut_entretien,
+                        fin_entretien: fin_entretien,
+                        lieu_entretien,
+                        id_candidature: id_candidature
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            addAlert("Entretien ajouté", "success");
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    }
+                });
 
                 cal.createSchedules([schedule]);
 

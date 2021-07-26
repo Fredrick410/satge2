@@ -63,7 +63,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
                 // S'il est incorrect on retourne un message d'erreur
                 if (!validateDate($enddte)) {
                     $response_array['status'] = 'error';
-                    $response_array['message'] = "Merci de choisir une date de prise de service valide";
+                    $response_array['message'] = "Merci de choisir une date de fin de service valide";
                     echo json_encode($response_array);
                     exit();
                 }
