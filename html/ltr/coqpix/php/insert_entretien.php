@@ -111,18 +111,32 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         exit();
     }
 
+    $explode = explode(';', $candidature['key_candidat']);
+    $num = $explode[2];
+    try {
+        $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
+        $pdoSta->bindValue(':num', $num);
+        $pdoSta->execute();
+        $annonce = $pdoSta->fetch();
+    } catch (PDOException $exception) {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $e->getMessage();
+        echo json_encode($response_array);
+        exit();
+    }
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num', $_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformement a vos disponibilite, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "Conformément a vos disponibilités, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
 
-    $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+    $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
     $mail = [
         'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],

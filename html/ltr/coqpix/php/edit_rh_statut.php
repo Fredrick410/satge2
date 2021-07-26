@@ -45,8 +45,8 @@ if ($_SESSION['candidat'] == $_GET['num']) {
 
             if ($candidature['statut'] == "Admis à entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-                "Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien en visio d'une demi-heure.\n\n" .
-                "Merci de me confirmer votre disponibilité.\n\n" .
+                "Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien.\n\n" .
+                "Merci de me confirmer vos disponibilités.\n\n" .
                 "Bien Cordialement\n\n" .
                 "Service des Ressources Humaines.\n\n" .
                 "Envoyé par Coqpix.";

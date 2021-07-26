@@ -116,6 +116,20 @@ if (isset($_POST['id_entretien']) and isset($_POST['titre_entretien']) and isset
     $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
+    $explode = explode(';', $candidature['key_candidat']);
+    $num = $explode[2];
+    try {
+        $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
+        $pdoSta->bindValue(':num', $num);
+        $pdoSta->execute();
+        $annonce = $pdoSta->fetch();
+    } catch (PDOException $exception) {
+        $response_array['status'] = 'error';
+        $response_array['message'] = $e->getMessage();
+        echo json_encode($response_array);
+        exit();
+    }
+
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
         "Conformement a ce qui était retenu, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement\n\n" .
