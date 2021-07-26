@@ -43,7 +43,7 @@ if (isset($_POST['id_entretien'])) {
         $update = $bdd->prepare("SELECT * FROM entretien WHERE id_entretien=:id");
         $update->bindValue(':id', $id_entretien, PDO::PARAM_INT);
         $update->execute();
-        $entretien = $update->fetchAll(PDO::FETCH_ASSOC);
+        $entretien = $update->fetch(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         $response_array['status'] = 'error';
         $response_array['message'] = $e->getMessage();

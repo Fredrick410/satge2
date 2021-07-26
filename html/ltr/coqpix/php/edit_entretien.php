@@ -131,12 +131,12 @@ if (isset($_POST['id_entretien']) and isset($_POST['titre_entretien']) and isset
     }
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformement a ce qui était retenu, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "Conformement a ce qui était retenu, l'entretien aura maintenant lieu le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
 
-    $sujet = 'Votre candidature pour le poste de' . $annonce['poste'] . 'au sein de ' . $entreprise['nameentreprise'] . ".";
+    $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
 
     $mail = [
         'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
