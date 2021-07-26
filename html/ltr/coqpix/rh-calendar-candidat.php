@@ -644,8 +644,8 @@ $entreprise = $pdoSta->fetch();
                 }
                 titre_entretien = schedule.title;
                 // On convertis en YYYY-MM-DD HH:mm:ss UTC et on ajoute le decalage horaire
-                debut_entretien = moment(new Date(schedule.start).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");;
-                fin_entretien = moment( new Date(schedule.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");;
+                debut_entretien = moment(new Date(schedule.start).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
+                fin_entretien = moment( new Date(schedule.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
                 lieu_entretien = schedule.location;
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_entretien.php", //new path, save your work first before u try
