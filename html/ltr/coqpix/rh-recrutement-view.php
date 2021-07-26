@@ -1115,7 +1115,7 @@ if (count($candidature) != 0) {
             function downloadPDFWithjsPDF(val, qualitatif) {
                 if (qualitatif == "Non") {
                     var doc = new jspdf.jsPDF('p', 'pt', 'a4');
-                    var qcm = document.querySelector('#name-qcm').innerText;
+                    var qcm = document.querySelector('#name-qcm' + val).innerText;
 
                     doc.setFontSize(20);
                     doc.text('Résultat du qcm : ' + qcm, doc.internal.pageSize.width / 2, 60, null, null, 'center');
@@ -1203,7 +1203,7 @@ if (count($candidature) != 0) {
                         pageSize.getHeight();
                     doc.text(str, doc.internal.pageSize.width - 30, pageHeight - 10);
 
-                    var qcm = document.querySelector('#name-qcm').innerText;
+                    var qcm = document.querySelector('#name-qcm'+val).innerText;
 
                     doc.setFontSize(20);
                     doc.text('Résultat du qcm : ' + qcm, doc.internal.pageSize.width / 2, 60, null, null, 'center');
