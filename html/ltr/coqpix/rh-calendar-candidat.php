@@ -791,8 +791,8 @@ $entreprise = $pdoSta->fetch();
                                 schedule.calendarId = String(1);
 
                                 schedule.title = element['titre_entretien'];
-                                schedule.start = moment(element['debut_entretien']).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DDTHH:mm:ssZZ");
-                                schedule.end = moment(element['fin_entretien']).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DDTHH:mm:ssZZ");
+                                schedule.start = moment(element['debut_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                schedule.end = moment(element['fin_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
                                 schedule.category = 'time';
 
                                 schedule.location = element['lieu_entretien'];
