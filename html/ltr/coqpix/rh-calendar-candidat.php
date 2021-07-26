@@ -453,8 +453,8 @@ $entreprise = $pdoSta->fetch();
                     e.schedule.start = e.start;
                     e.schedule.end = e.end;
                     titre_entretien = e.schedule.title;
-                    debut_entretien = (new Date(e.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
-                    fin_entretien = (new Date(e.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
+                    debut_entretien = moment(new Date(e.start).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
+                fin_entretien = moment( new Date(e.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
                     lieu_entretien = e.schedule.location;
                     id_entretien = e.schedule.id;
                     $.ajax({
