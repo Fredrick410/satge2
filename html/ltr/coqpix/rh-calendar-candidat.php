@@ -14,7 +14,7 @@ if (isset($_GET['num']) and is_numeric($_GET['num'])) {
 
 // On recupere la candidature
 $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="Admis à entretien"');
-$pdoStt->bindValue(':num', $id);
+$pdoStt->bindValue(':num', $id, PDO::PARAM_INT);
 $pdoStt->execute();
 $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
 
@@ -314,8 +314,30 @@ $entreprise = $pdoSta->fetch();
             }
         }
 
+        var id_candidature = <?= $candidature['id'] ?>;
+        var debut_entretien = '';
+        var fin_entretien = '';
+        var lieu_entretien = '';
+
+        function ScheduleInfo() {
+            this.id = null;
+            this.calendarId = null;
+
+            this.title = null;
+            this.start = null;
+            this.end = null;
+            this.category = 'time';
+            this.dueDateClass = '';
+
+            this.raw = {
+                location: null
+            };
+        }
+
         // Gestion du calendrier
         'use strict';
+
+        var entretiens = [];
 
         /* eslint-disable require-jsdoc, no-unused-vars */
 
@@ -376,8 +398,6 @@ $entreprise = $pdoSta->fetch();
             addCalendar(calendar);
         })();
 
-        'use strict';
-
         (function(window, Calendar) {
             // variables
             var cal, resizeThrottled;
@@ -431,6 +451,30 @@ $entreprise = $pdoSta->fetch();
                     // schedule update
                     e.schedule.start = e.start;
                     e.schedule.end = e.end;
+                    titre_entretien = e.schedule.title;
+                    debut_entretien = (new Date(e.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
+                    fin_entretien = (new Date(e.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
+                    lieu_entretien = e.schedule.location;
+                    console.log(e.schedule.id);
+                    /*$.ajax({
+                        url: "../../../html/ltr/coqpix/php/edit_entretien.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            titre_entretien: schedule.title,
+                            debut_entretien: debut_entretien,
+                            fin_entretien: fin_entretien,
+                            lieu_entretien,
+                            id_candidature: id_candidature
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status == "success") {
+                                addAlert("Entretien ajouté", "success");
+                            } else {
+                                addAlert(data.message, "error");
+                            }
+                        }
+                    });*/
                     cal.updateSchedule(e.schedule.id, e.schedule.calendarId, e.schedule);
                 },
                 'beforeDeleteSchedule': function(e) {
@@ -535,7 +579,7 @@ $entreprise = $pdoSta->fetch();
 
                 setDropdownCalendarType();
                 setRenderRangeText();
-                setSchedules();
+                getEntretiens();
             }
 
             // on click of next and previous button view change
@@ -555,7 +599,7 @@ $entreprise = $pdoSta->fetch();
                         return;
                 }
                 setRenderRangeText();
-                setSchedules();
+                getEntretiens();
             }
 
             // Click of new schedule button's open schedule create popup
@@ -598,10 +642,9 @@ $entreprise = $pdoSta->fetch();
                     schedule.borderColor = calendar.borderColor;
                 }
 
-                var id_candidature = <?= $candidature['id'] ?>;
-                var debut_entretien = (new Date(schedule.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " "); 
-                var fin_entretien = (new Date(schedule.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " "); 
-                var lieu_entretien = schedule.location;
+                debut_entretien = (new Date(schedule.start)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
+                fin_entretien = (new Date(schedule.end)).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ");
+                lieu_entretien = schedule.location;
 
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_entretien.php", //new path, save your work first before u try
@@ -623,9 +666,7 @@ $entreprise = $pdoSta->fetch();
                     }
                 });
 
-                cal.createSchedules([schedule]);
-
-                refreshScheduleVisibility();
+                getEntretiens();
             }
 
             // view all checkbox initialize
@@ -723,11 +764,48 @@ $entreprise = $pdoSta->fetch();
                 }
                 renderRange.innerHTML = html.join('');
             }
-            // Randome Generated schedule
+            // Get schedules
             function setSchedules() {
                 cal.clear();
-                //refreshScheduleVisibility();
+                cal.createSchedules(entretiens);
+                refreshScheduleVisibility();
             }
+
+            function getEntretiens() {
+                // Recuperation des entretiens
+                entretiens.length = 0;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_entretiens.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_candidature: <?= $candidature['id'] ?>
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            data.entretiens.forEach(function(element) {
+                                var schedule = new ScheduleInfo();
+
+                                schedule.id = element['id_entretien'];
+                                schedule.calendarId = String(1);
+
+                                schedule.title = element['titre_entretien'];
+                                schedule.start = moment(element['debut_entretien']).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DDTHH:mm:ssZZ");
+                                schedule.end = moment(element['fin_entretien']).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DDTHH:mm:ssZZ");
+                                schedule.category = 'time';
+
+                                schedule.location = element['lieu_entretien'];
+
+                                entretiens.push(schedule);
+                            });
+                            setSchedules();
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    }
+                });
+            }
+
             // Events initialize
             function setEventListener() {
                 $('.menu-navigation').on('click', onClickNavi);
@@ -746,7 +824,7 @@ $entreprise = $pdoSta->fetch();
             window.cal = cal;
             setDropdownCalendarType();
             setRenderRangeText();
-            setSchedules();
+            getEntretiens();
             setEventListener();
         })(window, tui.Calendar);
 
