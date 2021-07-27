@@ -76,13 +76,13 @@ if ($_SESSION['candidat'] == $_GET['num']) {
             $sent = email($mail);
             if ($sent) {
                 if ($candidature['statut'] == "Admis à entretien") {
-                    $message = "Vous venez d'admettre le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . "\n\n" .
+                    $message = "Vous venez d'admettre le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . ".\n\n" .
                         "Merci de discuter des modalités de cet entretien avec le candidat puis créer un entretien dans l'espace entretien.\n\n" .
                         "Bien Cordialement.\n\n" .
                         "Service des Ressources Humaines.\n\n" .
                         "Envoyé par Coqpix.";
                 } else if ($candidature['statut'] == "Refusé avant entretien") {
-                    $message = "Vous venez de refuser le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " avant un entretien pour le poste de " . $annonce['poste'] . "\n\n" .
+                    $message = "Vous venez de refuser le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " avant un entretien pour le poste de " . $annonce['poste'] . ".\n\n" .
                         "Bien Cordialement.\n\n" .
                         "Service des Ressources Humaines.\n\n" .
                         "Envoyé par Coqpix.";
