@@ -116,74 +116,51 @@ require_once 'php/verif_session_crea.php';
         <label class="" style="color: #051441;">Retour à offre domiciliation</label>
     </div>
 
-    <h2 id="titre-contrat">Création du contrat</h2>
+    <h2 id="titre-contrat">Domiciliation d'entreprise : fiche de renseignement</h2>
     <h5 id="sous-titre-contrat">Domiciliation à <?php echo $result['titre'] ?></h5>
             
     <form class="col-12" action="generate-pdf.php" target="_blank" method="POST">
         <div class="row card-body bg-white" id="contrat">
-            <h3>Informations Générales</h3>
+            <h3>Informations sur votre société</h3>
             <div class="col-12">
-                <!--<h6>
-                  <i class="step-icon"></i>
-                  <span class="fonticon-wrap">
-                    <i class="livicon-evo"
-                      data-options="name:user.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                  </span>
-                  <span>Basic Details</span>
-                </h6>-->
                 <?php $today = date("d/m/y"); 
                 $cd = $result['titre']; 
-                $codepostal = substr($cd, -5, 5); ?>            
+                $codepostal = substr($cd, -5, 5); ?>        
+                <input type="text" name="id_crea" id="id_crea" readonly hidden value="<?= $_SESSION['id_crea'] ?>">    
                 <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
-                <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
+                <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $crea['adresse_diri'] ?>">
                 <!--<input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
                 <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
                 <div class="row">
                     <div class="col-6" id="contrat-gauche" >
                         <ul>
                             <li>
-                                <label for="RaisonSociale">Nom de l'entreprise</label>
+                                <label for="raisonSociale">Nom de la société</label>
                                 <input type="text" name="raisonsociale" id="raisonsociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
                             </li>
                             <li>
-                                <label for="FormeJuridique">Forme Juridique</label>
-                                <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" required readonly value="<?= $crea['status_crea'] ?>">
+                                <label for="adressess">Adresse du siège social</label>
+                                <input type="text" name="adressess" id="adressess" class="border-dark rounded-pill" placeholder="entrez une adresse" required value="<?= $result['adresse'] ?>">
                             </li>
                             <li>
-                                <label for="Capital">Capital</label>
-                                <input type="text" name="capital" id="capital" class="border-dark rounded-pill" required>
-                            </li>
-                            <li>
-                                <label for="Representant">Représenté par</label>
-                                <input type="text" name="representant" id="representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
-                            </li>
-                            <li>
-                                <label for="RepresentantQualite">En sa qualite de</label>
-                                <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" required value="Dirigeant">
-                            </li>             
+                                <label for="formeJuridique">Forme Juridique</label>
+                                <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" placeholder="entrez la forme juridique" required readonly value="<?= $crea['status_crea'] ?>">
+                            </li>          
                         </ul>
                     </div>
                     <div class="col-6" id="contrat-droite">
                         <ul>
                             <li>
-                                <label for="CodePostal">Code Postal</label>
-                                <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required value="<?= $codepostal ?>">
+                                <label for="capital">Capital</label>
+                                <input type="text" name="capital" id="capital" class="border-dark rounded-pill" placeholder="entrez le capital" required>
                             </li>
                             <li>
-                                <label for="Ville">Ville</label>
-                                <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required value="<?= $result['ville'] ?>">
+                                <label for="tva">TVA intra-communautaire</label>
+                                <input type="text" name="tva" id="tva" class="border-dark rounded-pill" placeholder="entrez la TVA" required>
                             </li>
                             <li>
-                                <label for="Pays">Pays</label>
-                                <input type="text" name="pays" id="pays" class="border-dark rounded-pill" required value="FRANCE">
-                            </li>
-                            <li>
-                                <label for="Telephone">Téléphone</label>
-                                <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
-                            </li>
-                            <li>
-                                <label for="Email">Email</label>
-                                <input type="text" name="email" id="email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
+                                <label for="activite">Activité de la société</label>
+                                <input type="text" name="activite" id="activite" class="border-dark rounded-pill" placeholder="entrez l'activité" required>
                             </li>
                         </ul>
                     </div>
@@ -191,85 +168,225 @@ require_once 'php/verif_session_crea.php';
             </div>
         </div>
 
-        
-
-        <div class="row card-body bg-white" id="attestation">
-            <h3>Attestation</h3>
+        <div class="row card-body bg-white" id="contrat">
+            <h3>Informations sur votre contrat</h3>
             <div class="col-12">
                 <div class="row" id="">
-                    <label>
+                    <div class="col-6" id="contrat-gauche">
                         <ul>
                             <li>
-                                Je soussigné(e) <input type="text" class="border-dark rounded-pill ml-1 px-1" style="outline: none;" value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                                <label for="datedebut">Date de début du contrat</label>
+                                <input type="text" name="datedebut" id="datedebut" class="border-dark rounded-pill" placeholder="entrez une date" required value="<?= $today ?>">
                             </li>
                             <li>
-                                Agissant en qualité de <input type="text" class="border-dark rounded-pill ml-1 px-1" style="outline: none;" value="dirigeant">
-                            </li>
-                            <li>
-                                Pour la société <input type="text" class="border-dark rounded-pill ml-1 px-1" style="outline: none;" value="<?= $crea['name_crea'] ?>">
-                            </li>
-                            <li>
-                                Dont le siège social est <input type="text" class="border-dark rounded-pill ml-1 px-1 w-50" style="outline: none;" value="<?= $result['adresse'] ?>">
-                            </li>
-                            <li>
-                                Attestation sur l'honneur :
-                            <li>
-                                <label for="adresse_factures"> - Que la comptabilité et les factures de la société susnommée sont conservées à l’adresse suivante :</label>
-                            </li>
-                            <li>
-                                <input type="text"  name="adresse_factures" id="adresse_factures" placeholder="entrez une adresse" class="border-dark rounded-pill" required>
-                            </li>
-                            <li>
-                                - Que je m’engage, en cas de vérification, à mettre ces documents à la disposition de l’administration à l’adresse de domiciliation, sous peine d’encourir les sanctions prévues à l’article L74 du livre des procédures fiscales en cas d’opposition à contrôle fiscal.
-                            </li>
-                            <li>
-                                <pre><input type="radio" id="emploie" name="salarie" value="emploie" required>  Que la société susnommée emploie des salariés et je tiens l’ensemble des documents obligatoires (Registre Unique du Personnel, double des bulletins de paie, récépissés de l’URSAFF des déclarations préalables à l’embauche, justificatif d’immatriculation au Registre du Commerce et des Sociétés ou au Répertoire des Métiers, fiches d’aptitude délivrées par les services de Santé du Travail, décompte de la durée du travail en cas d’horaires individuels de l’année en cours et de l’année précédente, contrats de travail et contrats de mise à disposition de travailleurs temporaires, liste des lieux de travail provisoires) à la disposition de la Direction Départementale du Travail et de l’Emploi à l’adresse suivante :</pre>
-                            </li>
-                            <li>
-                                <input type="text"  name="adresse_salarie" id="adresse_salarie" placeholder="entrez la/les adresse(s)" class="border-dark rounded-pill">
-                            </li>
-                            <li>
-                                <pre><input type="radio" id="pas_emploie" name="salarie" value="pas_emploie" required>  Que la société susnommée n’emploie pas de salariés</pre>
+                                <label for="servicechoisi">Service choisi</label>
+                                <input type="text" name="servicechoisi" id="servicechoisi" class="border-dark rounded-pill" placeholder="entrez le service" required value="Domiciliation Adresse">
                             </li>
                         </ul>
-                    </label>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <label for="dureecontrat">Durée du contrat</label>
+                                <input type="text" name="dureecontrat" id="dureecontrat" class="border-dark rounded-pill" placeholder="en mois" required value="">
+                            </li>
+                            <li>
+                                <label for="centremultiburo">Centre Multiburo</label>
+                                <input type="text" name="centremultiburo" id="centremultiburo" class="border-dark rounded-pill" placeholder="entrez le centre" required value="">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Réexpédition du courrier</label>
+                            </li>
+                        </ul>
+                        <div class="row px-3">
+                            <div class="col-3" id="contrat-gauche">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="reexpedition" id="reexpedition" required value="Non"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">Non</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-3" id="contrat-droite">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="reexpedition" id="reexpedition" required value="1 fois par semaine (9,50 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">1 fois/sem (9,50 €)</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-3" id="contrat-droite">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="reexpedition" id="reexpedition" required value="2 fois par semaine (14 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">2 fois/sem (14 €)</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-3" id="contrat-droite">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="reexpedition" id="reexpedition" required value="Tous les jours (33 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">Tous les jours (33 €)</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Scan courrier</label>
+                            </li>
+                        </ul>
+                        <div class="row px-3">
+                            <div class="col-6" id="contrat-gauche">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="scancourrier" id="scancourrier" required value="Non"><label for="scancourrier" style="text-transform: lowercase; margin-left: 15%;">Non</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-6" id="contrat-droite">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="scancourrier" id="scancourrier" required value="Oui"><label for="scancourrier" style="text-transform: lowercase; margin-left: 15%;">Oui</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" id="">
+                        <div class="row px-3">
+                            <label for="adresse_factures">Adresse de facturation</label>
+                            <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill w-50" placeholder="entrez une adresse" required value="">
+                        </div>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Envoi factures</label>
+                            </li>
+                        </ul>
+                        <div class="row px-3">
+                            <div class="col-6" id="contrat-gauche">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="mail"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 10%;">Par mail :</label><input type="text" name="envoi_factures" id="envoi_factures" class="border-dark rounded-pill" placeholder="entrez un email" value="">
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-6" id="contrat-droite">
+                                <ul>
+                                    <li>
+                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="courrier"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 10%;">Par courrier :</label><input type="text" name="envoi_factures1" id="envoi_factures1" class="border-dark rounded-pill" placeholder="entrez une adresse" value="">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6" id="contrat-gauche">
+                        <ul>
+                            <li>
+                                <label for="representant">Société représenté par</label>
+                                <input type="text" name="representant" id="representant" class="border-dark rounded-pill" placeholder="Nom et Prénom" required readonly value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="nationalite">Nationalité</label>
+                                <input type="text" name="nationalite" id="nationalite" class="border-dark rounded-pill" placeholder="entrez la nationalité" required value="Français">
+                            </li>
+                            <li>
+                                <label for="telephoneds">Téléphone du signataire</label>
+                                <input type="text" name="telephoneds" id="telephoneds" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="contactfacture">Contact facturation</label>
+                                <input type="text" name="contactfacture" id="contactfacture" class="border-dark rounded-pill" required placeholder="Nom et Prénom" value="">
+                            </li>
+                            <li>
+                                <label for="email">Email</label>
+                                <input type="text" name="email" id="email" class="border-dark rounded-pill" placeholder="entrez un email" required value="">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <label for="representantqualite">En sa qualité de</label>
+                                <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" placeholder="entrez la fonction" required value="Dirigeant">
+                            </li>
+                            <li>
+                                <label for="adresseds">Adresse du signataire</label>
+                                <input type="text" name="adresseds" id="adresseds" class="border-dark rounded-pill" placeholder="entrez une adresse" required value="<?= $crea['adresse_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="emailds">Email du signataire</label>
+                                <input type="text" name="emailds" id="emailds" class="border-dark rounded-pill" placeholder="entrez un email" required value="<?= $crea['email_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="telephone">Téléphone</label>
+                                <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="">
+                            </li>
+                        </ul>
+                    </div>
+                    
                     
                 </div>
             </div>
         </div>
 
-        <div class="row card-body bg-white" id="condition">
-            <h3>Conditions Générales</h3>
+        <div class="row card-body bg-white" id="contrat">
+            <h3>Coordonnées Bancaires</h3>
             <div class="col-12">
                 <div class="row" id="">
-                    <ul>
-                        <li>
-                            <label for="Fait_a">Fait à</label>
-                            <input type="text" name="Fait_a" id="Fait_a" placeholder="entrez une ville" class="border-dark rounded-pill" required>
-                        </li>
-                        <li>
-                            <label for="Le">Le</label>
-                            <input type="text" name="Le" id="Le" class="border-dark rounded-pill" required value="<?= $today ?>">
-                        </li>
-                        <li>
-                            <input type="checkbox" name="conditions-logo" id="conditions-logo" required>
-                            <label for="conditions-logo">J'autorise Multiburo à utiliser le nom et le logo de ma société dans sa communication interne et externe.</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" name="conditions" id="conditions" required>
-                            <label for="conditions">J'ai pris connaissance, et j'accepte les <a href="domiciliation-contrat-conditions.php" target="_blank">conditions générales</a> du contrat.</label>
-                        </li>
-                        <li>
-                            <label for="Signature">Signature Numérique</label>
-                            <input type="text" name="signature" id="signature" class="border-dark rounded-pill" required placeholder="prénom et nom"  onkeyup="apercu.innerHTML=this.value">
-                        </li>
-                        <li>
-                            <label for="apercu">Aperçu</label>
-                            <span id="apercu" readonly></span>
-                        </li>
-                    </ul>
-                    <input type="text" name="id_crea" id="id_crea" readonly hidden value="<?= $_SESSION['id_crea'] ?>">
-                    <input type="text" name="status_crea" id="status_crea" readonly hidden value="<?= $linkview ?>">
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Mode de règlement</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-gauche">
+                        <ul>
+                            <li>
+                                <input type="radio" name="reglement" id="reglement" required value="Virement bancaire (Hors Europe)"><label for="reglement" style="text-transform: lowercase; margin-left: 15%;">Virement bancaire (Hors Europe)</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <input type="radio" name="reglement" id="reglement" required value="Prélèvement automatique (Union Européene)"><label for="reglement" style="text-transform: lowercase; margin-left: 15%;">Prélèvement automatique (Union Européene)</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label for="nombanque">Nom de la banque</label>
+                                <input type="text" name="nombanque" id="nombanque" class="border-dark rounded-pill w-50" placeholder="entrez le nom de la banque" required value="">
+                            </li>
+                            <li>
+                                <label for="adressebanque">Adresse de la banque</label>
+                                <input type="text" name="adressebanque" id="adressebanque" class="border-dark rounded-pill w-50" placeholder="entrez l'adresse de la banque" required value="">
+                            </li>
+                            <li>
+                                <label for="iban">IBAN</label>
+                                <input type="text" name="iban" id="iban" class="border-dark rounded-pill w-50" placeholder="entrez un IBAN" required value="">
+                            </li>
+                            <li>
+                                <label for="bic">BIC</label>
+                                <input type="text" name="bic" id="bic" class="border-dark rounded-pill w-50" placeholder="entrez un BIC" required value="">
+                            </li>
+                        </ul>
+                    </div>
                     <div id="btn" class="col-12 text-center mt-2">
                         <button type="submit" class="border rounded-pill">
                             Valider les informations
