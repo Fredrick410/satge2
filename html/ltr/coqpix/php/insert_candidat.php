@@ -58,8 +58,44 @@ function passgen2($nbChar)
     return substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 1, $nbChar);
 }
 
+//echo $max_upload = (int)(ini_get('upload_max_filesize'));
+
 $id_session = $_POST['id_session'];
 $num = $_GET['num'];
+
+$pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
+$pdoSta->bindValue(':num', $num);
+$pdoSta->execute();
+$annonce = $pdoSta->fetch();
+
+if (isset($_FILES['i_candidat']) and !empty($_FILES['i_candidat']['name'])) {
+
+    if ($_FILES['i_candidat']['error'] > 0) {
+
+        echo "Une erreur est survenue lors du téléchargement de l'image";
+        die();
+    }
+
+    // On recupère le chemin
+    $dossier = '../../../../src/recrutement/img_candidat/';
+    $fichier = basename($_FILES['i_candidat']['name']);
+    $real_name = substr($fichier, 0, -4);
+    $file_type = strtolower(pathinfo($fichier, PATHINFO_EXTENSION));
+    $final_path = $dossier . $real_name . $file_type;
+    $resultat = $real_name . $file_type;
+    if (move_uploaded_file($_FILES['i_candidat']['tmp_name'], $final_path)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+    {
+        echo 'Upload effectué avec succès !';
+    } else //Sinon (la fonction renvoie FALSE).
+    {
+        echo 'Echec de l\'upload !';
+    }
+} else if ($annonce['image'] == 'oui') {
+    $_SESSION['message'] = "L'insertion de l'image est obligatoire";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+
 
 $code = '' . passgen1(10) . ';' . $id_session . ';' . $num . '';
 
@@ -76,7 +112,7 @@ $insert->execute(array(
     htmlspecialchars($dtenaissance_candidat),
     htmlspecialchars($pays),
     htmlspecialchars($specialite_candidat),
-    htmlspecialchars(""),
+    htmlspecialchars($resultat),
     htmlspecialchars($time_candidat),
     htmlspecialchars($logiciel),
     htmlspecialchars($langue),
@@ -94,6 +130,7 @@ $insert->execute(array(
     htmlspecialchars($permis_conduite)
 ));
 
+
 $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoS->bindValue(':numentreprise', $id_session);
 $true = $pdoS->execute();
@@ -101,11 +138,5 @@ $entreprise = $pdoS->fetch();
 
 $explode = explode(';', $code);
 $num = $explode[2];
-
-$pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
-$pdoSta->bindValue(':num', $num);
-$pdoSta->execute();
-$annonce = $pdoSta->fetch();
-
 header('Location: ../test-qcm.php?key=' . $code . '');
 exit();

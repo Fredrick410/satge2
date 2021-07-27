@@ -137,59 +137,75 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="email_annonce">E-mail de contact</label>
-                                                <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
-                                                <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
+                                        <div class="col-sm-6">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="email_annonce">E-mail de contact</label>
+                                                    <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
+                                                    <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="tel_annonce">Téléphone de contact</label>
-                                                <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
-                                                <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
+                                        <div class="col-sm-6">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="tel_annonce">Téléphone de contact</label>
+                                                    <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
+                                                    <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <label for="type_contrat">Type de contract</label>
-
-                                                <div>
-                                                    <input type="checkbox" value="CDI" class="form-check-input" name="type_contrat[]">
-                                                    <label>CDI</label>
-
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="image">Condition d'insertion d'image</label>
+                                                    <select id="image" name="image" class="form-control">
+                                                        <option value="" selected>Selectionnez une condition</option>
+                                                        <option value="oui">Obligatoire</option>
+                                                        <option value="non">Facutatif</option>
+                                                    </select>
                                                 </div>
-                                                <div>
-                                                    <input type="checkbox" value="CDD" class="form-check-input" name="type_contrat[]">
-                                                    <label>CDD</label>
-
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" value="Contrat d'Apprentisage" class="form-check-input" name="type_contrat[]">
-                                                    <label>Contrat d'appentisage</label>
-
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" value="Contrat d'Alternance" class="form-check-input" name="type_contrat[]">
-                                                    <label>Contrat d'Alternance</label>
-
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" value="Temps plein" class="form-check-input" name="type_contrat[]">
-                                                    <label>Temps plein</label>
-
-                                                </div>
-                                                <div>
-                                                    <input type="checkbox" value="Temps partiel" class="form-check-input" name="type_contrat[]">
-                                                    <label>Temps partiel</label>
-
-                                                </div>
-
                                             </div>
-                                            <small class="text-muted form-text">Veuillez cocher le ou les type(s) de contrat.</small>
+                                            <div class="col-sm-12">
+                                                <label for="type_contrat">Type de contract</label>
+                                                <div class="form-check form-group">
+
+                                                    <div>
+                                                        <input type="checkbox" value="CDI" class="form-check-input" name="type_contrat[]">
+                                                        <label>CDI</label>
+
+                                                    </div>
+                                                    <div>
+                                                        <input type="checkbox" value="CDD" class="form-check-input" name="type_contrat[]">
+                                                        <label>CDD</label>
+
+                                                    </div>
+                                                    <div>
+                                                        <input type="checkbox" value="Contrat d'Apprentisage" class="form-check-input" name="type_contrat[]">
+                                                        <label>Contrat d'appentisage</label>
+
+                                                    </div>
+                                                    <div>
+                                                        <input type="checkbox" value="Contrat d'Alternance" class="form-check-input" name="type_contrat[]">
+                                                        <label>Contrat d'Alternance</label>
+
+                                                    </div>
+                                                    <div>
+                                                        <input type="checkbox" value="Temps plein" class="form-check-input" name="type_contrat[]">
+                                                        <label>Temps plein</label>
+
+                                                    </div>
+                                                    <div>
+                                                        <input type="checkbox" value="Temps partiel" class="form-check-input" name="type_contrat[]">
+                                                        <label>Temps partiel</label>
+
+                                                    </div>
+
+                                                </div>
+                                                <small class="text-muted form-text">Veuillez cocher le ou les type(s) de contrat.</small>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -477,22 +493,26 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
             var date_y = document.getElementById("date_y").value;
             var date_m = document.getElementById("date_m").value;
             var date_d = document.getElementById("date_d").value;
-            var type_contrat = document.getElementById("type_contrat").value;
+            var image = document.getElementById("image").value;
             var valid = 0;
             var qcms = [];
-            var checkboxes = document.querySelectorAll('input[type=checkbox name=qcms[]]:checked');
+            var checkboxes = document.querySelectorAll('input[name="qcms[]"]:checked');
+
             if (checkboxes.length > 0) {
                 for (var i = 0; i < checkboxes.length; i++) {
                     qcms.push(checkboxes[i].value);
                 }
+                console.log(qcms);
             }
 
-            var annonce = [];
-            var checkboxes = document.querySelectorAll('input[type=checkbox name=annonce[]]:checked');
+            var type_contrat = [];
+            checkboxes = document.querySelectorAll('input[name="type_contrat[]"]:checked');
+
             if (checkboxes.length > 0) {
                 for (var i = 0; i < checkboxes.length; i++) {
-                    annonce.push(checkboxes[i].value);
+                    type_contrat.push(checkboxes[i].value);
                 }
+                console.log(type_contrat);
             }
 
 
@@ -515,7 +535,9 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                         date_y: date_y,
                         date_m: date_m,
                         date_d: date_d,
-                        qcms: qcms
+                        qcms: qcms,
+                        type_contrat: type_contrat,
+                        image: image
                     },
                     dataType: "json",
                     success: function(data) {

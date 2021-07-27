@@ -131,11 +131,23 @@ if ($annonce['code_annonce'] == "") {
 
     <!-- BEGIN: Content-->
     <div class="app-content content">
-        <div class="content-overlay"></div>
         <div class="content-wrapper" style="padding: 0px; margin: 0px;">
             <div class="content-body">
+                <div class="content-overlay"></div>
+                <?php
+                if (isset($_SESSION['message'])) {
+                ?>
+                    <div class="alert alert-danger">
+                        <?= $_SESSION['message'] ?>
+                        <button type="button" class="close" data-dismiss="alert">
+                            &times;</button>
+                    </div>
+                <?php
+                    unset($_SESSION['message']);
+                }
+                ?>
                 <div class="form-group">
-                    &nbsp<button title="Permets d'avoir les permissions sur l'annonce de recrutement" type="button" class="btn btn-outline-success <?= $none_bts ?>" data-toggle="modal" data-target="#inlineForm">
+                    &nbsp;<button title="Permets d'avoir les permissions sur l'annonce de recrutement" type="button" class="btn btn-outline-success <?= $none_bts ?>" data-toggle="modal" data-target="#inlineForm">
                         <i class='bx bxs-lock-open'></i> Unlock
                     </button>
                     <a title="Permets d'avoir les permissions sur l'annonce de recrutement" href="php/disconnect_recrutement.php?num=<?= $_GET['num'] ?>"><button type="button" class="btn btn-outline-danger <?= $none_btd ?>" data-target="#inlineForm">
@@ -186,21 +198,22 @@ if ($annonce['code_annonce'] == "") {
                                                                                                                                         } else {
                                                                                                                                             echo 'red';
                                                                                                                                         } ?>;">(<?php if ($annonce['statut'] == "actif") {
-                                                                                                                                                                                                                            echo "Actif";
-                                                                                                                                                                                                                        } else {
-                                                                                                                                                                                                                            echo 'En pause';
-                                                                                                                                                                                                                        } ?>)</p>
+                                                                                                                                                    echo "Actif";
+                                                                                                                                                } else {
+                                                                                                                                                    echo 'En pause';
+                                                                                                                                                } ?>)</p>
                                 </h5>
                             </div>
                             <div class="form-group" style="margin-left: 40px;">
-                                <label>Description :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['description_annonce'] ?></p><br>
-                                <label>E-mail de contact :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['email_annonce'] ?></p><br>
-                                <label>Tel de contact :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['tel_annonce'] ?></p><br>
-                                <label>Age requis :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['age'] ?></p><br>
-                                <label>Poste à promouvoir :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['poste'] ?></p><br>
-                                <label>Niveaux d'étude requis :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['niveau'] ?></p><br>
-                                <label>Temps du recrutement :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['temps'] ?></p><br>
-                                <label>Pays :</label> &nbsp&nbsp<p style="display: inline;"><?= $annonce['pays'] ?></p>
+                                <label>Type de contrat :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['type_contrat'] ?></p><br>
+                                <label>Description :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['description_annonce'] ?></p><br>
+                                <label>E-mail de contact :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['email_annonce'] ?></p><br>
+                                <label>Tel de contact :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['tel_annonce'] ?></p><br>
+                                <label>Age requis :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['age'] ?></p><br>
+                                <label>Poste à promouvoir :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['poste'] ?></p><br>
+                                <label>Niveaux d'étude requis :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['niveau'] ?></p><br>
+                                <label>Duree du contrat :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['temps'] ?></p><br>
+                                <label>Pays :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['pays'] ?></p>
                                 <hr>
                             </div>
                             <div class="form-group" style="margin-left: 40px;">
@@ -223,7 +236,7 @@ if ($annonce['code_annonce'] == "") {
                 <div class="form-group">
                     <div class="card-content mt-2">
                         <div class="card-body">
-                            <form method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" class="wizard-horizontal">
+                            <form method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" class="wizard-horizontal" enctype="multipart/form-data">
                                 <input type="hidden" name="id_session" value="<?= $annonce['id_session'] ?>">
                                 <!-- Step 1 -->
                                 <h6>
@@ -508,6 +521,19 @@ if ($annonce['code_annonce'] == "") {
                                                 <input name="time_candidat" type="texts" class="form-control" placeholder="1 mois" value="<?= $annonce['temps'] ?>" readonly>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ajouter votre photo</label><br>
+                                                <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile"><br>
+
+                                                <div>
+                                                    <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
+                                                    Fichier : <input type="file" name="i_candidat" class="form-control">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="d-block">Sexe</label>

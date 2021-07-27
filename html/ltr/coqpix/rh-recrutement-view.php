@@ -262,7 +262,17 @@ if (count($candidature) != 0) {
                                                             </div>
                                                             <div class="col">
                                                                 <div class="text-center">
-                                                                    <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile">
+                                                                    <?php
+                                                                    if ($candidature['image_candidat'] != "") {
+                                                                    ?>
+                                                                        <img src="../../../src/recrutement/img_candidat/<?= $candidature["image_candidat"] ?>" class="rounded" alt="Photo de profile" width="250" height="300">
+                                                                    <?php
+                                                                    } else {
+                                                                    ?>
+                                                                        <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile">
+                                                                    <?php
+                                                                    }
+                                                                    ?>
                                                                 </div>
                                                             </div>
                                                         </div>

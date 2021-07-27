@@ -116,6 +116,15 @@ if (!empty($_POST['type_contrat'])) {
     exit();
 }
 
+if (!empty($_POST['image'])) {
+    $image = $_POST['image'];
+} else {
+    $response_array['status'] = 'error';
+    $response_array['message'] = 'Merci de donner de dire si l\'image est obligatoire.';
+    echo json_encode($response_array);
+    exit();
+}
+
 $img_annonce = "";
 
 // On retourne un message d'erreur si les champs dates ne sont pas numeriques
@@ -162,7 +171,7 @@ if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
     try {
         $missions = $_POST['missions'];
         $qcms = $_POST['qcms'];
-        $insert = $bdd->prepare('INSERT INTO rh_annonce (name_annonce, description_annonce, img_annonce, code_annonce, email_annonce, tel_annonce, age, poste, niveau, pays, temps, color_annonce, statut, id_session, qcm, link, type_contrat) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,"","",?)');
+        $insert = $bdd->prepare('INSERT INTO rh_annonce (name_annonce, description_annonce, img_annonce, code_annonce, email_annonce, tel_annonce, age, poste, niveau, pays, temps, color_annonce, statut, id_session, qcm, link, type_contrat, image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,"","",?,?)');
         $insert->execute(array(
             htmlspecialchars($name_annonce),
             htmlspecialchars($description_annonce),
@@ -178,7 +187,8 @@ if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
             htmlspecialchars($color_annonce),
             htmlspecialchars($statut),
             htmlspecialchars($_SESSION['id_session']),
-            htmlspecialchars($type_contrat)
+            htmlspecialchars($type_contrat),
+            htmlspecialchars($image)
         ));
 
         $id_annonce = $bdd->lastInsertId();
