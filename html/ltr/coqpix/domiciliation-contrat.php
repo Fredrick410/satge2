@@ -88,6 +88,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/domiciliation-offre.css">
     <!-- END: Custom CSS-->
 
@@ -304,7 +305,8 @@ require_once 'php/verif_session_crea.php';
                             </li>
                             <li>
                                 <label for="telephoneds">Téléphone du signataire</label>
-                                <input type="text" name="telephoneds" id="telephoneds" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
+                                <input onchange='processds(event)' type="text" name="telephoneds_temp" id="telephoneds_temp" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
+                                <input type="text" name="telephoneds" id="telephoneds" hidden required value="<?= $crea['tel_diri'] ?>">
                             </li>
                             <li>
                                 <label for="contactfacture">Contact facturation</label>
@@ -332,7 +334,8 @@ require_once 'php/verif_session_crea.php';
                             </li>
                             <li>
                                 <label for="telephone">Téléphone</label>
-                                <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="">
+                                <input onchange='process(event)' type="text" name="telephone_temp" id="telephone_temp" class="border-dark rounded-pill" required>
+                                <input type="text" name="telephone" id="telephone" hidden required>
                             </li>
                         </ul>
                     </div>
@@ -413,6 +416,47 @@ require_once 'php/verif_session_crea.php';
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+
+    <!-- script telephone -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+        //telephone du signataire
+        const phonedsInputField = document.querySelector("#telephoneds_temp");
+        const phonedsInput = window.intlTelInput(phonedsInputField, {
+            preferredCountries: ["fr"],
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function processds(event) {
+            event.preventDefault();
+
+            const phonedsNumber = phonedsInput.getNumber();
+
+           
+            document.getElementById("telephoneds").value=`${phonedsNumber}`;
+        }
+
+        //telephone entreprise
+        const phoneInputField = document.querySelector("#telephone_temp");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            preferredCountries: ["fr"],
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function process(event) {
+            event.preventDefault();
+
+            const phoneNumber = phoneInput.getNumber();
+
+           
+            document.getElementById("telephone").value=`${phoneNumber}`;
+        }
+  
+    </script>
 
 
     <!-- BEGIN: Vendor JS-->

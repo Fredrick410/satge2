@@ -171,7 +171,7 @@ input[type="radio"].solu + label:hover{
    top: 9px;
 }
 
-#contrat input{
+#contrat input:not(#telephone_temp, #telephoneds_temp){
     right: 40px;
     position: absolute;
     padding: 5px 10px;
@@ -179,6 +179,10 @@ input[type="radio"].solu + label:hover{
 
 #contrat input:focus{
     outline: none;
+}
+
+li #telephone_temp, li #telephoneds_temp {
+    
 }
 
 #btn button{
