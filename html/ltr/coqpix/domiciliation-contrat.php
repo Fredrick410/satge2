@@ -280,14 +280,14 @@ require_once 'php/verif_session_crea.php';
                             <div class="col-6" id="contrat-gauche">
                                 <ul>
                                     <li>
-                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="mail"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 10%;">Par mail :</label><input type="text" name="envoi_factures" id="envoi_factures" class="border-dark rounded-pill" placeholder="entrez un email" value="">
+                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="mail"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 15%;">Par mail :</label><input type="text" name="envoi_factures" id="envoi_factures" class="border-dark rounded-pill" placeholder="entrez un email" value="">
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-6" id="contrat-droite">
                                 <ul>
                                     <li>
-                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="courrier"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 10%;">Par courrier :</label><input type="text" name="envoi_factures1" id="envoi_factures1" class="border-dark rounded-pill" placeholder="entrez une adresse" value="">
+                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="courrier"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 15%;">Par courrier :</label><input type="text" name="envoi_factures1" id="envoi_factures1" class="border-dark rounded-pill" placeholder="entrez une adresse" value="">
                                     </li>
                                 </ul>
                             </div>
