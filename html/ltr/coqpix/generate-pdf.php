@@ -105,6 +105,9 @@ $nombanque = $_POST['nombanque'];
 $adressebanque = $_POST['adressebanque'];
 $iban = $_POST['iban'];
 $bic = $_POST['bic'];
+
+$id_crea = $_POST['id_crea'];
+$status_crea = $_POST['status_crea'];
  
 // create columns content
 $left_column = '
@@ -232,14 +235,6 @@ $pdf->writeHTML($afournir, true, false, true, false, '');
 
 // reset pointer to the last page
 $pdf->lastPage();
-
-
-
-//$pdf->SetFont('helvetica', '', 10);
-//$pdf->MultiCell(147, 10, 'Signature', 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
-//$pdf->SetFont('../../../app-assets/data/tcpdf_min/fonts/Holligate.ttf', '', 15);
-//$pdf->MultiCell(145, 0, $sign, 0, 'R', 1, 1, '', '', true, 0, false, true, 0);
-
 
 // ---------------------------------------------------------
 
