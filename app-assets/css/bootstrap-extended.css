@@ -277,6 +277,11 @@ label {
   color: #828D99;
 }
 
+.form-control-purple:-ms-input-placeholder {
+  /* placeholder color for IE */
+  color: #6d26a7;
+}
+
 .form-control:disabled {
   border: 0;
 }
@@ -335,7 +340,9 @@ label {
   left: 0;
   transition: 100ms ease-in-out;
 }
-
+.checkbox-purple label:after {
+  border: 2px solid #5d00b4;
+}
 .checkbox input:checked ~ label:after {
   border-top-style: none;
   border-right-style: none;
@@ -351,9 +358,29 @@ label {
   left: 4px;
 }
 
+.checkbox-purple input:checked ~ label:after {
+  border-top-style: none;
+  border-right-style: none;
+  /* IE9 */
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  height: 0.4rem;
+  width: 0.8rem;
+  border-color: #9921d1;
+  border-radius: 0;
+  border-width: 2px;
+  top: 6px;
+  left: 4px;
+}
+
 .checkbox input:checked ~ label:before {
   background-color: #FFFFFF;
   border: 1px solid #DFE3E7;
+}
+
+.checkbox-purple input:checked ~ label:before {
+  background-color: #9921d1 !important;
+  border: 2px solid #5d00b4 !important;
 }
 
 .checkbox input:disabled ~ label::before {
