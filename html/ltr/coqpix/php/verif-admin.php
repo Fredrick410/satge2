@@ -24,7 +24,7 @@ ini_set('display_startup_errors', TRUE);
  if($count == 1) 
  { 
 
-        $selectid = $bdd->prepare("SELECT id FROM admin WHERE emailentreprise =:pseudo");
+        $selectid = $bdd->prepare("SELECT id, role FROM admin WHERE emailentreprise =:pseudo");
         $selectid->bindValue(':pseudo', $pseudo);
         $selectid->execute();
         $viewid = $selectid->fetch();
@@ -34,6 +34,7 @@ ini_set('display_startup_errors', TRUE);
         $_SESSION['id_admin'] = $viewid['id'];
         $_SESSION['id_session_admin'] = $viewid['id'];
         $_SESSION['id_comptable'] = $viewid['id'];
+        $_SESSION['role']=$viewid['role'];
 
         header('Location: ../dashboard-admin.php');
         die();
