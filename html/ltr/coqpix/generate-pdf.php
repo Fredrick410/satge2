@@ -108,9 +108,6 @@ $bic = $_POST['bic'];
 
 $id_crea = $_POST['id_crea'];
 $status_crea = $_POST['status_crea'];
- 
-$id_crea = $_POST['id_crea'];
-$status_crea = $_POST['status_crea'];
 
 // create columns content
 $left_column = '
@@ -246,7 +243,7 @@ ob_clean();
 $dir = realpath(__DIR__ . '/../../..');
 $file_name = 'contrat_domiciliation_idcrea'.$id_crea.'_date-'.date("H-i-s").'.pdf';
 $pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'I');
-
+/*
 if ($status_crea == 'morale') {
     $pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'F');
 }elseif ($status_crea == 'physique') {
@@ -270,5 +267,5 @@ if ($status_crea == 'morale') {
     $update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifd = ? WHERE id = ?');
     $update->execute(array( ($file_name), $id_crea  ));
     header('Location: creation-view-physique-justificatifd');
-}
+}*/
 ?>
