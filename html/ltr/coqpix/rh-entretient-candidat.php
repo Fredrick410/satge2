@@ -17,6 +17,7 @@ $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut
 $pdoStt->bindValue(':num', $id);
 $pdoStt->execute();
 $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
+$missions_candidat = explode(";", $candidature['missions']);
 
 // Si la candidature n'existe pas on retourne a la liste des candidatures pour entretiens
 if (count($candidature) != 0) {
@@ -298,7 +299,11 @@ $pays = array(
                                                     ?>
                                                         <div class="form-group">
                                                             <label for="mission<?= $key ?>"><?= $value['libelle'] ?></label>
-                                                            <input type="checkbox" id="mission<?= $key ?>" name="missions[]">
+                                                            <input type="checkbox" id="mission<?= $key ?>" name="missions[]" <?php foreach ($missions_candidat as $akey => $avalue) {
+                                                                                                                                    if ($value['libelle'] == $avalue) {
+                                                                                                                                        echo "checked";
+                                                                                                                                    }
+                                                                                                                                } ?>>
                                                         </div>
                                                     <?php
                                                     }
@@ -306,8 +311,7 @@ $pays = array(
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="observations" class="col-form-label">Observations</label>
-                                                    <textarea class="form-control" name="observations" id="observations" rows="15">
-                                                    </textarea>
+                                                    <textarea class="form-control" name="observations" id="observations" rows="15"><?= $candidature['observations'] ?></textarea>
                                                 </div>
                                                 <div class="form-group" id="fiche-poste" style="display: none;">
                                                     <div class="form-row">
