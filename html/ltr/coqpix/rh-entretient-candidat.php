@@ -26,8 +26,7 @@ if (count($candidature) != 0) {
     $pdoStt->bindValue(':num', $idannonce);
     $pdoStt->execute();
     $missions = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
-}
-else{
+} else {
     header('Location: rh-entretient-candidats.php');
 }
 
@@ -293,24 +292,24 @@ $pays = array(
                                                     <input class="form-control" type="text" name="langue" id="langue" value="<?= $candidature['langue'] ?>" disabled>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-form-label">Missions/compétences</label>
+                                                    <?php
+                                                    foreach ($missions as $key => $value) {
+                                                    ?>
+                                                        <div class="form-group">
+                                                            <label for="mission<?= $key ?>"><?= $value['libelle'] ?></label>
+                                                            <input type="checkbox" id="mission<?= $key ?>" name="missions[]">
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="observations" class="col-form-label">Observations</label>
                                                     <textarea class="form-control" name="observations" id="observations" rows="15">
                                                     </textarea>
                                                 </div>
                                                 <div class="form-group" id="fiche-poste" style="display: none;">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label">Missions/compétences</label>
-                                                        <?php
-                                                        foreach ($missions as $key => $value) {
-                                                        ?>
-                                                            <div class="form-group">
-                                                                <label for="mission<?= $key ?>"><?= $value['libelle'] ?></label>
-                                                                <input type="checkbox" id="mission<?= $key ?>" name="missions[]">
-                                                            </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6">
                                                             <label for="startdte">Date de prise de service</label>

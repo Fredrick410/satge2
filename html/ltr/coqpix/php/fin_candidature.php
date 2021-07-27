@@ -39,12 +39,12 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
     $true = $pdoS->execute();
     $entreprise = $pdoS->fetch();
 
-    $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n".
-        "Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n\n".
-        "Votre candidature au poste de " . $annonce['poste'] . " a bien été prise en compte.\n\n".
-        "L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n\n".
-        "A bientôt !\n\n".
-        "Service des Ressources Humaines.\n\n".
+    $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
+        "Bravo pour ce premier pas et merci de l’intérêt que vous nous portez à " . $entreprise['nameentreprise'] . ".\n\n" .
+        "Votre candidature au poste de " . $annonce['poste'] . " a bien été prise en compte.\n\n" .
+        "L'équipe de recrutement va l’étudier avec beaucoup d’attention. Nous ne manquerons pas de vous contacter rapidement si votre profil correspond à leurs attentes.\n\n" .
+        "A bientôt !\n\n" .
+        "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
 
     $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
@@ -60,8 +60,27 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
 
     $sent = email($mail);
     if ($sent) {
-        $response_array['status'] = 'success';
-        $response_array['link'] = 'https://www.google.com/';
+        $message = "Une candidature envoyée par " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] ." pour le poste de " . $annonce['poste'] . " vient d'etre enregistrée.\n\n" .
+            "Elle est consultable sur l'espace candidature.\n\n" .
+            "Bien cordialement.\n\n" .
+            "Envoyé par Coqpix.";
+
+        $sujet = "Réception d'une nouvelle candidature de " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ".";
+
+        $mail = [
+            'nom_recepteur' => $entreprise['nameentreprise'],
+            'adresse_recepteur' => $entreprise['emailentreprise'],
+            'nom_emetteur' => "Service des ressources humaines",
+            'adresse_emetteur' => "rh@coqpix.com",
+            'sujet' => $sujet,
+            'message' => $message
+        ];
+
+        $sent = email($mail);
+        if($sent){
+            $response_array['status'] = 'success';
+            $response_array['link'] = 'https://www.google.com/';
+        }
     } else {
         $response_array['status'] = 'error';
     }
