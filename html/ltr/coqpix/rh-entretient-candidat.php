@@ -323,6 +323,7 @@ $pays = array(
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <button name="save" id="save" type="button" value="save" class="btn btn-success col-12 btconf">Sauvegarder le profil</button>
                                                 <button name="accept" id="accept" type="button" value="accept" class="btn btn-primary col-12 btconf">Embaucher le candidat</button>
                                                 <button name="refuse" id="refuse" type="button" value="refuse" class="btn btn-danger col-12 btconf">Refuser le candidat</button>
                                             </div>
@@ -398,7 +399,6 @@ $pays = array(
                             missions.push(getLabel(checkboxes[i].id));
                         }
                     }
-                    console.log(missions);
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/insert_employe.php", //new path, save your work first before u try
                         type: "POST",
@@ -433,21 +433,51 @@ $pays = array(
 
             $("#refuse").click(function() {
                 var refuse = 'refuse';
-                var pays = document.getElementById("pays").value;
                 var observations = document.getElementById("observations").value;
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/refuser_candidat.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
                         refuse: refuse,
-                        pays: pays,
                         observations: observations,
+                        missions: missions,
                         idcandidat: <?= $id ?>
                     },
                     dataType: "json",
                     success: function(data) {
                         if (data.status == "success") {
                             addAlert("Candidat refusé", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    }
+                });
+            });
+
+            $("#save").click(function() {
+                var observations = document.getElementById("observations").value;
+                var missions = [];
+                var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+                if (checkboxes.length > 0) {
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        missions.push(getLabel(checkboxes[i].id));
+                    }
+                }
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/edit_candidature.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        observations: observations,
+                        missions: missions,
+                        idcandidat: <?= $id ?>
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            addAlert("Profil sauvegardé", "success");
                             window.setTimeout(function() {
                                 window.location.href = data.link;
                             }, 1000);
