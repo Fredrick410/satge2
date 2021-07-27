@@ -99,7 +99,26 @@ if (isset($_POST['id_entretien'])) {
         'message' => $message
     ];
 
-    email($mail);
+    $sent = email($mail);
+    if ($sent) {
+        $message = "Vous venez d'annuler un entretien avec le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour le poste de " . $annonce['poste'] . " qui devait avoir lieu le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+            "Bien Cordialement.\n\n" .
+            "Service des Ressources Humaines.\n\n" .
+            "Envoyé par Coqpix.";
+
+        $sujet = "Vos entretiens avec " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour sa candidature pour le poste de " . $annonce['poste'] . " au sein de votre entreprise.";
+
+        $mail = [
+            'nom_recepteur' => $entreprise['nameentreprise'],
+            'adresse_recepteur' => $entreprise['emailentreprise'],
+            'nom_emetteur' => "Service des ressources humaines",
+            'adresse_emetteur' => "rh-noreply@coqpix.com",
+            'sujet' => $sujet,
+            'message' => $message
+        ];
+
+        $sent = email($mail);
+    }
 }
 // On retourne un code de success
 $response_array['status'] = 'success';

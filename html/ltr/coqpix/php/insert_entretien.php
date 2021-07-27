@@ -131,7 +131,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
     $entreprise = $pdoSta->fetch();
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformément a vos disponibilités, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "Conformément à vos disponibilités, nous vous convions à un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement.\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
@@ -147,7 +147,26 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         'message' => $message
     ];
 
-    email($mail);
+    $sent = email($mail);
+    if ($sent) {
+        $message = "Vous venez de convier le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . " le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+            "Bien Cordialement.\n\n" .
+            "Service des Ressources Humaines.\n\n" .
+            "Envoyé par Coqpix.";
+
+        $sujet = "Vos entretiens avec " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour sa candidature pour le poste de " . $annonce['poste'] . " au sein de votre entreprise.";
+
+        $mail = [
+            'nom_recepteur' => $entreprise['nameentreprise'],
+            'adresse_recepteur' => $entreprise['emailentreprise'],
+            'nom_emetteur' => "Service des ressources humaines",
+            'adresse_emetteur' => "rh-noreply@coqpix.com",
+            'sujet' => $sujet,
+            'message' => $message
+        ];
+
+        $sent = email($mail);
+    }
 }
 // On retourne un code de success
 $response_array['status'] = 'success';
