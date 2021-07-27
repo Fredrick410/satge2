@@ -81,7 +81,7 @@ if (isset($_POST['id_entretien']) and isset($_POST['titre_entretien']) and isset
         exit();
     }
 
-    // On met a jour l'entretien
+    // On met à jour l'entretien
     try {
         $update = $bdd->prepare('UPDATE entretien SET titre_entretien = ?, debut_entretien = ?, fin_entretien = ?, lieu_entretien = ? WHERE id_entretien = ?');
         $update->execute(array(
@@ -131,7 +131,7 @@ if (isset($_POST['id_entretien']) and isset($_POST['titre_entretien']) and isset
     }
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformement a ce qui était retenu, l'entretien aura maintenant lieu le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "Conformement à ce qui était retenu, l'entretien aura maintenant lieu le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " à " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
@@ -149,7 +149,7 @@ if (isset($_POST['id_entretien']) and isset($_POST['titre_entretien']) and isset
 
     $sent = email($mail);
     if ($sent) {
-        $message = "Vous venez de convier le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . " le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        $message = "Vous venez de convier le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . " le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " à " . explode(" ", $fin_entretien)[1] . ".\n\n" .
             "Bien Cordialement.\n\n" .
             "Service des Ressources Humaines.\n\n" .
             "Envoyé par Coqpix.";

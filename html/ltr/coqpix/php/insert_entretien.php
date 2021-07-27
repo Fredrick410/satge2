@@ -131,7 +131,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
     $entreprise = $pdoSta->fetch();
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformément à vos disponibilités, nous vous convions à un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "Conformément à vos disponibilités, nous vous convions à un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " à " . explode(" ", $fin_entretien)[1] . ".\n\n" .
         "Bien Cordialement.\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
@@ -149,7 +149,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
 
     $sent = email($mail);
     if ($sent) {
-        $message = "Vous venez de convier le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . " le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        $message = "Vous venez de convier le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . " le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " à " . explode(" ", $fin_entretien)[1] . ".\n\n" .
             "Bien Cordialement.\n\n" .
             "Service des Ressources Humaines.\n\n" .
             "Envoyé par Coqpix.";

@@ -51,7 +51,7 @@ if (isset($_POST['id_entretien'])) {
         exit();
     }
 
-    // On met a jour l'entretien
+    // On met à jour l'entretien
     try {
         $update = $bdd->prepare('DELETE FROM entretien WHERE id_entretien = :id');
         $update->bindValue(':id', $id_entretien, PDO::PARAM_INT);
@@ -83,8 +83,8 @@ if (isset($_POST['id_entretien'])) {
     }
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-        "Conformement a ce qui était retenu, l'entretien devant avoir lieu le " . explode(" ", $entretien['debut_entretien'])[0] . " de " . explode(" ", $entretien['debut_entretien'])[1] . " a " . explode(" ", $entretien['fin_entretien'])[1] . " a été annulé.\n\n" .
-        "Bien Cordialement\n\n" .
+        "Conformement à ce qui était retenu, l'entretien devant avoir lieu le " . explode(" ", $entretien['debut_entretien'])[0] . " de " . explode(" ", $entretien['debut_entretien'])[1] . " à " . explode(" ", $entretien['fin_entretien'])[1] . " a été annulé.\n\n" .
+        "Bien Cordialement.\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
 
@@ -101,7 +101,7 @@ if (isset($_POST['id_entretien'])) {
 
     $sent = email($mail);
     if ($sent) {
-        $message = "Vous venez d'annuler un entretien avec le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour le poste de " . $annonce['poste'] . " qui devait avoir lieu le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        $message = "Vous venez d'annuler un entretien avec le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour le poste de " . $annonce['poste'] . " qui devait avoir lieu le " . explode(" ", $entretien['debut_entretien'])[0] . " de " . explode(" ", $entretien['debut_entretien'])[1] . " a " . explode(" ", $entretien['fin_entretien'])[1] . ".\n\n" .
             "Bien Cordialement.\n\n" .
             "Service des Ressources Humaines.\n\n" .
             "Envoyé par Coqpix.";
