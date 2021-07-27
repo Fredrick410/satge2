@@ -71,7 +71,7 @@ if (isset($_POST['done']) and $_POST['done'] == "oui") {
             'nom_recepteur' => $entreprise['nameentreprise'],
             'adresse_recepteur' => $entreprise['emailentreprise'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => "rh@coqpix.com",
+            'adresse_emetteur' => "rh-noreply@coqpix.com",
             'sujet' => $sujet,
             'message' => $message
         ];

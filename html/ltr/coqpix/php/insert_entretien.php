@@ -132,7 +132,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
         "Conformément a vos disponibilités, nous vous convions a un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " a " . explode(" ", $fin_entretien)[1] . ".\n\n" .
-        "Bien Cordialement\n\n" .
+        "Bien Cordialement.\n\n" .
         "Service des Ressources Humaines.\n\n" .
         "Envoyé par Coqpix.";
 

@@ -45,21 +45,21 @@ if ($_SESSION['candidat'] == $_GET['num']) {
 
             if ($candidature['statut'] == "Admis à entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-                "Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien.\n\n" .
-                "Merci de me confirmer vos disponibilités.\n\n" .
-                "Bien Cordialement\n\n" .
-                "Service des Ressources Humaines.\n\n" .
-                "Envoyé par Coqpix.";
+                    "Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien.\n\n" .
+                    "Merci de me confirmer vos disponibilités.\n\n" .
+                    "Bien Cordialement.\n\n" .
+                    "Service des Ressources Humaines.\n\n" .
+                    "Envoyé par Coqpix.";
             } else if ($candidature['statut'] == "Refusé avant entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
-                "Merci d'avoir candidaté au poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\n\n" .
-                "Nous avons attentivement étudié votre profil mais nous ne pouvons malheureusement pas donner suite.\n\n".
-                "Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.\n\n" .
-                "Bonne chance pour votre recherche d'emploi.\n\n" .
-                "Merci encore pour l'intérêt que vous avez porté à notre entreprise.\n\n" .
-                "Bien Cordialement\n\n" .
-                "Service des Ressources Humaines.\n\n" .
-                "Envoyé par Coqpix.";
+                    "Merci d'avoir candidaté au poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ".\n\n" .
+                    "Nous avons attentivement étudié votre profil mais nous ne pouvons malheureusement pas donner suite.\n\n" .
+                    "Nous vous remercions du temps investi pour postuler chez " . $entreprise['nameentreprise'] . " et vous encourageons à poursuivre vos candidatures.\n\n" .
+                    "Bonne chance pour votre recherche d'emploi.\n\n" .
+                    "Merci encore pour l'intérêt que vous avez porté à notre entreprise.\n\n" .
+                    "Bien Cordialement.\n\n" .
+                    "Service des Ressources Humaines.\n\n" .
+                    "Envoyé par Coqpix.";
             }
 
             $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
@@ -73,7 +73,34 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                 'message' => $message
             ];
 
-            email($mail);
+            $sent = email($mail);
+            if ($sent) {
+                if ($candidature['statut'] == "Admis à entretien") {
+                    $message = "Vous venez d'admettre le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " à un entretien pour le poste de " . $annonce['poste'] . "\n\n" .
+                        "Merci de discuter des modalités de cet entretien avec le candidat puis créer un entretien dans l'espace entretien.\n\n" .
+                        "Bien Cordialement.\n\n" .
+                        "Service des Ressources Humaines.\n\n" .
+                        "Envoyé par Coqpix.";
+                } else if ($candidature['statut'] == "Refusé avant entretien") {
+                    $message = "Vous venez de refuser le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " avant un entretien pour le poste de " . $annonce['poste'] . "\n\n" .
+                        "Bien Cordialement.\n\n" .
+                        "Service des Ressources Humaines.\n\n" .
+                        "Envoyé par Coqpix.";
+                }
+
+                $sujet = "Votre réponse à " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour sa candidature pour le poste de " . $annonce['poste'] . " au sein de votre entreprise.";
+
+                $mail = [
+                    'nom_recepteur' => $entreprise['nameentreprise'],
+                    'adresse_recepteur' => $entreprise['emailentreprise'],
+                    'nom_emetteur' => "Service des ressources humaines",
+                    'adresse_emetteur' => "rh-noreply@coqpix.com",
+                    'sujet' => $sujet,
+                    'message' => $message
+                ];
+
+                $sent = email($mail);
+            }
         }
     }
 }
