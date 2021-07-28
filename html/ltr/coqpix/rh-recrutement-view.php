@@ -265,7 +265,7 @@ if (count($candidature) != 0) {
                                                                     <?php
                                                                     if ($candidature['image_candidat'] != "") {
                                                                     ?>
-                                                                        <img src="../../../src/recrutement/img_candidat/<?= $candidature["image_candidat"] ?>" class="rounded" alt="Photo de profile" width="250" height="300">
+                                                                        <img src="../../../../src/img/<?= $candidature["image_candidat"] ?>" class="rounded" alt="Photo de profile" width="250" height="300">
                                                                     <?php
                                                                     } else {
                                                                     ?>
