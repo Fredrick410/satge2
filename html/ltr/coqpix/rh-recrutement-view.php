@@ -692,6 +692,7 @@ if (count($candidature) != 0) {
                                                             purple.forEach(function(element) {
                                                                 tableVar.push(element);
                                                             });
+                                                            console.log(tableVar);
                                                             //var tableVar = [red_deter, red_amb, red_gout, red_esp, blue_ais, blue_ouv, blue_dip, blue_pers, yellow_diri, yellow_rep, yellow_org, yellow_visio, green_conf, green_ind, green_crea, green_auto, purple_gest, purple_react, purple_pat, purple_resp];
 
                                                             var text_moy_red = "faible";
