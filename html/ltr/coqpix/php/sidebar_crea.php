@@ -30,7 +30,7 @@
                                         Conversation
                                         <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count_msg ?></span>
                                     </a>
-                                    <a href="" class="list-group-item <?php if(strpos($url, "creation-list.php") !== false){echo "active";} ?>">
+                                    <a href="creation-list-domiciliation.php" class="list-group-item <?php if(strpos($url, "creation-list-domiciliation.php") !== false){echo "active";} ?>">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: home.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
