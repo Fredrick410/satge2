@@ -678,19 +678,29 @@ if (count($candidature) != 0) {
 
                                                             var tableVar = [];
                                                             red.forEach(function(element) {
-                                                                tableVar.push(element);
+                                                                if(element != null){
+                                                                    tableVar.push(element);
+                                                                }
                                                             });
                                                             blue.forEach(function(element) {
-                                                                tableVar.push(element);
+                                                                if(element != null){
+                                                                    tableVar.push(element);
+                                                                }
                                                             });
                                                             yellow.forEach(function(element) {
-                                                                tableVar.push(element);
+                                                                if(element != null){
+                                                                    tableVar.push(element);
+                                                                }
                                                             });
                                                             green.forEach(function(element) {
-                                                                tableVar.push(element);
+                                                                if(element != null){
+                                                                    tableVar.push(element);
+                                                                }
                                                             });
                                                             purple.forEach(function(element) {
-                                                                tableVar.push(element);
+                                                                if(element != null){
+                                                                    tableVar.push(element);
+                                                                }
                                                             });
                                                             console.log(tableVar);
                                                             //var tableVar = [red_deter, red_amb, red_gout, red_esp, blue_ais, blue_ouv, blue_dip, blue_pers, yellow_diri, yellow_rep, yellow_org, yellow_visio, green_conf, green_ind, green_crea, green_auto, purple_gest, purple_react, purple_pat, purple_resp];
