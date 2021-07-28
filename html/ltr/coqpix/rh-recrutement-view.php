@@ -678,27 +678,27 @@ if (count($candidature) != 0) {
 
                                                             var tableVar = [];
                                                             red.forEach(function(element) {
-                                                                if(element != null){
+                                                                if(element[0] != null){
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             blue.forEach(function(element) {
-                                                                if(element != null){
+                                                                if(element[0] != null){
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             yellow.forEach(function(element) {
-                                                                if(element != null){
+                                                                if(element[0] != null){
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             green.forEach(function(element) {
-                                                                if(element != null){
+                                                                if(element[0] != null){
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             purple.forEach(function(element) {
-                                                                if(element != null){
+                                                                if(element[0] != null){
                                                                     tableVar.push(element);
                                                                 }
                                                             });
