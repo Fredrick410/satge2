@@ -137,6 +137,7 @@ branche de oscar :
 
 	tache réalisée le 27/07/2021 :
 		- nouveau front pour la page creation edit
+		
 	tache réalisée le 28/07/2021 :
 		- ajout pattern pour l'IBAN
 
