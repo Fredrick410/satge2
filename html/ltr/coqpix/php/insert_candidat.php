@@ -82,7 +82,7 @@ if (isset($_FILES['i_candidat']) and !empty($_FILES['i_candidat']['name'])) {
     $real_name = substr($fichier, 0, -4);
     $file_type = strtolower(pathinfo($fichier, PATHINFO_EXTENSION));
     $final_path = $dossier . $real_name . "." . $file_type;
-    $resultat = $real_name . $file_type;
+    $resultat = $real_name . "." . $file_type;
     if (move_uploaded_file($_FILES['i_candidat']['tmp_name'], $final_path)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
     {
         echo 'Upload effectué avec succès !';
