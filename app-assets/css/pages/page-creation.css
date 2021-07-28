@@ -144,7 +144,7 @@ body{
     border-radius: 40px;
     background-color: white;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
-    margin-top: 20px;
+    margin-top: 30px;
     max-height: 50%;
     min-width: 100%;
 }
@@ -181,12 +181,12 @@ body{
     background-color: white;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
     height: 100%;
-    width: 100%;
+    min-width: 100%;
 }
 
 #doc_domiciliation embed{
     margin: auto;
-    border-radius: 40px;
+    border-radius: 37px;
 }
 
 input[type="checkbox"].solu {
@@ -202,7 +202,6 @@ input[type="checkbox"].solu + label:hover{
 }
 
 #div-document{
-    height: 380px;
     position: relative;
 }
 
@@ -216,7 +215,7 @@ input[type="checkbox"].solu + label:hover{
     background-color: white;
     border-radius: 40px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);   
-    height: 380px;
+    height: 388px;
 }
 
 #doc-manquant h4{
