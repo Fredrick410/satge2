@@ -4,8 +4,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'juriste');
 require_once 'php/verif_session_connect_admin.php';
 
+$SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE ""');
+$SQL2->execute();
+$list_doc = $SQL2->fetchAll();
 
 ?>
 
@@ -212,22 +216,7 @@ require_once 'php/verif_session_connect_admin.php';
 
                                         <!-- action right start here -->
                                         
-                                        <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
-                                            <!--<select onclick="affiche_conv();" id="type_conv" class="form-select border-1 form-control" aria-label="Default select example" style="width:20%;">
-                                                <option value="1" selected>Conversation(s) non lue(s)</option>
-                                                <option value="2">Conversation(s) archivée(s)</option>
-                                                <option value="3">Toutes les conversations</option>
-                                            </select>-->
-                                            <div class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><span>Filtre des conversations</span></a>
-                                                <ul class="dropdown-menu">
-                                                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation-nonlu.php" data-toggle="dropdown">Conversation(s) non lue(s)</a>
-                                                    </li>
-                                                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation-lu.php" data-toggle="dropdown">Conversation(s) archivée(s)</a>
-                                                    </li>
-                                                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation.php" data-toggle="dropdown">Toutes les conversations</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                        <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">                                            
                                             <!-- search bar  -->
                                             <div class="email-fixed-search flex-grow-1">
                                                 <div class="sidebar-toggle d-block d-lg-none">
@@ -241,8 +230,6 @@ require_once 'php/verif_session_connect_admin.php';
                                                 </fieldset>
                                             </div>
                                             <!-- pagination and page count -->
-                                            
-                                        
                                         </div>
                                     </div>
                                     <!-- / action right -->
@@ -255,84 +242,26 @@ require_once 'php/verif_session_connect_admin.php';
                                             <ul class="users-list-wrapper media-list" id="list">
                                                
                                                 <?php 
-                                                $expediteur = array();
                                                 $j=0;
-                                                foreach($list_msg_nonlu as $msg): 
-                                                    $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE name_crea LIKE :nom ');
-                                                    $PDO->bindValue(':nom', $msg['you']);
-                                                    $PDO->execute();
-                                                    $id_crea = $PDO->fetch();
-
-                                                    $doublon=0;
-
-                                                    $dateTemp= $msg['date_crea']."-".$msg['date_h'].":".$msg['date_m'];
-                                                    $dateFormatee = date_timestamp_get(date_create_from_format ( 'd-m-Y-H:i',$dateTemp ));
-
+                                                foreach($list_doc as $doc): 
+                                                    
                                                     $r_valeur = Array();
-                                                    $array_unique = array_unique($expediteur); 
-
-                                                    for ($i=0; $i<count($expediteur); $i++) {
-                                                            if ($msg['you']==$expediteur[$i]){ //si l'expediteur a deja un msg non lu
-                                                                $doublon=1;
-                                                                ?>
-                                                                <script>
-                                                                    if(compte["<?=$id_crea['id']?>"]==null)
-                                                                        compte["<?=$id_crea['id']?>"]=2;
-                                                                    document.getElementById("notif<?=$id_crea['id']?>").innerHTML=compte["<?=$id_crea['id']?>"]++;
-                                                                    
-                                                                </script>
-                                                                
-                                                                <?php
-                                                                }
-                                                    }
-                                                    if($doublon==0){
-                                                        $expediteur[$j] = $msg['you'];
-                                                        $j++; ?>
-
+                                                ?>
                                                              
-                                                    <li class="media rounded" onclick="getMessages();" id='<?= $id_crea['id']?>'  value='<?= $msg['you']?>' style='background :<?php if( $dateFormatee < strtotime("-10 days") ){ echo "rgba(255, 0, 0, 0.25)";$affichage=0;}
-                                                                        else if( $dateFormatee < strtotime("-1 days") ){echo "rgba(255, 174, 0, 0.25)"; $affichage=0;}
-                                                                        else if( $dateFormatee < strtotime("-6 hours") ){echo "rgba(255, 232, 0, 0.25)";$affichage=1;}
-                                                                        else{ echo "mail-read"; $affichage=1;}?>;'>
+                                                    <li class="media rounded" id='<?= $doc['id']?>' style=''>
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">
-                                                                <div class="avatar mr-75">
-                                                                     <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
+                                                                    <div class="avatar mr-75">
+                                                                        <img src="../../../app-assets/images/ico/<?=$doc['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
+                                                                    </div>
+                                                                    <a><span class="list-group-item-text text-truncate line namecolor" ><?= $doc['name_crea'] ?></span></a>
+                                                                    <input type="hidden" name="entreprise" id="entreprise" value="<?= $doc['status_crea'] ?>">
+                                                                    <input type="hidden" name="img" id="img" value="<?= $doc['img_crea'] ?>">
                                                                 </div>
-                                                                    <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
-                                                                    <!--Bouton d'archivage-->
-                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver(`<?=$msg["destination"]?>`);'>
-                                                                        <span class="fonticon-wrap">
-                                                                            <i id="img_save" class="livicon-evo" data-options="name: save.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                                                            </i>
-                                                                        </span>
-                                                                    </button>
-                                                                    <!--FIN archivage-->
-                                                                    <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
-                                                                    <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
-                                                                </div>
-                                                                <div class="mail-meta-item">
-                                                                    <span class="float-right">
-                                                                        <a><span class="mail-date"><?= $msg['date_crea'] ?> à <?= $msg['date_h'] ?>:<?= $msg['date_m'] ?></span><br/>
-                                                                        <?php if($affichage==1){?><span class="mail-date">Il y a <?php echo gmdate('H', (strtotime('now')-$dateFormatee)); ?> heure(s) et <?php echo gmdate('i', (strtotime('now')-$dateFormatee)); ?> minute(s)</span><?php }?></a>
-                                                                    </span>
-                                                                    
-                                                                    
-                                                                </div>
-                                                            </div>
-                                                            <div class="mail-message">
-                                                                <a><p class="list-group-item-text truncate mb-0"><?php echo $msg['message_crea'] ?></p></a>
-                                                                <div class="mail-meta-item">                                                             
-                                                                <span id="notif<?=$id_crea['id']?>" class="float-right badge badge-light-danger badge-pill badge-round float-right mt-50"></span> 
-                                                                </div>
-                                                            </div>
-                                                           
+                                                            </div>                                                           
                                                         </div>
-                                                    </li>
-
-                                                    <?php } ?> 
-                                                        
+                                                    </li>                                                        
                                                     
                                                 <?php endforeach; ?>                                            
                                             </ul>
@@ -361,25 +290,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-                                            <div class="historique p-3" id="historique" style="height:400px;">
-                                                <div class="chat-content">
-                                            
-                        
-                                                </div>
-                                            </div>
 
-                                            <div class="position-absolute" style="width:95%;bottom: 0;">
-                                                <input type="hidden" name="id" id="id_client" value="">
-                                                <input type="hidden" name="author" id="author" value="">
-                                                
-                                                <div class="card-footer border-top p-1 d-flex ">
-                                                   
-                                                        <input type="text" id="content" class="form-control chat-message-demo mr-75" placeholder="Envoyer un message">
-                                                        <button type="button" class="btn btn-primary glow px-1" id="btn_submit"><i class="bx bx-paper-plane"></i></button>
-                                                    
-                                                </div>           
-                                            </div>
+                                                <embed src=../../../src/crea_societe/domiciliation/<?= $doc['doc_domiciliation'] ?> width=100% height=85% type='application/pdf'/>
+                                                                                     
+
+                                            
                                         </div>
                                     </div>
                                     <!-- FIN conversation -->
