@@ -345,7 +345,7 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                         </div>
                                         <!-- Début conversation -->
-                                        <div class="col-8">
+                                        <div class="col-8 border-left">
                                             <div class="card-header border-bottom p-0">
                                                 <div class="media m-75">
                                                     <a href="JavaScript:void(0);">
@@ -369,7 +369,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                 </div>
                                             </div>
 
-                                            <div class="position-absolute" style="width:95%;top:500px;">
+                                            <div class="position-absolute" style="width:95%;bottom: 0;">
                                                 <input type="hidden" name="id" id="id_client" value="">
                                                 <input type="hidden" name="author" id="author" value="">
                                                 

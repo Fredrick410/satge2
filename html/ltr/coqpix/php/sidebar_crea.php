@@ -21,20 +21,28 @@
 </style>
 
 <div class="list-group list-group-messages">
-                                    <a href="creation-list-conversation-nonlu.php" class="list-group-item pt-0 active">
+                                    <a href="creation-list-conversation-nonlu.php" class="list-group-item active">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div>
                                         Conversation
                                         <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count_msg ?></span>
-                                    <a href="creation-list.php" class="list-group-item pt-0" id="inbox-menu">
+                                    </a>
+                                    <a href="" class="list-group-item">
+                                        <div class="fonticon-wrap d-inline mr-25">
+                                            <i class="livicon-evo" data-options="name: home.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                            </i>
+                                        </div>
+                                        Domiciliation
+                                    </a>
+                                    <hr>
+                                    <a href="creation-list.php" class="list-group-item" id="inbox-menu">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: briefcase.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div>
                                         Tous
-                                    </a>
                                     </a>
                                     <a href="creation-list-notification.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
@@ -49,14 +57,14 @@
                                             <i class="livicon-evo" data-options="name: check-alt.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div> 
-                                        Créa valide
+                                        Créa validé
                                     </a>
                                     <a href="creation-list-invalide.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
                                             <i class="livicon-evo" data-options="name: remove.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div>
-                                        Créa non valide
+                                        Créa en cours
                                     </a>
                                     <a href="crea-list-favo.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
@@ -67,7 +75,7 @@
                                     </a>
                                     <a href="crea-list-delete.php" class="list-group-item">
                                         <div class="fonticon-wrap d-inline mr-25">
-                                            <i class="livicon-evo" data-options="name: trash.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent; duration:0.85;">
+                                            <i class="livicon-evo" data-options="name: trash.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                             </i>
                                         </div>
                                         Corbeille
