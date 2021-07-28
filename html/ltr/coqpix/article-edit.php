@@ -11,15 +11,25 @@ require_once 'php/config.php';
     $true = $pdoStat->execute();
     $entreprise = $pdoStat->fetch();
 
-    $pdoStat = $bdd->prepare('SELECT * FROM article WHERE id = :num');
-    $pdoStat->bindValue(':num',$_GET['numarticle']);
-    $true = $pdoStat->execute();
-    $article = $pdoStat->fetch();
+    $pdoStatt = $bdd->prepare('SELECT * FROM article WHERE id_article = :num');
+    $pdoStatt->bindValue(':num',$_GET['numarticle']);
+    $true = $pdoStatt->execute();
+    $article = $pdoStatt->fetch();
 
     $pdoStast = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
     $pdoStast->bindValue(':num',$_SESSION['id_session']);
     $pdoStast->execute();
     $fournisseur = $pdoStast->fetchAll();
+
+    $pdoStt = $bdd->prepare('SELECT * FROM fournisseur WHERE id = :num');
+    $pdoStt->bindValue(':num',$_GET['numfournisseur']);
+    $pdoStt->execute(); 
+    $fournisseurt2 = $pdoStt->fetch();
+
+    $pdoSttr = $bdd->prepare('SELECT * FROM article INNER JOIN fournisseur ON fournisseur.id = article.id_fournisseur WHERE article.id_session = :num');
+    $pdoSttr->bindValue(':num',$_SESSION['id_session']);
+    $pdoSttr->execute();
+    $articlee = $pdoSttr->fetchAll();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -76,9 +86,17 @@ require_once 'php/config.php';
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">
                             <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
                         </ul>
+                        <ul class="nav navbar-nav bookmark-icons">
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                        </ul>
+                        <script>
+                            function retourn() {
+                                window.history.back();
+                            }
+                        </script> 
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
                         </ul>
@@ -182,7 +200,7 @@ require_once 'php/config.php';
 
                                         <!-- users edit account form start -->
                             <form action="php/edit_article.php" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="id" value="<?= $article['id'] ?>">
+                            <input type="hidden" name="id_article" value="<?= $article['id_article'] ?>">
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
@@ -194,27 +212,26 @@ require_once 'php/config.php';
                                                 </div>
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
-                                                            <div class="controls">
-                                                                <label>Unités de mesure :</label>
-                                                                <input name="umesure" type="text" class="form-control" placeholder="Unités de mesure" value="<?= $article['umesure'] ?>">
-                                                            </div>
+                                                        <label>Référence de l'article :</label>
+                                                        <input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article" value="<?= $article['referencearticle'] ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-sm-6">
                                                     <br>
                                                     <div class="form-group">
-                                                            <div class="controls">
-                                                            <input type="file" id="file" name="img" style="display:none"/>
-                                                            <a onclick="file.click()" class="btn btn-outline-primary">Modifier l'image</a>
-                                                                <img src="../../../app-assets/images/article/<?= $article['img']; ?>" alt="" width="150">
-                                                            </div>
+                                                        <div class="controls">
+                                                        <input type="file" id="file" name="img" style="display:none"/>
+                                                        <a onclick="file.click()" class="btn btn-outline-primary">Modifier l'image</a>
+                                                            <img src="../../../app-assets/images/article/<?= $article['img']; ?>" alt="" width="150">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                               
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
-                                                        <label>Référence de l'article :</label>
-                                                        <input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article" value="<?= $article['referencearticle'] ?>">
+                                                        <div class="controls">
+                                                            <label>Unités de mesure :</label>
+                                                            <input name="umesure" type="text" class="form-control" placeholder="Unités de mesure" value="<?= $article['umesure'] ?>">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -223,17 +240,18 @@ require_once 'php/config.php';
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
                                                         <label>Fournisseur</label>
-                                                        <select name="nom_fournisseur" id="fourour" class="form-control invoice-item-select">
-                                                            <option value="<?= $article['nom_fournisseur'] ?>"><?= $article['nom_fournisseur'] ?></option>
+                                                        <select name="id_fournisseur" id="fournisseur" class="form-control invoice-item-select">
+                                                            <option value="<?= $fournisseurt2['id'] ?>"><?= $fournisseurt2['name_fournisseur'] ?></option>
                                                             <optgroup label="--------------------------------">
+                                                            <optgroup label="Liste des fournisseurs">
                                                             <?php foreach($fournisseur as $fournisseurt): ?>
-                                                            <option value="<?= $fournisseurt['name_fournisseur'] ?>"><?= $fournisseurt['name_fournisseur'] ?></option>
+                                                                <option value="<?= $fournisseurt['id'] ?>"><?= $fournisseurt['name_fournisseur'] ?></option>
                                                             <?php endforeach; ?> <!--Affiche la liste de fournisseur -->
                                                             <optgroup label="--------------------------------">
                                                             <option value="Pas de Fournisseur">Autres</option>
                                                         </select>
                                                     </div>
-                                                </div> 
+                                                </div>
                                                 <div class="col-12">
                                                  <hr><style>.line{text-decoration: underline;}</style>
                                                 </div>

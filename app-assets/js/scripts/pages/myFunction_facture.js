@@ -23,19 +23,19 @@ const selectElement = document.getElementById("article");
   });
 
 
-const selectElementt = document.getElementById("facturepour");
+// const selectElementt = document.getElementById("facturepour");
 
-  selectElementt.addEventListener('change', (event) => {
+//   selectElementt.addEventListener('change', (event) => {
 
-    var inpp = document.getElementById("newfacturepour");
-    if (selectElementt.value == "Pas de clients") {
+//     var inpp = document.getElementById("newfacturepour");
+//     if (selectElementt.value == "Pas de clients") {
 
-      inpp.disabled = false;
+//       inpp.disabled = false;
 
-    }else{
+//     }else{
 
-      inpp.disabled = true;
+//       inpp.disabled = true;
 
-    }
+//     }
 
-  });
+//   });

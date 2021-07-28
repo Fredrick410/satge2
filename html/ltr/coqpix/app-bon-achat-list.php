@@ -6,21 +6,27 @@ ini_set('display_startup_errors', TRUE);
 // include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
-    $pdoStat = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
-    $pdoStat->bindValue(':num',$_SESSION['id_session']);
-    $pdoStat->execute();
-    $facture = $pdoStat->fetchAll();
-
-    $pdoStatr = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
-    $pdoStatr->bindValue(':num',$_SESSION['id_session']);
-    $pdoStatr->execute();
-    $facturer = $pdoStatr->fetch();
-    $numeros = $facturer['numerosbon'];
+    // $sql = "SELECT cout * quantite as TOTAL FROM bon_commande WHERE id_session = :num AND numerosbon=:numerosbon AND commande='Commandeencoursdetraitement'";
+    // $req = $bdd->prepare($sql);
+    // $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
+    // $req->bindValue(':numerosbon',$numerosbon); 
+    // $req->execute();
+    // $res = $req->fetch();
 
     $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
+
+    $pdoSt = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
+    $pdoSt->bindValue(':num',$_SESSION['id_session']);
+    $pdoSt->execute();
+    $fournisseur = $pdoSt->fetchAll();
+
+    $pdoSttr = $bdd->prepare('SELECT * FROM bon_commande INNER JOIN fournisseur ON fournisseur.id = bon_commande.numerosfournisseur WHERE bon_commande.id_session = :num');
+    $pdoSttr->bindValue(':num',$_SESSION['id_session']);
+    $pdoSttr->execute();
+    $bons_four = $pdoSttr->fetchAll();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -98,15 +104,6 @@ require_once 'php/config.php';
                                 <a href="app-bon-achat-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "Rt82u";}else{echo "y44vJ";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon de commande</a>
                             </div>
                         </div>
-                        <div class="col text-right">
-                            <div class="invoice-create-btn mb-1">
-                                <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
-                                   Auto-incrementation sous la forme FAC-(année)(numéro)<br>
-                                   <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
-                                   <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
-                                </p>
-                            </div>
-                        </div>
                     </div>
                     <!-- Options and filter dropdown button-->
                     <div class="action-dropdown-btn d-none">
@@ -125,27 +122,39 @@ require_once 'php/config.php';
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th>
-                                        <span class="align-middle">Numéro</span>
-                                    </th>
+                                    <th><span class="align-middle">Numéro Bon</span>
                                     <th>Valeur</th>
                                     <th>Date</th>
-                                    <th>Client</th>
+                                    <th>Fournisseur</th>
                                     <th>Etiquette</th>
                                     <th>Statut</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($facture as $factures):
-                            $numeros = $factures['numerosbon'];
+                            <!-- <?php
+                                // $numerosbon = $bons['id'];
+
+                                // $sql = "SELECT (cout * quantite) as TOTAL FROM bon_commande";
+                                // WHERE numerosbon=:numerosbon AND commande='Commandeencoursdetraitement'
+                                // $req = $bdd->prepare($sql);
+                                // $req->bindValue(':numerosbon', PDO::PARAM_INT);
+                                // $req->execute();
+                                // $reqs = $req->fetch();
+
+                                // $montant_t = !empty($reqs) ? $reqs['TOTAL'] : 0;
+                                
+                                // var_dump($reqs);
+                            ?> -->
+                            <?php foreach ($bons_four as $bons):
+                                $numeros = $bons['id_bon_commande'];
+                               
                                 try{
-  
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
+                                    // Somme du prix HT
+                                $sql = "SELECT SUM(ROUND(T.TOTAL, 2)) as MONTANT_T FROM (SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonachat') T";
   
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-                                $req->bindValue(':numeros',$numeros); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
@@ -153,32 +162,27 @@ require_once 'php/config.php';
                                 }
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
-
                             ?>
                                 <tr>
                                     <td></td>
-                                    
                                     <td></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numbon=<?= $factures['id'] ?>">BC-<?= $factures['numerosbon'] ?></a>
+                                        <a href="app-invoice-view.php?numbon=<?= $bons['id_bon_commande'] ?>">BC-<?= $bons['id_bon_commande'] ?></a>
                                     </td>
-                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
-                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
-                                    <td><span class="invoice-customer"><?= $factures['bonpour'] ?></span></td>
-                                    <td>
-                                        <span class="bullet bullet-success bullet-sm"></span>
-                                        <small class="text-muted"><?= $factures['etiquette'] ?></small>
-                                    </td>
-                                    <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_bon'] ?></span></td>
+                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $bons['monnaie'] ?></span></td>
+                                    <td><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($bons['dte'])); ?></td>
+                                    <td><a href="fournisseur-edit.php?numfour=<?= $bons['numerosfournisseur'] ?>"><?= $bons['name_fournisseur'] ?></a></td>
+                                    <td><span class="bullet bullet-success bullet-sm"></span><?= $bons['etiquette'] ?></td>
+                                    <td><span class="<?= $bons['status_color'] ?>"><?= $bons['status_bon'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-bon-achat-view.php?numbon=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-bon-achat-view.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-bon-achat-edit.php?numbon=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <a href="app-bon-achat-edit.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_bon_achat.php?numbon=<?= $factures['numerosbon'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="php/delete_bon_achat.php?bon=<?= $bons['numerosbon'] ?>&numbon=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
                                             </a>                                
                                         </div>

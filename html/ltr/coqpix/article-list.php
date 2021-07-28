@@ -197,7 +197,7 @@ require_once 'php/config.php';
                                                     <td><?= $typ ?></td>
                                                     <td><?= $articlee['tvavente'] ?>%</td>
                                                     <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
+                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id_article'] ?>&numfournisseur=<?= $articlee['id_fournisseur'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id_article'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>
