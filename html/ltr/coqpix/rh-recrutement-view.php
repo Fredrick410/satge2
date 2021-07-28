@@ -863,6 +863,22 @@ if (count($candidature) != 0) {
                                                                 }
                                                             }
 
+                                                            if(tableVar[0][2] == 'red'){
+                                                                red[0] = tableVar[tableVar.length-1][0];
+                                                            }
+                                                            else if(tableVar[0][2] == 'blue'){
+                                                                blue[0] = tableVar[tableVar.length-1][0];
+                                                            }
+                                                            else if(tableVar[0][2] == 'yellow'){
+                                                                yellow[0] = tableVar[tableVar.length-1][0];
+                                                            }
+                                                            else if(tableVar[0][2] == 'green'){
+                                                                green[0] = tableVar[tableVar.length-1][0];
+                                                            }
+                                                            else {
+                                                                purple[0] = tableVar[tableVar.length-1][0];
+                                                            }
+
                                                             var ctx = document.getElementById('myChart<?= $i ?>').getContext('2d');
                                                             var myChart = new Chart(ctx, {
                                                                 type: 'radar',
