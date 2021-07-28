@@ -702,8 +702,6 @@ if (count($candidature) != 0) {
                                                                     tableVar.push(element);
                                                                 }
                                                             });
-                                                            console.log(tableVar);
-                                                            //var tableVar = [red_deter, red_amb, red_gout, red_esp, blue_ais, blue_ouv, blue_dip, blue_pers, yellow_diri, yellow_rep, yellow_org, yellow_visio, green_conf, green_ind, green_crea, green_auto, purple_gest, purple_react, purple_pat, purple_resp];
 
                                                             var text_moy_red = "faible";
                                                             text_moy_red = moy_red > 3 && moy_red < 7 ? "moyenne" : text_moy_red;
@@ -821,34 +819,34 @@ if (count($candidature) != 0) {
                                                                     finalLabel.push(tableVar[i][1]);
                                                                     if (tableVar[i][2] == "red") {
                                                                         red.push(tableVar[i][0]);
-                                                                        blue.push(null);
-                                                                        yellow.push(null);
-                                                                        green.push(null);
-                                                                        purple.push(null);
+                                                                        blue.push(0);
+                                                                        yellow.push(0);
+                                                                        green.push(0);
+                                                                        purple.push(0);
                                                                     } else if (tableVar[i][2] == "blue") {
                                                                         blue.push(tableVar[i][0]);
-                                                                        red.push(null);
-                                                                        yellow.push(null);
-                                                                        green.push(null);
-                                                                        purple.push(null);
+                                                                        red.push(0);
+                                                                        yellow.push(0);
+                                                                        green.push(0);
+                                                                        purple.push(0);
                                                                     } else if (tableVar[i][2] == "yellow") {
                                                                         yellow.push(tableVar[i][0]);
-                                                                        blue.push(null);
-                                                                        red.push(null);
-                                                                        green.push(null);
-                                                                        purple.push(null);
+                                                                        blue.push(0);
+                                                                        red.push(0);
+                                                                        green.push(0);
+                                                                        purple.push(0);
                                                                     } else if (tableVar[i][2] == "green") {
                                                                         green.push(tableVar[i][0]);
-                                                                        blue.push(null);
-                                                                        yellow.push(null);
-                                                                        red.push(null);
-                                                                        purple.push(null);
+                                                                        blue.push(0);
+                                                                        yellow.push(0);
+                                                                        red.push(0);
+                                                                        purple.push(0);
                                                                     } else {
                                                                         purple.push(tableVar[i][0]);
-                                                                        blue.push(null);
-                                                                        yellow.push(null);
-                                                                        green.push(null);
-                                                                        red.push(null);
+                                                                        blue.push(0);
+                                                                        yellow.push(0);
+                                                                        green.push(0);
+                                                                        red.push(0);
                                                                     }
                                                                 }
                                                             }
