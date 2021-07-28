@@ -19,46 +19,10 @@ ini_set('display_startup_errors', TRUE);
         $dte = $_POST['dte'];
     }
 
-    if($_POST['nomproduit'] == ""){
-        $nomproduit = "nom produit";
-    }else{
-        $nomproduit = $_POST['nomproduit'];
-    }
-
-    if($_POST['quantite'] == ""){
-        $quantite = "0";
-    }else{
-        $quantite = $_POST['quantite'];
-    }
-
     if($_POST['commande'] == ""){
         $commande = "Commande en cours de traitement";
     }else{
         $commande = $_POST['commande'];
-    }
-
-    if($_POST['adresse'] == ""){
-        $adresse = "Adresse";
-    }else{
-        $adresse = $_POST['adresse'];
-    }
-
-    if($_POST['departement'] == ""){
-        $departement = "31100";
-    }else{
-        $departement = $_POST['departement'];
-    }
-
-    if($_POST['email'] == ""){
-        $email = "email@email.com";
-    }else{
-        $email = $_POST['email'];
-    }
-
-    if($_POST['tel'] == ""){
-        $tel = "06.00.00.00.00";
-    }else{
-        $tel = $_POST['tel'];
     }
 
     if($_POST['note'] == ""){
@@ -75,20 +39,18 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, nomproduit, quantite, commande, refbon, adresse, email, tel, departement, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, nom_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, commande, refbon, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, numerosfournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($numerosbon),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
         htmlspecialchars($_POST['nom_bon']),
-        htmlspecialchars($nomproduit),
-        htmlspecialchars($quantite),
         htmlspecialchars($commande),
         htmlspecialchars($_POST['refbon']),
-        htmlspecialchars($adresse),
-        htmlspecialchars($email),
-        htmlspecialchars($tel),
-        htmlspecialchars($departement),
+        // htmlspecialchars($adresse),
+        // htmlspecialchars($email),
+        // htmlspecialchars($tel),
+        // htmlspecialchars($departement),
         htmlspecialchars($_POST['modalite']),
         htmlspecialchars($_POST['monnaie']),
         htmlspecialchars($note),
@@ -97,13 +59,19 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($_POST['etiquette']),
         htmlspecialchars($_SESSION['id_session']), //$_SESSION
         htmlspecialchars($_POST['descrip']),
-        htmlspecialchars($_POST['nom_fournisseur'])
+        // htmlspecialchars($_POST['nom_fournisseur']),
+        htmlspecialchars($_POST['numerosfournisseur'])
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdoA->bindValue(':numeros', $numerosarticle);
         $pdoA->execute();
+
+        $pdoF = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
+        $pdoF->bindValue(':num', $_SESSION['id_session']); //$_SESSION
+        $pdoF->bindValue(':numeros', $numerosarticle);
+        $pdoF->execute();
 
         //calculs
 
@@ -114,7 +82,7 @@ ini_set('display_startup_errors', TRUE);
 
     try{
   
-        $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout, quantite,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
+        $sql = "SELECT SUM(ROUND(T.TOTAL, 2)) as MONTANT_T FROM ( SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
             
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
@@ -125,10 +93,10 @@ ini_set('display_startup_errors', TRUE);
             echo "Erreur " . $e->getMessage();
         }
 
-        //delete tout les articles en plus
+    // delete tout les articles en plus
         
-        $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
-        $pdoDel->execute();
+    $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
+    $pdoDel->execute();
 
     header('Location: ../app-bon-achat-list.php');
     exit();

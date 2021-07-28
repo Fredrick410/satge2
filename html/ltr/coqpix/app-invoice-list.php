@@ -204,7 +204,7 @@ require_once 'php/config.php';
                                
                                 try{
                                     // Somme du prix HT
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente' ) T";
+                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM (SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente') T";
   
                                 $req = $bdd->prepare($sql);
                                 $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
@@ -213,7 +213,6 @@ require_once 'php/config.php';
                                 }catch(Exception $e){
                                     echo "Erreur " . $e->getMessage();
                                 }
-                                
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
                                 

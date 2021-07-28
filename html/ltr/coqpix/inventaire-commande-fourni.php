@@ -6,10 +6,10 @@ ini_set('display_startup_errors', TRUE);
 // include 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
-    $pdoStat = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
-    $pdoStat->bindValue(':num',$_SESSION['id_session']);
-    $pdoStat->execute();
-    $bon_commande = $pdoStat->fetchAll();
+    // $pdoStat = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
+    // $pdoStat->bindValue(':num',$_SESSION['id_session']);
+    // $pdoStat->execute();
+    // $bon_commande = $pdoStat->fetchAll();
 
     // $pdoStatr = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
     // $pdoStatr->bindValue(':num',$_SESSION['id_session']);
@@ -25,8 +25,17 @@ require_once 'php/config.php';
     $pdoSt = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']);
     $pdoSt->execute();
-    $fournisseur = $pdoSt->fetchAll();
+    $fournisseur = $pdoSt->fetch();
 
+    $pdoSttr = $bdd->prepare('SELECT * FROM bon_commande INNER JOIN fournisseur ON fournisseur.id = bon_commande.numerosfournisseur WHERE bon_commande.id_session = :num');
+    $pdoSttr->bindValue(':num',$_SESSION['id_session']);
+    $pdoSttr->execute();
+    $bons_four = $pdoSttr->fetchAll();
+
+    $pdaStt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+    $pdaStt->bindValue(':num',$_SESSION['id_session']);
+    $pdaStt->execute();
+    $article = $pdaStt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -177,7 +186,7 @@ require_once 'php/config.php';
                     </div>
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
-                            <thead class="text-center">
+                            <thead>
                                 <tr>
                                     <th></th>
                                     <th></th>
@@ -187,20 +196,23 @@ require_once 'php/config.php';
                                     <th>Fournisseur</th>
                                     <th>Article</th>
                                     <th>Quantité</th>
-                                    <th>Commandé</th>
+                                    <th title="Article commandé : 
+En cours de traitement
+Commande Validé/Livraison en cours
+Commande annulé"                    >Commandé</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
-                            <?php foreach ($bon_commande as $bons):
-                                $numeros = $bons['numerosbon'];
+                            <tbody>
+                            <?php foreach ($bons_four as $bons):
+                                $numeros = $bons['id_bon_commande'];
+                               
                                 try{
-  
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout, quantite, (cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
+                                    // Somme du prix HT
+                                $sql = "SELECT SUM(ROUND(T.TOTAL, 2)) as MONTANT_T FROM (SELECT cout * quantite as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonachat') T";
   
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-                                $req->bindValue(':numeros',$numeros); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
@@ -209,32 +221,60 @@ require_once 'php/config.php';
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
 
+                                $sqll = "SELECT numeros, article, quantite FROM articles WHERE typ='bonachat' AND numeros=(SELECT id_bon_commande FROM bon_commande WHERE id_bon_commande=:numeros)";
+  
+                                $reqs = $bdd->prepare($sqll);
+                                $reqs->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
+                                $reqs->execute();
+                                $resq = $reqs->fetch();
+
+                                $count = "SELECT COUNT(article) as countarticle FROM articles WHERE numeros=(SELECT id_bon_commande FROM bon_commande WHERE id_bon_commande=:numeros)";
+
+                                $reqss = $bdd->prepare($count);
+                                $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
+                                $reqss->execute();
+                                $resqq = $reqss->fetch();
                             ?>
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numbon=<?= $bons['id'] ?>">BC-<?= $bons['id'] ?></a>
+                                        <a href="app-invoice-view.php?numbon=<?= $bons['id_bon_commande'] ?>">BC-<?= $bons['id_bon_commande'] ?></a>
                                     </td>
                                     <td><?= $montant_t; ?> <?= $bons['monnaie'] ?></td>
                                     <td><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($bons['dte'])); ?></td>
-                                    <?php foreach($fournisseur as $fournisseurr): ?>
-                                        <td><a href="fournisseur-edit.php?numfour=<?= $fournisseurr['id'] ?>"><?= $bons['nom_fournisseur'] ?></a></td>
-                                    <?php endforeach; ?>
-                                    <td><?= $bons['nomproduit'] ?></td>
-                                    <td><?= $bons['quantite'] ?></td>
+                                    <td><a href="fournisseur-edit.php?numfour=<?= $bons['numerosfournisseur'] ?>"><?= $bons['name_fournisseur'] ?></a></td>
+                                    <td title="Article commandé - Nombre total d'articles">
+                                        <!-- <?php foreach ($article as $articlee): ?>
+                                            <?php
+                                                if($resq['numeros'] == $bons['id_bon_commande']) { 
+                                                    $resq['article'];
+                                                    if($i++ == $bons['id_bon_commande']) break;
+                                                }
+                                            ?> 
+                                        <?php endforeach ?> -->
+                                         <?= $articlee['article'] ?>
+                                        (<?= $resqq['countarticle'] ?>)
+                                    </td>
+                                    <td><?= $resq['quantite'] ?></td>
                                     <td><?= $bons['commande'] ?></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-bon-achat-view.php?numbon=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="app-bon-achat-view.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>" class="invoice-action-view mr-1" title="Voir le bon de commande">
                                                 <i class="bx bx-show-alt"></i>
                                             </a>
-                                            <a href="app-bon-achat-edit.php?numbon=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                            <a href="app-bon-achat-edit.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer" title="Editer le bon de commande">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_bon_achat.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
+                                            <a href="php/delete_bon_achat.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1" title="Supprimer le bon de commande">
                                                 <i class='bx bxs-trash'></i>
-                                            </a>                                
+                                            </a>
+                                            <a href="#" class="invoice-action-view mr-1" title="Valider le bon de commande">
+                                                <i class='bx bxs-check-circle'></i>
+                                            </a>
+                                            <a href="#" class="invoice-action-view mr-1" title="Annuler le bon de commande">
+                                                <i class='bx bxs-x-circle'></i>
+                                            </a>                                 
                                         </div>
                                     </td> 
                                 </tr>

@@ -16,13 +16,13 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
         $pdoDel->execute();
 
-        $pdoDe = $bdd->prepare('DELETE FROM bon_commande WHERE id=:id AND id_session=:id_session');
+        $pdoDe = $bdd->prepare('DELETE FROM bon_commande WHERE id_bon_commande=:id AND id_session=:id_session');
         $pdoDe->bindValue(':id', $_GET['id']);
         $pdoDe->bindValue(':id_session',$_SESSION['id_session']); //$_SESSION
         $pdoDe->execute();
 
         sleep(1);
-        header('Location: ../app-bon-achat-list.php');
+        header('Location: ../inventaire-commande-fourni.php');
         exit();
     
 ?>

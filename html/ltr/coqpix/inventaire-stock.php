@@ -20,6 +20,11 @@ require_once 'php/config.php';
     $pdoSt->bindValue(':num',$_SESSION['id_session']);
     $pdoSt->execute();
     $fournisseur = $pdoSt->fetchAll();
+
+    $pdoSttr = $bdd->prepare('SELECT * FROM article INNER JOIN fournisseur ON fournisseur.id = article.id_fournisseur WHERE article.id_session = :num');
+    $pdoSttr->bindValue(':num',$_SESSION['id_session']);
+    $pdoSttr->execute();
+    $articlee = $pdoSttr->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -189,27 +194,29 @@ require_once 'php/config.php';
                                                 <!-- Indique la quantité de chaque produit dans le stock -->
                                                     <th>Quantité</th>
                                                 <!-- Indique si le produit est commandé : Commande en attente de validation / Commande annulé / Livraison en cours / Pas de commande -->
-                                                    <th>Commandé</th>
+                                                    <th title="Article commandé : 
+Non (par défaut)
+En cours de traitement
+Commande Validé/Livraison en cours
+Commande annulé"                                    >Commandé</th>
                                                 <!-- Date de la dernière commande effectué -->
-                                                    <th>Date de commande</th>
+                                                    <th title="Date de la dernière commande de cet article">Date de commande</th>
                                                 <!-- Fournisseur du produit -> on clique pour être redirigé vers une page afin de faire une commande chez ce fournisseur -->
                                                     <th>Fournisseur</th>
                                                     <th>Options</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
-                                            <?php foreach($article as $articlee): ?>
+                                            <?php foreach($articlee as $articlees): ?>
                                                 <tr>
-                                                    <td><img src="../../../app-assets/images/article/<?= $articlee['img']; ?>" alt="" width="100"></td>
-                                                    <td><?= $articlee['article'] ?></td>
-                                                    <td><?= $articlee['referencearticle'] ?></td>
-                                                    <td><?= $articlee['stock'] ?></td>
-                                                    <td><?= $articlee['commandeatm'] ?></td>
-                                                    <td><?= $articlee['datecommande'] ?></td>
-                                                    <?php foreach($fournisseur as $fournisseurr): ?>
-                                                        <td><a href="fournisseur-edit.php?numfour=<?= $fournisseurr['id'] ?>"><?= $articlee['nom_fournisseur'] ?></a></td>
-                                                    <?php endforeach; ?>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id'] ?>" title="Editer article"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id'] ?>" title="Supprimer article"><i class="bx bx-trash-alt"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="app-bon-achat-add.php?jXN955CbHqqbQ463u5Uq=Rt82u&numfour=<?= $fournisseurr['id'] ?>" title="Commandé l'article"><i class="bx bx-revision"></i></a></td> 
+                                                    <td><img src="../../../app-assets/images/article/<?= $articlees['img']; ?>" alt="" width="100"></td>
+                                                    <td><?= $articlees['article'] ?></td>
+                                                    <td><?= $articlees['referencearticle'] ?></td>
+                                                    <td><?= $articlees['stock'] ?></td>
+                                                    <td><?= $articlees['commandeatm'] ?></td>
+                                                    <td><?= $articlees['datecommande'] ?></td>
+                                                    <td><a href="fournisseur-edit.php?numfour=<?= $articlees['id_fournisseur'] ?>"><?= $articlees['name_fournisseur'] ?></a></td>
+                                                    <td><a href="article-edit.php?numarticle=<?= $articlees['id_article'] ?>&numfournisseur=<?= $articlees['id_fournisseur'] ?>" title="Editer article"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlees['id_article'] ?>" title="Supprimer article"><i class="bx bx-trash-alt"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="app-bon-achat-add-forbon.php?jXN955CbHqqbQ463u5Uq=Rt82u&numarticle=<?= $articlees['id_article'] ?>&numfournisseur=<?= $articlees['id_fournisseur'] ?>" title="Commandé l'article"><i class="bx bx-revision"></i></a></td> 
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>
