@@ -181,9 +181,6 @@ input[type="radio"].solu + label:hover{
     outline: none;
 }
 
-li #telephone_temp, li #telephoneds_temp {
-    
-}
 
 #btn button{
     background-color: #29fe8c;
