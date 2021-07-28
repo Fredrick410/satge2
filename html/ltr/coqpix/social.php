@@ -105,7 +105,9 @@ require_once 'php/config.php';
                                         <p class="card-text">
                                             Toutes vos déclarations sociales à portée de main.
                                         </p>
+                                        <br> <br>
                                         <a href="charge-espace.php"><button class="btn btn-primary block">Mes charges sociales</button></a>
+                                        <br>
                                     </div>
                                     <img class="card-img-bottom img-fluid" src="../../../app-assets/images/slider/06.jpg" alt="Card image cap">
                                 </div>
@@ -124,7 +126,8 @@ require_once 'php/config.php';
                                     <p style='padding-left: 20px;'>Faire une demande de bulletins de salaire pour l'ensemble des membres de de votre société, la demande sera traitée par nos équipes le plus rapidement possible.</p>
                                     <p style='padding-left: 20px;'>Vous avez ( <label style='color: red;'><?= $count_bulletin ?></label> ) bulletin(s) de salaire(s).</p>
                                     <div class="form-group">
-                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="bulletin-choose.php"><button class="btn btn-info mr-1 mb-1">Bulletins de salaire</button></a>
+                                        
+                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="bulletin-choose.php"><button class="btn btn-primary block">Bulletins de salaire</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -138,10 +141,11 @@ require_once 'php/config.php';
                                     <p style='padding-left: 20px;'>Demander une attestation social sans prise de tete et très rapidement.</p>
                                     <p style='padding-left: 20px;'>Vous avez ( <label style='color: red;'> <?= $count_attestation ?> </label> ) attestation(s).</p>
                                     <div class="form-group">
-                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="attestation-social.php"><button class="btn btn-warning mr-1 mb-1">Demander une attestation</button></a>
-                                    </div>   
+                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="attestation-social.php"><button class="btn btn-primary block">Demander une attestation</button></a>
+                                    </div>
                                 </div>
                                 <div class="form-group">
+
                                 </div>
                             </div>
                         </div>
