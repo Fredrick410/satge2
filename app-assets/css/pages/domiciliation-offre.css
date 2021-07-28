@@ -181,7 +181,10 @@ input[type="radio"].solu + label:hover{
     outline: none;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> efc8a6bf7d78117aead987521f9744533d7c048e
 #btn button{
     background-color: #29fe8c;
     padding: 5px 10px;
@@ -197,7 +200,7 @@ input[type="radio"].solu + label:hover{
 
 @media screen and (max-width: 1250px) {
     #contrat label, #contrat input {
-        min-width: 90%;
+        min-width: 100%;
         left: 0;
         position: relative;
     }

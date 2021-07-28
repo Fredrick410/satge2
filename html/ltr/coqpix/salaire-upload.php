@@ -1,9 +1,11 @@
 <?php 
-require_once 'php/verif_session_connect_admin.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'gestionnaire social');
+require_once 'php/verif_session_connect_admin.php';
+
 
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id=:num');
     $pdoSta->bindValue(':num',$_GET['num']);

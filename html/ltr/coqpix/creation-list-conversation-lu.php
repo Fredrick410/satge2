@@ -99,7 +99,7 @@ $list_msg_lu = $SQL->fetchAll();
                                     Nouveau
                                 </button>
                             </div>
-                            <div class="sidebar-menu-list">
+                            <div class="sidebar-menu-list" >
                                 <!-- sidebar menu  -->
                                 <?php include('php/sidebar_crea.php'); ?>
                                 <!-- sidebar menu  end-->
@@ -238,7 +238,7 @@ $list_msg_lu = $SQL->fetchAll();
                                                     <i class="bx bx-menu"></i>
                                                 </div>
                                                 <fieldset class="form-group position-relative has-icon-left m-0">
-                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher une conversation">
+                                                    <input type="text" class="form-control" id="conv-search" placeholder="Rechercher une conversation">
                                                     <div class="form-control-position">
                                                         <i class="bx bx-search"></i>
                                                     </div>
@@ -304,7 +304,7 @@ $list_msg_lu = $SQL->fetchAll();
                                                                 <div class="avatar mr-75">
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
-                                                                    <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
+                                                                    <a><span class="list-group-item-text text-truncate line namecolor" id="nom" ><?= $msg['you'] ?></span></a>
                                                                     <!--Bouton nonlu-->
                                                                     <button type="button" class="btn btn-icon action-icon border-0" id="unsave"  onclick='retablir(`<?=$msg["destination"]?>`);'>
                                                                         <span class="fonticon-wrap">
@@ -426,6 +426,7 @@ $list_msg_lu = $SQL->fetchAll();
     <script src="../../../app-assets/js/scripts/pages/get_conv.js"></script>
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_crea.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-email.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
