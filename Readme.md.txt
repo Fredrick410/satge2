@@ -137,3 +137,7 @@ branche de oscar :
 
 	tache réalisée le 27/07/2021 :
 		- nouveau front pour la page creation edit
+
+branche de Leo :
+	tache réalisée le 28/07/2021
+		- enregistrement de la fiche de renseignement dans la base de données

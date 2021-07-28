@@ -240,15 +240,20 @@ $pdf->lastPage();
 
 // Close and output PDF document
 ob_clean();
+
 $dir = realpath(__DIR__ . '/../../..');
-$file_name = 'contrat_domiciliation_idcrea'.$id_crea.'_date-'.date("H-i-s").'.pdf';
-$pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'I');
-/*
-if ($status_crea == 'morale') {
-    $pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'F');
-}elseif ($status_crea == 'physique') {
-    $pdf->Output($dir.'/src/crea_societe/justificatifd/'.$file_name, 'F');
+$dir = $dir.'/src/crea_societe/domiciliation/';
+
+if (!is_dir($dir)) {
+    mkdir($dir, 0777, true);
 }
+
+$file_name = 'renseignement_domiciliation_idcrea'.$id_crea.'_date-'.date("H-i-s").'.pdf';
+//$pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'I');
+
+
+    $pdf->Output($dir.$file_name, 'F');
+
 //============================================================+
 // END OF FILE
 //============================================================+
@@ -256,16 +261,8 @@ if ($status_crea == 'morale') {
 require_once 'php/verif_session_crea.php';
 require_once 'php/config.php';
 
-if ($status_crea == 'morale') {
-
-    $update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifss = ? WHERE id = ?');
+    $update = $bdd->prepare('UPDATE crea_societe SET doc_domiciliation = ? WHERE id = ?');
     $update->execute(array( ($file_name), $id_crea  ));
-    header('Location: creation-view-morale-justificatifss');
+    header('Location: page-creation');
 
-}elseif ($status_crea == 'physique') {
-
-    $update = $bdd->prepare('UPDATE crea_societe SET doc_justificatifd = ? WHERE id = ?');
-    $update->execute(array( ($file_name), $id_crea  ));
-    header('Location: creation-view-physique-justificatifd');
-}*/
 ?>
