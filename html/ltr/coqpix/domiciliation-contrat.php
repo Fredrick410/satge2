@@ -205,32 +205,16 @@ require_once 'php/verif_session_crea.php';
                         </ul>
                         <div class="row px-3">
                             <div class="col-3" id="contrat-gauche">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="reexpedition" id="reexpedition" required value="Non"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">Non</label>
-                                    </li>
-                                </ul>
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="Non"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">Non</label>
                             </div>
                             <div class="col-3" id="contrat-droite">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="reexpedition" id="reexpedition" required value="1 fois par semaine (9,50 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">1 fois/sem (9,50 €)</label>
-                                    </li>
-                                </ul>
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="1 fois par semaine (9,50 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">1 fois/sem (9,50 €)</label>
                             </div>
                             <div class="col-3" id="contrat-droite">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="reexpedition" id="reexpedition" required value="2 fois par semaine (14 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">2 fois/sem (14 €)</label>
-                                    </li>
-                                </ul>
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="2 fois par semaine (14 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">2 fois/sem (14 €)</label>
                             </div>
                             <div class="col-3" id="contrat-droite">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="reexpedition" id="reexpedition" required value="Tous les jours (33 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 15%;">Tous les jours (33 €)</label>
-                                    </li>
-                                </ul>
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="Tous les jours (33 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">Tous les jours (33 €)</label>
                             </div>
                         </div>
                     </div>
@@ -242,34 +226,17 @@ require_once 'php/verif_session_crea.php';
                         </ul>
                         <div class="row px-3">
                             <div class="col-6" id="contrat-gauche">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="scancourrier" id="scancourrier" required value="Non"><label for="scancourrier" style="text-transform: lowercase; margin-left: 15%;">Non</label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-6" id="contrat-droite">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="scancourrier" id="scancourrier" required value="Oui"><label for="scancourrier" style="text-transform: lowercase; margin-left: 15%;">Oui</label>
-                                    </li>
-                                </ul>
+                                <input type="radio" name="scancourrier" id="scancourrier" required value="Oui"><label for="scancourrier" style="text-transform: lowercase; margin-left: 30px;">Oui</label><br>
+                                <input type="radio" name="scancourrier" id="scancourrier" required value="Non"><label for="scancourrier" style="text-transform: lowercase; margin-left: 30px;">Non</label>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12" id="">
+                    <div class="col-12 px-2" id="">
                         <div class="row px-3">
                             <label for="adresse_factures">Adresse de facturation</label>
-                            <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill w-50" placeholder="entrez une adresse" required value="">
+                            <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill" placeholder="entrez une adresse" required value="">
                         </div>
-                    </div>
-                    <div class="col-6" id="contrat-droite">
-                        <ul>
-                            <li>
-                                
-                            </li>
-                        </ul>
-                    </div>
+                    </div><br><br>
                     <div class="col-12">
                         <ul>
                             <li>
@@ -278,18 +245,8 @@ require_once 'php/verif_session_crea.php';
                         </ul>
                         <div class="row px-3">
                             <div class="col-6" id="contrat-gauche">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="mail"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 15%;">Par mail :</label><input type="text" name="envoi_factures" id="envoi_factures" class="border-dark rounded-pill" placeholder="entrez un email" value="">
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-6" id="contrat-droite">
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="choixenvoi" id="choixenvoi" required value="courrier"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 15%;">Par courrier :</label><input type="text" name="envoi_factures1" id="envoi_factures1" class="border-dark rounded-pill" placeholder="entrez une adresse" value="">
-                                    </li>
-                                </ul>
+                                <input type="radio" name="choixenvoi" id="choixenvoi" required value="mail"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 20px;">Par mail :</label><input type="text" name="envoi_factures" id="envoi_factures" class="border-dark rounded-pill" style="margin-bottom: 10px;" placeholder="entrez un email" value=""><br>
+                                <input type="radio" name="choixenvoi" id="choixenvoi" required value="courrier"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 20px;">Par courrier :</label><input type="text" name="envoi_factures1" id="envoi_factures1" class="border-dark rounded-pill" placeholder="entrez une adresse" value="">
                             </div>
                         </div>
                     </div>
@@ -304,7 +261,7 @@ require_once 'php/verif_session_crea.php';
                                 <input type="text" name="nationalite" id="nationalite" class="border-dark rounded-pill" placeholder="entrez la nationalité" required value="Français">
                             </li>
                             <li>
-                                <label for="telephoneds">Téléphone du signataire</label>
+                                <label id="tel1" for="telephoneds">Téléphone du signataire</label>
                                 <input onchange='processds(event)' type="text" name="telephoneds_temp" id="telephoneds_temp" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
                                 <input type="text" name="telephoneds" id="telephoneds" hidden required value="<?= $crea['tel_diri'] ?>">
                             </li>
@@ -333,7 +290,7 @@ require_once 'php/verif_session_crea.php';
                                 <input type="text" name="emailds" id="emailds" class="border-dark rounded-pill" placeholder="entrez un email" required value="<?= $crea['email_diri'] ?>">
                             </li>
                             <li>
-                                <label for="telephone">Téléphone</label>
+                                <label id="tel2" for="telephone">Téléphone</label>
                                 <input onchange='process(event)' type="text" name="telephone_temp" id="telephone_temp" class="border-dark rounded-pill" required>
                                 <input type="text" name="telephone" id="telephone" hidden required>
                             </li>
@@ -348,45 +305,35 @@ require_once 'php/verif_session_crea.php';
         <div class="row card-body bg-white" id="contrat">
             <h3>Coordonnées Bancaires</h3>
             <div class="col-12">
+                <div class="row px-3" id="">
+                    <div class="col-12">
+                        <label>Mode de règlement</label>
+                    </div>
+                    <div class="row px-2">
+                        <div class="col-12" id="contrat-gauche">
+                            <input type="radio" name="reglement" id="reglement" value="Virement bancaire (Hors Europe)"><label for="reglement" style="text-transform: lowercase; margin-left: 20px;">Virement bancaire (Hors Europe)</label><br>
+                            <input type="radio" name="reglement" id="reglement" value="Prélèvement automatique (Union Européene)"><label for="reglement" style="text-transform: lowercase; margin-left: 20px;">Prélèvement automatique (Union Européene)</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" id="">
                     <div class="col-12">
                         <ul>
                             <li>
-                                <label>Mode de règlement</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-6" id="contrat-gauche">
-                        <ul>
-                            <li>
-                                <input type="radio" name="reglement" id="reglement" required value="Virement bancaire (Hors Europe)"><label for="reglement" style="text-transform: lowercase; margin-left: 15%;">Virement bancaire (Hors Europe)</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-6" id="contrat-droite">
-                        <ul>
-                            <li>
-                                <input type="radio" name="reglement" id="reglement" required value="Prélèvement automatique (Union Européene)"><label for="reglement" style="text-transform: lowercase; margin-left: 15%;">Prélèvement automatique (Union Européene)</label>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12">
-                        <ul>
-                            <li>
                                 <label for="nombanque">Nom de la banque</label>
-                                <input type="text" name="nombanque" id="nombanque" class="border-dark rounded-pill w-50" placeholder="entrez le nom de la banque" required value="">
+                                <input type="text" name="nombanque" id="nombanque" class="border-dark rounded-pill w-50" placeholder="entrez le nom de la banque" value="">
                             </li>
                             <li>
                                 <label for="adressebanque">Adresse de la banque</label>
-                                <input type="text" name="adressebanque" id="adressebanque" class="border-dark rounded-pill w-50" placeholder="entrez l'adresse de la banque" required value="">
+                                <input type="text" name="adressebanque" id="adressebanque" class="border-dark rounded-pill w-50" placeholder="entrez l'adresse de la banque" value="">
                             </li>
                             <li>
                                 <label for="iban">IBAN</label>
-                                <input type="text" name="iban" id="iban" class="border-dark rounded-pill w-50" placeholder="entrez un IBAN" required value="">
+                                <input type="text" name="iban" id="iban" class="border-dark rounded-pill w-50" placeholder="entrez un IBAN" pattern="^FR\d{12}[0-9A-Z]{11}\d{2}$" value="">
                             </li>
                             <li>
                                 <label for="bic">BIC</label>
-                                <input type="text" name="bic" id="bic" class="border-dark rounded-pill w-50" placeholder="entrez un BIC" required value="">
+                                <input type="text" name="bic" id="bic" class="border-dark rounded-pill w-50" placeholder="entrez un BIC" value="">
                             </li>
                         </ul>
                     </div>

@@ -163,18 +163,22 @@ input[type="radio"].solu + label:hover{
     color: #051441;
     font-size: 15px;
     margin-top: 5px;
+    margin-right: 20px;
 }
 
 #contrat input[type=radio] {
-   position: absolute;
-   left: 15%;
-   top: 9px;
+   position: relative;
 }
 
 #contrat input:not(#telephone_temp, #telephoneds_temp){
-    right: 40px;
-    position: absolute;
+    position: relative;
     padding: 5px 10px;
+}
+
+#telephone, #telephone_temp, #telephoneds, #telephoneds_temp{
+    position: relative;
+    padding: 5px 0 5px 50px;
+    width: 190px; 
 }
 
 #contrat input:focus{
@@ -196,13 +200,10 @@ input[type="radio"].solu + label:hover{
 
 @media screen and (max-width: 1250px) {
     #contrat label, #contrat input {
-        min-width: 100%;
-        left: 0;
+        min-width: 70%;
         position: relative;
     }
     #contrat input[type=radio] {
-        left: 15%;
-        position: absolute;
         min-width: 0;
     }
 }
