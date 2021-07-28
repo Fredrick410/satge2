@@ -106,25 +106,31 @@ $bookmark_favo = $pdoSt->fetchAll();
                 <div class="email-left-aside">
                   <div class="card text-center">
                     <div class="card-body">
-                      <div class="navbar-header">
+                      <div class="container-fluid navbar-header">
                         <ul class="nav navbar-nav flex-row">
-                          <li class="nav-item mr-auto modern-nav-toggle">
+                          <li class="nav-item mx-auto modern-nav-toggle">
                             <a href="dashboard-analytics.php"><img class="logocoq" src="../../../app-assets/images/logo/coqpix2.png" /></a>
                           </li>
                         </ul>
                       </div>
-                      <div class="email-app-sidebar left-bookmark">
-                        <div class="media">
-                          <div class="media-size-email"><img class="me-3 rounded-circle" src="../../../cuba/assets/images/user/user.png" alt=""></div>
-                          <div class="media-body">
+                      <!--<div class="email-app-sidebar left-bookmark">-->
+                      <div class="left-bookmark">
+                        <br><br>
+                        <div>
+                          <div class="mx-auto">
+                            <img class="w-30 rounded-circle" src="../../../cuba/assets/images/user/user.png" alt="">
+                          </div>
+                          <div class="mx-auto">
                             <h6 class="f-w-600"><?= $entreprise['nameentreprise'] ?></h6>
                             <p><?= $entreprise['emailentreprise'] ?></p>
                           </div>
                         </div>
-                        <ul class="navbar-text text-left">
+                        <br>
+                        <button type="button" class="btn btn-primary w-70" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="me-8" data-feather="bookmark"></i>Ajouter une recherche</button>
+                        <br><br>
+                        <ul class="nav flex-column text-left">
                           <li class="nav-item">
-                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="me-8" data-feather="bookmark"></i>Ajouter une recherche</button>
-                            <br><br>
+                            <br>
                             <div class="modal fade modal-bookmark" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
@@ -164,22 +170,21 @@ $bookmark_favo = $pdoSt->fetchAll();
                               </div>
                             </div>
                           </li>
-                          <li class="nav-item"><span class="main-title"> Tous</span></li>
-                          <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><span class="title"> Mes recherches</span></a></li>
-                          <li><a class="show" id="pills-favourites-tab" data-bs-toggle="pill" href="#pills-favourites" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title"> Mes favoris</span></a></li>
-                          <li><a class="show" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" aria-controls="pills-shared" aria-selected="false"><span class="title"> Partagé avec moi (SOON)</span></a></li>
+                          <li class="nav-item"><span class="h1 main-title font-weight-bolder"> Tous</span></li>
+                          <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><span class="title text-dark"> Mes recherches</span></a></li>
+                          <li><a class="show" id="pills-favourites-tab" data-bs-toggle="pill" href="#pills-favourites" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title text-dark"> Mes favoris</span></a></li>
+                          <li><a class="show" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" aria-controls="pills-shared" aria-selected="false"><span class="title text-dark"> Partagé avec moi (SOON)</span></a></li>
                           <br>
-                          <li><span class="main-title"> Theme de recherche<span class="pull-right"><a href="#" data-bs-toggle="modal" data-bs-target="#createtag"><i data-feather="plus-circle"></i></a></span></span></li>
+                          <li><span class="h1 main-title font-weight-bolder">Theme de recherche<span class="pull-right"><a href="#" data-bs-toggle="modal" data-bs-target="#createtag"><i data-feather="plus-circle"></i></a></span></span></li>
                           
                           <?php foreach ($etiq as $etiquette) : ?>
-                            <li type="disc" style="">
-                              <a class="show trash_etiq" data-bs-toggle="pill" role="tab" aria-selected="false">
-                                <!--<span class="bullet bullet-sm" style='background-color: green;'></span>-->
-                                <a href="php/delete_etiq_bookmark.php?num=<?= $etiquette['id'] ?>" class="fa fa-trash icon_trash justify-content" style ="display:inline; space-between;"></a>
-                                <a href="etiquette_edit_book.php?num=<?= $etiquette['id'] ?>" class="fa fa-edit icon_edit" style ="display:inline;" ></a>
-                                <span class="title"> <?= $etiquette['name_etiq'] ?><?= $etiquette['id'] ?></span>        
-                              </a>
-                            </li>
+                            <ul>  
+                              <li class="navbar-expand" type="disc" style="list-color: red;"><span class="title"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></span> 
+                                <a href="php/delete_etiq_bookmark.php?num=<?= $etiquette['id']?>" class="fa fa-trash pull-right" style ="display:inline; justify-content: space-between; color: red;"></a>
+                                <a href="etiquette_edit_book.php?num=<?= $etiquette['id'] ?>" class="fa fa-edit pull-right" style ="display:inline; justify-content: space-between; color: blue" ></a>
+                                <a class="show trash_etiq" data-bs-toggle="pill" role="tab" aria-selected="false"></a>
+                              </li>
+                            </ul>
                           <?php endforeach; ?>
                         </ul>
                       </div>
@@ -254,8 +259,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                                         <div class="details-website">
                                           <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="144" width="144">
                                           <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks_favo['id'] ?>&favo=<?= $bookmarks_favo['favorite_search'] ?>"><i style="color: <?php if ($bookmarks_favo['favorite_search'] !== "no") {
-                                                                                                                                                                                                                      echo "yellow";
-                                                                                                                                                                                                                    } ?>;" class="fa fa-star"></i></a></div>
+                                                                                                                                                                                                                  } ?>;" class="fa fa-star"></i></a></div>
                                           <div class="desciption-data">
                                             <div class="title-bookmark">
                                               <h6  class="title_0"><?= $bookmarks_favo['name_search'] ?></h6>
