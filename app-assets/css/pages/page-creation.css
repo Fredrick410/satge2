@@ -176,6 +176,19 @@ body{
     width: 100px;
 }
 
+#doc_domiciliation{
+    border-radius: 40px;
+    background-color: white;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+    height: 100%;
+    width: 100%;
+}
+
+#doc_domiciliation embed{
+    margin: auto;
+    border-radius: 40px;
+}
+
 input[type="checkbox"].solu {
     display: none;
 }

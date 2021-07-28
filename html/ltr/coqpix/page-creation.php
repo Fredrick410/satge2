@@ -19,6 +19,14 @@ require_once 'php/get_documents.php';
         $disparition = "harrypotter";
     }
 
+    if ($crea['doc_domiciliation'] == '') {
+        $affichage_domi = "";
+        $affichage_doc = "hidden";
+    } else {
+        $affichage_domi = "hidden";
+        $affichage_doc = "";
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -126,7 +134,7 @@ require_once 'php/get_documents.php';
         </div>
 
         <div class="row pt-2 pb-5" id="div-dodo">
-            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
+            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation" <?= $affichage_domi ?>>
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
                     <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3><br>
@@ -171,6 +179,14 @@ require_once 'php/get_documents.php';
                     </ul>
                 </div>
             </div>
+
+            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation" <?= $affichage_doc ?>>
+                <h2>Domiciliation</h2>
+                <div class="row" id="doc_domiciliation">
+                    <embed src=../../../src/crea_societe/domiciliation/<?= $crea['doc_domiciliation'] ?> width=100% height=100% type='application/pdf'/>
+                </div>
+            </div>
+
             <?php require_once('php/page-creation-document.php') ?>
         </div>
         <?php require_once('php/chat_domiciliation.php')?>

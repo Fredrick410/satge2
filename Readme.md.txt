@@ -141,3 +141,4 @@ branche de oscar :
 branche de Leo :
 	tache réalisée le 28/07/2021
 		- enregistrement de la fiche de renseignement dans la base de données
+		- affichage de la fiche dans le front à la page d'accueil quand créée
