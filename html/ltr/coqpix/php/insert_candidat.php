@@ -77,7 +77,7 @@ if (isset($_FILES['i_candidat']) and !empty($_FILES['i_candidat']['name'])) {
     }
 
     // On recupère le chemin
-    $dossier = '../../../../src/recrutement/img_candidat/';
+    $dossier = '../../../../src/img/';
     $fichier = basename($_FILES['i_candidat']['name']);
     $real_name = substr($fichier, 0, -4);
     $file_type = strtolower(pathinfo($fichier, PATHINFO_EXTENSION));
