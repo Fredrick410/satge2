@@ -678,27 +678,27 @@ if (count($candidature) != 0) {
 
                                                             var tableVar = [];
                                                             red.forEach(function(element) {
-                                                                if(element[0] != null){
+                                                                if (element[0] != null) {
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             blue.forEach(function(element) {
-                                                                if(element[0] != null){
+                                                                if (element[0] != null) {
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             yellow.forEach(function(element) {
-                                                                if(element[0] != null){
+                                                                if (element[0] != null) {
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             green.forEach(function(element) {
-                                                                if(element[0] != null){
+                                                                if (element[0] != null) {
                                                                     tableVar.push(element);
                                                                 }
                                                             });
                                                             purple.forEach(function(element) {
-                                                                if(element[0] != null){
+                                                                if (element[0] != null) {
                                                                     tableVar.push(element);
                                                                 }
                                                             });
@@ -824,8 +824,16 @@ if (count($candidature) != 0) {
                                                                         green.push(0);
                                                                         purple.push(0);
                                                                     } else if (tableVar[i][2] == "blue") {
-                                                                        if(blue.every(item => item === 0)){
-                                                                            blue[i-1] = red[i-1];
+                                                                        if (i != 0 && blue.every(item => item === 0)) {
+                                                                            if (tableVar[i - 1][2] == 'red') {
+                                                                                red[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'yellow') {
+                                                                                yellow[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'green') {
+                                                                                green[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'purple') {
+                                                                                purple[i] = tableVar[i][0];
+                                                                            }
                                                                         }
                                                                         blue.push(tableVar[i][0]);
                                                                         red.push(0);
@@ -833,8 +841,16 @@ if (count($candidature) != 0) {
                                                                         green.push(0);
                                                                         purple.push(0);
                                                                     } else if (tableVar[i][2] == "yellow") {
-                                                                        if(yellow.every(item => item === 0)){
-                                                                            yellow[i-1] = blue[i-1];
+                                                                        if (i != 0 && yellow.every(item => item === 0)) {
+                                                                            if (tableVar[i - 1][2] == 'red') {
+                                                                                red[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'blue') {
+                                                                                blue[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'green') {
+                                                                                green[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'purple') {
+                                                                                purple[i] = tableVar[i][0];
+                                                                            }
                                                                         }
                                                                         yellow.push(tableVar[i][0]);
                                                                         blue.push(0);
@@ -842,8 +858,16 @@ if (count($candidature) != 0) {
                                                                         green.push(0);
                                                                         purple.push(0);
                                                                     } else if (tableVar[i][2] == "green") {
-                                                                        if(green.every(item => item === 0)){
-                                                                            green[i-1] = yellow[i-1];
+                                                                        if (i != 0 && green.every(item => item === 0)) {
+                                                                            if (tableVar[i - 1][2] == 'red') {
+                                                                                red[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'blue') {
+                                                                                blue[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'yellow') {
+                                                                                yellow[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'purple') {
+                                                                                purple[i] = tableVar[i][0];
+                                                                            }
                                                                         }
                                                                         green.push(tableVar[i][0]);
                                                                         blue.push(0);
@@ -851,8 +875,16 @@ if (count($candidature) != 0) {
                                                                         red.push(0);
                                                                         purple.push(0);
                                                                     } else {
-                                                                        if(purple.every(item => item === 0)){
-                                                                            purple[i-1] = green[i-1];
+                                                                        if (i != 0 && purple.every(item => item === 0)) {
+                                                                            if (tableVar[i - 1][2] == 'red') {
+                                                                                red[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'blue') {
+                                                                                blue[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'yellow') {
+                                                                                yellow[i] = tableVar[i][0];
+                                                                            } else if (tableVar[i - 1][2] == 'green') {
+                                                                                green[i] = tableVar[i][0];
+                                                                            }
                                                                         }
                                                                         purple.push(tableVar[i][0]);
                                                                         blue.push(0);
@@ -862,23 +894,15 @@ if (count($candidature) != 0) {
                                                                     }
                                                                 }
                                                             }
-
-                                                            if(tableVar[0][2] == 'red'){
-                                                                red[0] = tableVar[tableVar.length-1][0];
+                                                            if (tableVar[tableVar.length - 1][2] == 'red') {
+                                                                red[0] = tableVar[tableVar.length - 1][0];
+                                                            } else if (tableVar[tableVar.length - 1][2] == 'blue') {
+                                                                blue[0] = tableVar[tableVar.length - 1][0];
+                                                            } else if (tableVar[tableVar.length - 1][2] == 'yellow') {
+                                                                yellow[0] = tableVar[tableVar.length - 1][0];
+                                                            } else if (tableVar[tableVar.length - 1][2] == 'green') {
+                                                                purple[0] = tableVar[tableVar.length - 1][0];
                                                             }
-                                                            else if(tableVar[0][2] == 'blue'){
-                                                                blue[0] = tableVar[tableVar.length-1][0];
-                                                            }
-                                                            else if(tableVar[0][2] == 'yellow'){
-                                                                yellow[0] = tableVar[tableVar.length-1][0];
-                                                            }
-                                                            else if(tableVar[0][2] == 'green'){
-                                                                green[0] = tableVar[tableVar.length-1][0];
-                                                            }
-                                                            else {
-                                                                purple[0] = tableVar[tableVar.length-1][0];
-                                                            }
-
                                                             var ctx = document.getElementById('myChart<?= $i ?>').getContext('2d');
                                                             var myChart = new Chart(ctx, {
                                                                 type: 'radar',
