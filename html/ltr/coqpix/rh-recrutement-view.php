@@ -605,6 +605,11 @@ if (count($candidature) != 0) {
                                                         success: function(response) {
                                                             max_value = response['max_value'];
                                                             tested_status = response['status'];
+                                                            var red_last = null;
+                                                            var blue_last = null;
+                                                            var yellow_last = null;
+                                                            var green_last = null;
+                                                            var purple_last = null;
 
                                                             var red_deter = [response['result_rep']['parametre_rep']['A'] / max_value * 10, "Détermination", "red"];
                                                             var red_amb = [response['result_rep']['parametre_rep']['B'] / max_value * 10, "Ambition", "red"];
@@ -613,7 +618,7 @@ if (count($candidature) != 0) {
 
                                                             var red = [red_deter, red_amb, red_gout, red_esp];
                                                             var sum_red = summ(red, tested_status, 0);
-                                                            var moy_red = sum_red[0] / sum_red[1]; // moyenne des valeur differente de 0
+                                                            var moy_red = sum_red[0] / sum_red[1]; // moyenne des valeurs differentes de null
                                                             var max_red = getMaxTableau(red);
                                                             var max2_red = getMaxTableau(red.filter(function(max) {
                                                                 return max != max_red;
@@ -626,7 +631,7 @@ if (count($candidature) != 0) {
 
                                                             var blue = [blue_ais, blue_ouv, blue_dip, blue_pers];
                                                             var sum_blue = summ(blue, tested_status, 1);
-                                                            var moy_blue = sum_blue[0] / sum_blue[1]; // moyenne des valeur differente de 0
+                                                            var moy_blue = sum_blue[0] / sum_blue[1]; // moyenne des valeurs differentes de null
                                                             var max_blue = getMaxTableau(blue);
                                                             var max2_blue = getMaxTableau(blue.filter(function(max) {
                                                                 return max != max_blue;
@@ -639,7 +644,7 @@ if (count($candidature) != 0) {
 
                                                             var yellow = [yellow_diri, yellow_rep, yellow_org, yellow_visio];
                                                             var sum_yellow = summ(yellow, tested_status, 2);
-                                                            var moy_yellow = sum_yellow[0] / sum_yellow[1]; // moyenne des valeur differente de 0
+                                                            var moy_yellow = sum_yellow[0] / sum_yellow[1]; // moyenne des valeurs differentes de null
                                                             var max_yellow = getMaxTableau(yellow);
                                                             var max2_yellow = getMaxTableau(yellow.filter(function(max) {
                                                                 return max != max_yellow;
@@ -652,7 +657,7 @@ if (count($candidature) != 0) {
 
                                                             var green = [green_conf, green_ind, green_crea, green_auto];
                                                             var sum_green = summ(green, tested_status, 3);
-                                                            var moy_green = sum_green[0] / sum_green[1]; // moyenne des valeur differente de 0
+                                                            var moy_green = sum_green[0] / sum_green[1]; // moyenne des valeurs differentes de null
                                                             var max_green = getMaxTableau(green);
                                                             var max2_green = getMaxTableau(green.filter(function(max) {
                                                                 return max != max_green;
@@ -665,13 +670,29 @@ if (count($candidature) != 0) {
 
                                                             var purple = [purple_gest, purple_react, purple_pat, purple_resp];
                                                             var sum_purple = summ(purple, tested_status, 4);
-                                                            var moy_purple = sum_purple[0] / sum_purple[1]; // moyenne des valeur differente de 0
+                                                            var moy_purple = sum_purple[0] / sum_purple[1]; // moyenne des valeurs differentes de null
                                                             var max_purple = getMaxTableau(purple);
                                                             var max2_purple = getMaxTableau(purple.filter(function(max) {
                                                                 return max != max_purple;
                                                             }));
 
-                                                            var tableVar = [red_deter, red_amb, red_gout, red_esp, blue_ais, blue_ouv, blue_dip, blue_pers, yellow_diri, yellow_rep, yellow_org, yellow_visio, green_conf, green_ind, green_crea, green_auto, purple_gest, purple_react, purple_pat, purple_resp];
+                                                            var tableVar = [];
+                                                            red.forEach(function(element) {
+                                                                tableVar.push(element);
+                                                            });
+                                                            blue.forEach(function(element) {
+                                                                tableVar.push(element);
+                                                            });
+                                                            yellow.forEach(function(element) {
+                                                                tableVar.push(element);
+                                                            });
+                                                            green.forEach(function(element) {
+                                                                tableVar.push(element);
+                                                            });
+                                                            purple.forEach(function(element) {
+                                                                tableVar.push(element);
+                                                            });
+                                                            //var tableVar = [red_deter, red_amb, red_gout, red_esp, blue_ais, blue_ouv, blue_dip, blue_pers, yellow_diri, yellow_rep, yellow_org, yellow_visio, green_conf, green_ind, green_crea, green_auto, purple_gest, purple_react, purple_pat, purple_resp];
 
                                                             var text_moy_red = "faible";
                                                             text_moy_red = moy_red > 3 && moy_red < 7 ? "moyenne" : text_moy_red;
@@ -770,7 +791,7 @@ if (count($candidature) != 0) {
                                                                 document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
                                                             }
 
-                                                            // methode filter Impossible
+                                                            // methode filter
 
                                                             var finalVar = [];
                                                             var finalLabel = [];
