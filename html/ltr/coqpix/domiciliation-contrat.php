@@ -333,7 +333,7 @@ require_once 'php/verif_session_crea.php';
                             </li>
                             <li>
                                 <label for="bic">BIC</label>
-                                <input type="text" name="bic" id="bic" class="border-dark rounded-pill w-50" placeholder="entrez un BIC" value="">
+                                <input type="text" name="bic" id="bic" class="border-dark rounded-pill w-50" placeholder="entrez un BIC" pattern="^[A-Z]{4}[F]{1}[R]{1}[A-Z0-9]{2}[A-Z0-9]{0,3}$" value="">
                             </li>
                         </ul>
                     </div>
