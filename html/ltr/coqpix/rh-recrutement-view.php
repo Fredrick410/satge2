@@ -824,24 +824,36 @@ if (count($candidature) != 0) {
                                                                         green.push(0);
                                                                         purple.push(0);
                                                                     } else if (tableVar[i][2] == "blue") {
+                                                                        if(blue.every(item => item === 0)){
+                                                                            blue[i-1] = red[i-1];
+                                                                        }
                                                                         blue.push(tableVar[i][0]);
                                                                         red.push(0);
                                                                         yellow.push(0);
                                                                         green.push(0);
                                                                         purple.push(0);
                                                                     } else if (tableVar[i][2] == "yellow") {
+                                                                        if(yellow.every(item => item === 0)){
+                                                                            yellow[i-1] = blue[i-1];
+                                                                        }
                                                                         yellow.push(tableVar[i][0]);
                                                                         blue.push(0);
                                                                         red.push(0);
                                                                         green.push(0);
                                                                         purple.push(0);
                                                                     } else if (tableVar[i][2] == "green") {
+                                                                        if(green.every(item => item === 0)){
+                                                                            green[i-1] = yellow[i-1];
+                                                                        }
                                                                         green.push(tableVar[i][0]);
                                                                         blue.push(0);
                                                                         yellow.push(0);
                                                                         red.push(0);
                                                                         purple.push(0);
                                                                     } else {
+                                                                        if(purple.every(item => item === 0)){
+                                                                            purple[i-1] = green[i-1];
+                                                                        }
                                                                         purple.push(tableVar[i][0]);
                                                                         blue.push(0);
                                                                         yellow.push(0);
