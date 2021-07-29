@@ -41,14 +41,6 @@ if (!empty($_POST['description_annonce'])) {
     echo json_encode($response_array);
     exit();
 }
-if (!empty($_POST['code_annonce'])) {
-    $code_annonce = $_POST['code_annonce'];
-} else {
-    $response_array['status'] = 'error';
-    $response_array['message'] = 'Merci de donner le code de l\'annonce.';
-    echo json_encode($response_array);
-    exit();
-}
 if (!empty($_POST['email_annonce'])) {
     $email_annonce = $_POST['email_annonce'];
 } else {
@@ -171,12 +163,11 @@ if (!empty($_POST['qcms']) and !empty($_POST['missions'])) {
     try {
         $missions = $_POST['missions'];
         $qcms = $_POST['qcms'];
-        $insert = $bdd->prepare('INSERT INTO rh_annonce (name_annonce, description_annonce, img_annonce, code_annonce, email_annonce, tel_annonce, age, poste, niveau, pays, temps, color_annonce, statut, id_session, qcm, link, type_contrat, image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,"","",?,?)');
+        $insert = $bdd->prepare('INSERT INTO rh_annonce (name_annonce, description_annonce, img_annonce, email_annonce, tel_annonce, age, poste, niveau, pays, temps, color_annonce, statut, id_session, qcm, link, type_contrat, image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,"","",?,?)');
         $insert->execute(array(
             htmlspecialchars($name_annonce),
             htmlspecialchars($description_annonce),
             htmlspecialchars($img_annonce),
-            htmlspecialchars($code_annonce),
             htmlspecialchars($email_annonce),
             htmlspecialchars($tel_annonce),
             htmlspecialchars($age_annonce),

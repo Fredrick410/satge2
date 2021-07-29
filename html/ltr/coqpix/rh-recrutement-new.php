@@ -119,12 +119,12 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="code_annonce">Code de partage</label>
-                                                    <input id="code_annonce" type="text" name="code_annonce" class="form-control" placeholder="Entrez votre code de partage">
-                                                    <small class="text-muted form-text">Code de partage va permettre de donner accès a l'annonce de recrutement en externe.</small>
-                                                </div>
+                                            <div class="form-group">
+                                                <label for="email_annonce">E-mail de contact</label>
+                                                <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
+                                                <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
                                             </div>
+                                        </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
@@ -137,34 +137,24 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="email_annonce">E-mail de contact</label>
-                                                    <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
-                                                    <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
-                                                </div>
+                                        <div class="col-sm-12">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="tel_annonce">Téléphone de contact</label>
+                                                <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
+                                                <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="tel_annonce">Téléphone de contact</label>
-                                                    <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
-                                                    <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label for="image">Condition d'insertion d'image</label>
+                                                    <label for="image">Photo du candidat</label>
                                                     <select id="image" name="image" class="form-control">
-                                                        <option value="" selected>Selectionnez une condition</option>
                                                         <option value="oui">Obligatoire</option>
-                                                        <option value="non">Facutatif</option>
+                                                        <option value="non" selected>Facutatif</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -483,7 +473,6 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
             var name_annonce = document.getElementById("name_annonce").value;
             var color_annonce = document.getElementById("color_annonce").value;
             var description_annonce = document.getElementById("description_annonce").value;
-            var code_annonce = document.getElementById("code_annonce").value;
             var email_annonce = document.getElementById("email_annonce").value;
             var tel_annonce = document.getElementById("tel_annonce").value;
             var age_annonce = document.getElementById("age_annonce").value;
@@ -525,7 +514,6 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                         name_annonce: name_annonce,
                         color_annonce: color_annonce,
                         description_annonce: description_annonce,
-                        code_annonce: code_annonce,
                         email_annonce: email_annonce,
                         tel_annonce: tel_annonce,
                         age_annonce: age_annonce,
@@ -629,74 +617,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                 submit();
             }
         });
-        //        vertical Wizard       //
-        // ------------------------------
-        $(".wizard-vertical").steps({
-            headerTag: "h1",
-            bodyTag: "fieldset",
-            transitionEffect: "fade",
-            enableAllSteps: true,
-            stepsOrientation: "vertical",
-            labels: {
-                finish: 'Submit'
-            },
-            onFinished: function(event, currentIndex) {
-                alert("Form submitted.");
-            }
-        });
 
-
-        //       Validate steps wizard //
-        // -----------------------------
-        // Show form
-        var stepsValidation = $(".wizard-validation");
-        var form = stepsValidation.show();
-
-        stepsValidation.steps({
-            headerTag: "h1",
-            bodyTag: "fieldset",
-            transitionEffect: "fade",
-            titleTemplate: '<span class="step">#index#</span> #title#',
-            labels: {
-                finish: 'Submit'
-            },
-            onStepChanging: function(event, currentIndex, newIndex) {
-                // Allways allow previous action even if the current form is not valid!
-                if (currentIndex > newIndex) {
-                    return true;
-                }
-                form.validate().settings.ignore = ":disabled,:hidden";
-                return form.valid();
-            },
-            onFinishing: function(event, currentIndex) {
-                form.validate().settings.ignore = ":disabled";
-                return form.valid();
-            },
-            onFinished: function(event, currentIndex) {
-                submit();
-            }
-        });
-
-        // Initialize validation
-        stepsValidation.validate({
-            ignore: 'input[type=hidden]', // ignore hidden fields
-            errorClass: 'danger',
-            successClass: 'success',
-            highlight: function(element, errorClass) {
-                $(element).removeClass(errorClass);
-            },
-            unhighlight: function(element, errorClass) {
-                $(element).removeClass(errorClass);
-            },
-            errorPlacement: function(error, element) {
-                error.insertAfter(element);
-            },
-            rules: {
-                email: {
-                    email: true
-                }
-            }
-        });
         // live Icon color change on state change
         $(document).ready(function() {
             $(".current").find(".step-icon").addClass("bx bx-time-five");
@@ -737,9 +658,6 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
         $('.actions a[role="menuitem"]').addClass("btn btn-primary");
         $('.icon-tab [role="menuitem"]').addClass("glow ");
         $('.wizard-vertical [role="menuitem"]').removeClass("btn-primary").addClass("btn-light-primary");
-    </script>
-    <script>
-
     </script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->

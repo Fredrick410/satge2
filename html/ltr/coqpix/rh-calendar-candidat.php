@@ -8,18 +8,20 @@ require_once 'php/config.php';
 // Si l'id de la candidature n'existe pas ou est non numerique on retourne a la liste des candidatures pour entretiens
 if (isset($_GET['num']) and is_numeric($_GET['num'])) {
     $id = htmlspecialchars($_GET['num']);
+    // On recupere la candidature
+    $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="Admis à entretien"');
+    $pdoStt->bindValue(':num', $id, PDO::PARAM_INT);
+    $pdoStt->execute();
+    $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
 } else {
-    header('Location: rh-entretient-candidats.php');
+    // On recupere les candidatures
+    $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE statut="Admis à entretien"');
+    $pdoStt->execute();
+    $candidatures = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// On recupere la candidature
-$pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="Admis à entretien"');
-$pdoStt->bindValue(':num', $id, PDO::PARAM_INT);
-$pdoStt->execute();
-$candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
-
 // Si la candidature n'existe pas on retourne a la liste des candidatures pour entretiens
-if (count($candidature) == 0) {
+if (isset($candidature) == 0 and isset($candidatures) == 0) {
     header('Location: rh-entretient-candidats.php');
 }
 
@@ -149,11 +151,20 @@ $entreprise = $pdoSta->fetch();
 
                 </div>
                 <div>
-                    <h4>Liste des entretiens de <?php if ($candidature['sexe_candidat'] == "homme") {
-                                                    echo "Mr";
-                                                } else {
-                                                    echo "Mme";
-                                                } ?> <?= $candidature['nom_candidat'] ?> - <?= $candidature['name_annonce'] ?></h4>
+                    <?php if (!isset($candidatures)) {
+                    ?>
+                        <h4>Liste des entretiens de <?php if ($candidature['sexe_candidat'] == "homme") {
+                                                        echo "Mr";
+                                                    } else {
+                                                        echo "Mme";
+                                                    } ?> <?= $candidature['nom_candidat'] ?> - <?= $candidature['name_annonce'] ?></h4>
+                    <?php
+                    } else {
+                    ?>
+                        <h4>Liste des entretiens</h4>
+                    <?php
+                    }
+                    ?>
                 </div>
                 <!-- calendar Wrapper  -->
                 <div class="calendar-wrapper position-relative">
@@ -454,7 +465,7 @@ $entreprise = $pdoSta->fetch();
                     e.schedule.end = e.end;
                     titre_entretien = e.schedule.title;
                     debut_entretien = moment(new Date(e.start).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
-                    fin_entretien = moment( new Date(e.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
+                    fin_entretien = moment(new Date(e.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
                     lieu_entretien = e.schedule.location;
                     id_entretien = e.schedule.id;
                     $.ajax({
@@ -661,7 +672,7 @@ $entreprise = $pdoSta->fetch();
                 titre_entretien = schedule.title;
                 // On convertis en YYYY-MM-DD HH:mm:ss UTC et on ajoute le decalage horaire
                 debut_entretien = moment(new Date(schedule.start).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
-                fin_entretien = moment( new Date(schedule.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
+                fin_entretien = moment(new Date(schedule.end).toISOString().slice(0, 16).replace(/-/g, "-").replace("T", " ")).add(new Date().getTimezoneOffset() * -1, 'minutes').format("YYYY-MM-DD HH:mm:ss");
                 lieu_entretien = schedule.location;
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_entretien.php", //new path, save your work first before u try
@@ -788,6 +799,8 @@ $entreprise = $pdoSta->fetch();
                 refreshScheduleVisibility();
             }
 
+            <?php if(isset($candidatures)){
+            ?>
             function getEntretiens() {
                 // Recuperation des entretiens
                 entretiens.length = 0;
@@ -822,7 +835,44 @@ $entreprise = $pdoSta->fetch();
                     }
                 });
             }
+            <?php 
+            }
+            else {
+            ?>
+            function getEntretiens() {
+                // Recuperation des entretiens
+                entretiens.length = 0;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_entretiens.php", //new path, save your work first before u try
+                    type: "POST",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            data.entretiens.forEach(function(element) {
+                                var schedule = new ScheduleInfo();
 
+                                schedule.id = element['id_entretien'];
+                                schedule.calendarId = String(1);
+
+                                schedule.title = element['titre_entretien'];
+                                schedule.start = moment(element['debut_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                schedule.end = moment(element['fin_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                schedule.category = 'time';
+
+                                schedule.location = element['lieu_entretien'];
+
+                                entretiens.push(schedule);
+                            });
+                            setSchedules();
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    }
+                });
+            }
+            <?php
+            }
+            ?>
             // Events initialize
             function setEventListener() {
                 $('.menu-navigation').on('click', onClickNavi);
@@ -861,7 +911,13 @@ $entreprise = $pdoSta->fetch();
         })();
 
         $(document).ready(function() {
-
+            <?php
+            if(isset($candidatures)){
+            ?>
+            $('sidebar-new-schedule').hide();
+            <?php
+            }
+            ?>
             // calendar sidebar scrollbar
             if ($('.sidebar').length > 0) {
                 var sidebar = new PerfectScrollbar(".sidebar", {

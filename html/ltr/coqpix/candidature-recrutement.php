@@ -147,49 +147,6 @@ if ($annonce['code_annonce'] == "") {
                 }
                 ?>
                 <div class="form-group">
-                    &nbsp;<button title="Permets d'avoir les permissions sur l'annonce de recrutement" type="button" class="btn btn-outline-success <?= $none_bts ?>" data-toggle="modal" data-target="#inlineForm">
-                        <i class='bx bxs-lock-open'></i> Unlock
-                    </button>
-                    <a title="Permets d'avoir les permissions sur l'annonce de recrutement" href="php/disconnect_recrutement.php?num=<?= $_GET['num'] ?>"><button type="button" class="btn btn-outline-danger <?= $none_btd ?>" data-target="#inlineForm">
-                            <i class='bx bxs-lock'></i> Lock
-                        </button></a>
-                    <!--login form Modal -->
-                    <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel33">Code d'invitation </h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <i class="bx bx-x"></i>
-                                    </button>
-                                </div>
-                                <form action="" method="POST">
-                                    <div class="modal-body">
-                                        <label>Nom Prenom : </label>
-                                        <div class="form-group">
-                                            <input type="text" name="nom_prenom" placeholder="DUPOND Jean" class="form-control">
-                                        </div>
-                                        <label>Code d'invitation : </label>
-                                        <div class="form-group">
-                                            <input type="password" name="code_annonce" placeholder="*****" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-danger" data-dismiss="modal">
-                                            <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Fermer</span>
-                                        </button>
-                                        <button type="submit" class="btn" style="background-color: <?= $annonce['color_annonce'] ?>; color: white;">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Valider</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
                     <div class="row">
                         <div class="col border-right">
                             <div class="form-group text-center">
@@ -236,8 +193,7 @@ if ($annonce['code_annonce'] == "") {
                 <div class="form-group">
                     <div class="card-content mt-2">
                         <div class="card-body">
-                            <form method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" class="wizard-horizontal" enctype="multipart/form-data">
-                                <input type="hidden" name="id_session" value="<?= $annonce['id_session'] ?>">
+                            <form class="wizard-horizontal" method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" enctype="multipart/form-data" id="myForm">
                                 <!-- Step 1 -->
                                 <h6>
                                     <i class="step-icon"></i>
@@ -247,7 +203,7 @@ if ($annonce['code_annonce'] == "") {
                                 </h6>
                                 <!-- Step 1 end-->
                                 <!-- body content step 1 -->
-                                <fieldset>
+                                <fieldset class="pt-0">
                                     <div class="row">
                                         <div class="col-12">
                                             <h6 class="py-50">Etape 1 - Entrez vos informations personnelles</h6>
@@ -256,6 +212,7 @@ if ($annonce['code_annonce'] == "") {
                                             <div class="form-group">
                                                 <label for="firstName13">Nom de famille </label>
                                                 <input name="nom_candidat" type="text" class="form-control" id="firstName13" placeholder="Nom de famille" required>
+                                                <input type="hidden" name="id_session" value="<?= $annonce['id_session'] ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -272,33 +229,33 @@ if ($annonce['code_annonce'] == "") {
                                                 <input name="specialite_candidat" type="text" class="form-control" id="emailAddress1" placeholder="Ma spécialité" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Age</label>
                                                 <input name="age_candidat" type="number" class="form-control" placeholder="Exemple : 18 ans" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Adresse email</label>
                                                 <input name="email_candidat" type="email" class="form-control" placeholder="bak@gmail.com" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Numéro de téléphone</label>
                                                 <input name="tel_candidat" type="tel" class="form-control" placeholder="+33607258629" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Date de naissance</label>
                                                 <input name="dtenaissance_candidat" type="date" class="form-control" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label>Pays</label>
+                                                <label>Pays de résidence</label>
                                                 <select class="form-control" name="pays" id="pays">
                                                     <option value="">Selectionnez un pays</option>
                                                     <optgroup label="Europe">
@@ -509,19 +466,19 @@ if ($annonce['code_annonce'] == "") {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Nom de l'annonce</label>
                                                 <input name="name_annonce" type="text" class="form-control" placeholder="Nom de l'annonce" value="<?= $annonce['name_annonce'] ?>" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Durée</label>
                                                 <input name="time_candidat" type="texts" class="form-control" placeholder="1 mois" value="<?= $annonce['temps'] ?>" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Ajouter votre photo</label><br>
                                                 <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile"><br>
@@ -534,7 +491,7 @@ if ($annonce['code_annonce'] == "") {
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="d-block">Sexe</label>
                                                 <div class="custom-control-inline">
@@ -630,11 +587,6 @@ if ($annonce['code_annonce'] == "") {
                                     </div>
                                 </fieldset>
                                 <!-- body content of step 2 end-->
-                                <!-- body content of Step 3 -->
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-outline-success round col-12">Continue</button>
-                                </div>
-                                <!-- body content of Step 3 end-->
                             </form>
                         </div>
                     </div>
@@ -652,7 +604,8 @@ if ($annonce['code_annonce'] == "") {
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/jquery.steps.min.js"></script>
+    <script src="../../../app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -665,7 +618,68 @@ if ($annonce['code_annonce'] == "") {
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/modal/components-modal.js"></script>
-    <script src="../../../app-assets/js/scripts/forms/wizard-steps.js"></script>
+    <script>
+        //    Wizard tabs with icons setup
+        // ------------------------------
+        $(".wizard-horizontal").steps({
+            headerTag: "h6",
+            bodyTag: "fieldset",
+            transitionEffect: "fade",
+            titleTemplate: '<span class="step">#index#</span> #title#',
+            labels: {
+                finish: 'Submit'
+            },
+            onFinished: function(event, currentIndex) {
+                submit();
+            }
+        });
+
+        function submit() {
+            document.getElementById("myForm").submit(); 
+        }
+
+        // live Icon color change on state change
+        $(document).ready(function() {
+            $(".current").find(".step-icon").addClass("bx bx-time-five");
+            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#5A8DEE'
+            });
+        });
+        // Icon change on state
+        // if click on next button icon change
+        $(".actions [href='#next']").click(function() {
+            $(".done").find(".step-icon").removeClass("bx bx-time-five").addClass("bx bx-check-circle");
+            $(".current").find(".step-icon").removeClass("bx bx-check-circle").addClass("bx bx-time-five");
+            // live icon color change on next button's on click
+            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#5A8DEE'
+            });
+            $(".current").prev("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#39DA8A'
+            });
+        });
+        $(".actions [href='#previous']").click(function() {
+            // live icon color change on next button's on click
+            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#5A8DEE'
+            });
+            $(".current").next("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#adb5bd'
+            });
+        });
+        // if click on  submit   button icon change
+        $(".actions [href='#finish']").click(function() {
+            $(".done").find(".step-icon").removeClass("bx-time-five").addClass("bx bx-check-circle");
+            $(".last.current.done").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                strokeColor: '#39DA8A'
+            });
+        });
+        // add primary btn class
+        $('.actions a[role="menuitem"]').addClass("btn btn-primary");
+        $('.icon-tab [role="menuitem"]').addClass("glow ");
+        $('.wizard-vertical [role="menuitem"]').removeClass("btn-primary").addClass("btn-light-primary");
+    </script>
+
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
