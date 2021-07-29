@@ -28,5 +28,4 @@ if($_SESSION['candidat'] == $_POST['num']){
         }
     }
 }
-header("Location: ../rh-recrutement-view.php?num=$id");
 exit();

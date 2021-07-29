@@ -548,7 +548,7 @@ if (count($candidature) != 0) {
                                                         ?>
                                                     </tbody>
                                                 </table>
-                                                <label id="total">Total : <?= $score ?></label>
+                                                <label id="total<?= $i ?>">Total : <?= $score ?></label>
                                             </div>
                                         <?php
                                         } else {
@@ -1111,7 +1111,7 @@ if (count($candidature) != 0) {
                     doc.text("Résultats", doc.internal.pageSize.width / 2, 260, null, null, 'center');
 
                     doc.setFontSize(12);
-                    doc.text(document.querySelector('#total').innerText, doc.internal.pageSize.width - 40, 278, null, null, 'right');
+                    doc.text(document.querySelector('#total' + val).innerText, doc.internal.pageSize.width - 40, 278, null, null, 'right');
                     doc.autoTable({
                         html: '#table' + val,
                         startY: 290,
