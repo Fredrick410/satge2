@@ -151,8 +151,8 @@ foreach ($questions as $key => $desquestions) {
                                                             foreach ($reponses[$i][$j] as $key => $val) {
                                                             ?>
                                                                 <div class='form-group col-12'>
-                                                                    <input type='checkbox' id="reponse<?= $val['id'] ?>" name='reponses<?= $val['idquestion'] ?>[]' value='<?= $val['id'] ?>'>
-                                                                    <label for='reponse<?= $val['id'] ?>'><?= $val['libelle'] ?></label>
+                                                                    <input type='checkbox' id="reponse<?= $val['idquestion'] ?>" name='reponses<?= $val['idquestion'] ?>[]' value='<?= $val['id'] ?>'>
+                                                                    <label for='reponse<?= $val['idquestion'] ?>'><?= $val['libelle'] ?></label>
                                                                 </div>
                                                             <?php
                                                             }
