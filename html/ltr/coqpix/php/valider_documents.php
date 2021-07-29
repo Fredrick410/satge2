@@ -59,14 +59,14 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
         ];
 
         echo $mail['adresse_emetteur'];
-        /*$sent = email($mail);
+        $sent = email($mail);
         if ($sent) {
             header("Location: ../test-qcm.php?key=$key");
         } else {
             $_SESSION['message'] = "Erreur";
             header("Location: ../candidature-recrutement-files.php?key=$key");
             exit();
-        }*/
+        }
     } else {
         $key = $_SESSION['key_candidat'];
         header("Location: ../candidature-recrutement-files.php?key=$key");
