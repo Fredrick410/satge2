@@ -83,7 +83,7 @@ if (count($candidature) != 0) {
                 } catch (PDOException $e) {
                     $_SESSION['message'] = $e -> getMessage();
                     $bdd->rollBack();
-                    header("Location: ../test-qcm.php?key=$key");
+                    header("Location: ../test-qcm.php?key=$code");
                     exit();
                 }
             }
@@ -92,7 +92,7 @@ if (count($candidature) != 0) {
 
     try {
         $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat = :num');
-        $pdoStt->bindValue(':num', $key, PDO::PARAM_STR);
+        $pdoStt->bindValue(':num', $code, PDO::PARAM_STR);
         $pdoStt->execute();
         $candidature = $pdoStt->fetch();
     } catch (PDOException $e) {
