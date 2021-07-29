@@ -107,10 +107,10 @@ if (count($candidature) != 0) {
         exit();
     }
     $explode = explode(';', $candidature['key_candidat']);
-    $num = $explode[2];
+    $an = $explode[2];
     try {
         $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
-        $pdoSta->bindValue(':num', $num);
+        $pdoSta->bindValue(':num', $an);
         $pdoSta->execute();
         $annonce = $pdoSta->fetch();
     } catch (PDOException $e) {
@@ -167,7 +167,7 @@ if (count($candidature) != 0) {
         $sent = email($mail);
         if ($sent) {
             $response_array['status'] = 'success';
-            $response_array['link'] = "candidature-recrutement.php?num=$code";
+            $response_array['link'] = "candidature-recrutement.php?num=$an";
         }
     } else {
         $response_array['status'] = 'error';
