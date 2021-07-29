@@ -136,9 +136,6 @@ if (count($candidature) != 0) {
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/calendars/tui-time-picker.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/calendars/tui-date-picker.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/calendars/tui-calendar.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -1046,13 +1043,6 @@ if (count($candidature) != 0) {
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/calendar/tui-code-snippet.min.js"></script>
-    <script src="../../../app-assets/vendors/js/calendar/tui-dom.js"></script>
-    <script src="../../../app-assets/vendors/js/calendar/tui-time-picker.min.js"></script>
-    <script src="../../../app-assets/vendors/js/calendar/tui-date-picker.min.js"></script>
-    <script src="../../../app-assets/vendors/js/extensions/moment.min.js"></script>
-    <script src="../../../app-assets/vendors/js/calendar/chance.min.js"></script>
-    <script src="../../../app-assets/vendors/js/calendar/tui-calendar.min.js"></script>
     <script src="../../../cuba/assets/js/bootstrap/popper.min.js"></script>
     <!-- END: Page Vendor JS-->
 
