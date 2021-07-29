@@ -81,7 +81,9 @@ if (count($candidature) != 0) {
                         ));
                     }
                 } catch (PDOException $e) {
-                    $_SESSION['message'] = $e -> getMessage();
+                    $response_array['status'] = 'error';
+                    $response_array['message'] = $e->GetMessage();
+                    echo json_encode($response_array);
                     $bdd->rollBack();
                     header("Location: ../test-qcm.php?key=$code");
                     exit();
@@ -143,7 +145,7 @@ if (count($candidature) != 0) {
 
     $sent = email($mail);
     if ($sent) {
-        $message = "Une candidature envoyée par " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] ." pour le poste de " . $annonce['poste'] . " vient d'etre enregistrée.\n\n" .
+        $message = "Une candidature envoyée par " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour le poste de " . $annonce['poste'] . " vient d'etre enregistrée.\n\n" .
             "Elle est consultable sur l'espace candidature.\n\n" .
             "Bien cordialement.\n\n" .
             "Envoyé par Coqpix.";
@@ -160,7 +162,7 @@ if (count($candidature) != 0) {
         ];
 
         $sent = email($mail);
-        if($sent){
+        if ($sent) {
             $response_array['status'] = 'success';
             $response_array['link'] = "candidature-recrutement.php?num=$num";
         }
