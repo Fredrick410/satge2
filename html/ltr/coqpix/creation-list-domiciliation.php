@@ -248,7 +248,7 @@ $list_doc = $SQL2->fetchAll();
                                                     $r_valeur = Array();
                                                 ?>
                                                              
-                                                    <li class="media rounded" id='<?= $doc['id']?>' style=''>
+                                                    <li class="media rounded" id='<?= $doc['id']?>' style='' onclick="document.location.href='creation-list-domiciliation.php?id=<?= $doc['id'] ?>'">
                                                         <div class="media-body">
                                                             <div class="user-details">
                                                                 <div class="mail-items">
@@ -274,6 +274,48 @@ $list_doc = $SQL2->fetchAll();
                                             </div>
                                         </div>
                                         <!-- Début conversation -->
+                                        <?php 
+                                            if (!empty($_GET['id'])) {
+
+                                                $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE id LIKE :id ');
+                                                $PDO->bindValue(':id', $_GET['id']);
+                                                $PDO->execute();
+                                                $crea = $PDO->fetch();
+
+                                                
+                                                if($crea['status_crea'] == "EURL"){
+                                                    $linkview = "";
+                                                }else{        
+                                                    if($crea['status_crea'] == "SARL"){
+                                                        $linkview = "success";
+                                                    }else{
+                                                        if($crea['status_crea'] == "SAS"){
+                                                            $linkview = "primary";
+                                                        }else{
+                                                            if($crea['status_crea'] == "SASU"){
+                                                                $linkview = "warning";
+                                                            }else{
+                                                                if($crea['status_crea'] == "SCI"){
+                                                                    $linkview = "danger";
+                                                                }else{
+                                                                    if($crea['status_crea'] == "EIRL"){
+                                                                        $linkview = "info";
+                                                                    }else{
+                                                                        if($crea['status_crea'] == "Micro-entreprise"){
+                                                                            $linkview = "black";
+                                                                        }else{
+                                                                            $linkview = "light";
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                        
+                                        ?>
+
+
                                         <div class="col-8">
                                             <div class="card-header border-bottom p-0">
                                                 <div class="media m-75">
@@ -284,18 +326,19 @@ $list_doc = $SQL2->fetchAll();
                                                         </div>
                                                     </a>
                                                     <div class="media-body" id="profil">
-                                                        <h6 class="media-heading mb-0 pt-25"><a></a></h6>
-                                                        <span id="corp" class="text-muted font-small-3"></span>
-                                                        <span id="badge" class=""></span>
+                                                        <h6 class="media-heading mb-0 pt-25"><a><?= $crea['name_crea'] ?></a></h6>
+                                                        <span id="corp" class="text-muted font-small-3"><?= $crea['status_crea'] ?></span>
+                                                        <span id="badge" class="bullet bullet-<?= $linkview ?> bullet-sm"></span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                                <embed src=../../../src/crea_societe/domiciliation/<?= $doc['doc_domiciliation'] ?> width=100% height=85% type='application/pdf'/>
+                                                <embed src=../../../src/crea_societe/domiciliation/<?= $crea['doc_domiciliation'] ?> width=100% height=85% type='application/pdf'/>
                                                                                      
 
                                             
                                         </div>
+                                        <?php } ?>
                                     </div>
                                     <!-- FIN conversation -->
                                 </div>

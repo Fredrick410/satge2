@@ -146,3 +146,6 @@ branche de Leo :
 		- enregistrement de la fiche de renseignement dans la base de données
 		- affichage de la fiche dans le front à la page d'accueil quand créée
 		- fix bug visuel dans le back
+
+	tache réalisée le 29/07/2021
+		- fiche de renseignement accessible dans le back
