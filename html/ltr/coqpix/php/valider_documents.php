@@ -53,20 +53,20 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
             'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
             'adresse_recepteur' => $candidature['email_candidat'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => "rh@coqpix.com",
+            'adresse_emetteur' => "rh@". $_SERVER['SERVER_NAME'],
             'sujet' => $sujet,
             'message' => $message
         ];
 
-        $sent = email($mail);
-        header("Location: ../test-qcm.php?key=$key");
+        echo $mail['adresse_emetteur'];
+        /*$sent = email($mail);
         if ($sent) {
-            
+            header("Location: ../test-qcm.php?key=$key");
         } else {
             $_SESSION['message'] = "Erreur";
             header("Location: ../candidature-recrutement-files.php?key=$key");
             exit();
-        }
+        }*/
     } else {
         $key = $_SESSION['key_candidat'];
         header("Location: ../candidature-recrutement-files.php?key=$key");
