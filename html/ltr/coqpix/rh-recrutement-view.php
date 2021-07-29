@@ -544,11 +544,13 @@ if (count($candidature) != 0) {
                                                                 $k++;
                                                             }
                                                             $score += $candidat / $officiel * $questions[$i][$j]['points'];
+                                                            $total += $officiel * $questions[$i][$j]['points'];
                                                         }
                                                         ?>
                                                     </tbody>
                                                 </table>
-                                                <label id="total<?= $i ?>">Total : <?= $score ?></label>
+                                                <label id="total<?= $i ?>">Total : <?= $score ?>/<?= $total ?></label>
+                                                <label id="pourcentage<?= $i ?>">Pourcentage : <?= ($score / $total) * 100 ?>%</label>
                                             </div>
                                         <?php
                                         } else {
@@ -1112,9 +1114,10 @@ if (count($candidature) != 0) {
 
                     doc.setFontSize(12);
                     doc.text(document.querySelector('#total' + val).innerText, doc.internal.pageSize.width - 40, 278, null, null, 'right');
+                    doc.text(document.querySelector('#pourcentage' + val).innerText, doc.internal.pageSize.width - 40, 296, null, null, 'right');
                     doc.autoTable({
                         html: '#table' + val,
-                        startY: 290,
+                        startY: 314,
 
                         margin: {
                             horizontal: 40
