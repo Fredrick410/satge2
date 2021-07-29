@@ -449,9 +449,9 @@ if (count($candidature) != 0) {
                 </section>
                 <!-- List group navigation ends -->
                 <?php
-                $total = 0;
                 for ($i = 0; $i < count($qcms); $i++) {
                     $score = 0;
+                    $total = 0;
                 ?>
                     <!-- Modal -->
                     <div class="modal fade" id="qcm<?= $i ?>" tabindex="-1" role="dialog" aria-hidden="true">
