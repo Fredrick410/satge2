@@ -544,12 +544,13 @@ if (count($candidature) != 0) {
                                                                 $k++;
                                                             }
                                                             $score += $candidat / $officiel * $questions[$i][$j]['points'];
-                                                            $total += $officiel * $questions[$i][$j]['points'];
+                                                            $total += $questions[$i][$j]['points'];
                                                         }
                                                         ?>
                                                     </tbody>
                                                 </table>
                                                 <label id="total<?= $i ?>">Total : <?= $score ?>/<?= $total ?></label>
+                                                <br>
                                                 <label id="pourcentage<?= $i ?>">Pourcentage : <?= ($score / $total) * 100 ?>%</label>
                                             </div>
                                         <?php
