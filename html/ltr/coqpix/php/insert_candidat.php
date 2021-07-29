@@ -130,6 +130,8 @@ $insert->execute(array(
     htmlspecialchars($permis_conduite)
 ));
 
+$_SESSION['key_candidat'] = $code;
+
 
 $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoS->bindValue(':numentreprise', $id_session);

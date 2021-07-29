@@ -240,7 +240,7 @@ $entreprise = $pdoStt->fetch();
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="question-edit.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $qcms[0]['id'] ?>"" class=" invoice-action-edit cursor-pointer">
+                                                <a href="question-edit.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $qcms[0]['id'] ?>" class="invoice-action-edit cursor-pointer">
                                                     <i class="bx bx-edit"></i>
                                                 </a>&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <a href="php/delete_question.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $questions[$i]['idqcm'] ?>" class="invoice-action-view mr-1">

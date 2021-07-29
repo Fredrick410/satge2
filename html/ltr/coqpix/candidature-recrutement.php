@@ -9,44 +9,10 @@ $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
 $pdoSta->bindValue(':num', $_GET['num']);
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
-
-if (isset($_POST['code_annonce'])) {
-
-    $code = $_POST['code_annonce'];
-    $name = $_GET['annonce'];
-
-    $query = $bdd->prepare("SELECT * FROM rh_annonce WHERE code_annonce = :code");
-    $query->bindValue(':code', $code);
-    $query->execute();
-    $count = $query->rowCount();
-
-    if ($count >= 1) {
-        $_SESSION['invite'] = $_GET['num'];
-
-        header('Location: candidature-recrutement.php?' . $annonce['link'] . '$req=true');
-        exit();
-    } else {
-
-        header('Location: candidature-recrutement.php?' . $annonce['link'] . '&req=false');
-        exit();
-    }
+if(count($annonce) == 0){
+    header('Location: https://www.google.com/');
 }
-
-if ($annonce['code_annonce'] == "") {
-    $locked = "red";
-    $none_bts = "";
-    $none_btd = "none-validation";
-} else {
-    if (empty($_SESSION['invite'])) {
-        $locked = "red";
-        $none_bts = "";
-        $none_btd = "none-validation";
-    } else {
-        $locked = "green";
-        $none_bts = "none-validation";
-        $none_btd = "";
-    }
-}
+$_SESSION['annonce'] = $_GET['num'];
 
 ?>
 <!DOCTYPE html>
@@ -112,15 +78,7 @@ if ($annonce['code_annonce'] == "") {
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="dropdown dropdown-user nav-item">
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" style="cursor: pointer; font-size: 25px; color: <?= $locked ?>;" data-toggle="modal" data-target="#info"><i class='bx bxs-lock'></i></a></li>
                     </ul>
                 </div>
             </div>

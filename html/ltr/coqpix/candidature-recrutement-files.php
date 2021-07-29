@@ -18,6 +18,13 @@ $pdoSta = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat=:key_ca
 $pdoSta->bindValue(':key_candidat', $_GET['key']);
 $pdoSta->execute();
 $candidat = $pdoSta->fetch();
+if(count($candidat) == 0){
+    header('Location: https://www.google.com/');
+}
+
+if(!isset($_SESSION['key_candidat'])){
+    $_SESSION['key_candidat'] = $_GET['key'];
+}
 
 if (isset($_POST['code_annonce'])) {
 
@@ -125,23 +132,6 @@ if ($annonce['code_annonce'] == "") {
                     </a></li>
             </ul>
         </div>
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="dropdown dropdown-user nav-item">
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" style="cursor: pointer; font-size: 25px; color: <?= $locked ?>;" data-toggle="modal" data-target="#info"><i class='bx bxs-lock'></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </nav>
     <!-- END: Header-->
 
@@ -221,7 +211,7 @@ if ($annonce['code_annonce'] == "") {
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <p><?= $candidat['cv_doc'] ?> <a href="../../../src/recrutement/cv/<?= $candidat['cv_doc'] ?>" download><i class="bx bx-download"></i></a></p>
+                                <p><?= $candidat['cv_doc'] ?> <a id="cv" href="../../../src/recrutement/cv/<?= $candidat['cv_doc'] ?>" download><i class="bx bx-download"></i></a><a href="#" id="delete-cv" class="bx bx-trash"></a></p>
                             </div>
                         </div>
                         <div class="col border <?php if ($candidat['lettredemotivation_doc'] !== "") {
@@ -253,7 +243,7 @@ if ($annonce['code_annonce'] == "") {
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <p><?= $candidat['lettredemotivation_doc'] ?> <a href="../../../src/recrutement/lzttredemotivation/<?= $candidat['lettredemotivation_doc'] ?>" download><i class="bx bx-download"></i></a></p>
+                                <p><?= $candidat['lettredemotivation_doc'] ?> <a id="lettredemotivation" href="../../../src/recrutement/lettredemotivation/<?= $candidat['lettredemotivation_doc'] ?>" download><i class="bx bx-download"></i></a><a href="#" id="delete-lettredemotivation" class="bx bx-trash"></a></p>
                             </div>
                         </div>
                         <div class="col border <?php if ($candidat['other_doc'] !== "") {
@@ -279,53 +269,28 @@ if ($annonce['code_annonce'] == "") {
                                                     echo "none-validation";
                                                 } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Cv déja deposé !</label>
+                                <label>Autre document déja deposé !</label>
                             </div>
                             <div class="form-group">
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <p><?= $candidat['other_doc'] ?> <a href="../../../src/recrutement/other/<?= $candidat['other_doc'] ?>" download><i class="bx bx-download"></i></a></p>
+                                <p><?= $candidat['other_doc'] ?> <a id="other" href="../../../src/recrutement/other/<?= $candidat['other_doc'] ?>" download><i class="bx bx-download"></i></a><a href="#" id="delete-other" class="bx bx-trash"></a></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group text-center">
-                    <!-- Button trigger for default modal -->
-                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#defaultSize">
-                        Validation de votre candidature
-                    </button>
-
-                    <!--Default size Modal -->
-                    <div class="modal fade text-left" id="defaultSize" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel18">Félicitation !</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <i class="bx bx-x"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous aurez la possibilitée de voir le suivit de votre candidature avec les informations
-                                    suivante : <br><br>
-                                    Clé d'authentification : <?= $explode[0] ?>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Annuler</span>
-                                    </button>
-                                    <button type="button" id="confirm" class="btn btn-success ml-1">
-                                        <i class="bx bx-check d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Confirmer</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Modal lg size -->
+                <div id="message">
                 </div>
+                <form action="php/valider_documents.php" method="post">
+                    <div class="form-group text-center">
+                        <!-- Button trigger for default modal -->
+                        <button type="submit" class="btn btn-outline-success" name="confirm" value="confirm">
+                            Validation de vos documents
+                        </button>
+                        <input type="hidden" name="key" value="<?= htmlspecialchars($_GET['key']) ?>">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -346,30 +311,85 @@ if ($annonce['code_annonce'] == "") {
     <!-- BEGIN: Theme JS-->
     <script src="../../../app-assets/js/scripts/configs/horizontal-menu.js"></script>
     <script src="../../../app-assets/js/core/app-menu.js"></script>
-    <script src="../../../app-assets/js/core/app.js"></script>
-    <script src="../../../app-assets/js/scripts/components.js"></script>
     <script src="../../../app-assets/js/scripts/footer.js"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/modal/components-modal.js"></script>
-    <script src="../../../app-assets/js/scripts/forms/wizard-steps.js"></script>
     <script>
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
         $(document).ready(function() {
-            /*creating a new click event for each toogle this will save to the database*/
-            $('#confirm').click(function() {
+            $('#delete-cv').click(function() {
                 key = '<?= htmlspecialchars($_GET['key']) ?>';
+                cv = document.getElementById('cv').href;
                 $.ajax({
-                    url: "../../../html/ltr/coqpix/php/fin_candidature.php", //new path, save your work first before u try
+                    url: "../../../html/ltr/coqpix/php/delete-file.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
-                        done: "oui",
+                        filepath: cv,
                         key: key
                     },
                     dataType: 'json',
                     success: function(data) {
                         if (data.status == 'success') {
-                            window.location.href = data.link;
+                            window.location.reload();
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
+            });
+
+            $('#delete-lettredemotivation').click(function() {
+                key = '<?= htmlspecialchars($_GET['key']) ?>';
+                cv = document.getElementById('lettredemotivation').href;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/delete-file.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        filepath: cv,
+                        key: key
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            window.location.reload();
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
+            });
+
+            $('#delete-other').click(function() {
+                key = '<?= htmlspecialchars($_GET['key']) ?>';
+                cv = document.getElementById('other').href;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/delete-file.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        filepath: cv,
+                        key: key
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            window.location.reload();
+                        } else {
+                            addAlert(data.message);
                         }
                     }
                 });
@@ -377,8 +397,6 @@ if ($annonce['code_annonce'] == "") {
         });
     </script>
     <!-- END: Page JS-->
-    <!-- TIMEOUT -->
-    <?php include('timeout.php'); ?>
 </body>
 <!-- END: Body-->
 
