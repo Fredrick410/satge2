@@ -58,7 +58,6 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
             'message' => $message
         ];
 
-        echo $mail['adresse_emetteur'];
         $sent = email($mail);
         if ($sent) {
             header("Location: ../test-qcm.php?key=$key");

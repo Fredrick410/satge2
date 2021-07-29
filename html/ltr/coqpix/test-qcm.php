@@ -88,7 +88,23 @@ foreach ($questions as $key => $desquestions) {
             display: none;
         }
 
-        ;
+        .legend {
+            text-transform: lowercase;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            margin-bottom: .5rem;
+            font-size: 1.5rem;
+            line-height: inherit;
+            color: inherit;
+            white-space: normal;
+            font-weight: normal;
+        }
+
+        .legend::first-letter {
+            text-transform: uppercase;
+        }
     </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: <?= $annonce['color_annonce'] ?>;">
@@ -126,7 +142,7 @@ foreach ($questions as $key => $desquestions) {
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form action="#" class="wizard-horizontal" role="application" id="qcm-form">
+                                        <form action="#" class="wizard-horizontal" id="qcm-form">
                                             <?php
                                             for ($i = 0; $i < count($qcms); $i++) {
                                             ?>
@@ -137,35 +153,43 @@ foreach ($questions as $key => $desquestions) {
                                                 </h6>
                                                 <!-- Step 1 -->
                                                 <!-- body content of step 1 -->
-                                                <fieldset role="tabpanel" class="body current" aria-hidden="false">
+                                                <?php
+                                                if ($i == 0) {
+                                                ?>
+                                                    <fieldset class="body current" aria-hidden="false">
                                                     <?php
-                                                    for ($j = 0; $j < count($questions[$i]); ++$j) {
+                                                } else {
                                                     ?>
-                                                        <div class="border rounded mb-1">
-                                                            <div class="col-12">
-                                                                <legend>
-                                                                    <?= $questions[$i][$j]['libelle'] ?>
-                                                                </legend>
-                                                            </div>
-                                                            <?php
-                                                            foreach ($reponses[$i][$j] as $key => $val) {
-                                                            ?>
-                                                                <div class='form-group col-12'>
-                                                                    <input type='checkbox' id="reponse<?= $val['id'] ?>" name='reponses<?= $val['idquestion'] ?>[]' value='<?= $val['id'] ?>'>
-                                                                    <label for='reponse<?= $val['id'] ?>'><?= $val['libelle'] ?></label>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    <?php
+                                                        <fieldset class="body" aria-hidden="false">
+                                                        <?php
                                                     }
+                                                    for ($j = 0; $j < count($questions[$i]); ++$j) {
+                                                        ?>
+                                                            <div class="border rounded mb-1">
+                                                                <div class="col-12">
+                                                                    <label class="legend">
+                                                                        <?= $questions[$i][$j]['libelle'] ?>
+                                                                    </label>
+                                                                </div>
+                                                                <?php
+                                                                foreach ($reponses[$i][$j] as $key => $val) {
+                                                                ?>
+                                                                    <div class='form-group col-12'>
+                                                                        <input type='checkbox' id="reponse<?= $val['id'] ?>" name='reponses<?= $val['idquestion'] ?>[]' value='<?= $val['id'] ?>'>
+                                                                        <label for='reponse<?= $val['id'] ?>'><?= $val['libelle'] ?></label>
+                                                                    </div>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        <?php
+                                                    }
+                                                        ?>
+                                                        </fieldset>
+                                                        <!-- body content of step 1 end -->
+                                                    <?php
+                                                }
                                                     ?>
-                                                </fieldset>
-                                                <!-- body content of step 1 end -->
-                                            <?php
-                                            }
-                                            ?>
                                         </form>
                                     </div>
                                 </div>
@@ -177,13 +201,6 @@ foreach ($questions as $key => $desquestions) {
         </div>
     </div>
     <!-- END: Content-->
-
-    </div>
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
-
-    <div id="insertHere">
-    </div>
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
