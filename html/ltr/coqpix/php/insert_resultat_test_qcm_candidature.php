@@ -49,6 +49,8 @@ if (count($candidature) != 0) {
 
             */
     }
+    $bdd->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
+    $bdd->beginTransaction();
     for ($i = 0; $i < count($qcms); $i++) {
         for ($j = 0; $j < count($questions[$i]); ++$j) {
             foreach ($reponses[$i][$j] as $key => $value) {
@@ -59,7 +61,6 @@ if (count($candidature) != 0) {
                     }
                 }
                 try {
-                    $bdd->beginTransaction();
                     $pdoS = $bdd->prepare('INSERT INTO reponses_qcm_candidat(idcandidat, idqcm, idquestion, idreponse, vrai_ou_faux) VALUES(?,?,?,?,?)');
                     if ($reponse == 0) {
                         //print("<pre>". print_r(array($candidature[0]['id'], $qcms[$i], $questions[$i][$j]['id'], $value['id'] , 'Vrai'),true)."</pre>");
@@ -90,6 +91,8 @@ if (count($candidature) != 0) {
             }
         }
     }
+    $bdd->commit();
+    $bdd->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
 
     try {
         $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat = :num');
