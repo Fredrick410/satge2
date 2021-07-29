@@ -37,7 +37,7 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
         $pdoS->bindValue(':numentreprise', $num);
         $true = $pdoS->execute();
         $entreprise = $pdoS->fetch();
-        $url = $_SERVER['REQUEST_URI'];
+        $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
         $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
             "Vous venez de valider votre dépot de document. La prochaine etape est la réalisation du test prévu pour ce poste.\n\n" .
@@ -53,24 +53,23 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
             'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
             'adresse_recepteur' => $candidature['email_candidat'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => $entreprise['emailentreprise'],
+            'adresse_emetteur' => "rh@coqpix.com",
             'sujet' => $sujet,
             'message' => $message
         ];
 
-        echo $message;
-
         $sent = email($mail);
-
+        header("Location: ../test-qcm.php?key=$key");
         if ($sent) {
+            
         } else {
             $_SESSION['message'] = "Erreur";
-            header("Location: candidature-recrutement-files.php?key=$key");
+            header("Location: ../candidature-recrutement-files.php?key=$key");
             exit();
         }
     } else {
         $key = $_SESSION['key_candidat'];
-        header("Location: candidature-recrutement-files.php?key=$key");
+        header("Location: ../candidature-recrutement-files.php?key=$key");
         exit();
     }
 }

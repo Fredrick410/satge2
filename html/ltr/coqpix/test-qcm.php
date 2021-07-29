@@ -14,45 +14,6 @@ $pdoSta->bindValue(':num', htmlspecialchars($num));
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
 
-if (isset($_POST['code_annonce'])) {
-
-    $code = $_POST['code_annonce'];
-    $name = $_GET['annonce'];
-
-    $query = $bdd->prepare("SELECT COUNT(*) FROM rh_annonce WHERE code_annonce = :code");
-    $query->bindValue(':code',$code);
-    $query->execute();
-
-    $count = $query->fetch();
-
-    if ($count >= 1) {
-        $_SESSION['invite'] = $_GET['num'];
-
-        header('Location: candidature-recrutement.php?' . $annonce['link'] . '$req=true');
-        exit();
-    } else {
-
-        header('Location: candidature-recrutement.php?' . $annonce['link'] . '&req=false');
-        exit();
-    }
-}
-
-if ($annonce['code_annonce'] == "") {
-    $locked = "red";
-    $none_bts = "";
-    $none_btd = "none-validation";
-} else {
-    if (empty($_SESSION['invite'])) {
-        $locked = "red";
-        $none_bts = "";
-        $none_btd = "none-validation";
-    } else {
-        $locked = "green";
-        $none_bts = "none-validation";
-        $none_btd = "";
-    }
-}
-
 $pdoStt = $bdd->prepare('SELECT * FROM qcm INNER JOIN rh_annonce_qcm ON (qcm.id = rh_annonce_qcm.idqcm) WHERE idannonce = :num');
 $pdoStt->bindValue(':num', $annonce['id']);
 $pdoStt->execute();
@@ -142,15 +103,7 @@ foreach ($questions as $key => $desquestions) {
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="dropdown dropdown-user nav-item">
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" style="cursor: pointer; font-size: 25px; color: <?= $locked ?>;" data-toggle="modal" data-target="#info"><i class='bx bxs-lock'></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -164,49 +117,6 @@ foreach ($questions as $key => $desquestions) {
         <div class="content-overlay"></div>
         <div class="content-wrapper" style="padding: 0px; margin: 0px;">
             <div class="content-body">
-                <div class="form-group">
-                    &nbsp<button title="Permets d'avoir les permissions sur l'annonce de recrutement" type="button" class="btn btn-outline-success <?= $none_bts ?>" data-toggle="modal" data-target="#inlineForm">
-                        <i class='bx bxs-lock-open'></i> Unlock
-                    </button>
-                    <a title="Permets d'avoir les permissions sur l'annonce de recrutement" href="php/disconnect_recrutement.php?num=<?= $num ?>"><button type="button" class="btn btn-outline-danger <?= $none_btd ?>" data-target="#inlineForm">
-                            <i class='bx bxs-lock'></i> Lock
-                        </button></a>
-                    <!--login form Modal -->
-                    <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel33">Code d'invitation </h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <i class="bx bx-x"></i>
-                                    </button>
-                                </div>
-                                <form action="" method="POST">
-                                    <div class="modal-body">
-                                        <label>Nom Prenom : </label>
-                                        <div class="form-group">
-                                            <input type="text" name="nom_prenom" placeholder="DUPOND Jean" class="form-control">
-                                        </div>
-                                        <label>Code d'invitation : </label>
-                                        <div class="form-group">
-                                            <input type="password" name="code_annonce" placeholder="*****" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-danger" data-dismiss="modal">
-                                            <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Fermer</span>
-                                        </button>
-                                        <button type="submit" class="btn" style="background-color: <?= $annonce['color_annonce'] ?>; color: white;">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Valider</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div id="validation">
                     <div class="row">
                         <div class="col-12">
@@ -352,20 +262,20 @@ foreach ($questions as $key => $desquestions) {
                             <?php
                             for ($i = 0; $i < count($qcms); $i++) {
                                 for ($j = 0; $j < count($questions[$i]); ++$j) {
-                                    ?>
-                                                question<?= $questions[$i][$j]['id'] ?>: question<?= $questions[$i][$j]['id'] ?>,
-                                    <?php     
+                            ?>
+                                    question<?= $questions[$i][$j]['id'] ?>: question<?= $questions[$i][$j]['id'] ?>,
+                            <?php
                                 }
                             }
                             ?>
-                            key: '<?=htmlspecialchars($_GET['key'])?>'
+                            key: '<?= htmlspecialchars($_GET['key']) ?>'
                         },
                         success: function(data) {
-                            window.location.href=data;
+                            window.location.href = data;
                         }
-                });
+                    });
+                }
             }
-        }
         });
     </script>
     <!-- END: Page JS-->
