@@ -217,6 +217,20 @@ foreach ($questions as $key => $desquestions) {
 
     <!-- BEGIN: Page JS-->
     <script>
+        function addAlert(message, type) {
+            if (type == "create") {
+                $('#create_form').append(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#update_form').append(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
         //    Wizard tabs with icons setup
         // ------------------------------
         $(".wizard-horizontal").steps({
@@ -253,11 +267,12 @@ foreach ($questions as $key => $desquestions) {
                 }
                 ?>
                 if (valid != total)
-                    alert("Merci de selectionner au moins une reponse par question");
+                    addAlert("Merci de selectionner au moins une reponse par question", 'error');
                 else {
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/insert_resultat_test_qcm_candidature.php", //new path, save your work first before u try
                         type: "POST",
+                        dataType: 'json',
                         data: {
                             <?php
                             for ($i = 0; $i < count($qcms); $i++) {
@@ -271,7 +286,14 @@ foreach ($questions as $key => $desquestions) {
                             key: '<?= htmlspecialchars($_GET['key']) ?>'
                         },
                         success: function(data) {
-                            window.location.href = data;
+                            if (data.status == "success") {
+                                addAlert("Candidature finalisée", "success");
+                                window.setTimeout(function() {
+                                    window.location.href = data.link;
+                                }, 2000);
+                            } else {
+                                addAlert(data.message, "error");
+                            }
                         }
                     });
                 }
