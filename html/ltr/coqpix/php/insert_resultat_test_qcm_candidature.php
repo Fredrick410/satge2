@@ -85,7 +85,6 @@ if (count($candidature) != 0) {
                     $response_array['message'] = $e->GetMessage();
                     echo json_encode($response_array);
                     $bdd->rollBack();
-                    header("Location: ../test-qcm.php?key=$code");
                     exit();
                 }
             }
