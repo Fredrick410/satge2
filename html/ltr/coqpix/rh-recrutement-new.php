@@ -58,6 +58,16 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
+    <style>
+        .red {
+            color: red;
+        }
+
+        .line {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 <!-- END: Head-->
 
@@ -119,16 +129,16 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="email_annonce">E-mail de contact</label>
-                                                <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
-                                                <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
+                                                <div class="form-group">
+                                                    <label for="email_annonce">E-mail de contact</label>
+                                                    <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
+                                                    <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="color_annonce">Thème de l'annonce</label><br>
+                                                <label>Thème de l'annonce</label><br>
                                                 <div id="picker" class="d-flex justify-content-center">
                                                 </div>
                                                 <input type="hidden" id="color_annonce" name="color_annonce">
@@ -138,13 +148,13 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="tel_annonce">Téléphone de contact</label>
-                                                <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
-                                                <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="tel_annonce">Téléphone de contact</label>
+                                                    <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
+                                                    <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -159,7 +169,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
-                                                <label for="type_contrat">Type de contract</label>
+                                                <label>Type de contract</label>
                                                 <div class="form-check form-group">
 
                                                     <div>
@@ -404,16 +414,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
 
                                             <div class="form-group">
                                                 <label class="col-form-label">Liste des missions/compétences</label>
-                                                <table id="table" name="table" class="table table-bordered">
-                                                    <style>
-                                                        .red {
-                                                            color: red;
-                                                        }
-
-                                                        .line {
-                                                            text-decoration: underline;
-                                                        }
-                                                    </style>
+                                                <table id="table" class="table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Libellé de la mission/compétence</th>
@@ -550,6 +551,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
         var colorPicker = new iro.ColorPicker('#picker', {
             // Set the size of the color picker
             width: 200,
+            color: "#ffffff"
         });
         colorPicker.on('color:change', function(color) {
             document.getElementById('color_annonce').value = color.hexString;

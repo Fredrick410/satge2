@@ -77,12 +77,6 @@ foreach ($questions as $key => $desquestions) {
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
-</head>
-<!-- END: Head-->
-
-<!-- BEGIN: Body-->
-
-<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
     <style>
         .none-validation {
             display: none;
@@ -106,12 +100,19 @@ foreach ($questions as $key => $desquestions) {
             text-transform: uppercase;
         }
     </style>
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: <?= $annonce['color_annonce'] ?>;">
         <div class="navbar-header d-xl-block d-none">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item"><a class="navbar-brand" href="#">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
+                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png" alt="logo"></div>
                     </a></li>
             </ul>
         </div>
