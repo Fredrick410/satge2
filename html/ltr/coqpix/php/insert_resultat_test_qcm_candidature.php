@@ -167,7 +167,7 @@ if (count($candidature) != 0) {
         $sent = email($mail);
         if ($sent) {
             $response_array['status'] = 'success';
-            $response_array['link'] = "candidature-recrutement.php?num=$num";
+            $response_array['link'] = "candidature-recrutement.php?num=$code";
         }
     } else {
         $response_array['status'] = 'error';
