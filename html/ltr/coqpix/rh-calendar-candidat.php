@@ -77,6 +77,12 @@ $entreprise = $pdoSta->fetch();
     <script src="../../../cuba/assets/js/jquery-3.5.1.min.js"></script>
     <!-- END: JQUERY-->
 
+    <style>
+        .none-validation {
+            display: none;
+        }
+    </style>
+
 </head>
 <!-- END: Head-->
 
@@ -87,16 +93,11 @@ $entreprise = $pdoSta->fetch();
                                                     } ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if ($entreprise["theme_web"] == "light") {
                                                                                                                                                                                                         echo "semi-";
                                                                                                                                                                                                     } ?>dark-layout">
-    <style>
-        .none-validation {
-            display: none;
-        }
-    </style>
     <!-- BEGIN: Header-->
     <div class="header-navbar-shadow"></div>
     <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
         <div class="navbar-wrapper">
-            <div class="navbar-container content">
+            <div class="navbar-container content">-
                 <div class="navbar-collapse" id="navbar-mobile">
                     <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
                         <ul class="nav navbar-nav">
@@ -175,7 +176,7 @@ $entreprise = $pdoSta->fetch();
                         <div class="sidebar-new-schedule">
                             <!-- create new schedule button -->
                             <button id="btn-new-schedule" type="button" class="btn btn-primary btn-block sidebar-new-schedule-btn">
-                                New schedule
+                                Nouvel entretien
                             </button>
                         </div>
                         <!-- sidebar calendar labels -->
@@ -185,7 +186,7 @@ $entreprise = $pdoSta->fetch();
                                     <!-- view All checkbox -->
                                     <div class="checkbox">
                                         <input type="checkbox" class="checkbox-input tui-full-calendar-checkbox-square" id="checkbox1" value="all" checked>
-                                        <label for="checkbox1">View all</label>
+                                        <label for="checkbox1">Voir tout</label>
                                     </div>
                                 </div>
                             </div>
@@ -205,37 +206,37 @@ $entreprise = $pdoSta->fetch();
                             <div class="dropdown d-inline mr-75">
                                 <button id="dropdownMenu-calendarType" class="btn btn-action dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <i id="calendarTypeIcon" class="bx bx-calendar-alt"></i>
-                                    <span id="calendarTypeName">Dropdown</span>
+                                    <span id="calendarTypeName">Affichage</span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="dropdownMenu-calendarType">
                                     <li role="presentation">
                                         <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-daily">
                                             <i class="bx bx-calendar-alt mr-50"></i>
-                                            <span>Daily</span>
+                                            <span>Jour</span>
                                         </a>
                                     </li>
                                     <li role="presentation">
                                         <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-weekly">
                                             <i class='bx bx-calendar-event mr-50'></i>
-                                            <span>Weekly</span>
+                                            <span>Semaine</span>
                                         </a>
                                     </li>
                                     <li role="presentation">
                                         <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-monthly">
                                             <i class="bx bx-calendar mr-50"></i>
-                                            <span>Month</span>
+                                            <span>Mois</span>
                                         </a>
                                     </li>
                                     <li role="presentation">
                                         <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-weeks2">
                                             <i class='bx bx-calendar-check mr-50'></i>
-                                            <span>2 weeks</span>
+                                            <span>2 semaines</span>
                                         </a>
                                     </li>
                                     <li role="presentation">
                                         <a class="dropdown-menu-title dropdown-item" role="menuitem" data-action="toggle-weeks3">
                                             <i class='bx bx-calendar-check mr-50'></i>
-                                            <span>3 weeks</span>
+                                            <span>3 semaines</span>
                                         </a>
                                     </li>
                                     <li role="presentation" class="dropdown-divider"></li>
@@ -243,28 +244,28 @@ $entreprise = $pdoSta->fetch();
                                         <div role="menuitem" data-action="toggle-workweek" class="dropdown-item">
                                             <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-workweek" checked>
                                             <span class="checkbox-title bg-primary"></span>
-                                            <span>Show weekends</span>
+                                            <span>Inclure weekends</span>
                                         </div>
                                     </li>
                                     <li role="presentation">
                                         <div role="menuitem" data-action="toggle-start-day-1" class="dropdown-item">
                                             <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-start-day-1">
                                             <span class="checkbox-title"></span>
-                                            <span>Start Week on Monday</span>
+                                            <span>Lundi début de semaine</span>
                                         </div>
                                     </li>
                                     <li role="presentation">
                                         <div role="menuitem" data-action="toggle-narrow-weekend" class="dropdown-item">
                                             <input type="checkbox" class="tui-full-calendar-checkbox-square" value="toggle-narrow-weekend">
                                             <span class="checkbox-title"></span>
-                                            <span>Narrower than weekdays</span>
+                                            <span>Weekends réduits</span>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                             <!-- calenadar next and previous navigate button -->
                             <span id="menu-navi" class="menu-navigation">
-                                <button type="button" class="btn btn-action move-today mr-50 px-75" data-action="move-today">Today</button>
+                                <button type="button" class="btn btn-action move-today mr-50 px-75" data-action="move-today">Aujourd'hui</button>
                                 <button type="button" class="btn btn-icon btn-action  move-day mr-50 px-50" data-action="move-prev">
                                     <i class="bx bx-chevron-left" data-action="move-prev"></i>
                                 </button>
@@ -429,6 +430,7 @@ $entreprise = $pdoSta->fetch();
                 'week.timegridSchedule.borderRadius': '4px',
             }
 
+            daynames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
             // calendar initialize here
             cal = new Calendar('#calendar', {
                 defaultView: 'month',
@@ -445,7 +447,39 @@ $entreprise = $pdoSta->fetch();
                     },
                     time: function(schedule) {
                         return getTimeTemplate(schedule, false);
+                    },
+                    timegridDisplayTime: function(time) {
+                        return time.hour.toLocaleString('fr-FR', {
+                            minimumIntegerDigits: 2,
+                            useGrouping: false
+                        }) + ':' + time.minutes.toLocaleString('fr-FR', {
+                            minimumIntegerDigits: 2,
+                            useGrouping: false
+                        });
+                    },
+                    timegridDisplayPrimayTime: function(time) {
+                        return time.hour.toLocaleString('fr-FR', {
+                            minimumIntegerDigits: 2,
+                            useGrouping: false
+                        }) + ':' + time.minutes.toLocaleString('fr-FR', {
+                            minimumIntegerDigits: 2,
+                            useGrouping: false
+                        });
+                    },
+                    weekDayname: function(dayname) {
+                        return '<span class="calendar-week-dayname-name">' + dayname.dayName + '</span><br><span class="calendar-week-dayname-date">' + dayname.date + '</span>';
+                    },
+                    monthDayname: function(dayname) {
+                        return '<span class="calendar-week-dayname-name">' + dayname.label + '</span>';
                     }
+                },
+                week: {
+                    daynames: daynames,
+                    startDayOfWeek: 1
+                },
+                month: {
+                    daynames: daynames,
+                    startDayOfWeek: 1
                 }
             });
 
@@ -781,14 +815,14 @@ $entreprise = $pdoSta->fetch();
                 var viewName = cal.getViewName();
                 var html = [];
                 if (viewName === 'day') {
-                    html.push(moment(cal.getDate().getTime()).format('YYYY-MM-DD'));
+                    html.push(moment(cal.getDate().getTime()).format('DD-MM-YYYY'));
                 } else if (viewName === 'month' &&
                     (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
-                    html.push(moment(cal.getDate().getTime()).format('YYYY-MM'));
+                    html.push(moment(cal.getDate().getTime()).format('MM-YYYY'));
                 } else {
-                    html.push(moment(cal.getDateRangeStart().getTime()).format('YYYY-MM-DD'));
+                    html.push(moment(cal.getDateRangeStart().getTime()).format('DD-MM-YYYY'));
                     html.push('-');
-                    html.push(moment(cal.getDateRangeEnd().getTime()).format(' MM.DD'));
+                    html.push(moment(cal.getDateRangeEnd().getTime()).format('DD.MM'));
                 }
                 renderRange.innerHTML = html.join('');
             }
@@ -799,77 +833,78 @@ $entreprise = $pdoSta->fetch();
                 refreshScheduleVisibility();
             }
 
-            <?php if(isset($candidatures)){
+            <?php if (isset($candidatures)) {
             ?>
-            function getEntretiens() {
-                // Recuperation des entretiens
-                entretiens.length = 0;
-                $.ajax({
-                    url: "../../../html/ltr/coqpix/php/get_entretiens.php", //new path, save your work first before u try
-                    type: "POST",
-                    data: {
-                        id_candidature: <?= $candidature['id'] ?>
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        if (data.status == "success") {
-                            data.entretiens.forEach(function(element) {
-                                var schedule = new ScheduleInfo();
 
-                                schedule.id = element['id_entretien'];
-                                schedule.calendarId = String(1);
+                function getEntretiens() {
+                    // Recuperation des entretiens
+                    entretiens.length = 0;
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/get_entretiens.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_candidature: <?= $candidature['id'] ?>
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status == "success") {
+                                data.entretiens.forEach(function(element) {
+                                    var schedule = new ScheduleInfo();
 
-                                schedule.title = element['titre_entretien'];
-                                schedule.start = moment(element['debut_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
-                                schedule.end = moment(element['fin_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
-                                schedule.category = 'time';
+                                    schedule.id = element['id_entretien'];
+                                    schedule.calendarId = String(1);
 
-                                schedule.location = element['lieu_entretien'];
+                                    schedule.title = element['titre_entretien'];
+                                    schedule.start = moment(element['debut_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                    schedule.end = moment(element['fin_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                    schedule.category = 'time';
 
-                                entretiens.push(schedule);
-                            });
-                            setSchedules();
-                        } else {
-                            addAlert(data.message, "error");
+                                    schedule.location = element['lieu_entretien'];
+
+                                    entretiens.push(schedule);
+                                });
+                                setSchedules();
+                            } else {
+                                addAlert(data.message, "error");
+                            }
                         }
-                    }
-                });
-            }
-            <?php 
-            }
-            else {
+                    });
+                }
+            <?php
+            } else {
             ?>
-            function getEntretiens() {
-                // Recuperation des entretiens
-                entretiens.length = 0;
-                $.ajax({
-                    url: "../../../html/ltr/coqpix/php/get_entretiens.php", //new path, save your work first before u try
-                    type: "POST",
-                    dataType: "json",
-                    success: function(data) {
-                        if (data.status == "success") {
-                            data.entretiens.forEach(function(element) {
-                                var schedule = new ScheduleInfo();
 
-                                schedule.id = element['id_entretien'];
-                                schedule.calendarId = String(1);
+                function getEntretiens() {
+                    // Recuperation des entretiens
+                    entretiens.length = 0;
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/get_entretiens.php", //new path, save your work first before u try
+                        type: "POST",
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status == "success") {
+                                data.entretiens.forEach(function(element) {
+                                    var schedule = new ScheduleInfo();
 
-                                schedule.title = element['titre_entretien'];
-                                schedule.start = moment(element['debut_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
-                                schedule.end = moment(element['fin_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
-                                schedule.category = 'time';
+                                    schedule.id = element['id_entretien'];
+                                    schedule.calendarId = String(1);
 
-                                schedule.location = element['lieu_entretien'];
+                                    schedule.title = element['titre_entretien'];
+                                    schedule.start = moment(element['debut_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                    schedule.end = moment(element['fin_entretien']).format("YYYY-MM-DDTHH:mm:ssZZ");
+                                    schedule.category = 'time';
 
-                                entretiens.push(schedule);
-                            });
-                            setSchedules();
-                        } else {
-                            addAlert(data.message, "error");
+                                    schedule.location = element['lieu_entretien'];
+
+                                    entretiens.push(schedule);
+                                });
+                                setSchedules();
+                            } else {
+                                addAlert(data.message, "error");
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
             <?php
             }
             ?>
@@ -912,9 +947,9 @@ $entreprise = $pdoSta->fetch();
 
         $(document).ready(function() {
             <?php
-            if(isset($candidatures)){
+            if (isset($candidatures)) {
             ?>
-            $('sidebar-new-schedule').hide();
+                $('sidebar-new-schedule').hide();
             <?php
             }
             ?>

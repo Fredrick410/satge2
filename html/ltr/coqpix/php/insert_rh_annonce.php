@@ -95,12 +95,7 @@ if (!empty($_POST['pays_annonce'])) {
     exit();
 }
 if (!empty($_POST['type_contrat'])) {
-    $type_contrat = "";
-    $contrat = $_POST['type_contrat'];
-    foreach ($contrat as $value) {
-        $type_contrat .= $value . ", ";
-    }
-    $type_contrat = rtrim($type_contrat, ', ');
+    $type_contrat = implode(", ", $_POST['type_contrat']);
 } else {
     $response_array['status'] = 'error';
     $response_array['message'] = "Merci de choisir les types de contrats de l'offre";

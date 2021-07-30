@@ -9,7 +9,7 @@ $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
 $pdoSta->bindValue(':num', $_GET['num']);
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
-if(count($annonce) == 0){
+if (count($annonce) == 0) {
     header('Location: https://www.google.com/');
 }
 $_SESSION['annonce'] = $_GET['num'];
@@ -46,6 +46,7 @@ $_SESSION['annonce'] = $_GET['num'];
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/forms/wizard.css">
+    <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/fontawesome.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -519,30 +520,120 @@ $_SESSION['annonce'] = $_GET['num'];
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="permis_conduite">types de permis </label>
-                                                <select name="permis_conduite" id="permis_conduite" class="custom-select">
-                                                    <option value="" selected>Selectionnez un type de permis de conduite</option>
-                                                    <option value="A">A</option>
-                                                    <option value="A1">A1</option>
-                                                    <option value="A2">A2</option>
-                                                    <option value="B">B</option>
-                                                    <option value="B1">B1</option>
-                                                    <option value="B2">B2</option>
-                                                    <option value="BE">BE</option>
-                                                    <option value="C1">C1</option>
-                                                    <option value="C2">C2</option>
-                                                    <option value="CE">CE</option>
-                                                    <option value="C1E">C1E</option>
-                                                    <option value="D">D</option>
-                                                    <option value="D1">D1</option>
-                                                    <option value="D2">D2</option>
-                                                    <option value="D1E">D1E</option>
-                                                    <option value="DE">DE</option>
-                                                    <option value="AM">AM</option>
-                                                </select>
+                                                <label for="permis_conduite">Types de permis </label>
+                                                <div class="form-check form-group">
+                                                    <span>
+                                                        <i class="fa fa-motorcycle" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                    </span>
+                                                    <label>Permis moto</label>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="A" class="form-check-input" name="permis_conduite[]">
+                                                        <label>A</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="A1" class="form-check-input" name="permis_conduite[]">
+                                                        <label>A1</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="A2" class="form-check-input" name="permis_conduite[]">
+                                                        <label>A2</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="B" class="form-check-input" name="permis_conduite[]">
+                                                        <label>B</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="B1" class="form-check-input" name="permis_conduite[]">
+                                                        <label>B1</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="B2" class="form-check-input" name="permis_conduite[]">
+                                                        <label>B2</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="BE" class="form-check-input" name="permis_conduite[]">
+                                                        <label>BE</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="C1E" class="form-check-input" name="permis_conduite[]">
+                                                        <label>C1E</label>
+                                                    </div>
+
+                                                    <span>
+                                                        <i class="fa fa-truck" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                    </span>
+                                                    <label>Permis pour transport Marchandises</label>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="C1" class="form-check-input" name="permis_conduite[]">
+                                                        <label>C1</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="C2" class="form-check-input" name="permis_conduite[]">
+                                                        <label>C2</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="CE" class="form-check-input" name="permis_conduite[]">
+                                                        <label>CE</label>
+                                                    </div>
+
+                                                    <span>
+                                                        <i class="fa fa-automobile" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                    </span>
+                                                    <label>Permis pour transport personnel</label>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D" class="form-check-input" name="permis_conduite[]">
+                                                        <label>D</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D1" class="form-check-input" name="permis_conduite[]">
+                                                        <label>D1</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D2" class="form-check-input" name="permis_conduite[]">
+                                                        <label>D2</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D1E" class="form-check-input" name="permis_conduite[]">
+                                                        <label>D1E</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="DE" class="form-check-input" name="permis_conduite[]">
+                                                        <label>DE</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="AM" class="form-check-input" name="permis_conduite[]">
+                                                        <label>AM</label>
+                                                    </div>
+
+                                                    <span>
+                                                        <i class="fa fa-ship" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                    </span>
+                                                    <label>Permis pour bateau</label>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D" class="form-check-input" name="permis_conduite[]">
+                                                        <label>CÔTIER</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D1" class="form-check-input" name="permis_conduite[]">
+                                                        <label>HAUTURIER</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="D2" class="form-check-input" name="permis_conduite[]">
+                                                        <label>FLUVIAL</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </fieldset>
                                 <!-- body content of step 2 end-->
                             </form>
@@ -593,7 +684,7 @@ $_SESSION['annonce'] = $_GET['num'];
         });
 
         function submit() {
-            document.getElementById("myForm").submit(); 
+            document.getElementById("myForm").submit();
         }
 
         // live Icon color change on state change

@@ -4,26 +4,100 @@ require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+include 'mail.php';
 
-$name_annonce =  $_POST['name_annonce'];
-$nom_candidat = $_POST['nom_candidat'];
-$prenom_candidat = $_POST['prenom_candidat'];
-$sexe_candidat = $_POST['sexe_candidat'];
-$age_candidat = $_POST['age_candidat'];
-$specialite_candidat = $_POST['specialite_candidat'];
+if (!empty($_POST['name_annonce'])) {
+    $name_annonce = htmlspecialchars($_POST['name_annonce']);
+} else {
+    $_SESSION['message'] = "Merci de ne pas toucher au nom de l'annonce";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['nom_candidat'])) {
+    $nom_candidat = htmlspecialchars($_POST['nom_candidat']);
+} else {
+    $_SESSION['message'] = "Merci de saisir un nom";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['prenom_candidat'])) {
+    $prenom_candidat = htmlspecialchars($_POST['prenom_candidat']);
+} else {
+    $_SESSION['message'] = "Merci de saisir un prénom";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['sexe_candidat'])) {
+    $sexe_candidat = htmlspecialchars($_POST['sexe_candidat']);
+} else {
+    $_SESSION['message'] = "Merci de choisir un sexe";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['age_candidat'])) {
+    $age_candidat = htmlspecialchars($_POST['age_candidat']);
+} else {
+    $_SESSION['message'] = "Merci de saisir un age";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['specialite_candidat'])) {
+    $specialite_candidat = htmlspecialchars($_POST['specialite_candidat']);
+} else {
+    $_SESSION['message'] = "Merci de saisir au moins une spécialité";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
 $image_candidat = "";
-$time_candidat = $_POST['time_candidat'];
+if (!empty($_POST['time_candidat'])) {
+    $time_candidat = htmlspecialchars($_POST['time_candidat']);
+} else {
+    $_SESSION['message'] = "Merci de ne pas modifier la durée";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
 $logiciel = $_POST['logiciel'];
-$langue = $_POST['langue'];
+if (!empty($_POST['langue'])) {
+    $langue = htmlspecialchars($_POST['langue']);
+} else {
+    $_SESSION['message'] = "Merci d'entrer au moins une langue";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
 $formationetude = $_POST['formationetude'];
 $interet = $_POST['interet'];
 $qualite = $_POST['qualite'];
 $default = $_POST['default'];
-$permis_conduite = $_POST['permis_conduite'];
-$tel_candidat = $_POST['tel_candidat'];
-$email_candidat = $_POST['email_candidat'];
-$dtenaissance_candidat = $_POST['dtenaissance_candidat'];
-$pays = $_POST['pays'];
+$permis_conduite = implode(", ", $_POST['permis_conduite']);
+if (!empty($_POST['tel_candidat'])) {
+    $tel_candidat = htmlspecialchars($_POST['tel_candidat']);
+} else {
+    $_SESSION['message'] = "Merci d'entrer un numéro de téléphone";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['email_candidat'])) {
+    $email_candidat = htmlspecialchars($_POST['email_candidat']);
+} else {
+    $_SESSION['message'] = "Merci d'entrer une adresse mail";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['dtenaissance_candidat'])) {
+    $dtenaissance_candidat = htmlspecialchars($_POST['dtenaissance_candidat']);
+} else {
+    $_SESSION['message'] = "Merci d'entrer votre date de naissance";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+if (!empty($_POST['pays'])) {
+    $pays = htmlspecialchars($_POST['pays']);
+} else {
+    $_SESSION['message'] = "Merci d'entrer votre pays actuel de résidence";
+    header("Location: ../candidature-recrutement.php?num=$num");
+    exit();
+}
+
 
 $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND name_annonce=:name_annonce');
 $pdoS->bindValue(':num', $_POST['id_session']);
@@ -83,12 +157,11 @@ if (isset($_FILES['i_candidat']) and !empty($_FILES['i_candidat']['name'])) {
     $file_type = strtolower(pathinfo($fichier, PATHINFO_EXTENSION));
     $final_path = $dossier . $real_name . "." . $file_type;
     $resultat = $real_name . "." . $file_type;
-    if (move_uploaded_file($_FILES['i_candidat']['tmp_name'], $final_path)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+    if (!move_uploaded_file($_FILES['i_candidat']['tmp_name'], $final_path)) //Si la fonction renvoie FALSE, c'est que ça n'a pas fonctionné...
     {
-        echo 'Upload effectué avec succès !';
-    } else //Sinon (la fonction renvoie FALSE).
-    {
-        echo 'Echec de l\'upload !';
+        $_SESSION['message'] = "Echec de l'upload";
+        header("Location: ../candidature-recrutement.php?num=$num");
+        exit();
     }
 } else if ($annonce['image'] == 'oui') {
     $_SESSION['message'] = "L'insertion de l'image est obligatoire";
@@ -138,7 +211,45 @@ $pdoS->bindValue(':numentreprise', $id_session);
 $true = $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
-$explode = explode(';', $code);
-$num = $explode[2];
+try {
+    $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat = :num');
+    $pdoStt->bindValue(':num', $code, PDO::PARAM_STR);
+    $pdoStt->execute();
+    $candidature = $pdoStt->fetch();
+} catch (PDOException $e) {
+    $_SESSION['message'] = $e->GetMessage();
+    header("Location: candidature-recrutement-files.php?key=$key");
+    exit();
+}
+
+$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+$message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
+    "Vous venez de valider votre dépôt de vos information personnel et des conpetence. La prochaine etape est le dépôt des document pour ce poste à savoir le CV et les lettre de motivation.\n\n" .
+    "Merci d'utiliser le lien suivant pour accéder à la rubrique document: <a href=\"" . str_replace("php/candidature-recrutement-files.php?num=$num", "candidature-recrutement-files.php?key=$code", $url) . "\">Dépôt de documents</a> .\n\n" .
+    "Il est aussi disponible dans le cas ou vous souhaitez le faire plus tard et sera invalide dès la finalisation de votre candidature.\n\n" .
+    "A bientôt !\n\n" .
+    "Service des Ressources Humaines.\n\n" .
+    "Envoyé par Coqpix.";
+
+$sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
+
+$mail = [
+    'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
+    'adresse_recepteur' => $candidature['email_candidat'],
+    'nom_emetteur' => "Service des ressources humaines",
+    'adresse_emetteur' => "rh@" . $_SERVER['SERVER_NAME'],
+    'sujet' => $sujet,
+    'message' => $message
+];
+
+$sent = email($mail);
+if ($sent) {
+    header("Location: ../candidature-recrutement-files.php?key=$key");
+} else {
+    $_SESSION['message'] = "Erreur";
+    header("Location: ../candidature-recrutement.php?key=$key");
+    exit();
+}
 header('Location: ../test-qcm.php?key=' . $code . '');
 exit();
