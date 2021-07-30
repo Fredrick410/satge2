@@ -171,7 +171,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
 
         $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
             "Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ", j'ai le plaisir de vous annoncer que votre candidature a été retenu.\n\n" .
-            "Vous êtes invité dans nos locaux le $dtecontrat pour la signature de la convention de stage.\n\n" .
+            "Vous êtes invité dans nos locaux le $dtecontrat pour la signature de la convention de stage et vous démarrez le $startdte.\n\n" .
             "Bien Cordialement\n\n" .
             "Service des Ressources Humaines.\n\n" .
             "Envoyé par Coqpix.";
@@ -189,13 +189,11 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
 
         $sent = email($mail);
         if ($sent) {
-            if ($candidature['statut'] == "Refusé après entretien") {
-                $message = "Vous venez d'embaucher le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " après un entretien pour le poste de " . $annonce['poste'] . ".\n\n" .
-                    "Vous l'avez aussi conviez à la signature de sa convention de stage qui aura lieu le $dtecontrat.\n\n" .
-                    "Bien Cordialement.\n\n" .
-                    "Service des Ressources Humaines.\n\n" .
-                    "Envoyé par Coqpix.";
-            }
+            $message = "Vous venez d'embaucher le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " après un entretien pour le poste de " . $annonce['poste'] . ".\n\n" .
+                "Vous l'avez aussi conviez à la signature de sa convention de stage qui aura lieu le $dtecontrat. La prise de service aura lieu le $startdte.\n\n" .
+                "Bien Cordialement.\n\n" .
+                "Service des Ressources Humaines.\n\n" .
+                "Envoyé par Coqpix.";
 
             $sujet = "Votre réponse à " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour sa candidature pour le poste de " . $annonce['poste'] . " au sein de votre entreprise.";
 
@@ -213,8 +211,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             $response_array['status'] = 'success';
             $response_array['link'] = 'rh-entretient-candidats.php';
             echo json_encode($response_array);
-        }
-        else {
+        } else {
             $response_array['status'] = 'error';
             echo json_encode($response_array);
         }
