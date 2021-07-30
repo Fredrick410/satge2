@@ -95,7 +95,7 @@ if (count($candidature) != 0) {
         $questions[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    if (count($questions) != 0) {
+    if (isset($questions)) {
         foreach ($questions as $key => $desquestions) { // fixer la liste des questions
             foreach ($desquestions as $key => $question) { // fixe une question de la liste
                 $pdoStt = $bdd->prepare('SELECT * FROM reponse WHERE idquestion = :id ORDER BY idquestion, id');
@@ -304,7 +304,7 @@ if (count($candidature) != 0) {
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <?php
-                                                                    if (count($questions) == 0) {
+                                                                    if (isset($questions)) {
                                                                         for ($i = 0; $i < count($qcms); $i++) {
                                                                     ?>
                                                                             <div class="col">
@@ -457,7 +457,7 @@ if (count($candidature) != 0) {
                 </section>
                 <!-- List group navigation ends -->
                 <?php
-                if (count($questions) == 0) {
+                if (isset($questions)) {
                     for ($i = 0; $i < count($qcms); $i++) {
                         $score = 0;
                         $total = 0;
