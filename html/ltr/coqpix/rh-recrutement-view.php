@@ -1016,7 +1016,7 @@ if (count($candidature) != 0) {
                 }
                 ?>
                 <?php
-                if ($candidature['statut'] == "En cours") {
+                if ($candidature['statut'] == "En cours" and isset($questions)) {
                 ?>
                     <!-- Block level buttons start -->
                     <section id="block-level-buttons">
