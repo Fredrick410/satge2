@@ -14,6 +14,27 @@ $pdoSta->bindValue(':num', htmlspecialchars($num));
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
 
+$pdoSta = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat=:key_candidat');
+$pdoSta->bindValue(':key_candidat', $_GET['key']);
+$pdoSta->execute();
+$candidat = $pdoSta->fetch();
+if(count($candidat) == 0){
+    header('Location: https://www.google.com/');
+}
+
+$pdoSta = $bdd->prepare('SELECT COUNT(*) AS nb FROM reponses_qcm_candidat INNER JOIN rh_candidature ON (rh_candidature.id = reponses_qcm_candidat.idcandidat) WHERE key_candidat=:key_candidat');
+$pdoSta->bindValue(':key_candidat', $_GET['key']);
+$pdoSta->execute();
+$reponses_candidat = $pdoSta->fetchAll(PDO::FETCH_ASSOC);
+if($reponses_candidat['nb'] != 0){
+    $_SESSION['message'] = 'Vous avez déjà passé cette étape';
+    header("Location: candidature-recrutement.php?num=$num");
+}
+
+if(!isset($_SESSION['key_candidat'])){
+    $_SESSION['key_candidat'] = $_GET['key'];
+}
+
 $pdoStt = $bdd->prepare('SELECT * FROM qcm INNER JOIN rh_annonce_qcm ON (qcm.id = rh_annonce_qcm.idqcm) WHERE idannonce = :num');
 $pdoStt->bindValue(':num', $annonce['id']);
 $pdoStt->execute();

@@ -618,17 +618,17 @@ $_SESSION['annonce'] = $_GET['num'];
                                                     </span>
                                                     <label>Permis pour bateau</label>
                                                     <div class="form-check">
-                                                        <input type="checkbox" value="D" class="form-check-input" name="permis_conduite[]">
+                                                        <input type="checkbox" value="Côtier" class="form-check-input" name="permis_conduite[]">
                                                         <label>CÔTIER</label>
                                                     </div>
 
                                                     <div class="form-check">
-                                                        <input type="checkbox" value="D1" class="form-check-input" name="permis_conduite[]">
+                                                        <input type="checkbox" value="Hauturier" class="form-check-input" name="permis_conduite[]">
                                                         <label>HAUTURIER</label>
                                                     </div>
 
                                                     <div class="form-check">
-                                                        <input type="checkbox" value="D2" class="form-check-input" name="permis_conduite[]">
+                                                        <input type="checkbox" value="Fluvial" class="form-check-input" name="permis_conduite[]">
                                                         <label>FLUVIAL</label>
                                                     </div>
                                                 </div>

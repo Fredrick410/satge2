@@ -22,6 +22,11 @@ if(count($candidat) == 0){
     header('Location: https://www.google.com/');
 }
 
+if(!empty($candidat['cv_doc']) and !empty($candidat['lettredemotivation_doc'])){
+    $_SESSION['message'] = 'Vous avez déjà passé cette étape';
+    header("Location: candidature-recrutement.php?num=$num");
+}
+
 if(!isset($_SESSION['key_candidat'])){
     $_SESSION['key_candidat'] = $_GET['key'];
 }
