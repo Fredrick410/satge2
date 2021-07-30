@@ -141,7 +141,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                 <label>Thème de l'annonce</label><br>
                                                 <div id="picker" class="d-flex justify-content-center">
                                                 </div>
-                                                <input type="hidden" id="color_annonce" name="color_annonce">
+                                                <input type="hidden" id="color_annonce" name="color_annonce" value="#ffffff">
                                                 <small class="text-muted form-text">Selectionnez une couleur pour définir un thème à votre annonce de recrutement.</small>
                                             </div>
                                         </div>
