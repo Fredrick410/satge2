@@ -435,7 +435,7 @@ if (count($candidature) != 0) {
                                                                         <div class="form-group">
                                                                             <small>Entretien presentiel ou visio effectué</small>
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="suivi_entretien" <?php if ($candidature['suivi_test_specif'] == "oui") {
+                                                                                <input type="checkbox" class="custom-control-input" id="suivi_entretien" <?php if ($candidature['suivi_entretien'] == "oui") {
                                                                                                                                                                 echo "checked";
                                                                                                                                                             } ?>>
                                                                                 <label class="custom-control-label" for="suivi_entretien"></label>
