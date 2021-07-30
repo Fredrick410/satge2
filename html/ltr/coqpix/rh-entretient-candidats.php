@@ -67,11 +67,6 @@ $count_candidature = count($candidatures);
                                                     } ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if ($entreprise["theme_web"] == "light") {
                                                                                                                                                                                                         echo "semi-";
                                                                                                                                                                                                     } ?>dark-layout">
-    <style>
-        .none-validation {
-            display: none;
-        }
-    </style>
     <!-- BEGIN: Header-->
     <div class="header-navbar-shadow"></div>
     <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
