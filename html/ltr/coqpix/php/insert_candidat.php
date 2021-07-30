@@ -224,9 +224,11 @@ try {
 
 $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
+$url = str_replace("php/insert_candidat.php?num=$num", "candidature-recrutement-files.php?key=$code", $url);
+
 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
     "Vous venez de valider votre dépôt de vos information personnel et des conpetence. La prochaine etape est le dépôt des document pour ce poste à savoir le CV et les lettre de motivation.\n\n" .
-    "Merci d'utiliser le lien suivant pour accéder à la rubrique document: <a href=\"" . str_replace("php/insert_candidat.php?num=$num", "candidature-recrutement-files.php?key=$code", $url) . "\">Dépôt de documents</a> .\n\n" .
+    "Merci d'utiliser le lien suivant pour accéder à la rubrique document: <a href=\"$url\">$url</a> .\n\n" .
     "Il est aussi disponible dans le cas ou vous souhaitez le faire plus tard et sera invalide dès la finalisation de votre candidature.\n\n" .
     "A bientôt !\n\n" .
     "Service des Ressources Humaines.\n\n" .

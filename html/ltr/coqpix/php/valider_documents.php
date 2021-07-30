@@ -38,10 +38,11 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
         $true = $pdoS->execute();
         $entreprise = $pdoS->fetch();
         $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $url = str_replace("php/valider_documents.php", "test-qcm.php?key=$key", $url);
 
         $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
             "Vous venez de valider votre dépot de document. La prochaine etape est la réalisation du test prévu pour ce poste.\n\n" .
-            "Merci d'utiliser le lien suivant pour acceder au test: <a href=\"" . str_replace("php/valider_documents.php", "test-qcm.php?key=$key", $url) . "\">Test qcm</a> .\n\n" .
+            "Merci d'utiliser le lien suivant pour acceder au test: <a href=\"$url\">$url</a> .\n\n" .
             "Il est aussi disponible dans le cas ou vous souhaitez le faire plus tard et sera invalide dès la finalisation de votre candidature.\n\n" .
             "A bientôt !\n\n" .
             "Service des Ressources Humaines.\n\n" .
