@@ -245,7 +245,7 @@ $mail = [
 
 $sent = email($mail);
 if ($sent) {
-    header("Location: ../candidature-recrutement-files.php?key=$key");
+    header("Location: ../candidature-recrutement-files.php?key=$code");
 } else {
     $_SESSION['message'] = "Erreur";
     header("Location: ../candidature-recrutement.php?num=$num");
