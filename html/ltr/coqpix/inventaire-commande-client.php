@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -11,29 +11,31 @@ require_once 'php/config.php';
     $pdoStat->execute();
     $facture = $pdoStat->fetchAll();
 
+
     $pdoStatr = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
     $pdoStatr->execute();
     $facturer = $pdoStatr->fetch();
-    
-    
+
+
     $pdoStatr = $bdd->prepare('SELECT reffacture,numerosfacture FROM facture WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
     $pdoStatr->execute();
     $fu = $pdoStatr->fetch();
     $nom = $fu['reffacture'];
-    
+
 
     $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
-    
-    
-    // $p = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-    // $p->bindValue(':num',$_SESSION['id_session']);
-    // $p->execute();
-    // $test = $p->fetch();
+
+
+     //$pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+     //$pdo->bindValue(':num',$_SESSION['id_session']);
+     //$pdo->execute();
+     //$articles = $pdo->fetchAll();
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -100,10 +102,10 @@ require_once 'php/config.php';
                             function retourn() {
                                 window.history.back();
                             }
-                        </script> 
+                        </script>
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul> 
+                        </ul>
                     </div>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
@@ -152,9 +154,173 @@ require_once 'php/config.php';
     <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->
-    
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row"></div>
+            <div class="content-body">
+                <!-- invoice list -->
+                <section class="invoice-list-wrapper">
+                    <!-- create invoice button-->
+                    <div class="row">
+                        <?php
+                            if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $url = "https://"; else $url = "http://";$url .= $_SERVER['HTTP_HOST'];$url .= $_SERVER['REQUEST_URI'];
+                        ?>
+                        <div class="col">
+                            <div class="invoice-create-btn mb-1">
+                                <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Options and filter dropdown button-->
+                    <div class="action-dropdown-btn d-none">
+                        <div class="dropdown invoice-options">
+                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Options
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
+                                <a class="dropdown-item" href="#">Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>
+                                       Numéro facture
+                                    </th>
+                                    <th>
+                                        <span class="align-middle">Référence</span>
+                                    </th>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Valeur</th>
+                                    <th>Articles</th>
+                                    <th>Quantite</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            <!-- Afficher les prix  -->
+                            <?php foreach ($facture as $factures):
+                                $ref = $factures['numerosfacture'];
+                                $numeros = $factures['id'];
+                                try{
+
+                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente' ) T";
+
+                                $req = $bdd->prepare($sql);
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT);
+                                $req->execute();
+                                $res = $req->fetch();
+                                }catch(Exception $e){
+                                    echo "Erreur " . $e->getMessage();
+                                }
+
+
+                                $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
+
+                            ?>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <!-- affichage dans le tableau des données -->
+                                    <td>FAC-<?= $factures['id'] ?></td>
+                                    <td>
+                                    <!-- pour voir la facture  -->
+                                    <?php if($factures['status_facture'] == "Facture_Annulée"){
+                                            $numbre = "14986548";
+                                        } else{
+                                            $numbre = "68406510";
+                                        };?>
+                                        <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=<?=$numbre?>"><?= $factures['reffacture'],$ref ?></a>
+                                    </td>
+                                    <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
+                                    <td><span class="invoice-customer"><?= $factures['facturepour'] ?></span></td>
+
+                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
+                                    <td>
+                                      <?php
+                                      $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ = "facturevente"');
+                                      $pdo->bindValue(':num',$_SESSION['id_session']);
+                                      $pdo->bindValue(':numeros',$numeros);
+                                      $pdo->execute();
+                                      $articles = $pdo->fetchAll();?>
+                                      <table>
+                                        <?php
+                                        if (count($articles)<=2) {
+                                          foreach($articles as $articless): ?>
+                                            <tr>
+                                              <td><?= $articless['article']; ?></td>
+                                            </tr>
+                                          <?php endforeach;
+                                        }else {
+                                          for ($i=0; $i < 2; $i++) {?>
+                                            <tr>
+                                              <td><?= $articles[$i]['article']; ?></td>
+                                            </tr>
+                                        <?php  } ?><tr>
+                                            <td>...</td>
+                                          </tr>
+                                      <?php  } ?>
+                                      </table>
+                                  </td>
+                                  <td>
+                                    <table>
+                                      <?php
+                                      if (count($articles)<=2) {
+                                        foreach($articles as $articless): ?>
+                                          <tr>
+                                            <td><?= $articless['quantite']; ?></td>
+                                          </tr>
+                                        <?php endforeach;
+                                      }else {
+                                        for ($i=0; $i < 2; $i++) {?>
+                                          <tr>
+                                            <td><?= $articles[$i]['quantite']; ?></td>
+                                          </tr>
+                                      <?php  } ?><tr>
+                                          <td>...</td>
+                                        </tr>
+                                    <?php  } ?>
+                                  </table>
+                                </td>
+                                    <td>
+                                        <div class="invoice-action"><br>
+                                            <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=<?=$numbre?>" class="invoice-action-view mr-1">
+                                                <i class="bx bx-show-alt"></i>
+                                            </a>
+                                            <!-- pour edit la facture -->
+                                            <a href="app-invoice-edit.php?numfacture=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                                <i class="bx bx-edit"></i>
+                                            </a>&nbsp&nbsp&nbsp&nbsp<br>
+                                            <!-- <a href="php/envoie_dev.php?id=<?= $factures['id'] ?>"
+                                            class="invoice-action-edit cursor-pointer">
+                                                <i class='bx bxs-send'></i>
+                                            </a>&nbsp&nbsp&nbsp&nbsp -->
+                                            <!-- pour delete -->
+                                            <a href="php/delete_facture.php?numfacture=<?= $factures['numerosfacture'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                                <i class='bx bxs-trash'></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
     <!-- END: Content-->
- 
+
 <script type="text/javascript">
     function checkbox(){
         if(document.getElementById('checkbox').checked){
