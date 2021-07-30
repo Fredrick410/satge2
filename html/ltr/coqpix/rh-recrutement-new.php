@@ -125,7 +125,18 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="description_annonce">Description de l'annonce </label>
-                                                    <input id="description_annonce" type="text" name="description_annonce" class="form-control" placeholder="Description de l'annonce">
+                                                    <textarea id="description_annonce" cols="30" rows="11" name="description_annonce" class="form-control" placeholder="Description de l'annonce"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Thème de l'annonce</label><br>
+                                                    <div id="picker" class="d-flex justify-content-center">
+                                                    </div>
+                                                    <input type="hidden" id="color_annonce" name="color_annonce" value="#ffffff">
+                                                    <small class="text-muted form-text">Selectionnez une couleur pour définir un thème à votre annonce de recrutement.</small>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
@@ -134,15 +145,6 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                     <input id="email_annonce" type="email" name="email_annonce" class="form-control" placeholder="Entrez votre mail" required>
                                                     <small class="text-muted form-text">Veuillez saisir votre adresse e-mail.</small>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Thème de l'annonce</label><br>
-                                                <div id="picker" class="d-flex justify-content-center">
-                                                </div>
-                                                <input type="hidden" id="color_annonce" name="color_annonce" value="#ffffff">
-                                                <small class="text-muted form-text">Selectionnez une couleur pour définir un thème à votre annonce de recrutement.</small>
                                             </div>
                                         </div>
                                     </div>
@@ -403,9 +405,9 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                                     </div>
                                                     <div class="col-12 form-group">
                                                         <div class="col p-0">
-                                                            <button class="btn btn-light-primary btn-sm" type="button">
+                                                            <button id="button_send" class="btn btn-light-primary btn-sm" type="button">
                                                                 <i class="bx bx-plus"></i>
-                                                                <span id="button_send" class="invoice-repeat-btn">Ajouter la mission/compétence</span>
+                                                                <span class="invoice-repeat-btn">Ajouter la mission/compétence</span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -584,7 +586,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                 id++;
             }
             /*Assigning id and class for tr and td tags for separation.*/
-            $("#button_send").click(function() {
+            $("#button_send").mousedown(function() {
                 if (htmlEntities($("#mission").val()) != '') {
                     var newid = id++;
                     $("#table tbody").append(`<tr valign="top" id="${newid}">

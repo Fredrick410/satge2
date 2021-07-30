@@ -281,7 +281,7 @@ $pays = array(
                                                     <input class="form-control" type="date" name="dtenaissance" id="dtenaissance" value="<?= $candidature['dtenaissance_candidat'] ?>" disabled>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="pays" class="col-form-label">Pays du candidat</label>
+                                                    <label for="pays" class="col-form-label">Pays de résidence du candidat</label>
                                                     <input class="form-control" type="text" name="pays" id="pays" value="<?php if (isset($pays[$candidature['pays']])) {
                                                                                                                                 echo $pays[$candidature['pays']];
                                                                                                                             } else {
@@ -315,11 +315,15 @@ $pays = array(
                                                 </div>
                                                 <div class="form-group" id="fiche-poste" style="display: none;">
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="dtecontrat">Date de rendez-vous pour signature du contrat</label>
+                                                            <input type="date" name="dtecontrat" id="dtecontrat" class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-4">
                                                             <label for="startdte">Date de prise de service</label>
                                                             <input type="date" name="startdte" id="startdte" class="form-control">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
                                                             <label for="enddte">Date de fin de service</label>
                                                             <input type="date" name="enddte" id="enddte" class="form-control">
                                                         </div>
@@ -394,6 +398,7 @@ $pays = array(
                 } else if (value == 'confirm') {
                     var labels = document.getElementsByTagName('label');
                     var observations = document.getElementById("observations").value;
+                    var dtecontrat = document.getElementById("dtecontrat").value;
                     var startdte = document.getElementById("startdte").value;
                     var enddte = document.getElementById("enddte").value;
                     var missions = [];
@@ -409,6 +414,7 @@ $pays = array(
                         data: {
                             observations: observations,
                             missions: missions,
+                            dtecontrat: dtecontrat,
                             startdte: startdte,
                             enddte: enddte,
                             confirm: "confirm",

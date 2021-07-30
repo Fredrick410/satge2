@@ -122,21 +122,15 @@ $_SESSION['annonce'] = $_GET['num'];
                             </div>
                             <div class="form-group" style="margin-left: 40px;">
                                 <label>Type de contrat :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['type_contrat'] ?></p><br>
-                                <label>Description :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['description_annonce'] ?></p><br>
                                 <label>E-mail de contact :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['email_annonce'] ?></p><br>
                                 <label>Tel de contact :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['tel_annonce'] ?></p><br>
                                 <label>Age requis :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['age'] ?></p><br>
                                 <label>Poste à promouvoir :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['poste'] ?></p><br>
                                 <label>Niveaux d'étude requis :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['niveau'] ?></p><br>
                                 <label>Duree du contrat :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['temps'] ?></p><br>
-                                <label>Pays :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['pays'] ?></p>
-                                <hr>
-                            </div>
-                            <div class="form-group" style="margin-left: 40px;">
-                                <p>L'interface recrutement de Coqpix permet aux deux partis (Candidat et Employeur) d'être plus organisé. <br>
-                                    Avec cette fonctionnalité de Coqpix dits adieux aux pertes de temps suite au démarchage pour trouver votre
-                                    employeur ou votre candidat.
-                                </p>
+                                <label>Pays :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['pays'] ?></p><br>
+                                <label>Description :</label><br>
+                                <pre> <?= $annonce['description_annonce'] ?></pre>
                             </div>
                         </div>
                         <div class="col">

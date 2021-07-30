@@ -41,6 +41,22 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
                 echo json_encode($response_array);
                 exit();
             }
+            if (!empty($_POST['dtecontrat'])) {
+                $dtecontrat = $_POST['dtecontrat'];
+                // On verifie le format de date
+                // S'il est incorrect on retourne un message d'erreur
+                if (!validateDate($dtecontrat)) {
+                    $response_array['status'] = 'error';
+                    $response_array['message'] = "Merci de choisir une date de signature de contrat valide";
+                    echo json_encode($response_array);
+                    exit();
+                }
+            } else {
+                $response_array['status'] = 'error';
+                $response_array['message'] = "Merci de choisir une date de prise de service";
+                echo json_encode($response_array);
+                exit();
+            }
             if (!empty($_POST['startdte'])) {
                 $startdte = $_POST['startdte'];
                 // On verifie le format de date
@@ -106,44 +122,6 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             exit();
         }
 
-        // On cree un nouvel employe a partir de la candidature mise a jour
-        try {
-            $update = $bdd->prepare('INSERT INTO membres(nom, prenom, email, tel, dtenaissance, pays, langue, img_membres, name_entreprise, status_membres, role_membres, missions, startdte, enddte, id_session) VALUES (?,?,?,?,?,?,?,?,(SELECT nameentreprise FROM entreprise WHERE id = ?),?,?,?,?,?,?)');
-            $update->execute(array(
-                $candidature['nom_candidat'],
-                $candidature['prenom_candidat'],
-                $candidature['email_candidat'],
-                $candidature['tel_candidat'],
-                $candidature['dtenaissance_candidat'],
-                $candidature['pays'],
-                $candidature['langue'],
-                "astro2.gif",
-                $_SESSION['id_session'],
-                "Active",
-                "Employee",
-                $missions,
-                $startdte,
-                $enddte,
-                $_SESSION['id_session']
-            ));
-        } catch (Exception $e) {
-            $response_array['status'] = 'error';
-            $response_array['message'] = $e->getMessage();
-            echo json_encode($response_array);
-            exit();
-        }
-
-        try {
-            $pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num');
-            $pdoStt->bindValue(':num', htmlspecialchars($_POST['idcandidat']), PDO::PARAM_INT);
-            $pdoStt->execute();
-            $candidature = $pdoStt->fetch();
-        } catch (PDOException $exception) {
-            $response_array['status'] = 'error';
-            $response_array['message'] = $e->getMessage();
-            echo json_encode($response_array);
-            exit();
-        }
         $explode = explode(';', $candidature['key_candidat']);
         $num = $explode[2];
         try {
@@ -158,6 +136,34 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             exit();
         }
 
+        // On cree un nouvel employe a partir de la candidature mise a jour
+        try {
+            $update = $bdd->prepare('INSERT INTO membres(nom, prenom, email, tel, dtenaissance, pays, langue, img_membres, name_entreprise, status_membres, role_membres, dtecontrat, missions, startdte, enddte, id_session) VALUES (?,?,?,?,?,?,?,?,(SELECT nameentreprise FROM entreprise WHERE id = ?),?,?,?,?,?,?)');
+            $update->execute(array(
+                $candidature['nom_candidat'],
+                $candidature['prenom_candidat'],
+                $candidature['email_candidat'],
+                $candidature['tel_candidat'],
+                $candidature['dtenaissance_candidat'],
+                $candidature['pays'],
+                $candidature['langue'],
+                "astro2.gif",
+                $_SESSION['id_session'],
+                "Active",
+                $annonce['poste'],
+                $dtecontrat,
+                $missions,
+                $startdte,
+                $enddte,
+                $_SESSION['id_session']
+            ));
+        } catch (Exception $e) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $e->getMessage();
+            echo json_encode($response_array);
+            exit();
+        }
+
         $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
         $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
         $true = $pdoS->execute();
@@ -165,7 +171,7 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
 
         $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
             "Suite à votre entretien pour le poste de " . $annonce['poste'] . " chez " . $entreprise['nameentreprise'] . ", j'ai le plaisir de vous annoncer que votre candidature a été retenu.\n\n" .
-            "Vous pouvez nous transmettre les documents pour la signature de la convention de stage.\n\n" .
+            "Vous êtes invité dans nos locaux le $dtecontrat pour la signature de la convention de stage.\n\n" .
             "Bien Cordialement\n\n" .
             "Service des Ressources Humaines.\n\n" .
             "Envoyé par Coqpix.";
@@ -181,12 +187,37 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
             'message' => $message
         ];
 
-        email($mail);
+        $sent = email($mail);
+        if ($sent) {
+            if ($candidature['statut'] == "Refusé après entretien") {
+                $message = "Vous venez d'embaucher le candidat " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " après un entretien pour le poste de " . $annonce['poste'] . ".\n\n" .
+                    "Vous l'avez aussi conviez à la signature de sa convention de stage qui aura lieu le $dtecontrat.\n\n" .
+                    "Bien Cordialement.\n\n" .
+                    "Service des Ressources Humaines.\n\n" .
+                    "Envoyé par Coqpix.";
+            }
 
-        // On retourne un code de success
-        $response_array['status'] = 'success';
-        $response_array['link'] = 'rh-entretient-candidats.php';
-        echo json_encode($response_array);
+            $sujet = "Votre réponse à " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . " pour sa candidature pour le poste de " . $annonce['poste'] . " au sein de votre entreprise.";
+
+            $mail = [
+                'nom_recepteur' => $entreprise['nameentreprise'],
+                'adresse_recepteur' => $entreprise['emailentreprise'],
+                'nom_emetteur' => "Service des ressources humaines",
+                'adresse_emetteur' => "rh-noreply@coqpix.com",
+                'sujet' => $sujet,
+                'message' => $message
+            ];
+
+            $sent = email($mail);
+            // On retourne un code de success
+            $response_array['status'] = 'success';
+            $response_array['link'] = 'rh-entretient-candidats.php';
+            echo json_encode($response_array);
+        }
+        else {
+            $response_array['status'] = 'error';
+            echo json_encode($response_array);
+        }
     }
 }
 exit();
