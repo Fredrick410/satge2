@@ -15,7 +15,7 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
             $candidature = $pdoStt->fetch();
         } catch (PDOException $e) {
             $_SESSION['message'] = $e->GetMessage();
-            header("Location: candidature-recrutement-files.php?key=$key");
+            header("Location: ../candidature-recrutement-files.php?key=$key");
             exit();
         }
         $explode = explode(';', $candidature['key_candidat']);
@@ -27,7 +27,7 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
             $annonce = $pdoSta->fetch();
         } catch (PDOException $e) {
             $_SESSION['message'] = $e->GetMessage();
-            header("Location: candidature-recrutement-files.php?key=$key");
+            header("Location: ../candidature-recrutement-files.php?key=$key");
             exit();
         }
 
