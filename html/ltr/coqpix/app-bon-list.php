@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -21,7 +21,7 @@ require_once 'php/config.php';
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
-    
+
     $pdoStatr = $bdd->prepare('SELECT refbon,numerosbon FROM bon WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
     $pdoStatr->execute();
@@ -104,9 +104,9 @@ require_once 'php/config.php';
                                 <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
                             </div>
                         </div>
-                        
+
                     </div>
-                    
+
                     <!-- Options and filter dropdown button-->
                     <div class="action-dropdown-btn d-none">
                         <div class="dropdown invoice-options">
@@ -136,31 +136,31 @@ require_once 'php/config.php';
                                     <th>Etiquette</th>
                                     <th>Statut</th>
                                     <th>Action</th>
-                                 
+
                                 </tr>
                             </thead>
                             <tbody>
-                            
+
                             <!-- Afficher les prix  -->
-                            <?php foreach ($bon as $bons): 
+                            <?php foreach ($bon as $bons):
                                 $ref = $bons['numerosbon'];
                                 $numeros = $bons['id'];
                                 try{
-                                    
+
                                 $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonvente' ) T";
-  
+
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT);
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
                                     echo "Erreur " . $e->getMessage();
                                 }
-                                
+
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
-                                
-                            ?> 
+
+                            ?>
                                 <tr>
                                     <td></td>
                                     <td></td>
@@ -195,7 +195,7 @@ require_once 'php/config.php';
                                             <!-- pour delete -->
                                             <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
-                                            </a>                                
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
