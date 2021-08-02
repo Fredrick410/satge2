@@ -12,7 +12,7 @@ $sujet = 'Votre candidature pour le poste de test au sein de test.';
 
 $mail = [
 'nom_recepteur' => "Test",
-'adresse_recepteur' => "test-ddiodz659@srv1.mail-tester.com",
+'adresse_recepteur' => "test-cbwjeco48@srv1.mail-tester.com",
 'nom_emetteur' => "Service des ressources humaines",
 'adresse_emetteur' => "rh@". $_SERVER['SERVER_NAME'],
 'sujet' => $sujet,
