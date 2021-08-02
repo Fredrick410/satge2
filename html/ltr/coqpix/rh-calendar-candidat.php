@@ -21,7 +21,7 @@ if (isset($_GET['num']) and is_numeric($_GET['num'])) {
 }
 
 // Si la candidature n'existe pas on retourne a la liste des candidatures pour entretiens
-if (count($candidature) == 0 and isset($candidatures)) {
+if (!isset($candidature) and !isset($candidatures)) {
     header('Location: rh-entretient-candidats.php');
 }
 
