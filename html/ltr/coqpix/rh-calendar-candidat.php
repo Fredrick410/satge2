@@ -769,7 +769,7 @@ $entreprise = $pdoSta->fetch();
                 refreshScheduleVisibility();
             }
 
-            <?php if (isset($candidatures)) {
+            <?php if (!isset($candidatures)) {
             ?>
 
                 function getEntretiens() {
