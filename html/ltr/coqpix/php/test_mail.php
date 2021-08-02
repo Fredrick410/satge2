@@ -1,4 +1,5 @@
 <?php
+include "mail.php";
 $message = "Bonjour,\n\n" .
 "Vous venez de valider votre dépot de document. La prochaine etape est la réalisation du test prévu pour ce poste.\n\n" .
 "Merci d'utiliser le lien suivant pour acceder au test: lien.\n\n" .
