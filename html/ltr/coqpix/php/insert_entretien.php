@@ -132,8 +132,10 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
 
     $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
         "Conformément à vos disponibilités, nous vous convions à un entretien le " . explode(" ", $debut_entretien)[0] . " de " . explode(" ", $debut_entretien)[1] . " à " . explode(" ", $fin_entretien)[1] . ".\n\n" .
+        "En cas d'imprévu, merci de nous le signaler à cette adresse: " . $entreprise['emailentreprise'] . ".\n\n" .
         "Bien Cordialement.\n\n" .
         "Service des Ressources Humaines.\n\n" .
+        $entreprise['nameentreprise'] . ".\n\n" .
         "Envoyé par Coqpix.";
 
     $sujet = 'Votre candidature pour le poste de ' . $annonce['poste'] . ' au sein de ' . $entreprise['nameentreprise'] . ".";
@@ -142,7 +144,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
         'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
         'adresse_recepteur' => $candidature['email_candidat'],
         'nom_emetteur' => "Service des ressources humaines",
-        'adresse_emetteur' => $entreprise['emailentreprise'],
+        'adresse_emetteur' => "rh-noreply@". $_SERVER['SERVER_NAME'],
         'sujet' => $sujet,
         'message' => $message
     ];
@@ -160,7 +162,7 @@ if (isset($_POST['id_candidature']) and isset($_POST['titre_entretien']) and iss
             'nom_recepteur' => $entreprise['nameentreprise'],
             'adresse_recepteur' => $entreprise['emailentreprise'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => "rh-noreply@coqpix.com",
+            'adresse_emetteur' => "rh-noreply@". $_SERVER['SERVER_NAME'],
             'sujet' => $sujet,
             'message' => $message
         ];

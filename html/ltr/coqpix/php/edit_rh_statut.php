@@ -46,9 +46,10 @@ if ($_SESSION['candidat'] == $_GET['num']) {
             if ($candidature['statut'] == "Admis à entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
                     "Suite à votre candidature pour le poste de " . $annonce['poste'] . ", j'ai le plaisir de vous proposer un entretien.\n\n" .
-                    "Merci de me confirmer vos disponibilités.\n\n" .
+                    "Merci de me confirmer vos disponibilités a cette adresse: ". $entreprise['emailentreprise'].".\n\n" .
                     "Bien Cordialement.\n\n" .
                     "Service des Ressources Humaines.\n\n" .
+                    $entreprise['nameentreprise'].".\n\n" .
                     "Envoyé par Coqpix.";
             } else if ($candidature['statut'] == "Refusé avant entretien") {
                 $message = "Bonjour " . $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'] . ",\n\n" .
@@ -59,6 +60,7 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                     "Merci encore pour l'intérêt que vous avez porté à notre entreprise.\n\n" .
                     "Bien Cordialement.\n\n" .
                     "Service des Ressources Humaines.\n\n" .
+                    $entreprise['nameentreprise'].".\n\n" .
                     "Envoyé par Coqpix.";
             }
 
@@ -68,7 +70,7 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                 'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
                 'adresse_recepteur' => $candidature['email_candidat'],
                 'nom_emetteur' => "Service des ressources humaines",
-                'adresse_emetteur' => $entreprise['emailentreprise'],
+                'adresse_emetteur' => "rh-noreply@". $_SERVER['SERVER_NAME'],
                 'sujet' => $sujet,
                 'message' => $message
             ];
@@ -94,7 +96,7 @@ if ($_SESSION['candidat'] == $_GET['num']) {
                     'nom_recepteur' => $entreprise['nameentreprise'],
                     'adresse_recepteur' => $entreprise['emailentreprise'],
                     'nom_emetteur' => "Service des ressources humaines",
-                    'adresse_emetteur' => "rh-noreply@coqpix.com",
+                    'adresse_emetteur' => "rh-noreply@". $_SERVER['SERVER_NAME'],
                     'sujet' => $sujet,
                     'message' => $message
                 ];
