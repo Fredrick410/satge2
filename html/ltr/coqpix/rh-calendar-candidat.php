@@ -261,8 +261,13 @@ $entreprise = $pdoSta->fetch();
                     '&times;</button>' + message + '</div>');
             }
         }
-
+        <?php
+            if(isset($candidature)){
+        ?>
         var id_candidature = <?= $candidature['id'] ?>;
+        <?php
+            }
+        ?>
         var debut_entretien = '';
         var fin_entretien = '';
         var lieu_entretien = '';
