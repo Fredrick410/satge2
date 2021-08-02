@@ -19,3 +19,9 @@ $mail = [
 ];
 
 $sent = email($mail);
+if($sent){
+    echo "Message envoye";
+}
+else {
+    echo "Message non envoye";
+}
