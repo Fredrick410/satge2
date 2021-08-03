@@ -36,6 +36,7 @@ $_SESSION['annonce'] = $_GET['num'];
 
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/vendors/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.css">
@@ -519,115 +520,131 @@ $_SESSION['annonce'] = $_GET['num'];
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label for="permis_conduite">Types de permis </label>
-                                                        <div class="form-check form-group">
-                                                            <span>
-                                                                <i class="fa fa-motorcycle" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                            </span>
-                                                            <label>Permis moto</label>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="A" class="form-check-input" name="permis_conduite[]">
-                                                                <label>A</label>
+                                                        <div class="form-group">
+                                                            <div class="form-check form-group">
+                                                                <span>
+                                                                    <i class="fa fa-motorcycle" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                                </span>
+                                                                <label>Moto:</label>
+                                                                <div class=" form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxA" value="A" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxA">A</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxA1" value="A1" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxA1">A1</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxA2" value="A2" class="form-check-input " name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxA2">A2</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxAM" value="AM" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxAM">AM/BSR</label>
+                                                                </div>
                                                             </div>
 
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="A1" class="form-check-input" name="permis_conduite[]">
-                                                                <label>A1</label>
+                                                            <div class="form-check form-group">
+                                                                <span>
+                                                                    <i class="fa fa-automobile" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                                </span>
+                                                                <label>Voiture:</label>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxB" value="B" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxB">B</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxB1" value="B1" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxB1">B1</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxB2" value="B2" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxB2">B2</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxBE" value="BE" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxBE">BE</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxC1E" value="C1E" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxC1E">C1E</label>
+                                                                </div>
                                                             </div>
 
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="A2" class="form-check-input" name="permis_conduite[]">
-                                                                <label>A2</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="B" class="form-check-input" name="permis_conduite[]">
-                                                                <label>B</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="B1" class="form-check-input" name="permis_conduite[]">
-                                                                <label>B1</label>
+                                                            <div class="form-check form-group">
+                                                                <span>
+                                                                    <i class="fa fa-truck" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                                </span>
+                                                                <label>Transport Marchandises:</label>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxC1" value="C1" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxC1">C1</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxC2" value="C2" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxC2">C2</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxCE" value="CE" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxCE">CE</label>
+                                                                </div>
                                                             </div>
 
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="B2" class="form-check-input" name="permis_conduite[]">
-                                                                <label>B2</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="BE" class="form-check-input" name="permis_conduite[]">
-                                                                <label>BE</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="C1E" class="form-check-input" name="permis_conduite[]">
-                                                                <label>C1E</label>
+                                                            <div class="form-check form-group">
+                                                                <span>
+                                                                    <i class="fa fa-bus" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                                </span>
+                                                                <label>Transport de personnes:</label>
+                                                                <div class=" form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxD" value="D" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxD">D</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxD1" value="D1" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxD1">D1</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxD2" value="D2" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxD2">D2</label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxD1E" value="D1E" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxD2">D1E</label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxDE" value="DE" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxDE">DE</label>
+                                                                </div>
                                                             </div>
 
-                                                            <span>
-                                                                <i class="fa fa-truck" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                            </span>
-                                                            <label>Permis pour transport Marchandises</label>
+                                                            <div class="form-check form-group">
+                                                                <span>
+                                                                    <i class="fa fa-ship" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                                </span>
+                                                                <label>Bateau:</label>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxCOTIER" value="Côtier" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxCOTIER">CÔTIER</label>
+                                                                </div>
 
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="C1" class="form-check-input" name="permis_conduite[]">
-                                                                <label>C1</label>
-                                                            </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxHAUTURIER" value="Hauturier" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxHAUTURIER">HAUTURIER</label>
+                                                                </div>
 
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="C2" class="form-check-input" name="permis_conduite[]">
-                                                                <label>C2</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="CE" class="form-check-input" name="permis_conduite[]">
-                                                                <label>CE</label>
-                                                            </div>
-
-                                                            <span>
-                                                                <i class="fa fa-automobile" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                            </span>
-                                                            <label>Permis pour transport personnel</label>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="D" class="form-check-input" name="permis_conduite[]">
-                                                                <label>D</label>
-                                                            </div>
-
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="D1" class="form-check-input" name="permis_conduite[]">
-                                                                <label>D1</label>
-                                                            </div>
-
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="D2" class="form-check-input" name="permis_conduite[]">
-                                                                <label>D2</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="D1E" class="form-check-input" name="permis_conduite[]">
-                                                                <label>D1E</label>
-                                                            </div>
-
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="DE" class="form-check-input" name="permis_conduite[]">
-                                                                <label>DE</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="AM" class="form-check-input" name="permis_conduite[]">
-                                                                <label>AM</label>
-                                                            </div>
-
-                                                            <span>
-                                                                <i class="fa fa-ship" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                            </span>
-                                                            <label>Permis pour bateau</label>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="Côtier" class="form-check-input" name="permis_conduite[]">
-                                                                <label>CÔTIER</label>
-                                                            </div>
-
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="Hauturier" class="form-check-input" name="permis_conduite[]">
-                                                                <label>HAUTURIER</label>
-                                                            </div>
-
-                                                            <div class="form-check">
-                                                                <input type="checkbox" value="Fluvial" class="form-check-input" name="permis_conduite[]">
-                                                                <label>FLUVIAL</label>
+                                                                <div class=" form-check form-check-inline">
+                                                                    <input type="checkbox" id="inlineCheckboxFLUVIAL" value="Fluvial" class="form-check-input" name="permis_conduite[]">
+                                                                    <label class="form-check-label" for="inlineCheckboxFLUVIAL">FLUVIAL</label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
