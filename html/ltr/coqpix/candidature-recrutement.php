@@ -131,7 +131,8 @@ $_SESSION['annonce'] = $_GET['num'];
                                 <label>Duree du contrat :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['temps'] ?></p><br>
                                 <label>Pays :</label> &nbsp;&nbsp;<p style="display: inline;"><?= $annonce['pays'] ?></p><br>
                                 <label>Description :</label><br>
-                                <pre> <?= $annonce['description_annonce'] ?></pre>
+                                <pre style="font-family: Arial, Helvetica, sans-serif;"> <?= $annonce['description_annonce'] ?></pre>
+                                <em><strong style="color: red;"><u>Important:</u> Merci de vérifier régulièrement vos spams. Si nos mails s'y retrouvent, merci de les signaler comme non spams.</strong></em>
                             </div>
                         </div>
                         <div class="col">
