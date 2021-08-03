@@ -143,497 +143,517 @@ $_SESSION['annonce'] = $_GET['num'];
                 <div class="form-group">
                     <hr>
                 </div>
-                <div class="form-group">
-                    <div class="card-content mt-2">
-                        <div class="card-body">
-                            <form class="wizard-horizontal" method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" enctype="multipart/form-data" id="myForm">
-                                <!-- Step 1 -->
-                                <h6>
-                                    <i class="step-icon"></i>
-                                    <span class="fonticon-wrap">
-                                        <i class="livicon-evo" data-options="name:morph-doc.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
-                                </h6>
-                                <!-- Step 1 end-->
-                                <!-- body content step 1 -->
-                                <fieldset class="pt-0">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h6 class="py-50">Etape 1 - Entrez vos informations personnelles</h6>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="firstName13">Nom de famille </label>
-                                                <input name="nom_candidat" type="text" class="form-control" id="firstName13" placeholder="Nom de famille" required>
-                                                <input type="hidden" name="id_session" value="<?= $annonce['id_session'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="lastName12">Prénom</label>
-                                                <input name="prenom_candidat" type="text" class="form-control" id="lastName12" placeholder="Prénom" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="emailAddress1">Spécialité</label>
-                                                <input name="specialite_candidat" type="text" class="form-control" id="emailAddress1" placeholder="Ma spécialité" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Age</label>
-                                                <input name="age_candidat" type="number" class="form-control" placeholder="Exemple : 18 ans" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Adresse email</label>
-                                                <input name="email_candidat" type="email" class="form-control" placeholder="bak@gmail.com" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Numéro de téléphone</label>
-                                                <input name="tel_candidat" type="tel" class="form-control" placeholder="+33607258629" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Date de naissance</label>
-                                                <input name="dtenaissance_candidat" type="date" class="form-control" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Pays de résidence</label>
-                                                <select class="form-control" name="pays" id="pays">
-                                                    <option value="">Selectionnez un pays</option>
-                                                    <optgroup label="Europe">
-                                                        <option value="allemagne">Allemagne</option>
-                                                        <option value="albanie">Albanie</option>
-                                                        <option value="andorre">Andorre</option>
-                                                        <option value="autriche">Autriche</option>
-                                                        <option value="bielorussie">Biélorussie</option>
-                                                        <option value="belgique">Belgique</option>
-                                                        <option value="bosnieHerzegovine">Bosnie-Herzégovine</option>
-                                                        <option value="bulgarie">Bulgarie</option>
-                                                        <option value="croatie">Croatie</option>
-                                                        <option value="danemark">Danemark</option>
-                                                        <option value="espagne">Espagne</option>
-                                                        <option value="estonie">Estonie</option>
-                                                        <option value="finlande">Finlande</option>
-                                                        <option value="france">France</option>
-                                                        <option value="grece">Grèce</option>
-                                                        <option value="hongrie">Hongrie</option>
-                                                        <option value="irlande">Irlande</option>
-                                                        <option value="islande">Islande</option>
-                                                        <option value="italie">Italie</option>
-                                                        <option value="lettonie">Lettonie</option>
-                                                        <option value="liechtenstein">Liechtenstein</option>
-                                                        <option value="lituanie">Lituanie</option>
-                                                        <option value="luxembourg">Luxembourg</option>
-                                                        <option value="exRepubliqueYougoslaveDeMacedoine">Ex-République Yougoslave de Macédoine</option>
-                                                        <option value="malte">Malte</option>
-                                                        <option value="moldavie">Moldavie</option>
-                                                        <option value="monaco">Monaco</option>
-                                                        <option value="norvege">Norvège</option>
-                                                        <option value="paysBas">Pays-Bas</option>
-                                                        <option value="pologne">Pologne</option>
-                                                        <option value="portugal">Portugal</option>
-                                                        <option value="roumanie">Roumanie</option>
-                                                        <option value="royaumeUni">Royaume-Uni</option>
-                                                        <option value="russie">Russie</option>
-                                                        <option value="saintMarin">Saint-Marin</option>
-                                                        <option value="serbieEtMontenegro">Serbie-et-Monténégro</option>
-                                                        <option value="slovaquie">Slovaquie</option>
-                                                        <option value="slovenie">Slovénie</option>
-                                                        <option value="suede">Suède</option>
-                                                        <option value="suisse">Suisse</option>
-                                                        <option value="republiqueTcheque">République Tchèque</option>
-                                                        <option value="ukraine">Ukraine</option>
-                                                        <option value="vatican">Vatican</option>
-                                                    </optgroup>
-                                                    <optgroup label="Afrique">
-                                                        <option value="afriqueDuSud">Afrique Du Sud</option>
-                                                        <option value="algerie">Algérie</option>
-                                                        <option value="angola">Angola</option>
-                                                        <option value="benin">Bénin</option>
-                                                        <option value="botswana">Botswana</option>
-                                                        <option value="burkina">Burkina</option>
-                                                        <option value="burundi">Burundi</option>
-                                                        <option value="cameroun">Cameroun</option>
-                                                        <option value="capVert">Cap-Vert</option>
-                                                        <option value="republiqueCentre-Africaine">République Centre-Africaine</option>
-                                                        <option value="comores">Comores</option>
-                                                        <option value="republiqueDemocratiqueDuCongo">République Démocratique Du Congo</option>
-                                                        <option value="congo">Congo</option>
-                                                        <option value="coteIvoire">Côte d'Ivoire</option>
-                                                        <option value="djibouti">Djibouti</option>
-                                                        <option value="egypte">Égypte</option>
-                                                        <option value="ethiopie">Éthiopie</option>
-                                                        <option value="erythrée">Érythrée</option>
-                                                        <option value="gabon">Gabon</option>
-                                                        <option value="gambie">Gambie</option>
-                                                        <option value="ghana">Ghana</option>
-                                                        <option value="guinee">Guinée</option>
-                                                        <option value="guinee-Bisseau">Guinée-Bisseau</option>
-                                                        <option value="guineeEquatoriale">Guinée Équatoriale</option>
-                                                        <option value="kenya">Kenya</option>
-                                                        <option value="lesotho">Lesotho</option>
-                                                        <option value="liberia">Liberia</option>
-                                                        <option value="libye">Libye</option>
-                                                        <option value="madagascar">Madagascar</option>
-                                                        <option value="malawi">Malawi</option>
-                                                        <option value="mali">Mali</option>
-                                                        <option value="maroc">Maroc</option>
-                                                        <option value="maurice">Maurice</option>
-                                                        <option value="mauritanie">Mauritanie</option>
-                                                        <option value="mozambique">Mozambique</option>
-                                                        <option value="namibie">Namibie</option>
-                                                        <option value="niger">Niger</option>
-                                                        <option value="nigeria">Nigeria</option>
-                                                        <option value="ouganda">Ouganda</option>
-                                                        <option value="rwanda">Rwanda</option>
-                                                        <option value="saoTomeEtPrincipe">Sao Tomé-et-Principe</option>
-                                                        <option value="senegal">Sénégal</option>
-                                                        <option value="seychelles">Seychelles</option>
-                                                        <option value="sierraLeone">Sierra Leone</option>
-                                                        <option value="somalie">Somalie</option>
-                                                        <option value="soudan">Soudan</option>
-                                                        <option value="swaziland">Swaziland</option>
-                                                        <option value="tanzanie">Tanzanie</option>
-                                                        <option value="tchad">Tchad</option>
-                                                        <option value="togo">Togo</option>
-                                                        <option value="tunisie">Tunisie</option>
-                                                        <option value="zambie">Zambie</option>
-                                                        <option value="zimbabwe">Zimbabwe</option>
-                                                    </optgroup>
-                                                    <optgroup label="Amérique">
-                                                        <option value="antiguaEtBarbuda">Antigua-et-Barbuda</option>
-                                                        <option value="argentine">Argentine</option>
-                                                        <option value="bahamas">Bahamas</option>
-                                                        <option value="barbade">Barbade</option>
-                                                        <option value="belize">Belize</option>
-                                                        <option value="bolivie">Bolivie</option>
-                                                        <option value="bresil">Brésil</option>
-                                                        <option value="canada">Canada</option>
-                                                        <option value="chili">Chili</option>
-                                                        <option value="colombie">Colombie</option>
-                                                        <option value="costaRica">Costa Rica</option>
-                                                        <option value="cuba">Cuba</option>
-                                                        <option value="republiqueDominicaine">République Dominicaine</option>
-                                                        <option value="dominique">Dominique</option>
-                                                        <option value="equateur">Équateur</option>
-                                                        <option value="etatsUnis">États Unis</option>
-                                                        <option value="grenade">Grenade</option>
-                                                        <option value="guatemala">Guatemala</option>
-                                                        <option value="guyana">Guyana</option>
-                                                        <option value="haiti">Haïti</option>
-                                                        <option value="honduras">Honduras</option>
-                                                        <option value="jamaique">Jamaïque</option>
-                                                        <option value="mexique">Mexique</option>
-                                                        <option value="nicaragua">Nicaragua</option>
-                                                        <option value="panama">Panama</option>
-                                                        <option value="paraguay">Paraguay</option>
-                                                        <option value="perou">Pérou</option>
-                                                        <option value="saintCristopheEtNieves">Saint-Cristophe-et-Niévès</option>
-                                                        <option value="sainteLucie">Sainte-Lucie</option>
-                                                        <option value="saintVincentEtLesGrenadines">Saint-Vincent-et-les-Grenadines</option>
-                                                        <option value="salvador">Salvador</option>
-                                                        <option value="suriname">Suriname</option>
-                                                        <option value="triniteEtTobago">Trinité-et-Tobago</option>
-                                                        <option value="uruguay">Uruguay</option>
-                                                        <option value="venezuela">Venezuela</option>
-                                                    </optgroup>
-                                                    <optgroup label="Asie">
-                                                        <option value="afghanistan">Afghanistan</option>
-                                                        <option value="arabieSaoudite">Arabie Saoudite</option>
-                                                        <option value="armenie">Arménie</option>
-                                                        <option value="azerbaidjan">Azerbaïdjan</option>
-                                                        <option value="bahrein">Bahreïn</option>
-                                                        <option value="bangladesh">Bangladesh</option>
-                                                        <option value="bhoutan">Bhoutan</option>
-                                                        <option value="birmanie">Birmanie</option>
-                                                        <option value="brunei">Brunéi</option>
-                                                        <option value="cambodge">Cambodge</option>
-                                                        <option value="chine">Chine</option>
-                                                        <option value="coreeDuSud">Corée Du Sud</option>
-                                                        <option value="coreeDuNord">Corée Du Nord</option>
-                                                        <option value="emiratsArabeUnis">Émirats Arabe Unis</option>
-                                                        <option value="georgie">Géorgie</option>
-                                                        <option value="inde">Inde</option>
-                                                        <option value="indonesie">Indonésie</option>
-                                                        <option value="iraq">Iraq</option>
-                                                        <option value="iran">Iran</option>
-                                                        <option value="israel">Israël</option>
-                                                        <option value="japon">Japon</option>
-                                                        <option value="jordanie">Jordanie</option>
-                                                        <option value="kazakhstan">Kazakhstan</option>
-                                                        <option value="kirghistan">Kirghistan</option>
-                                                        <option value="koweit">Koweït</option>
-                                                        <option value="laos">Laos</option>
-                                                        <option value="liban">Liban</option>
-                                                        <option value="malaisie">Malaisie</option>
-                                                        <option value="maldives">Maldives</option>
-                                                        <option value="mongolie">Mongolie</option>
-                                                        <option value="nepal">Népal</option>
-                                                        <option value="oman">Oman</option>
-                                                        <option value="ouzbekistan">Ouzbékistan</option>
-                                                        <option value="pakistan">Pakistan</option>
-                                                        <option value="philippines">Philippines</option>
-                                                        <option value="qatar">Qatar</option>
-                                                        <option value="singapour">Singapour</option>
-                                                        <option value="sriLanka">Sri Lanka</option>
-                                                        <option value="syrie">Syrie</option>
-                                                        <option value="tadjikistan">Tadjikistan</option>
-                                                        <option value="taiwan">Taïwan</option>
-                                                        <option value="thailande">Thaïlande</option>
-                                                        <option value="timorOriental">Timor oriental</option>
-                                                        <option value="turkmenistan">Turkménistan</option>
-                                                        <option value="turquie">Turquie</option>
-                                                        <option value="vietNam">Viêt Nam</option>
-                                                        <option value="yemen">Yemen</option>
-                                                    </optgroup>
-                                                    <optgroup label="Océanie">
-                                                        <option value="australie">Australie</option>
-                                                        <option value="fidji">Fidji</option>
-                                                        <option value="kiribati">Kiribati</option>
-                                                        <option value="marshall">Marshall</option>
-                                                        <option value="micronesie">Micronésie</option>
-                                                        <option value="nauru">Nauru</option>
-                                                        <option value="nouvelleZelande">Nouvelle-Zélande</option>
-                                                        <option value="palaos">Palaos</option>
-                                                        <option value="papouasieNouvelleGuinee">Papouasie-Nouvelle-Guinée</option>
-                                                        <option value="salomon">Salomon</option>
-                                                        <option value="samoa">Samoa</option>
-                                                        <option value="tonga">Tonga</option>
-                                                        <option value="tuvalu">Tuvalu</option>
-                                                        <option value="vanuatu">Vanuatu</option>
-                                                    </optgroup>
-                                                    <optgroup label="Autres pays">
-                                                        <option value="Autres">Autres</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Nom de l'annonce</label>
-                                                <input name="name_annonce" type="text" class="form-control" placeholder="Nom de l'annonce" value="<?= $annonce['name_annonce'] ?>" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Durée</label>
-                                                <input name="time_candidat" type="texts" class="form-control" placeholder="1 mois" value="<?= $annonce['temps'] ?>" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Ajouter votre photo</label><br>
-                                                <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile"><br>
-
-                                                <div>
-                                                    <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
-                                                    Fichier : <input type="file" name="i_candidat" class="form-control">
-
+                <?php
+                if ($annonce['statut'] == "actif") {
+                    if (is_null($annonce['date_activation'])) {
+                ?>
+                        <div class="form-group">
+                            <div class="card-content mt-2">
+                                <div class="card-body">
+                                    <form class="wizard-horizontal" method="POST" action="php/insert_candidat.php?num=<?= htmlspecialchars($_GET['num']) ?>" enctype="multipart/form-data" id="myForm">
+                                        <!-- Step 1 -->
+                                        <h6>
+                                            <i class="step-icon"></i>
+                                            <span class="fonticon-wrap">
+                                                <i class="livicon-evo" data-options="name:morph-doc.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
+                                            </span>
+                                        </h6>
+                                        <!-- Step 1 end-->
+                                        <!-- body content step 1 -->
+                                        <fieldset class="pt-0">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6 class="py-50">Etape 1 - Entrez vos informations personnelles</h6>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label class="d-block">Sexe</label>
-                                                <div class="custom-control-inline">
-                                                    <div class="radio mr-1">
-                                                        <input type="radio" name="sexe_candidat" id="radio1" value="homme" checked>
-                                                        <label for="radio1">Homme</label>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="firstName13">Nom de famille </label>
+                                                        <input name="nom_candidat" type="text" class="form-control" id="firstName13" placeholder="Nom de famille" required>
+                                                        <input type="hidden" name="id_session" value="<?= $annonce['id_session'] ?>">
                                                     </div>
-                                                    <div class="radio">
-                                                        <input type="radio" name="sexe_candidat" value="femme" id="radio2">
-                                                        <label for="radio2">Femme</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="lastName12">Prénom</label>
+                                                        <input name="prenom_candidat" type="text" class="form-control" id="lastName12" placeholder="Prénom" required>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <!-- body content step 1 end-->
-                                <!-- Step 2 -->
-                                <h6>
-                                    <i class="step-icon"></i>
-                                    <span class="fonticon-wrap">
-                                        <i class="livicon-evo" data-options="name:truck.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-                                    </span>
-                                </h6>
-                                <!-- Step 2 end-->
-                                <!-- body content of step 2 -->
-                                <fieldset>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h6 class="py-50">Etape 2 - Entrez vos compétances</h6>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Logiciels</label>
-                                                <input name="logiciel" type="text" class="form-control" placeholder="Ex: PhotoShop, VisualStudio, Paint" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Langue</label>
-                                                <input name="langue" type="text" class="form-control" placeholder="Ex: Anglais, Francais, Espagnol" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Formation&Etude</label>
-                                                <input name="formationetude" type="text" class="form-control" placeholder="Ex: DUT commerce, BAC+5" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Mes intéret</label>
-                                                <input name="interet" type="text" class="form-control" placeholder="Mes intérets" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Mes qualitées</label>
-                                                <input name="qualite" type="text" class="form-control" placeholder="Mes qualités" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Mes defaults</label>
-                                                <input name="default" type="text" class="form-control" placeholder="Mes defauts" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="permis_conduite">Types de permis </label>
-                                                <div class="form-check form-group">
-                                                    <span>
-                                                        <i class="fa fa-motorcycle" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                    </span>
-                                                    <label>Permis moto</label>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="A" class="form-check-input" name="permis_conduite[]">
-                                                        <label>A</label>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="emailAddress1">Spécialité</label>
+                                                        <input name="specialite_candidat" type="text" class="form-control" id="emailAddress1" placeholder="Ma spécialité" required>
                                                     </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Age</label>
+                                                        <input name="age_candidat" type="number" class="form-control" placeholder="Exemple : 18 ans" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Adresse email</label>
+                                                        <input name="email_candidat" type="email" class="form-control" placeholder="bak@gmail.com" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Numéro de téléphone</label>
+                                                        <input name="tel_candidat" type="tel" class="form-control" placeholder="+33607258629" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Date de naissance</label>
+                                                        <input name="dtenaissance_candidat" type="date" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Pays de résidence</label>
+                                                        <select class="form-control" name="pays" id="pays">
+                                                            <option value="">Selectionnez un pays</option>
+                                                            <optgroup label="Europe">
+                                                                <option value="allemagne">Allemagne</option>
+                                                                <option value="albanie">Albanie</option>
+                                                                <option value="andorre">Andorre</option>
+                                                                <option value="autriche">Autriche</option>
+                                                                <option value="bielorussie">Biélorussie</option>
+                                                                <option value="belgique">Belgique</option>
+                                                                <option value="bosnieHerzegovine">Bosnie-Herzégovine</option>
+                                                                <option value="bulgarie">Bulgarie</option>
+                                                                <option value="croatie">Croatie</option>
+                                                                <option value="danemark">Danemark</option>
+                                                                <option value="espagne">Espagne</option>
+                                                                <option value="estonie">Estonie</option>
+                                                                <option value="finlande">Finlande</option>
+                                                                <option value="france">France</option>
+                                                                <option value="grece">Grèce</option>
+                                                                <option value="hongrie">Hongrie</option>
+                                                                <option value="irlande">Irlande</option>
+                                                                <option value="islande">Islande</option>
+                                                                <option value="italie">Italie</option>
+                                                                <option value="lettonie">Lettonie</option>
+                                                                <option value="liechtenstein">Liechtenstein</option>
+                                                                <option value="lituanie">Lituanie</option>
+                                                                <option value="luxembourg">Luxembourg</option>
+                                                                <option value="exRepubliqueYougoslaveDeMacedoine">Ex-République Yougoslave de Macédoine</option>
+                                                                <option value="malte">Malte</option>
+                                                                <option value="moldavie">Moldavie</option>
+                                                                <option value="monaco">Monaco</option>
+                                                                <option value="norvege">Norvège</option>
+                                                                <option value="paysBas">Pays-Bas</option>
+                                                                <option value="pologne">Pologne</option>
+                                                                <option value="portugal">Portugal</option>
+                                                                <option value="roumanie">Roumanie</option>
+                                                                <option value="royaumeUni">Royaume-Uni</option>
+                                                                <option value="russie">Russie</option>
+                                                                <option value="saintMarin">Saint-Marin</option>
+                                                                <option value="serbieEtMontenegro">Serbie-et-Monténégro</option>
+                                                                <option value="slovaquie">Slovaquie</option>
+                                                                <option value="slovenie">Slovénie</option>
+                                                                <option value="suede">Suède</option>
+                                                                <option value="suisse">Suisse</option>
+                                                                <option value="republiqueTcheque">République Tchèque</option>
+                                                                <option value="ukraine">Ukraine</option>
+                                                                <option value="vatican">Vatican</option>
+                                                            </optgroup>
+                                                            <optgroup label="Afrique">
+                                                                <option value="afriqueDuSud">Afrique Du Sud</option>
+                                                                <option value="algerie">Algérie</option>
+                                                                <option value="angola">Angola</option>
+                                                                <option value="benin">Bénin</option>
+                                                                <option value="botswana">Botswana</option>
+                                                                <option value="burkina">Burkina</option>
+                                                                <option value="burundi">Burundi</option>
+                                                                <option value="cameroun">Cameroun</option>
+                                                                <option value="capVert">Cap-Vert</option>
+                                                                <option value="republiqueCentre-Africaine">République Centre-Africaine</option>
+                                                                <option value="comores">Comores</option>
+                                                                <option value="republiqueDemocratiqueDuCongo">République Démocratique Du Congo</option>
+                                                                <option value="congo">Congo</option>
+                                                                <option value="coteIvoire">Côte d'Ivoire</option>
+                                                                <option value="djibouti">Djibouti</option>
+                                                                <option value="egypte">Égypte</option>
+                                                                <option value="ethiopie">Éthiopie</option>
+                                                                <option value="erythrée">Érythrée</option>
+                                                                <option value="gabon">Gabon</option>
+                                                                <option value="gambie">Gambie</option>
+                                                                <option value="ghana">Ghana</option>
+                                                                <option value="guinee">Guinée</option>
+                                                                <option value="guinee-Bisseau">Guinée-Bisseau</option>
+                                                                <option value="guineeEquatoriale">Guinée Équatoriale</option>
+                                                                <option value="kenya">Kenya</option>
+                                                                <option value="lesotho">Lesotho</option>
+                                                                <option value="liberia">Liberia</option>
+                                                                <option value="libye">Libye</option>
+                                                                <option value="madagascar">Madagascar</option>
+                                                                <option value="malawi">Malawi</option>
+                                                                <option value="mali">Mali</option>
+                                                                <option value="maroc">Maroc</option>
+                                                                <option value="maurice">Maurice</option>
+                                                                <option value="mauritanie">Mauritanie</option>
+                                                                <option value="mozambique">Mozambique</option>
+                                                                <option value="namibie">Namibie</option>
+                                                                <option value="niger">Niger</option>
+                                                                <option value="nigeria">Nigeria</option>
+                                                                <option value="ouganda">Ouganda</option>
+                                                                <option value="rwanda">Rwanda</option>
+                                                                <option value="saoTomeEtPrincipe">Sao Tomé-et-Principe</option>
+                                                                <option value="senegal">Sénégal</option>
+                                                                <option value="seychelles">Seychelles</option>
+                                                                <option value="sierraLeone">Sierra Leone</option>
+                                                                <option value="somalie">Somalie</option>
+                                                                <option value="soudan">Soudan</option>
+                                                                <option value="swaziland">Swaziland</option>
+                                                                <option value="tanzanie">Tanzanie</option>
+                                                                <option value="tchad">Tchad</option>
+                                                                <option value="togo">Togo</option>
+                                                                <option value="tunisie">Tunisie</option>
+                                                                <option value="zambie">Zambie</option>
+                                                                <option value="zimbabwe">Zimbabwe</option>
+                                                            </optgroup>
+                                                            <optgroup label="Amérique">
+                                                                <option value="antiguaEtBarbuda">Antigua-et-Barbuda</option>
+                                                                <option value="argentine">Argentine</option>
+                                                                <option value="bahamas">Bahamas</option>
+                                                                <option value="barbade">Barbade</option>
+                                                                <option value="belize">Belize</option>
+                                                                <option value="bolivie">Bolivie</option>
+                                                                <option value="bresil">Brésil</option>
+                                                                <option value="canada">Canada</option>
+                                                                <option value="chili">Chili</option>
+                                                                <option value="colombie">Colombie</option>
+                                                                <option value="costaRica">Costa Rica</option>
+                                                                <option value="cuba">Cuba</option>
+                                                                <option value="republiqueDominicaine">République Dominicaine</option>
+                                                                <option value="dominique">Dominique</option>
+                                                                <option value="equateur">Équateur</option>
+                                                                <option value="etatsUnis">États Unis</option>
+                                                                <option value="grenade">Grenade</option>
+                                                                <option value="guatemala">Guatemala</option>
+                                                                <option value="guyana">Guyana</option>
+                                                                <option value="haiti">Haïti</option>
+                                                                <option value="honduras">Honduras</option>
+                                                                <option value="jamaique">Jamaïque</option>
+                                                                <option value="mexique">Mexique</option>
+                                                                <option value="nicaragua">Nicaragua</option>
+                                                                <option value="panama">Panama</option>
+                                                                <option value="paraguay">Paraguay</option>
+                                                                <option value="perou">Pérou</option>
+                                                                <option value="saintCristopheEtNieves">Saint-Cristophe-et-Niévès</option>
+                                                                <option value="sainteLucie">Sainte-Lucie</option>
+                                                                <option value="saintVincentEtLesGrenadines">Saint-Vincent-et-les-Grenadines</option>
+                                                                <option value="salvador">Salvador</option>
+                                                                <option value="suriname">Suriname</option>
+                                                                <option value="triniteEtTobago">Trinité-et-Tobago</option>
+                                                                <option value="uruguay">Uruguay</option>
+                                                                <option value="venezuela">Venezuela</option>
+                                                            </optgroup>
+                                                            <optgroup label="Asie">
+                                                                <option value="afghanistan">Afghanistan</option>
+                                                                <option value="arabieSaoudite">Arabie Saoudite</option>
+                                                                <option value="armenie">Arménie</option>
+                                                                <option value="azerbaidjan">Azerbaïdjan</option>
+                                                                <option value="bahrein">Bahreïn</option>
+                                                                <option value="bangladesh">Bangladesh</option>
+                                                                <option value="bhoutan">Bhoutan</option>
+                                                                <option value="birmanie">Birmanie</option>
+                                                                <option value="brunei">Brunéi</option>
+                                                                <option value="cambodge">Cambodge</option>
+                                                                <option value="chine">Chine</option>
+                                                                <option value="coreeDuSud">Corée Du Sud</option>
+                                                                <option value="coreeDuNord">Corée Du Nord</option>
+                                                                <option value="emiratsArabeUnis">Émirats Arabe Unis</option>
+                                                                <option value="georgie">Géorgie</option>
+                                                                <option value="inde">Inde</option>
+                                                                <option value="indonesie">Indonésie</option>
+                                                                <option value="iraq">Iraq</option>
+                                                                <option value="iran">Iran</option>
+                                                                <option value="israel">Israël</option>
+                                                                <option value="japon">Japon</option>
+                                                                <option value="jordanie">Jordanie</option>
+                                                                <option value="kazakhstan">Kazakhstan</option>
+                                                                <option value="kirghistan">Kirghistan</option>
+                                                                <option value="koweit">Koweït</option>
+                                                                <option value="laos">Laos</option>
+                                                                <option value="liban">Liban</option>
+                                                                <option value="malaisie">Malaisie</option>
+                                                                <option value="maldives">Maldives</option>
+                                                                <option value="mongolie">Mongolie</option>
+                                                                <option value="nepal">Népal</option>
+                                                                <option value="oman">Oman</option>
+                                                                <option value="ouzbekistan">Ouzbékistan</option>
+                                                                <option value="pakistan">Pakistan</option>
+                                                                <option value="philippines">Philippines</option>
+                                                                <option value="qatar">Qatar</option>
+                                                                <option value="singapour">Singapour</option>
+                                                                <option value="sriLanka">Sri Lanka</option>
+                                                                <option value="syrie">Syrie</option>
+                                                                <option value="tadjikistan">Tadjikistan</option>
+                                                                <option value="taiwan">Taïwan</option>
+                                                                <option value="thailande">Thaïlande</option>
+                                                                <option value="timorOriental">Timor oriental</option>
+                                                                <option value="turkmenistan">Turkménistan</option>
+                                                                <option value="turquie">Turquie</option>
+                                                                <option value="vietNam">Viêt Nam</option>
+                                                                <option value="yemen">Yemen</option>
+                                                            </optgroup>
+                                                            <optgroup label="Océanie">
+                                                                <option value="australie">Australie</option>
+                                                                <option value="fidji">Fidji</option>
+                                                                <option value="kiribati">Kiribati</option>
+                                                                <option value="marshall">Marshall</option>
+                                                                <option value="micronesie">Micronésie</option>
+                                                                <option value="nauru">Nauru</option>
+                                                                <option value="nouvelleZelande">Nouvelle-Zélande</option>
+                                                                <option value="palaos">Palaos</option>
+                                                                <option value="papouasieNouvelleGuinee">Papouasie-Nouvelle-Guinée</option>
+                                                                <option value="salomon">Salomon</option>
+                                                                <option value="samoa">Samoa</option>
+                                                                <option value="tonga">Tonga</option>
+                                                                <option value="tuvalu">Tuvalu</option>
+                                                                <option value="vanuatu">Vanuatu</option>
+                                                            </optgroup>
+                                                            <optgroup label="Autres pays">
+                                                                <option value="Autres">Autres</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Nom de l'annonce</label>
+                                                        <input name="name_annonce" type="text" class="form-control" placeholder="Nom de l'annonce" value="<?= $annonce['name_annonce'] ?>" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Durée</label>
+                                                        <input name="time_candidat" type="texts" class="form-control" placeholder="1 mois" value="<?= $annonce['temps'] ?>" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Ajouter votre photo</label><br>
+                                                        <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile"><br>
 
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="A1" class="form-check-input" name="permis_conduite[]">
-                                                        <label>A1</label>
-                                                    </div>
+                                                        <div>
+                                                            <input type="hidden" name="MAX_FILE_SIZE" value="5242880">
+                                                            Fichier : <input type="file" name="i_candidat" class="form-control">
 
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="A2" class="form-check-input" name="permis_conduite[]">
-                                                        <label>A2</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="B" class="form-check-input" name="permis_conduite[]">
-                                                        <label>B</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="B1" class="form-check-input" name="permis_conduite[]">
-                                                        <label>B1</label>
-                                                    </div>
+                                                </div>
 
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="B2" class="form-check-input" name="permis_conduite[]">
-                                                        <label>B2</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="BE" class="form-check-input" name="permis_conduite[]">
-                                                        <label>BE</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="C1E" class="form-check-input" name="permis_conduite[]">
-                                                        <label>C1E</label>
-                                                    </div>
-
-                                                    <span>
-                                                        <i class="fa fa-truck" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                    </span>
-                                                    <label>Permis pour transport Marchandises</label>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="C1" class="form-check-input" name="permis_conduite[]">
-                                                        <label>C1</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="C2" class="form-check-input" name="permis_conduite[]">
-                                                        <label>C2</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="CE" class="form-check-input" name="permis_conduite[]">
-                                                        <label>CE</label>
-                                                    </div>
-
-                                                    <span>
-                                                        <i class="fa fa-automobile" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                    </span>
-                                                    <label>Permis pour transport personnel</label>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="D" class="form-check-input" name="permis_conduite[]">
-                                                        <label>D</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="D1" class="form-check-input" name="permis_conduite[]">
-                                                        <label>D1</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="D2" class="form-check-input" name="permis_conduite[]">
-                                                        <label>D2</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="D1E" class="form-check-input" name="permis_conduite[]">
-                                                        <label>D1E</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="DE" class="form-check-input" name="permis_conduite[]">
-                                                        <label>DE</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="AM" class="form-check-input" name="permis_conduite[]">
-                                                        <label>AM</label>
-                                                    </div>
-
-                                                    <span>
-                                                        <i class="fa fa-ship" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
-                                                    </span>
-                                                    <label>Permis pour bateau</label>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="Côtier" class="form-check-input" name="permis_conduite[]">
-                                                        <label>CÔTIER</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="Hauturier" class="form-check-input" name="permis_conduite[]">
-                                                        <label>HAUTURIER</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" value="Fluvial" class="form-check-input" name="permis_conduite[]">
-                                                        <label>FLUVIAL</label>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="d-block">Sexe</label>
+                                                        <div class="custom-control-inline">
+                                                            <div class="radio mr-1">
+                                                                <input type="radio" name="sexe_candidat" id="radio1" value="homme" checked>
+                                                                <label for="radio1">Homme</label>
+                                                            </div>
+                                                            <div class="radio">
+                                                                <input type="radio" name="sexe_candidat" value="femme" id="radio2">
+                                                                <label for="radio2">Femme</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                </fieldset>
-                                <!-- body content of step 2 end-->
-                            </form>
+                                        </fieldset>
+                                        <!-- body content step 1 end-->
+                                        <!-- Step 2 -->
+                                        <h6>
+                                            <i class="step-icon"></i>
+                                            <span class="fonticon-wrap">
+                                                <i class="livicon-evo" data-options="name:truck.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
+                                            </span>
+                                        </h6>
+                                        <!-- Step 2 end-->
+                                        <!-- body content of step 2 -->
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6 class="py-50">Etape 2 - Entrez vos compétances</h6>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Logiciels</label>
+                                                        <input name="logiciel" type="text" class="form-control" placeholder="Ex: PhotoShop, VisualStudio, Paint" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Langue</label>
+                                                        <input name="langue" type="text" class="form-control" placeholder="Ex: Anglais, Francais, Espagnol" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Formation&Etude</label>
+                                                        <input name="formationetude" type="text" class="form-control" placeholder="Ex: DUT commerce, BAC+5" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Mes intéret</label>
+                                                        <input name="interet" type="text" class="form-control" placeholder="Mes intérets" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Mes qualitées</label>
+                                                        <input name="qualite" type="text" class="form-control" placeholder="Mes qualités" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Mes defaults</label>
+                                                        <input name="default" type="text" class="form-control" placeholder="Mes defauts" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="permis_conduite">Types de permis </label>
+                                                        <div class="form-check form-group">
+                                                            <span>
+                                                                <i class="fa fa-motorcycle" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                            </span>
+                                                            <label>Permis moto</label>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="A" class="form-check-input" name="permis_conduite[]">
+                                                                <label>A</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="A1" class="form-check-input" name="permis_conduite[]">
+                                                                <label>A1</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="A2" class="form-check-input" name="permis_conduite[]">
+                                                                <label>A2</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="B" class="form-check-input" name="permis_conduite[]">
+                                                                <label>B</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="B1" class="form-check-input" name="permis_conduite[]">
+                                                                <label>B1</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="B2" class="form-check-input" name="permis_conduite[]">
+                                                                <label>B2</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="BE" class="form-check-input" name="permis_conduite[]">
+                                                                <label>BE</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="C1E" class="form-check-input" name="permis_conduite[]">
+                                                                <label>C1E</label>
+                                                            </div>
+
+                                                            <span>
+                                                                <i class="fa fa-truck" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                            </span>
+                                                            <label>Permis pour transport Marchandises</label>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="C1" class="form-check-input" name="permis_conduite[]">
+                                                                <label>C1</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="C2" class="form-check-input" name="permis_conduite[]">
+                                                                <label>C2</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="CE" class="form-check-input" name="permis_conduite[]">
+                                                                <label>CE</label>
+                                                            </div>
+
+                                                            <span>
+                                                                <i class="fa fa-automobile" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                            </span>
+                                                            <label>Permis pour transport personnel</label>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="D" class="form-check-input" name="permis_conduite[]">
+                                                                <label>D</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="D1" class="form-check-input" name="permis_conduite[]">
+                                                                <label>D1</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="D2" class="form-check-input" name="permis_conduite[]">
+                                                                <label>D2</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="D1E" class="form-check-input" name="permis_conduite[]">
+                                                                <label>D1E</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="DE" class="form-check-input" name="permis_conduite[]">
+                                                                <label>DE</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="AM" class="form-check-input" name="permis_conduite[]">
+                                                                <label>AM</label>
+                                                            </div>
+
+                                                            <span>
+                                                                <i class="fa fa-ship" style="font-size:24px; position: relative; top: 3px; right: 5px;"></i>
+                                                            </span>
+                                                            <label>Permis pour bateau</label>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="Côtier" class="form-check-input" name="permis_conduite[]">
+                                                                <label>CÔTIER</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="Hauturier" class="form-check-input" name="permis_conduite[]">
+                                                                <label>HAUTURIER</label>
+                                                            </div>
+
+                                                            <div class="form-check">
+                                                                <input type="checkbox" value="Fluvial" class="form-check-input" name="permis_conduite[]">
+                                                                <label>FLUVIAL</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        <!-- body content of step 2 end-->
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+                    <?php
+                    } else if ($annonce['date_activation'] > date("Y-m-d")) {
+                    ?>
+                        <div class="text-center h2" style="color: green;">
+                            Les dépôts de candidatures seront ouverts à partir du <?= $annonce['date_activation'] ?>.
+                        </div>
+                    <?php
+                    }
+                } else {
+                    ?>
+                    <div class="text-center h2" style="color: red;">
+                        Cette annonce est indisponible pour le moment
                     </div>
-                </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -661,68 +681,75 @@ $_SESSION['annonce'] = $_GET['num'];
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/modal/components-modal.js"></script>
-    <script>
-        //    Wizard tabs with icons setup
-        // ------------------------------
-        $(".wizard-horizontal").steps({
-            headerTag: "h6",
-            bodyTag: "fieldset",
-            transitionEffect: "fade",
-            titleTemplate: '<span class="step">#index#</span> #title#',
-            labels: {
-                finish: 'Submit'
-            },
-            onFinished: function(event, currentIndex) {
-                submit();
-            }
-        });
+    <?php
+    if ($annonce['statut'] == "actif") {
+        if (is_null($annonce['date_activation'])) {
+    ?>
+            <script>
+                //    Wizard tabs with icons setup
+                // ------------------------------
+                $(".wizard-horizontal").steps({
+                    headerTag: "h6",
+                    bodyTag: "fieldset",
+                    transitionEffect: "fade",
+                    titleTemplate: '<span class="step">#index#</span> #title#',
+                    labels: {
+                        finish: 'Submit'
+                    },
+                    onFinished: function(event, currentIndex) {
+                        submit();
+                    }
+                });
 
-        function submit() {
-            document.getElementById("myForm").submit();
+                function submit() {
+                    document.getElementById("myForm").submit();
+                }
+
+                // live Icon color change on state change
+                $(document).ready(function() {
+                    $(".current").find(".step-icon").addClass("bx bx-time-five");
+                    $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                        strokeColor: '#5A8DEE'
+                    });
+                });
+                // Icon change on state
+                // if click on next button icon change
+                $(".actions [href='#next']").click(function() {
+                    $(".done").find(".step-icon").removeClass("bx bx-time-five").addClass("bx bx-check-circle");
+                    $(".current").find(".step-icon").removeClass("bx bx-check-circle").addClass("bx bx-time-five");
+                    // live icon color change on next button's on click
+                    $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                        strokeColor: '#5A8DEE'
+                    });
+                    $(".current").prev("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                        strokeColor: '#39DA8A'
+                    });
+                });
+                $(".actions [href='#previous']").click(function() {
+                    // live icon color change on next button's on click
+                    $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                        strokeColor: '#5A8DEE'
+                    });
+                    $(".current").next("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                        strokeColor: '#adb5bd'
+                    });
+                });
+                // if click on  submit   button icon change
+                $(".actions [href='#finish']").click(function() {
+                    $(".done").find(".step-icon").removeClass("bx-time-five").addClass("bx bx-check-circle");
+                    $(".last.current.done").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
+                        strokeColor: '#39DA8A'
+                    });
+                });
+                // add primary btn class
+                $('.actions a[role="menuitem"]').addClass("btn btn-primary");
+                $('.icon-tab [role="menuitem"]').addClass("glow ");
+                $('.wizard-vertical [role="menuitem"]').removeClass("btn-primary").addClass("btn-light-primary");
+            </script>
+    <?php
         }
-
-        // live Icon color change on state change
-        $(document).ready(function() {
-            $(".current").find(".step-icon").addClass("bx bx-time-five");
-            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
-                strokeColor: '#5A8DEE'
-            });
-        });
-        // Icon change on state
-        // if click on next button icon change
-        $(".actions [href='#next']").click(function() {
-            $(".done").find(".step-icon").removeClass("bx bx-time-five").addClass("bx bx-check-circle");
-            $(".current").find(".step-icon").removeClass("bx bx-check-circle").addClass("bx bx-time-five");
-            // live icon color change on next button's on click
-            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
-                strokeColor: '#5A8DEE'
-            });
-            $(".current").prev("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
-                strokeColor: '#39DA8A'
-            });
-        });
-        $(".actions [href='#previous']").click(function() {
-            // live icon color change on next button's on click
-            $(".current").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
-                strokeColor: '#5A8DEE'
-            });
-            $(".current").next("li").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
-                strokeColor: '#adb5bd'
-            });
-        });
-        // if click on  submit   button icon change
-        $(".actions [href='#finish']").click(function() {
-            $(".done").find(".step-icon").removeClass("bx-time-five").addClass("bx bx-check-circle");
-            $(".last.current.done").find(".fonticon-wrap .livicon-evo").updateLiviconEvo({
-                strokeColor: '#39DA8A'
-            });
-        });
-        // add primary btn class
-        $('.actions a[role="menuitem"]').addClass("btn btn-primary");
-        $('.icon-tab [role="menuitem"]').addClass("glow ");
-        $('.wizard-vertical [role="menuitem"]').removeClass("btn-primary").addClass("btn-light-primary");
-    </script>
-
+    }
+    ?>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

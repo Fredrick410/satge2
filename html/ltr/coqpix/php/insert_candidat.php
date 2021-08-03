@@ -6,6 +6,7 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 include 'mail.php';
 
+$num = $_GET['num'];
 if (!empty($_POST['name_annonce'])) {
     $name_annonce = htmlspecialchars($_POST['name_annonce']);
 } else {
@@ -135,7 +136,6 @@ function passgen2($nbChar)
 //echo $max_upload = (int)(ini_get('upload_max_filesize'));
 
 $id_session = $_POST['id_session'];
-$num = $_GET['num'];
 
 $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
 $pdoSta->bindValue(':num', $num);
@@ -204,7 +204,6 @@ $insert->execute(array(
 ));
 
 $_SESSION['key_candidat'] = $code;
-
 
 $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoS->bindValue(':numentreprise', $id_session);

@@ -183,7 +183,7 @@ $entreprise = $pdoS->fetch();
                                     <div class="card-content" onclick="tprecrutement_entretient()">
                                         <img class="card-img-top img-fluid" src="../../../app-assets/images/pages/content-img-2.jpg" alt="Card image cap">
                                         <div class="card-body">
-                                            <h4 class="card-title">Entretient</h4>
+                                            <h4 class="card-title">Entretien</h4>
                                             <p class="card-text">
                                                 Evaluez vos candidats et constituer leur fiche de poste.
                                             </p>

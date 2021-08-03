@@ -225,45 +225,7 @@ $entreprise = $pdoStt->fetch();
                                             <?= $qcms[$i]['auteur'] ?>
                                         </td>
                                         <td>
-                                            <div class="invoice-action"><br>
-                                                <a href="#modal<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1" data-toggle="modal">
-                                                    <i class="bx bx-show-alt"></i>
-                                                </a>
-
-                                                <div class="modal fade" id="modal<?= $qcms[$i]['id'] ?>" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Details</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <i class="bx bx-x"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <ul>
-                                                                    <?= $qcms[$i]['libelle'] ?>
-                                                                    <?php
-                                                                    foreach ($reponses as $key => $value) {
-                                                                        if ($value[0]['id'] === $qcms[$i]['id']) {
-                                                                            foreach ($value as $key => $val) {
-                                                                    ?>
-                                                                                <li><?= $val['libelle'] ?> : <?= $val['vrai_ou_faux'] ?></li>
-                                                                    <?php
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    ?>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">
-                                                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                                                    <span class="d-none d-sm-block">Close</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="invoice-action">
                                                 <a href="#edit<?= $qcms[$i]['id'] ?>" class="invoice-action-view mr-1" data-toggle="modal">
                                                     <i class="bx bx-edit"></i>
                                                 </a>

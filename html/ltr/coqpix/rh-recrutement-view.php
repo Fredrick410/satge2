@@ -232,7 +232,7 @@ if (count($candidature) != 0) {
                                                     <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab">Références</a>
                                                     <a class="list-group-item list-group-item-action" id="list-level-list" data-toggle="list" href="#list-level" role="tab">Résultats des qcms</a>
                                                     <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab">Documents</a>
-                                                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Options</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Etat du suivi</a>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-12 col-md-9">
@@ -386,11 +386,7 @@ if (count($candidature) != 0) {
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                                                        <div class="form-group">
                                                             <div class="form-group text-center">
-                                                                <label>Paramètres et options</label>
-                                                            </div>
-                                                            <div class="form-group">
                                                                 <label>Suivi de la candidature :</label>
                                                             </div>
                                                             <div class="form-group">

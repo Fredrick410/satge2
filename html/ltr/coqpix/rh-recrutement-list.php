@@ -140,19 +140,51 @@ $count_annonce = count($annonce);
                                                         <a href="rh-recrutement-list-details.php?annonce=<?= $annonces['name_annonce'] ?>"><button class="btn mt-50" style="background-color: <?= $annonces['color_annonce'] ?>; color: white;">Voir</button></a>
                                                     </div>
                                                     <div class="col">
-                                                        <a href="php/change_delete_rh_annonce.php?fonction=change&num=<?= $annonces['id'] ?>&statut=<?php if ($annonces['statut'] == "actif") {
-                                                                                                                                                        echo "actif";
-                                                                                                                                                    } else {
-                                                                                                                                                        echo "pause";
-                                                                                                                                                    } ?>"><button class="btn btn-<?php if ($annonces['statut'] == "actif") {
-                                                                                                                                                                                        echo "warning";
-                                                                                                                                                                                    } else {
-                                                                                                                                                                                        echo "success";
-                                                                                                                                                                                    } ?> mt-50"><?php if ($annonces['statut'] == "actif") {
-                                                                                                                                                                                                    echo "Pause";
-                                                                                                                                                                                                } else {
-                                                                                                                                                                                                    echo "Activer";
-                                                                                                                                                                                                } ?></button></a>
+                                                        <?php
+                                                        if ($annonces['statut'] == "actif") {
+                                                        ?>
+                                                            <a href="php/change_delete_rh_annonce.php?fonction=change&num=<?= $annonces['id'] ?>&statut=actif"><button class="btn btn-warning mt-50">Pause</button></a>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <button type="button" class="btn btn-success mt-50" data-toggle="modal" data-target="#activer<?= $annonces['id'] ?>">Activer</button>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                        <div class="modal fade" id="activer<?= $annonces['id'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Activer annonce</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <i class="bx bx-x"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="form-group">
+                                                                            <label for="moment-activation<?= $annonces['id'] ?>" class="form-control-label">Quand activer l'annonce?</label>
+                                                                            <select name="moment-activation<?= $annonces['id'] ?>" id="moment-activation<?= $annonces['id'] ?>" class="form-control">
+                                                                                <option value="now">Maintenant</option>
+                                                                                <option value="later">Plus tard</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group" id="date-form<?= $annonces['id'] ?>" style="display: none;">
+                                                                            <label for="date<?= $annonces['id'] ?>" class="form-control-label">Date d'activation</label>
+                                                                            <input type="date" name="date<?= $annonces['id'] ?>" id="date<?= $annonces['id'] ?>" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                                            <span class="d-none d-sm-block">Annuler</span>
+                                                                        </button>
+                                                                        <button type="button" value="<?= $annonces['id'] ?>" class="btn btn-success active-annonce">
+                                                                            <span class="d-none d-sm-block">Activer</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col">
                                                         <a href="php/change_delete_rh_annonce.php?num=<?= $annonces['id'] ?>&fonction=delete"><button class="btn mt-50" style="background-color: #ea0000; color: white;">Supprimer</button></a>
@@ -313,6 +345,44 @@ $count_annonce = count($annonce);
                     .columns(0)
                     .search(this.value)
                     .draw();
+            });
+            <?php
+            foreach ($annonce as $annonces) {
+            ?>
+                $('#moment-activation<?= $annonces['id'] ?>').change(function() {
+                    var active = document.getElementById("moment-activation<?= $annonces['id'] ?>").value;
+                    if (active == "now") {
+                        $('#date-form<?= $annonces['id'] ?>').hide();
+                    } else {
+                        $('#date-form<?= $annonces['id'] ?>').show();
+                    }
+                });
+            <?php
+            }
+            ?>
+            $('.active-annonce').click(function() {
+                var id = this.value;
+                var active = document.getElementById("moment-activation" + id).value;
+                var date = document.getElementById("date" + id).value;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/change_delete_rh_annonce.php", //new path, save your work first before u try
+                    type: "GET",
+                    data: {
+                        fonction: "change",
+                        num: id,
+                        statut: "pause",
+                        active: active,
+                        date: date
+                    },
+                    success: function(data) {
+                        //if(data.include("qcm")){
+                        //$('#libelle' + id).val(data);
+                        //}
+                        //else{
+                        window.location.reload();
+                        //}
+                    }
+                });
             });
         });
     </script>

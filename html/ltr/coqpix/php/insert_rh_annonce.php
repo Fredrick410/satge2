@@ -150,7 +150,7 @@ if ($_POST['date_y'] == 0 and $_POST['date_m'] == 0 and $_POST['date_d'] == 0) {
 $temps_annonce = '' . $date_y . '' . $date_m . '' . $date_d . '';
 
 $color_annonce = $_POST['color_annonce'];
-$statut = "actif";
+$statut = "pause";
 
 // On insere l'annonce si au moins un qcm et une mission sont presents
 // Sinon on retourne une erreur
