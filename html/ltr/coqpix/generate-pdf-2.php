@@ -11,8 +11,8 @@ class MYPDF extends TCPDF {
         // Logo
         $image_file = K_PATH_IMAGES.'../../../app-assets/images/pages/aap.png';
         $this->Image($image_file, 15, 10, '', 25, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        /*$image_file2 = K_PATH_IMAGES.'../../../app-assets/images/pages/aeca.png';
-        $this->Image($image_file2, 140, 12, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);*/
+        $image_file2 = K_PATH_IMAGES.'../../../app-assets/images/pages/aeca.png';
+        $this->Image($image_file2, 140, 12, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
     }
 
     // Page footer
@@ -194,7 +194,7 @@ En contrepartie des Prestations rendues par le Prestataire, et conformément à 
 <span style="text-indent: 15px;"><br>
 •	<span style="color: red;">PRIX</span> € H.T/mois<br>
 </span><br>
-Ces honoraires seront payables par prélèvement <span style="color: blue;">avant le 10 du mois</span>. En cas de non-paiement à son échéance d’une facture, les sommes restantes dues porteront intérêt à compter de ladite échéance un taux égal à 10% du montant par échéance et ce jusqu’au paiement intégral. Dans le cas où le client n’aurait toujours pas honoré son obligation de paiement après relances du prestataire, ce dernier pourra bloquer l’accès aux données du client jusqu’au complet paiement. <br>
+Ces honoraires seront payables par prélèvement avant le 10 du mois. En cas de non-paiement à son échéance d’une facture, les sommes restantes dues porteront intérêt à compter de ladite échéance un taux égal à 10% du montant par échéance et ce jusqu’au paiement intégral. Dans le cas où le client n’aurait toujours pas honoré son obligation de paiement après relances du prestataire, ce dernier pourra bloquer l’accès aux données du client jusqu’au complet paiement. <br>
 <br>
 Les factures seront émises par le Prestataire selon un échéancier convenu d’un commun accord avec le Client. <br>
 <br>
@@ -282,9 +282,8 @@ $pdf->writeHTML($contenu2, true, false, true, false, '');
 $y = $pdf->getY();
 $pdf->writeHTMLCell(90, '', '', $y, $left, 0, 0, 1, true, 'C', true);
 $pdf->writeHTMLCell(90, '', '', '', $right, 0, 1, 1, true, 'C', true);
-/*$y = $pdf->getY();
-$pdf->Image(K_PATH_IMAGES.'../../../app-assets/images/pages/sign.png', 30, $y+10, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);*/
-
+$y = $pdf->getY();
+$pdf->Image(K_PATH_IMAGES.'../../../app-assets/images/pages/sign.png', 30, $y+10, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 // reset pointer to the last page
 $pdf->lastPage();
 
