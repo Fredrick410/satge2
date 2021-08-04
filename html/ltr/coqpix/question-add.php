@@ -6,7 +6,6 @@ require_once 'php/config.php';
 $authorised_roles = array('admin', 'rh');
 require_once 'php/verif_session_connect.php';
 
-
 if (!isset($_GET['id']))
     header('Location: rh-recrutement-entretient.php');
 elseif (empty($_GET['id'])) {
