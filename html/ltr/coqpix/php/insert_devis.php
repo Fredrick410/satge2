@@ -10,9 +10,9 @@ ini_set('display_startup_errors', TRUE);
     if($_POST['numerosdevis'] == ""){
         $numerosfacture = "000d";
     }else{
-        $numerosfacture = $_POST['numerosdevis'];
+        $numerosfacture = htmlspecialchars($_POST['numerosdevis']);
     }
-    $numeroarticle = $_POST['numeroarticle'];
+    $numeroarticle = htmlspecialchars($_POST['numeroarticle']);
     if($_POST['dte'] == ""){
         $dte = "00-00-00";
     }else{
@@ -22,48 +22,48 @@ ini_set('display_startup_errors', TRUE);
     if($_POST['nomproduit'] == ""){
         $nomproduit = "nom produit";
     }else{
-        $nomproduit = $_POST['nomproduit'];
+        $nomproduit = htmlspecialchars($_POST['nomproduit']);
     }
 
     if($_POST['facturepour'] == ""){
         $facturepour = "Devis pour";
     }else{
-        $facturepour = $_POST['facturepour'];
+        $facturepour = htmlspecialchars($_POST['facturepour']);
     }
 
     if($_POST['adressefirst'] == ""){
         $adresse = "Adresse";
     }else{
-        $adresse = $_POST['adressefirst'];
+        $adresse = htmlspecialchars($_POST['adressefirst']);
     }
 
     if($_POST['departementfirst'] == ""){
         $departement = "31100";
     }else{
-        $departement = $_POST['departementfirst'];
+        $departement = htmlspecialchars($_POST['departementfirst']);
     }
 
     if($_POST['emailfirst'] == ""){
         $email = "email@email.com";
     }else{
-        $email = $_POST['emailfirst'];
+        $email = htmlspecialchars($_POST['emailfirst']);
     }
 
     if($_POST['telfirst'] == ""){
         $tel = "06.00.00.00.00";
     }else{
-        $tel = $_POST['telfirst'];
+        $tel = htmlspecialchars($_POST['telfirst']);
     }
 
     if($_POST['note'] == ""){
         $note = "Pas de commentaire";
     }else{
-        $note = $_POST['note'];
+        $note = htmlspecialchars($_POST['note']);
     }
     if($_POST['accompte'] == ""){
         $accompte = "O";
     }else{
-        $accompte = $_POST['accompte'];
+        $accompte = htmlspecialchars($_POST['accompte']);
     }
 
     // end vide 

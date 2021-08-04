@@ -141,22 +141,22 @@ if (isset($_POST['confirm']) and isset($_POST['idcandidat']) and isset($_POST['o
         try {
             $update = $bdd->prepare('INSERT INTO membres(nom, prenom, email, tel, dtenaissance, pays, langue, img_membres, name_entreprise, status_membres, role_membres, dtecontrat, missions, startdte, enddte, id_session) VALUES (?,?,?,?,?,?,?,?,(SELECT nameentreprise FROM entreprise WHERE id = ?),?,?,?,?,?,?,?)');
             $update->execute(array(
-                $candidature['nom_candidat'],
-                $candidature['prenom_candidat'],
-                $candidature['email_candidat'],
-                $candidature['tel_candidat'],
-                $candidature['dtenaissance_candidat'],
-                $candidature['pays'],
-                $candidature['langue'],
+                htmlspecialchars($candidature['nom_candidat']),
+                htmlspecialchars($candidature['prenom_candidat']),
+                htmlspecialchars($candidature['email_candidat']),
+                htmlspecialchars($candidature['tel_candidat']),
+                htmlspecialchars($candidature['dtenaissance_candidat']),
+                htmlspecialchars($candidature['pays']),
+                htmlspecialchars($candidature['langue']),
                 "astro2.gif",
-                $_SESSION['id_session'],
+                htmlspecialchars($_SESSION['id_session']),
                 "Active",
                 $annonce['poste'],
                 $dtecontrat,
                 $missions,
                 $startdte,
                 $enddte,
-                $_SESSION['id_session']
+                htmlspecialchars($_SESSION['id_session'])
             ));
         } catch (Exception $e) {
             $response_array['status'] = 'error';

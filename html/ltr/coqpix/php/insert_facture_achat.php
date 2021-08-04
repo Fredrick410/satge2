@@ -9,7 +9,7 @@ session_start();
             
 
             if (is_uploaded_file($_FILES['files']['tmp_name'])) {
-            echo "File ". $_FILES['files']['name'] ." téléchargé avec succès.\n";
+            echo "File ". htmlspecialchars($_FILES['files']['name']) ." téléchargé avec succès.\n";
             $dir = '../../../../src/files/fac-achat/';
         
             if(!is_dir($dir)){
@@ -17,24 +17,24 @@ session_start();
             exit;
             }
         
-            $name_files = $_FILES['files']['name'];      
+            $name_files = htmlspecialchars($_FILES['files']['name']);      
             $date_H = date("H") + 1;
             $date_mins = date("-i-s");                 
             $date_now = $date_H.$date_mins;
             $type_files = "." . strtolower(substr(strrchr($name_files, '.'), 1));
-            $target_file = $_FILES['files']['tmp_name'];   
+            $target_file = htmlspecialchars($_FILES['files']['tmp_name']);   
             $real_name = substr($name_files, 0, -4);
             $name_final = ''.$real_name.'-'.$date_now.''.$type_files.'';                                  
             $file_name = $dir. $name_final;
 
             if($resultat = move_uploaded_file($target_file, $file_name)){
 
-                $name_facture = !empty($_POST["name_facture"]) ? $_POST["name_facture"] : NULL;
-                $num_facture = !empty($_POST["num_facture"]) ? $_POST["num_facture"] : NULL;
-                $name_fournisseur = !empty($_POST["name_fournisseur"]) ? $_POST["name_fournisseur"] : NULL;
-                $dte = !empty($_POST["dte"]) ? $_POST["dte"] : NULL;
-                $doc_facture = !empty($_POST["doc_facture"]) ? $_POST["doc_facture"] : NULL;
-                $id_session = !empty($_SESSION["id_session"]) ? $_SESSION["id_session"] : NULL;
+                $name_facture = !empty($_POST["name_facture"]) ? htmlspecialchars($_POST["name_facture"]) : NULL;
+                $num_facture = !empty($_POST["num_facture"]) ? htmlspecialchars($_POST["num_facture"]) : NULL;
+                $name_fournisseur = !empty($_POST["name_fournisseur"]) ? htmlspecialchars($_POST["name_fournisseur"]) : NULL;
+                $dte = !empty($_POST["dte"]) ? htmlspecialchars($_POST["dte"]) : NULL;
+                $doc_facture = !empty($_POST["doc_facture"]) ? htmlspecialchars($_POST["doc_facture"]) : NULL;
+                $id_session = !empty($_SESSION["id_session"]) ? htmlspecialchars($_SESSION["id_session"]) : NULL;
 
                 $insert = $bdd->prepare('INSERT INTO facture_achat (name_facture, num_facture, name_fournisseur, dte, doc_facture, id_session) VALUES(?,?,?,?,?,?)');
                 $insert->execute(array(
@@ -75,7 +75,7 @@ session_start();
 
             }else{
                 echo "Erreur lors de l'upload du fichier : ";
-                echo "Nom du fichier : '". $_FILES['files']['tmp_name'] . "'.";
+                echo "Nom du fichier : '". htmlspecialchars($_FILES['files']['tmp_name']) . "'.";
             }
         }
 ?>

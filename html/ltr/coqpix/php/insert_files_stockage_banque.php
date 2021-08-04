@@ -13,16 +13,16 @@ ini_set('display_startup_errors', TRUE);
 
     }
 
-    $size_files = $_FILES['files']['size'];                                       // Nous recuperons la taille du fichier
-    $name_files = $_FILES['files']['name'];                                       // Nous recuperons le nom du fichier
+    $size_files = htmlspecialchars($_FILES['files']['size']);                                       // Nous recuperons la taille du fichier
+    $name_files = htmlspecialchars($_FILES['files']['name']);                                       // Nous recuperons le nom du fichier
     $img_files = strtolower(substr(strrchr($name_files, '.'), 1));               // Nous recuperons le type du fichier ex pdf ect
     $dte_files = date('d-m-Y');
-    $dte_files = $_POST['dte_files'];                                                  // Nous recuperons la date ou le fichier à etait upload
+    $dte_files = htmlspecialchars($_POST['dte_files']);                                                  // Nous recuperons la date ou le fichier à etait upload
     $dte_j = substr($dte_files, -2, 10);
     $dte_m = substr($dte_files, -5, -3);                                                         // Nous recuperons le mois
     $dte_a = substr($dte_files, 0, 4);                                                            // Nous recuperons le mois
     
-    $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
+    $tmpName = htmlspecialchars($_FILES['files']['tmp_name']);                                     //chemin du document
     $path = "../../../../src/files/banque/". $name_files;                     // chemin vers le serveur
 
     $resultat = move_uploaded_file($tmpName, $path);

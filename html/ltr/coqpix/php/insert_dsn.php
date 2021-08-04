@@ -22,10 +22,10 @@ require_once 'config.php';
 
     }
 
-    $id_session = $_GET['num'];
+    $id_session = htmlspecialchars($_GET['num']);
 
     if (is_uploaded_file($_FILES['doc_files']['tmp_name'])) {
-    echo "File ". $_FILES['doc_files']['name'] ." téléchargé avec succès.\n";
+    echo "File ". htmlspecialchars($_FILES['doc_files']['name']) ." téléchargé avec succès.\n";
     $dir = '../../../../src/dsn/';
     
     if(!is_dir($dir)){

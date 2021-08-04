@@ -524,6 +524,12 @@ input:focus ~ .bg-primary {
   color: #fff;
 }
 
+.btn-purple {
+  border-color: #440072 !important;
+  background-color: #7608b6 !important;
+  color: #fff;
+}
+
 .btn-primary:hover, .btn-primary.hover {
   background-color: #719df0 !important;
   color: #fff;
@@ -566,6 +572,12 @@ input:focus ~ .bg-primary {
   border: 1px solid #5A8DEE;
   background-color: transparent;
   color: #5A8DEE !important;
+}
+
+.btn-outline-purple {
+  border: 2px solid #6a11b3;
+  background-color: transparent;
+  color: #721ac5 !important;
 }
 
 .btn-outline-primary:hover, .btn-outline-primary.hover {

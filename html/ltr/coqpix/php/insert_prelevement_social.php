@@ -4,14 +4,14 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
-    $name_prelevement = $_POST['name_prelevement'];
-    $montant = $_POST['montant'];
-    $dte = $_POST['dte_prelevement'];
-    $dte_m = $_POST['date_m'];
-    $dte_a = $_POST['date_a'];
-    $statut = $_POST['statut'];
+    $name_prelevement = htmlspecialchars($_POST['name_prelevement']);
+    $montant = htmlspecialchars($_POST['montant']);
+    $dte = htmlspecialchars($_POST['dte_prelevement']);
+    $dte_m = htmlspecialchars($_POST['date_m']);
+    $dte_a = htmlspecialchars($_POST['date_a']);
+    $statut = htmlspecialchars($_POST['statut']);
     $dte_rejet = "";
-    $id_session = $_GET['num'];
+    $id_session = htmlspecialchars($_GET['num']);
 
     echo $dte;
 
