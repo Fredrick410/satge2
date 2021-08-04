@@ -304,31 +304,30 @@ $pdf->lastPage();
 
 // Close and output PDF document
 ob_clean();
-$pdf->Output('contrat', 'I');
+//$pdf->Output('contrat', 'I');
 
-/*
+
 $dir = realpath(__DIR__ . '/../../..');
-$dir = $dir.'/src/crea_societe/domiciliation/';
+$dir = $dir.'/src/crea_societe/contrat/';
 
 if (!is_dir($dir)) {
     mkdir($dir, 0777, true);
 }
 
-$file_name = 'renseignement_domiciliation_idcrea'.$id_crea.'_date-'.date("H-i-s").'.pdf';
-//$pdf->Output($dir.'/src/crea_societe/justificatifss/'.$file_name, 'I');
+$file_name = 'contrat_coqpix_idcrea'.$info['id'].'_date-'.date("H-i-s").'.pdf';
 
 
     $pdf->Output($dir.$file_name, 'F');
-*/
+
 //============================================================+
 // END OF FILE
 //============================================================+
 
 require_once 'php/verif_session_crea.php';
 require_once 'php/config.php';
-/*
-    $update = $bdd->prepare('UPDATE crea_societe SET doc_domiciliation = ? WHERE id = ?');
-    $update->execute(array( ($file_name), $id_crea  ));
-    header('Location: page-creation');*/
+
+    $update = $bdd->prepare('UPDATE crea_societe SET doc_contrat = ? WHERE id = ?');
+    $update->execute(array( ($file_name), $info['id']  ));
+    header('Location: page-creation');
 
 ?>
