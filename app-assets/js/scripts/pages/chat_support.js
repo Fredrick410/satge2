@@ -1,6 +1,25 @@
-/**
- * Codons un chat en HTML/CSS/Javascript avec nos amis PHP et MySQL
- */
+// ===============================
+// ---------- FONCTIONS ----------
+// ===============================
+
+const auteur = document.getElementById("auteur").value
+
+$(document).ready(function() {
+
+    if (auteur == "user") {
+        if (document.getElementById("req").value != null) {
+            $(".liste-chat-support").children('li:last-child').trigger("click");
+        }
+    }
+
+    if (auteur == "support") {
+        if (document.getElementById("id_ticket").value != null) {
+            let id_ticket = document.getElementById("id_ticket").value;
+            getMessagesSupport(auteur, id_ticket);
+        }
+    }
+
+});
 
 /**
  * Il nous faut une fonction pour récupérer le JSON des
@@ -8,70 +27,70 @@
  */
 function getDateEnLettres(date) {
 
-    var date = new Date(date);
-
-    var mois = new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
-    return date.getDate() + ' ' + mois[date.getMonth()] + ' ' + date.getFullYear();
+    let varDate = new Date(date);
+    let mois = new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+    return varDate.getDate() + ' ' + mois[varDate.getMonth()] + ' ' + varDate.getFullYear();
 
 }
 
-function getMessages(auteur, id_membre) {
+function getMessagesSupport(auteur, id_ticket) {
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk.php?auteur="+auteur+"&id_membre="+id_membre);
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
 
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
         let last_date = new Date(0);
         let next_date = new Date(0);
-        const date_auj = new Date();
-        const date_hier = new Date();
+        let date_auj = new Date();
+        let date_hier = new Date();
         date_hier.setDate(date_hier.getDate()-1);
 
         const resultat = JSON.parse(requeteAjax.responseText);
         const html = resultat.reverse().map(function(message) {
 
-            var droite = message.auteur !== auteur ? 'chat-left' : '';
-            var image = message.auteur !== "support" ? 'astro1.gif' : 'chatpix3.png';
+            let message_a_droite = message.auteur == auteur ? '' : 'chat-left';
+            let image = message.auteur == "support" ? "../../../app-assets/images/ico/chatpix3.png" : "../../../src/img/" + message.img_membres;
 
             next_date = new Date(message.date_message);
+
+            html_date = '';
         
             if (next_date > last_date) {
 
                 if (next_date.getDate() == date_auj.getDate() && next_date.getMonth() == date_auj.getMonth() && next_date.getFullYear() == date_auj.getFullYear()) {
-                    date_msg = `
+                    html_date = `
                         <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div>`
                 } else if (next_date.getDate() == date_hier.getDate() && next_date.getMonth() == date_hier.getMonth() && next_date.getFullYear() == date_hier.getFullYear()) {
-                    date_msg = `
+                    html_date = `
                         <div class="badge badge-pill badge-light-secondary my-1">Hier</div>`
                 } else {
-                    date_msg = `
+                    html_date = `
                         <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`
                 }
-            } else {
-                date_msg = '';
+
             }
 
             last_date = next_date;
             
-            texte = `
-                <div class="chat ${droite}">
+            let html_message = `
+                <div class="chat ${message_a_droite}">
                     <div class="chat-avatar">
                         <a class="avatar m-0">
-                            <img src="../../../app-assets/images/ico/${image}" alt="avatar" height="36" width="36" />
+                            <img src="${image}" alt="avatar" height="36" width="36" />
                         </a>
                     </div>
                     <div class="chat-body">
                         <div class="chat-message">
                             <p>${message.texte}</p>
-                            <span class="chat-time">${message.heure}</span>
+                            <span class="chat-time">${message.heure.slice(0,5)}</span>
                         </div>
                     </div>
                 </div>`
 
-            return date_msg + texte;
+            return html_date + html_message;
 
         }).join('');
 
@@ -91,7 +110,7 @@ function getMessages(auteur, id_membre) {
  * Il nous faut une fonction pour envoyer le nouveau
  * message au serveur et rafraichir les messages
  */
-function postMessage(event, auteur, id_membre) {
+function postMessageSupport(event, auteur, id_membre, id_ticket) {
     
     // 1. Elle doit stoper le submit du formulaire
     event.preventDefault();
@@ -101,18 +120,19 @@ function postMessage(event, auteur, id_membre) {
 
     // 3. Elle doit conditionner les données
     const data = new FormData();
-    data.append('id_membre', id_membre);
     data.append('auteur', auteur);
+    data.append('id_membre', id_membre);
+    data.append('id_ticket', id_ticket);
     data.append('texte', texte.value);
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk.php?method=post');
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
         texte.focus();
-        getMessages(auteur, id_membre);
+        getMessagesSupport(auteur, id_ticket);
     }
 
     requeteAjax.send(data);
@@ -121,81 +141,114 @@ function postMessage(event, auteur, id_membre) {
 }
 
 /**
- * Il nous faut une fonction qui efface tous
- * les messages du chat sans recharger la page
+ * Il nous faut une fonction qui permet de 
+ * fermer un ticket sans recharger la page
  */
- function deleteMessages(id_membre) {
-
-    // 2. Elle doit récupérer les données du formulaire
-    const texte = document.querySelector('#texte');
+function fermerTicket(id_ticket) {
 
     // 3. Elle doit conditionner les données
     const data = new FormData();
-    data.append('id_membre', id_membre);
+    data.append('id_ticket', id_ticket);
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_helpdesk.php?delete=yes');
-
-    requeteAjax.onload = function() {
-        texte.value = '';
-        texte.focus();
-        getMessages(auteur, id_membre);
-    }
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?fermer=yes');
 
     requeteAjax.send(data);
     return false;
 
 }
 
-const auteur = document.getElementById("auteur").value
+// ================================
+// ---------- EVENEMENTS ----------
+// ================================
 
-if (auteur == "support") {
+// S'execute lorsqu'on clique sur un contact dans "SUPPORT"
+$(".chat-support").click(function() {
 
-    setInterval(function() {
+    // Si on dans le front
+    if (auteur == "user") {
 
-        var id = document.getElementById("id_header_chat").value;
-        getMessages(auteur, id);
-    
-    }, 5000);
+        let id_ticket = $(this).children('input:nth(0)').val();
+        let objet = $(this).children('input:nth(1)').val();
 
-} else {
+        document.getElementById("id_chat_front").value = id_ticket;
+        document.getElementById("nom_chat_front").innerHTML = objet + '<span class="badge badge-light-success badge-pill ml-1">OUVERT</span>';
+        document.getElementById("img_chat_front").src = "../../../app-assets/images/ico/chatpix3.png";
 
-    setInterval(function() {
-        const id_membre = document.getElementById("id_session").value;
-        getMessages(auteur, id_membre);  
-    }, 5000);
+        getMessagesSupport(auteur, id_ticket);
 
-}
+        document.getElementById("type_chat_front").value = "support";
+    }
 
-$(".list_support").click(function() {
-    const id_membre = document.getElementById("id_session").value;
-    getMessages(auteur, id_membre);
 });
 
-$(".list_membres").click(function() {
-    let img = $(this).children('input:nth(0)').val();
-    let nom = $(this).children('input:nth(1)').val();
-    let id = $(this).children('input:nth(2)').val();
+// S'execute lorsqu'on appuie sur "Envoyer" un message
+$(".btn-envoyer-msg").click(function(event) {
+        
+    // Si on dans le front
+    if (auteur == "user") {
 
-    document.getElementById("img_header_chat").src = "../../../src/img/" + img;
-    document.getElementById("nom_header_chat").innerHTML = nom;
-    document.getElementById("id_header_chat").value = id;
+        var type_chat = document.getElementById("type_chat_front").value
 
-    getMessages(auteur, id)
+        // On vérifie que le chat sélectionné est bien le support
+        if (type_chat == "support") {
+            let id_membre = document.getElementById("id_session").value;
+            let id_ticket = document.getElementById("id_chat_front").value;
+            postMessageSupport(event, "user", id_membre, id_ticket);
+        }
+
+    } else {
+        let id_membre = document.getElementById("id_membre").value;
+        let id_ticket = document.getElementById("id_ticket").value;
+        postMessageSupport(event, "support", id_membre, id_ticket);
+    }
+
 });
 
-$("#btn_submit_admin").click(function(event) {
-    var id = document.getElementById("id_header_chat").value;
-    postMessage(event, "support", id);
+// S'execute lorsqu'on veut supprimer les messages chat (uniquement côté back)
+$("#fermer_ticket").click(function(e) {
+    e.preventDefault
+    let id_ticket = document.getElementById("id_ticket").value;
+    let statut = document.getElementById("statut").textContent;
+    if (statut == "FERMÉ") {
+        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-success badge-pill ml-1">OUVERT</span>`;
+    } else {
+        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-danger badge-pill ml-1">FERMÉ</span>`;
+    }
+    fermerTicket(id_ticket);
 });
 
-$("#btn_submit_user").click(function(event) {
-    const id_membre = document.getElementById("id_session").value;
-    postMessage(event, "user", id_membre);
-});
-
-$("#delete_chat").click(function(event) {
-    var id = document.getElementById("id_header_chat").value;
-    deleteMessages(id);
+// S'execute lorsqu'on clique sur "Envoyer une requête" dans Support
+$('#btn_demande_req').on('click', function () {
+    let id_membre = document.getElementById("id_session").value;
+    Swal.fire({
+        title: 'Contacter le support',
+        html:
+            `<form method="post" action="php/insert_ticket.php?id_membre=${id_membre}" class="form form-vertical">`+
+                '<div class="form-body">'+
+                    '<div class="row">'+
+                        '<div class="col-12">'+
+                            '<div class="form-group">'+
+                                '<label for="objet">Objet de la requête</label>'+
+                                '<input type="text" id="objet" class="form-control" name="objet" placeholder="" required>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-12">'+
+                            '<div class="form-group">'+
+                                '<label for="description">Description</label>'+
+                                '<textarea rows="15" id="description" class="form-control" style="resize: none;" name="description" placeholder="Posez votre question ici.." required></textarea>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-12 d-flex justify-content-end">'+
+                            '<button id="btn_envoyer_req" name="btn_envoyer_req" type="submit" class="btn btn-primary mr-1 mb-1">Envoyer</button>'+
+                            '<button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+            '</form>',
+        showCloseButton: true,
+        showConfirmButton: false,
+        buttonsStyling: false,
+    })
 });
