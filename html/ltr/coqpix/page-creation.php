@@ -131,7 +131,7 @@ require_once 'php/get_documents.php';
                         </li>
                         <li class="col-4">
                             <?php if($doc_contrat == "1"){ ?>
-                            <a class="btn btn-contrat" href="" target="_blank">
+                            <a class="btn btn-contrat" href="voirmoncontrat.php" target="_blank">
                             <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
                             <label>Voir mon contrat</label>
                             </a>
