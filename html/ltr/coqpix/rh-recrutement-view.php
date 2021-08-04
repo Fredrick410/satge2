@@ -1,9 +1,10 @@
 <?php
-require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'rh');
+require_once 'php/verif_session_connect.php';
 
 $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoStt->bindValue(':numentreprise', $_SESSION['id_session']);
@@ -228,9 +229,9 @@ if (count($candidature) != 0) {
                                         <div class="row">
                                             <div class="col-12 col-sm-12 col-md-3">
                                                 <div class="list-group" role="tablist">
-                                                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab">Profiles</a>
+                                                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab">Profil</a>
                                                     <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab">Références</a>
-                                                    <a class="list-group-item list-group-item-action" id="list-level-list" data-toggle="list" href="#list-level" role="tab">Résultats des qcms</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-level-list" data-toggle="list" href="#list-level" role="tab">Résultats des QCMS</a>
                                                     <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab">Documents</a>
                                                     <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Etat du suivi</a>
                                                 </div>
@@ -316,7 +317,7 @@ if (count($candidature) != 0) {
                                                                         }
                                                                     } else {
                                                                         ?>
-                                                                        Qcms non encore réalisés
+                                                                        QCMS non encore réalisés
                                                                     <?php
                                                                     }
                                                                     ?>

@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'rh');
 require_once 'php/verif_session_connect.php';
 
 // Si l'id de la candidature n'existe pas ou est non numerique on retourne a la liste des candidatures pour entretiens
