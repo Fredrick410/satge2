@@ -6,7 +6,7 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
     if (isset($_GET['id_ticket']) && !empty($_GET['id_ticket'])) {
-        $select_ticket = $bdd->prepare('SELECT S.objet, upper(S.statut) AS statut, M.nom, M.prenom FROM support_ticket S, membres M WHERE S.id_ticket = :id_ticket AND M.id = S.id_membre');
+        $select_ticket = $bdd->prepare('SELECT S.objet, S.statut, M.nom, M.prenom FROM support_ticket S, membres M WHERE S.id_ticket = :id_ticket AND M.id = S.id_membre');
         $select_ticket->bindValue(':id_ticket', $_GET['id_ticket']);
         $select_ticket->execute();
         $infos_ticket = $select_ticket->fetch();
@@ -120,7 +120,7 @@ require_once 'php/config.php';
                                         <span> Tous</span>
                                     </a>
                                 </div>
-                                <label class="filter-label mt-2 mb-1 pt-25">Filters</label>
+                                <label class="filter-label mt-2 mb-1 pt-25">Filtres</label>
                                 <div class="list-group">
                                     <a href="javascript:void(0);" class="filtre-non-lu list-group-item border-0">
                                         <span class="fonticon-wrap mr-50">
@@ -190,24 +190,18 @@ require_once 'php/config.php';
                                                     </i>
                                                 </span>
                                             </a>
-                                            <h6 id="objet_ticket" class="mb-0"><?= $infos_ticket['objet'] ?><i class="bx bx-user mx-1"></i><small><?= $infos_ticket['nom'].' '.$infos_ticket['prenom'] ?></small></h6>
+                                            <h6 id="objet_ticket" class="mb-0"><?= $infos_ticket['objet'] ?></h6>
+                                            <i class="bx bx-user mx-1"></i>
+                                            <small><?= $infos_ticket['nom'].' '.$infos_ticket['prenom'] ?></small>
                                             <div id="statut_ticket">             
-                                                <span id="statut" class="badge badge-light-<?php if ($infos_ticket['statut'] == "OUVERT") { echo "success"; } else { echo "danger"; } ?> badge-pill ml-1"><?= $infos_ticket['statut'] ?></span>
+                                                <span id="statut" class="badge badge-light-<?php if ($infos_ticket['statut'] == "ouvert") { echo "success"; } else if ($infos_ticket['statut'] == "fermé") { echo "danger"; } else { echo "warning"; } ?> badge-pill ml-1"><?= $infos_ticket['statut'] ?></span>
                                             </div>
                                         </div>
                                         <div class="chat-header-icons">
-                                            <span class="chat-icon-favorite">
-                                                <i class="bx bx-star font-medium-5 cursor-pointer"></i>
-                                            </span>
-                                            <span class="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded font-medium-4 ml-25 cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu">
-                                                </i>
-                                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <a id="fermer_ticket" class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-lock mr-50"></i> Fermer</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-trash mr-50"></i> Effacer</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-block mr-50"></i> Bloquer</a>
-                                                </span>
-                                            </span>
+                                            <div class="fonticon-wrap">
+                                                <a id="ticket_urgent" class="text-warning mr-50" href="JavaScript:void(0);"><i class="bx bx-error" style="font-size: 25px;"></i></a>
+                                                <a id="fermer_ticket" class="text-danger mr-50" href="JavaScript:void(0);"><i class="bx bx-lock" style="font-size: 25px;"></i></a>
+                                            <div>
                                         </div>
                                     </header>
                                 </div>

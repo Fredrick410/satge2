@@ -14,7 +14,14 @@ function getTicketsSupport(filtre) {
         const resultat = JSON.parse(requeteAjax.responseText);
         const html = resultat.reverse().map(function(ticket) {
 
-            var statut = ticket.statut == "OUVERT" ? 'success' : 'danger';
+            let statut = '';
+            if (ticket.statut == "OUVERT") {
+                statut = "success";
+            } else if (ticket.statut == "URGENT") {
+                statut = "warning";
+            } else {
+                statut = "danger"
+            }
 
             if (ticket.nb_notifs > 0) {
 

@@ -7,8 +7,6 @@ require_once 'config.php';
 
 //A - on analyse la requete via l'URL
 
-$method = "get";
-
 if (isset($_GET['method']) and $_GET['method'] === "post") {
     postMessage();
 } else {

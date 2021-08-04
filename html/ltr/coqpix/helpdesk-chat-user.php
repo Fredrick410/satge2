@@ -15,7 +15,7 @@ require_once 'php/config.php';
     $select_membre->bindValue(':id_membre', $_SESSION['id_membre']);
     $select_membre->execute();
 
-    $select_ticket = $bdd->prepare('SELECT * FROM support_ticket WHERE id_membre = :num AND statut = "ouvert"');
+    $select_ticket = $bdd->prepare('SELECT * FROM support_ticket WHERE id_membre = :num AND statut != "fermé"');
     $select_ticket->bindValue(':num',$_SESSION['id_membre']);
     $select_ticket->execute();
     

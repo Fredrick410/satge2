@@ -114,7 +114,7 @@ require_once 'php/config.php';
                                         <span> Tous</span>
                                     </a>
                                 </div>
-                                <label class="filter-label mt-2 mb-1 pt-25">Filters</label>
+                                <label class="filter-label mt-2 mb-1 pt-25">Filtres</label>
                                 <div class="list-group">
                                     <a href="javascript:void(0);" class="filtre-non-lu list-group-item border-0">
                                         <span class="fonticon-wrap mr-50">

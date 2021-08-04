@@ -141,10 +141,10 @@ function postMessageSupport(event, auteur, id_membre, id_ticket) {
 }
 
 /**
- * Il nous faut une fonction qui permet de 
- * fermer un ticket sans recharger la page
+ * Il nous faut une fonction qui permet de changer
+ * cle statut d'un ticket sans recharger la page
  */
-function fermerTicket(id_ticket) {
+function changerStatutTicket(id_ticket, statut) {
 
     // 3. Elle doit conditionner les données
     const data = new FormData();
@@ -152,7 +152,7 @@ function fermerTicket(id_ticket) {
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?fermer=yes');
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
 
     requeteAjax.send(data);
     return false;
@@ -173,7 +173,7 @@ $(".chat-support").click(function() {
         let objet = $(this).children('input:nth(1)').val();
 
         document.getElementById("id_chat_front").value = id_ticket;
-        document.getElementById("nom_chat_front").innerHTML = objet + '<span class="badge badge-light-success badge-pill ml-1">OUVERT</span>';
+        document.getElementById("nom_chat_front").innerHTML = objet;
         document.getElementById("img_chat_front").src = "../../../app-assets/images/ico/chatpix3.png";
 
         getMessagesSupport(auteur, id_ticket);
@@ -206,17 +206,26 @@ $(".btn-envoyer-msg").click(function(event) {
 
 });
 
-// S'execute lorsqu'on veut supprimer les messages chat (uniquement côté back)
+// S'execute lorsqu'on clique sur le cadenas (fermer ou ouvrir un ticket)
 $("#fermer_ticket").click(function(e) {
     e.preventDefault
     let id_ticket = document.getElementById("id_ticket").value;
     let statut = document.getElementById("statut").textContent;
-    if (statut == "FERMÉ") {
-        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-success badge-pill ml-1">OUVERT</span>`;
+    if (statut == "fermé") {
+        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-success badge-pill ml-1">ouvert</span>`;
+        changerStatutTicket(id_ticket, "ouvert");
     } else {
-        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-danger badge-pill ml-1">FERMÉ</span>`;
+        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-danger badge-pill ml-1">fermé</span>`;
+        changerStatutTicket(id_ticket, "fermé");
     }
-    fermerTicket(id_ticket);
+});
+
+// S'execute lorsqu'on clique sur l'icone jaune (mettre un ticket en urgent)
+$("#ticket_urgent").click(function(e) {
+    e.preventDefault
+    let id_ticket = document.getElementById("id_ticket").value;
+    document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-warning badge-pill ml-1">urgent</span>`;
+    changerStatutTicket(id_ticket, "urgent");
 });
 
 // S'execute lorsqu'on clique sur "Envoyer une requête" dans Support

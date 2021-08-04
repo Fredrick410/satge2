@@ -7,16 +7,12 @@ require_once 'config.php';
 
 //A - on analyse la requete via l'URL
 
-$method = "get";
-
-if (isset($_GET['method']) and $_GET['method'] === "post") {
+if (isset($_GET['statut']) && ($_GET['statut'] === "urgent" || $_GET['statut'] === "fermé" || $_GET['statut'] === "ouvert")) {
+    changerStatutTicket($_GET['statut']);
+} else if (isset($_GET['method']) && $_GET['method'] === "post") {
     postMessage();
 } else {
     getMessages();
-}
-
-if (isset($_GET['fermer']) and $_GET['fermer'] === 'yes') {
-    fermerTicket();
 }
 
 //B- function qui va permettre de recupérer les messages.
@@ -79,16 +75,17 @@ function postMessage() {
 
 }
 
-function fermerTicket() {
+function changerStatutTicket($statut) {
 
     //on definit la variable bdd dans la function 
     global $bdd;
 
     //1- Analyer les parametres passés en POST
-    $id_ticket = htmlspecialchars($_POST['id_ticket']); // Recuperer l'id du membre selectionnee dans la liste
+    $id_ticket = htmlspecialchars($_POST['id_ticket']);
 
     //2- Crée une requete qui permettra la suppression des messages dans la base de données
-    $query = $bdd->prepare('UPDATE support_ticket SET statut = (case when statut = "ouvert" then "fermé" else "ouvert" end) WHERE id_ticket = :id_ticket');
+    $query = $bdd->prepare('UPDATE support_ticket SET statut = :statut WHERE id_ticket = :id_ticket');
+    $query->bindValue(':statut', $statut);
     $query->bindValue(':id_ticket', $id_ticket);
     $query->execute();
 

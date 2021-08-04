@@ -58,7 +58,7 @@ function getMessages(id_membre_1, id_membre_2) {
 
             let html_auteur = `
                 <div class="mt-1 text-${auteur_a_droite}">
-                    <small style="padding-${auteur_a_droite}: 60px; padding-bot: 5px;">${message.nom+' '+message.prenom}</small>
+                    <small style="padding-${auteur_a_droite}: 60px;">${message.nom+' '+message.prenom}</small>
                 </div>`;
             
             let html_message = `
@@ -68,7 +68,7 @@ function getMessages(id_membre_1, id_membre_2) {
                             <img src="../../../src/img/${message.img_membres}" alt="avatar" height="36" width="36" />
                         </a>
                     </div>
-                    <div class="chat-body">
+                    <div class="chat-body mt-0 mb-1">
                         <div class="chat-message">
                             <p>${message.texte}</p>
                             <span class="chat-time">${message.heure_message.slice(0,5)}</span>
