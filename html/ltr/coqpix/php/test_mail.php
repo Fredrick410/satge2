@@ -14,7 +14,7 @@ $mail = [
 'nom_recepteur' => "Test",
 'adresse_recepteur' => "test-cbwjeco48@srv1.mail-tester.com",
 'nom_emetteur' => "Service des ressources humaines",
-'adresse_emetteur' => "rh@". $_SERVER['SERVER_NAME'],
+'adresse_emetteur' => "rh-noreply@". $_SERVER['SERVER_NAME'],
 'sujet' => $sujet,
 'message' => $message
 ];

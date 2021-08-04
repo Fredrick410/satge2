@@ -54,7 +54,7 @@ if (isset($_POST['confirm']) and $_POST['confirm'] === 'confirm') {
             'nom_recepteur' => $candidature['nom_candidat'] . " " . $candidature['prenom_candidat'],
             'adresse_recepteur' => $candidature['email_candidat'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => "rh@". $_SERVER['SERVER_NAME'],
+            'adresse_emetteur' => "rh-noreply@". $_SERVER['SERVER_NAME'],
             'sujet' => $sujet,
             'message' => $message
         ];

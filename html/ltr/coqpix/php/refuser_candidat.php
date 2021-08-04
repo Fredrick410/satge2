@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-$authorised_roles = array('admin', 'rh');
 require_once 'php/verif_session_connect.php';
 include 'mail.php';
 
@@ -101,7 +100,7 @@ if (isset($_POST['refuse']) and isset($_POST['idcandidat']) and isset($_POST['ob
                 'nom_recepteur' => $entreprise['nameentreprise'],
                 'adresse_recepteur' => $entreprise['emailentreprise'],
                 'nom_emetteur' => "Service des ressources humaines",
-                'adresse_emetteur' => "rh-noreply@coqpix.com",
+                'adresse_emetteur' => "rh-noreply@" . $_SERVER['SERVER_NAME'],
                 'sujet' => $sujet,
                 'message' => $message
             ];

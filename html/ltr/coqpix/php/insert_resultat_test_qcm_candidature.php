@@ -159,7 +159,7 @@ if (count($candidature) != 0) {
             'nom_recepteur' => $entreprise['nameentreprise'],
             'adresse_recepteur' => $entreprise['emailentreprise'],
             'nom_emetteur' => "Service des ressources humaines",
-            'adresse_emetteur' => "rh-noreply@coqpix.com",
+            'adresse_emetteur' => "rh-noreply@" . $_SERVER['SERVER_NAME'],
             'sujet' => $sujet,
             'message' => $message
         ];
