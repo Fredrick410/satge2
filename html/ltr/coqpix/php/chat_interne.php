@@ -27,10 +27,23 @@ function getMessages() {
     $id_membre_1 = htmlspecialchars($_GET['id_membre_1']);
     $id_membre_2 = htmlspecialchars($_GET['id_membre_2']);
 
-    $query = $bdd->prepare('SELECT id_membre_from, id_membre_to, date_message, heure_message, texte, (SELECT img_membres FROM membres WHERE id = :id_membre_1) AS img_1, (SELECT img_membres FROM membres WHERE id = :id_membre_2) AS img_2 FROM message WHERE ((id_membre_from = :id_membre_1 AND id_membre_to = :id_membre_2) OR (id_membre_from = :id_membre_2 AND id_membre_to = :id_membre_1)) ORDER BY date_message DESC, heure_message DESC LIMIT 30');
-    $query->bindValue(':id_membre_1', $id_membre_1);
-    $query->bindValue(':id_membre_2', $id_membre_2);
-    $query->execute();
+    if ($id_membre_2 != 0) {
+
+        $query = $bdd->prepare('SELECT Msg.id_membre_from, Msg.id_membre_to, Msg.date_message, Msg.heure_message, Msg.texte, upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres FROM message Msg, membres M WHERE Msg.id_membre_from = M.id AND ((Msg.id_membre_from = :id_membre_1 AND Msg.id_membre_to = :id_membre_2) OR (Msg.id_membre_from = :id_membre_2 AND Msg.id_membre_to = :id_membre_1)) ORDER BY Msg.date_message DESC, Msg.heure_message DESC LIMIT 30');
+        $query->bindValue(':id_membre_1', $id_membre_1);
+        $query->bindValue(':id_membre_2', $id_membre_2);
+        $query->execute();
+
+        $desactiver_notifs = $bdd->prepare('UPDATE message SET lu = 1 WHERE id_membre_to = :id_membre');
+        $desactiver_notifs->bindValue(':id_membre', $id_membre_1);
+        $desactiver_notifs->execute();
+
+    } else {
+
+        $query = $bdd->prepare('SELECT Msg.id_membre_from, Msg.id_membre_to, Msg.date_message, Msg.heure_message, Msg.texte, upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres FROM message Msg, membres M WHERE Msg.id_membre_from = M.id AND Msg.id_membre_to = 0 ORDER BY Msg.date_message DESC, Msg.heure_message DESC LIMIT 30');
+        $query->execute();
+
+    }
 
     //2 - On va traiter les resultats
 
@@ -39,17 +52,6 @@ function getMessages() {
     //3 - On affiche les données en JSON
 
     echo json_encode($messages);
-
-    // //4 - On désactive les notifications
-    // if ($auteur == "support") {
-    //     $query = $bdd->prepare('UPDATE support_message SET lu_support = 1 WHERE id_membre = :id_membre');
-    //     $query->bindValue(':id_membre', $id_membre);
-    //     $query->execute();
-    // } else {
-    //     $query = $bdd->prepare('UPDATE support_message SET lu_user = 1 WHERE id_membre = :id_membre');
-    //     $query->bindValue(':id_membre', $id_membre);
-    //     $query->execute();
-    // }
 
 }
 
@@ -62,23 +64,18 @@ function postMessage() {
 
     //1- Analyer les parametres passés en POST (author, content)
 
-    $id_membre_1 = $_POST['id_membre_1']; // Recuperer l'id du membre selectionnee dans la liste
-    $id_membre_2 = $_POST['id_membre_2'];
-    $date_message = date('Y-m-d');
-    $heure = date('H:i:s', strtotime('+2 hours'));
-    $texte = $_POST['texte'];
+    $id_membre_1 = htmlspecialchars($_POST['id_membre_1']); // Recuperer l'id du membre selectionnee dans la liste
+    $id_membre_2 = htmlspecialchars($_POST['id_membre_2']);
+    $texte = htmlspecialchars($_POST['texte']);
 
     //2- Crée une requete qui permettra l'insertion des informations dans la base de données
 
     if ($texte !== "") {
-        $query = $bdd->prepare('INSERT INTO message (id_membre_from, id_membre_to, date_message, heure_message, texte) VALUES (?,?,?,?,?)');
-        $query->execute(array(
-            htmlspecialchars($id_membre_1),
-            htmlspecialchars($id_membre_2),
-            htmlspecialchars($date_message),
-            htmlspecialchars($heure),
-            htmlspecialchars($texte),
-        ));
+        $query = $bdd->prepare('INSERT INTO message (id_membre_from, id_membre_to, date_message, heure_message, texte) VALUES (:id_membre_from, :id_membre_to, curdate(), curtime(), :texte)');
+        $query->bindValue(':id_membre_from', $id_membre_1);
+        $query->bindValue(':id_membre_to', $id_membre_2);
+        $query->bindValue(':texte', $texte);
+        $query->execute();
     }
 
 }

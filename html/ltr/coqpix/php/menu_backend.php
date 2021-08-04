@@ -107,7 +107,7 @@
             </li>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="comments"></i><span>HelpDesk</span></a>
                 <ul class="dropdown-menu">
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="helpdesk-home.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Chat'Pix</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="helpdesk-tickets-support.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Chat'Pix</a>
                     </li>
                 </ul>
             </li>

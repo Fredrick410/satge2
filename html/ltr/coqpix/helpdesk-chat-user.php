@@ -10,9 +10,14 @@ require_once 'php/config.php';
     $select_entreprise->execute();
     $entreprise = $select_entreprise->fetch();
 
-    $select_membre = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
+    $select_membre = $bdd->prepare('SELECT id, nom, prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :num');
     $select_membre->bindValue(':num', $_SESSION['id']);
+    $select_membre->bindValue(':id_membre', $_SESSION['id_membre']);
     $select_membre->execute();
+
+    $select_ticket = $bdd->prepare('SELECT * FROM support_ticket WHERE id_membre = :num AND statut = "ouvert"');
+    $select_ticket->bindValue(':num',$_SESSION['id_membre']);
+    $select_ticket->execute();
     
 ?>
 <!DOCTYPE html>
@@ -58,8 +63,7 @@ require_once 'php/config.php';
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
-
-<body class="horizontal-layout horizontal-menu navbar-sticky content-left-sidebar chat-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
+<body class="horizontal-layout horizontal-menu navbar-sticky content-left-sidebar chat-application footer-static" data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
 
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-success navbar-brand-center">
@@ -74,13 +78,8 @@ require_once 'php/config.php';
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav bookmark-icons">                          
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link" href="dashboard-analytics.php" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
                     </ul>
-                    <script>
-                        function retourn() {
-                            window.history.back();
-                        }
-                    </script>
                     <ul class="nav navbar-nav float-right d-flex align-items-center">                        
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <div class="user-nav d-lg-flex d-none"><span class="user-name">Support</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="40" width="40"></span>
@@ -118,6 +117,7 @@ require_once 'php/config.php';
                         </header>
                         <div class="chat-user-profile-content">
                             <div class="chat-user-profile-scroll">
+                                <h6>DIRIGEANT</h6>
                                 <p class="mb-2">Nom : <?= $entreprise['nom_diri'] ?><br>Prénom : <?= $entreprise['prenom_diri'] ?></p>
                                 <h6>INFORMATIONS PERSONNELLES</h6>
                                 <ul class="list-unstyled mb-2">
@@ -151,34 +151,57 @@ require_once 'php/config.php';
                         <div class="chat-sidebar-list-wrapper">
                             <h6 class="px-2 pt-2">CHAT INTERNE</h6>
                             <ul class="chat-sidebar-list">
-                                <?php while ($membre = $select_membre->fetch()) { ?>
-                                <li class="chat-interne">
-                                    <input type="hidden" value="<?= $membre['id'] ?>">
-                                    <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
-                                    <input type="hidden" value="<?= $membre['img_membres'] ?>">
+                                <li class="chat-global">
+                                    <input type="hidden" value="<?= $entreprise['img_entreprise'] ?>">
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
-                                            <!-- <span class="avatar-status-busy"></span> -->
+                                        <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="loading" height="36" width="36">
                                         </div>
                                         <div class="chat-sidebar-name">
-                                            <h6 class="mb-0"><?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?></h6><span class="text-muted"><?= $membre['role_membres'] ?></span>
+                                            <h6 class="mb-0">Global</h6><span class="text-muted"><?= $entreprise['nameentreprise'] ?></span>
                                         </div>
                                     </div>
                                 </li>
+                                <?php while ($membre = $select_membre->fetch()) { ?>
+                                    <li class="chat-interne">
+                                        <input type="hidden" value="<?= $membre['id'] ?>">
+                                        <input type="hidden" value="<?= strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])) ?>">
+                                        <input type="hidden" value="<?= $membre['img_membres'] ?>">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
+                                                <?php
+                                                    if ($membre['nb_notifs'] != 0) { ?>
+                                                        <span class="avatar-status-offline bg-primary"></span> <?php
+                                                    }
+                                                ?>
+                                            </div>
+                                            <div class="chat-sidebar-name">
+                                                <h6 class="mb-0 <?php if ($membre['nb_notifs'] != 0) { echo "font-weight-bold"; } ?>"><?php if ($membre['id'] != $_SESSION['id_membre']) { echo strtoupper($membre['nom'])." ".ucfirst(strtolower($membre['prenom'])); } else { echo "Vous uniquement"; } ?></h6><span class="text-muted <?php if ($membre['nb_notifs'] != 0) { echo "font-weight-bold"; } ?>"><?= $membre['role_membres'] ?></span>
+                                            </div>
+                                        </div>
+                                    </li>
                                 <?php } ?>
                             </ul>
                             <h6 class="px-2 pt-2">SUPPORT</h6>
-                            <ul class="chat-sidebar-list">
-                                <li class="chat-support">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
-                                            <!-- <span class="avatar-status-busy"></span> -->
+                            <div class="m-1">
+                                <button id="btn_demande_req" type="button" class="btn btn-primary btn-block compose-btn">
+                                    <i class="bx bx-plus"></i>
+                                    Envoyer une requête
+                                </button>
+                            </div>
+                            <ul class="liste-chat-support chat-sidebar-list">
+                                <?php while ($ticket = $select_ticket->fetch()) { ?>
+                                    <li class="chat-support mail-read">
+                                        <input type="hidden" value="<?= $ticket['id_ticket'] ?>">
+                                        <input type="hidden" value="<?= $ticket['objet'] ?>">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
+                                            </div>
+                                            <div class="chat-sidebar-name">
+                                                <h6 class="mb-0"><?= $ticket['objet'] ?></h6>
+                                            </div>
                                         </div>
-                                        <div class="chat-sidebar-name">
-                                            <h6 class="mb-0">Audit action plus</h6><span class="text-muted">Support</span>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -202,14 +225,13 @@ require_once 'php/config.php';
                                     Conversation!</button>
                             </div>
                             <div class="chat-area d-none">
-                                <div class="chat-header">
+                                <div class="chat-header" style="background-color: #FFFFFF">
                                     <header class="d-flex justify-content-between align-items-center border-bottom px-1 py-75">
                                         <div class="d-flex align-items-center">
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
                                             <div class="avatar m-0 mr-1">
                                                 <img id="img_chat_front" src="" alt="avatar" height="36" width="36" />
-                                                <!-- <span class="avatar-status-busy"></span> -->
                                             </div>
                                             <h6 id="nom_chat_front" class="mb-0"></h6>
                                             <input id ="id_chat_front" type="hidden" value=""> 
@@ -244,6 +266,7 @@ require_once 'php/config.php';
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
                                             <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
+                                            <?php if (isset($_GET['req']) && !empty($_GET['req'])) { ?><input type="hidden" id="req" value="<?= $_GET['req'] ?>"><?php } ?>
                                             <input type="hidden" id="auteur" value="user">
                                             <input type="hidden" id="type_chat_front" value="">
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
@@ -272,6 +295,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -287,6 +311,7 @@ require_once 'php/config.php';
     <script src="../../../app-assets/js/scripts/pages/chat_support.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_interne.js"></script>
     <!-- END: Page JS-->
+
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
 </body>
