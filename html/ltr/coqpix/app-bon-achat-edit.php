@@ -10,20 +10,29 @@ require_once 'php/config.php';
     $pdoSta->execute(); 
     $entreprise = $pdoSta->fetch();
 
-    $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
-    $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
-    $article = $pdoSt->fetchAll();
+    $pdoSto = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
+    $pdoSto->bindValue(':num',$_SESSION['id_session']); //$_SESSION
+    $pdoSto->execute(); 
+    $article = $pdoSto->fetchAll();
 
-    $pdoS = $bdd->prepare('SELECT * FROM bon_commande WHERE id = :num');
+    $pdoS = $bdd->prepare('SELECT * FROM bon_commande WHERE id_bon_commande = :num');
     $pdoS->bindValue(':num',$_GET['numbon']);
-    $pdoS->execute(); 
-    $facture = $pdoS->fetch();
-    $numeros = $facture['numerosbon'];
+    $true = $pdoS->execute(); 
+    $bon = $pdoS->fetch();
+
+    $pdoStt = $bdd->prepare('SELECT * FROM fournisseur WHERE id = :num');
+    $pdoStt->bindValue(':num',$_GET['numfournisseur']);
+    $pdoStt->execute(); 
+    $fournisseurr = $pdoStt->fetch();
+
+    $pdoSat = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
+    $pdoSat->bindValue(':num',$_SESSION['id_session']); //$_SESSION
+    $pdoSat->execute(); 
+    $fournisseur = $pdoSat->fetchAll();
 
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="bonachat"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdo->bindValue(':numeros',$numeros);
+    $pdo->bindValue(':numeros',$_GET['numbon']);
     $pdo->execute(); 
     $articles = $pdo->fetchAll();
 
@@ -34,11 +43,11 @@ require_once 'php/config.php';
 
     try{
   
-    $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
+    $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM ( SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$numeros); 
+    $req->bindValue(':numeros',$_GET['numbon']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -47,14 +56,13 @@ require_once 'php/config.php';
 
     $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
 
-
     try{
   
-    $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) R ";
+    $sq = "SELECT ROUND(SUM(R.TOTA), 2) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) R ";
   
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$numeros); 
+    $re->bindValue(':numeros',$_GET['numbon']); 
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -65,11 +73,11 @@ require_once 'php/config.php';
 
     try{
   
-    $sql = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) V ";
+    $sql = "SELECT ROUND(SUM(V.TOTAL), 2) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) V ";
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$numeros); 
+    $req->bindValue(':numeros',$_GET['numbon']); 
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -78,9 +86,8 @@ require_once 'php/config.php';
 
     $montant_tva = !empty($res) ? $res['MONTANT_V'] : 0;
 
-
-
 ?>
+
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -148,32 +155,45 @@ require_once 'php/config.php';
                 <section class="invoice-edit-wrapper">
                     <div class="row">
                         <!-- invoice view page -->
-                        <div class="col-xl-9 col-md-8 col-12">
+                        <div class="col-xl-12 col-md-8 col-12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="card-body pb-0 mx-25">
-                                        <!-- header section -->
+                                <div class="card-body pb-0 mx-25">
                                 <form autocomplete="off" action="php/edit_bon_achat.php" method="POST">
-                                    <input type="hidden" name="numbon" value="<?= $facture['id'] ?>">
+                                    <input type="hidden" name="numbon" value="<?= $bon['id_bon_commande'] ?>">
                                         <div class="row mx-0">
-                                            <div class="col-xl-4 col-md-12 d-flex align-items-center pl-0">
-                                                <h6 class="invoice-number mr-75">Facture N°</h6>
-                                                <input name="numerosbon" id="numeros" type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosbon'] ?>" disabled>
-                                                <input type="hidden" name="numerosbon" value="<?= $facture['numerosbon'] ?>">
+                                         <!-- Elément du haut de la facture  -->
+                                            <div class="col-xl-7 col-md-12 d-flex align-items-center pl-0">
+                                                        <h6 class="invoice-number mr-75">
+                                                                        N°
+														</h6>
+														<input type="number" name="id_bon_commande" id="numeros" value='<?= $bon['id_bon_commande'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+                                                        <p style='position: relative; top: 7px;'>
+                                                            &nbsp&nbsp&nbsp 
+                                                        </p>
+                                                <h6 class="invoice-number mr-75">
+                                                                Référence
+                                                            </h6>
+                                                            <input name="refbon" id="refbon" type="text" value="<?= $bon['refbon'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
+                                                            <p style='position: relative; top: 7px;'>
+                                                                &nbsp&nbsp&nbsp 
+                                                            </p>
+                                                <h6 class="invoice-number mr-75">Bon N°</h6>
+                                                <input name="numerosbon"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $bon['numerosbon'] ?>" disabled>
                                             </div>
-                                            <div class="col-xl-8 col-md-12 px-0 pt-xl-0 pt-1">
+                                            <div class="col-xl-5 col-md-12 px-0 pt-xl-0 pt-1">
                                                 <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
                                                     <div class="d-flex align-items-center">
                                                         <small class="text-muted mr-75">*Date : </small>
                                                         <fieldset class="d-flex ">
-                                                            <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dte'] ?>">
+                                                            <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $bon['dte'] ?>">
                                                         </fieldset>
                                                     </div>
                                                     <div class="d-flex align-items-center">
                                                         <small class="text-muted mr-75">
                                                         Date d'échéance : </small>
                                                         <fieldset class="d-flex justify-content-end">
-                                                            <input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dateecheance'] ?>">
+                                                            <input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $bon['dateecheance'] ?>">
                                                         </fieldset>
                                                     </div>
                                                 </div>
@@ -182,9 +202,13 @@ require_once 'php/config.php';
                                         <hr>
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
-                                            <div class="col-sm-6 col-12 order-2 order-sm-1">
-                                                <h4 class="text-primary">Bulletin de commande</h4>
-                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du bon de commande" value="<?= $facture['nomproduit'] ?>"> 
+                                            <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
+                                                <h4 class="text-primary">Bon</h4>
+                                                <input name="nom_bon" id="nom_bon" type="text" class="form-control" placeholder="Nom de la facture" value="<?= $bon['nom_bon'] ?>"> 
+                                                <div class="form-group">
+                                                            <label for="exampleFormControlTextarea1">Description</label>
+                                                            <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $bon['descrip']?></textarea>
+                                                        </div>   
                                             </div>
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
@@ -195,44 +219,43 @@ require_once 'php/config.php';
                                         <div class="row invoice-info">
                                             <div class="col-lg-6 col-md-12 mt-25">
                                                 <div class="form-group">
-                                                    <label>*Client</label>
-                                                    <select name="bonpour" id="facturepour" class="form-control invoice-item-select">
-                                                        <option value="<?= $facture['bonpour'] ?>"><?= $facture['bonpour'] ?></option>
+                                                    <label>*Fournisseur</label>
+                                                    <select name="numerosfournisseur" id="fournisseur" class="form-control invoice-item-select">
+                                                        <option value="<?= $fournisseurr['id'] ?>"><?= $fournisseurr['name_fournisseur'] ?></option>
                                                         <optgroup label="--------------------------------">
-                                                        <?php foreach($client as $clientt): ?>
-                                                        <option value="<?= $clientt['name_client'] ?>"><?= $clientt['name_client'] ?></option>
-                                                        <?php endforeach; ?>
+                                                        <optgroup label="Liste des fournisseurs">
+                                                        <?php foreach($fournisseur as $fournisseurt): ?>
+                                                            <option value="<?= $fournisseurt['id'] ?>"><?= $fournisseurt['name_fournisseur'] ?></option>
+                                                         <?php endforeach; ?> <!--Affiche la liste de client -->
                                                         <optgroup label="--------------------------------">
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>
                                                 </div>
-                                                <fieldset class="invoice-address form-group">
-                                                    <input name="bonpour" id="newfacturepour" type="text" class="form-control" placeholder="Nouveau client" disabled>
-                                                </fieldset>
-                                                <label for="adress">*Adresse :</label>
+                                                <!-- <label for="adress">*Adresse :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="adresse" id="adresse" class="form-control" rows="4" value="<?= $facture['adresse'] ?>">
-                                                </fieldset>
+                                                </fieldset> -->
+                                            </div>
+											<!-- <div class="col-lg-6 col-md-12 mt-25">
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
-                                                    <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
+                                                    <input name="departement" id="departement" type="text" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
                                                 </fieldset>
-                                                 <label for="email">Email :</label>
+                                                 <label for="email">*Email :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="email" id="email" type="email" class="form-control" placeholder="Email" value="<?= $facture['email'] ?>">
                                                 </fieldset>
-                                                <label for="email">TEL :</label>
+                                                <label for="email">*TEL :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone" value="<?= $facture['tel'] ?>">
                                                 </fieldset>
-                                            </div>
+                                            </div> -->
                                         </div>
-                                        <hr>
                                     </div>
                                     <div class="card-body pt-50">
                                         <!-- product details table-->
                                         <div class="invoice-product-details ">
-                                            
+
                                                 <div data-repeater-list="group-a">
                                                     <div data-repeater-item>
                                                         <?php foreach($articles as $articless): ?>
@@ -259,36 +282,36 @@ require_once 'php/config.php';
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
                                                                 <label>Remise:</label>
-                                                                    <input name="remise" type="number" class="form-control" placeholder="0" value="<?= $articless['remise'] ?>" readonly>
+                                                                    <input name="remise" type="text" class="form-control" placeholder="0" value="<?= $articless['remise'] ?>" readonly>
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
                                                                 <label>Tva :</label>
-                                                                    <input name="tva" type="number" class="form-control" placeholder="0" value="<?= $articless['tva'] ?>" readonly>
+                                                                    <input name="tva" type="text" class="form-control" placeholder="0" value="<?= $articless['tva'] ?>" readonly>
                                                                 </div>
                                                             </div>
                                                             <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
                                                                 <div class="dropdown">
-                                                                    <a href="php/delete_article_bon_achat.php?num=<?= $articless['id'] ?>&numbon=<?= $facture['id'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>                                            
+                                                                    <a href="php/delete_article_bon_achat.php?num=<?= $articless['id'] ?>&numbon=<?= $bon['id_bon_commande'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>                                            
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <?php endforeach; ?>
                                                         <hr>
                                                         <div class="row mb-50">
-                                                            <div class="col-3 col-md-4 invoice-item-title">Article</div>
-                                                            <div class="col-3 invoice-item-title">Coût</div>
-                                                            <div class="col-3 invoice-item-title">Quantite</div>
-                                                            <div class="col-3 col-md-2 invoice-item-title">Prix</div>
+                                                            <div class="col-3 col-md-3 invoice-item-title">Article</div>
+                                                            <div class="col-2 invoice-item-title">Prix Unitaire</div>
+                                                            <div class="col-2 invoice-item-title">Quantite</div>
+                                                            <div class="col-2 invoice-item-title">Prix HT</div>
+                                                            <div class="col-1 invoice-item-title">Référence</div>
                                                         </div>
                                                         <div class="invoice-item d-flex border-black rounded mb-1">
                                                             <div class="invoice-item-filed row pt-1 px-1">
                                                                 <div class="col-12 col-md-4 form-group">
                                                                     <select id="article" class="form-control invoice-item-select border-black">
                                                                         <option value="Pas d'article">Sélectionnez un article</option>
-                                                                        <optgroup label="Liste des articles">
-                                                                        </optgroup>
+                                                                        <optgroup label="Liste des articles"></optgroup>
                                                                         <?php foreach($article as $articlee): ?>
-                                                                        <option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
+                                                                            <option value="<?= $articlee['article'] ?>"><?= $articlee['article'] ?></option>
                                                                         <?php endforeach; ?>
                                                                         <optgroup label="Autres options">
                                                                         <option value="Pas d'article">Autres</option>
@@ -296,25 +319,20 @@ require_once 'php/config.php';
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <input name="cout" id="cout" type="number" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
+                                                                    <input name="cout" id="cout" type="number" class="form-control border-black" min="1" placeholder="0" onkeyup="myFunction()" step="any">
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <input name="quantite" id="quantite" type="number" value="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
+                                                                    <input name="quantite" id="quantite" type="number" min="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                 </div>
-                                                                <div class="col-md-4 col-12 form-group">
-                                                                    <label for="article">Nouvelle Article :</label>
-                                                                    <input name="article" id="newarticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Nouvelle article">
-                                                                </div>
-                                                                <div class="col-md-3 col-12 form-group">
-                                                                    <label for="ref">REF :</label>
-                                                                    <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
-                                                                </div>
                                                             </div>
-                                                            <div class="invoice-icon d-flex flex-column justify-content-between border-left-black p-25">
-                                                                <div class="dropdown">
+                                                            <div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
+                                                                <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
+                                                            </div>
+                                                            <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
+																<div class="dropdown" style="margin-top: 15px;">
                                                                     <i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
                                                                     <div class="dropdown-menu p-1">
                                                                         <div class="row">
@@ -328,7 +346,7 @@ require_once 'php/config.php';
                                                                             </div>
                                                                             <div class="col-12 form-group">
                                                                                 <label>Unite de mesure :</label>
-                                                                                <input name="umesure" id="umesure"  type="text" class="form-control border-black" placeholder="Unite de mesure">
+                                                                                <input name="umesure" id="umesure"  type="text" class="form-control" placeholder="Unite de mesure">
                                                                             </div>
                                                                         </div>
                                                                         <hr>
@@ -369,17 +387,20 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <label>Modalité :</label>
                                                             <select name="modalite" class="form-control invoice-item-select">
-                                                            <option value="<?= $facture['modalite'] ?>" selected><?= $facture['modalite'] ?></option>
-                                                            <optgroup></optgroup>
+                                                            <option value="<?= $bon['modalite'] ?>" selected><?= $bon['modalite'] ?></option>
+                                                            <optgroup label="--------------------------------">
+                                                            <optgroup label="Liste des modes de paiements">
                                                             <option value="CB">Carte bancaire</option>
                                                             <option value="Chèque">Chèque</option>
                                                             <option value="Espèce">Espece</option>
+                                                            <option value="Virement">Virement</option>
+															<option value="Prélèvement">Prélèvement</option>
                                                          </select>
                                                     </div>
                                                     <label>Monnaie :</label>
-                                                    <div class="col-12 col-md-6 form-group" id="etiq">
+                                                    <div class="form-group" id="etiq">
                                                         <select name="monnaie" class="form-control invoice-item-select">
-                                                            <option value="<?= $facture['monnaie'] ?>" selected><?= $facture['monnaie'] ?></option>
+                                                            <option value="<?= $bon['monnaie'] ?>" selected><?= $bon['monnaie'] ?></option>
                                                             <option value="€">€</option>
                                                             <option value="$">$</option>
                                                             <option value="Dinar">Dinar</option>
@@ -387,12 +408,12 @@ require_once 'php/config.php';
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Commentaire :</label>
-                                                        <input name="note" type="text" class="form-control" placeholder="Ajouter une note client" value="<?= $facture['note'] ?>">
+                                                        <input name="note" type="text" class="form-control" placeholder="Ajouter une note client" value="<?= $bon['note'] ?>">
                                                     </div>
                                                     <label for="etiq">Etiquette :</label>
-                                                    <div class="col-12 col-md-6 form-group" id="etiq">
+                                                    <div class="form-group" id="etiq">
                                                         <select name="etiquette" class="form-control invoice-item-select">
-                                                            <option value="<?= $facture['etiquette'] ?>" selected><?= $facture['etiquette'] ?></option>
+                                                            <option value="<?= $bon['etiquette'] ?>" selected><?= $bon['etiquette'] ?></option>
                                                             <option value="Inconnue">Inconnue</option>
                                                             <option value="Electronique">Electronique</option>
                                                             <option value="Décoration">Décoration</option>
@@ -401,9 +422,9 @@ require_once 'php/config.php';
                                                          </select>
                                                     </div>
                                                     <label >Statut :</label>
-                                                    <div class="col-12 col-md-6 form-group">
+                                                    <div class="form-group">
                                                         <select name="status_bon" class="form-control invoice-item-select">
-                                                            <option value="<?= $facture['status_bon'] ?>"><?= $facture['status_bon'] ?></option>
+                                                            <option value="<?= $bon['status_bon'] ?>"><?= $bon['status_bon'] ?></option>
                                                             <option value="NON PAYE">Non payé</option>
                                                             <option value="PAYE">Payé</option>
                                                          </select>
@@ -414,33 +435,33 @@ require_once 'php/config.php';
                                                         <hr>
                                                         <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                                             <span class="invoice-subtotal-title">Total HT</span>
-                                                            <h6 class="invoice-subtotal-value mb-0"><?= $montant_t; ?> <?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0"><?= $montant_t; ?> <?= $bon['monnaie']; ?></h6>
                                                         </li>
                                                         <li class="list-group-item <?php if(($montant_t - $montant_r) == "0"){echo "none-validation";}else{echo "d-flex";} ?> justify-content-between border-0 pb-0">
                                                             <span class="invoice-subtotal-title">Remise sur HT</span>
-                                                            <h6 class="invoice-subtotal-value mb-0">- <?= $montant_t - $montant_r ?> <?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0">- <?= $montant_t - $montant_r ?> <?= $bon['monnaie']; ?></h6>
                                                         </li>
                                                         <li class="list-group-item <?php if(($montant_t - $montant_r) == "0"){echo "none-validation";}else{echo "d-flex";} ?> justify-content-between border-0 pb-0">
                                                             <span class="invoice-subtotal-title">Total HT-Remise</span>
-                                                            <h6 class="invoice-subtotal-value mb-0"> <?= $montant_t - ($montant_t - $montant_r) ?> <?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0"> <?= $montant_t - ($montant_t - $montant_r) ?> <?= $bon['monnaie']; ?></h6>
                                                         </li>
                                                         <hr>
                                                        <li class="list-group-item d-flex justify-content-between border-0 py-0">
                                                             <span class="invoice-subtotal-title">TVA</span>
-                                                            <h6 class="invoice-subtotal-value mb-0"><?= $montant_t - $montant_tva ?> <?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0"><?= $montant_t - $montant_tva ?> <?= $bon['monnaie']; ?></h6>
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between border-0 py-0">
                                                             <span class="invoice-subtotal-title">Totale TTC</span>
-                                                            <h6 class="invoice-subtotal-value mb-0"><?= $montant_t + ($montant_t - $montant_tva) ?> <?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0"><?= $montant_t + ($montant_t - $montant_tva) ?> <?= $bon['monnaie']; ?></h6>
                                                         </li>
                                                         <hr>
                                                         <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                                             <span class="invoice-subtotal-title">Modalite de payement : </span>
-                                                            <h6 class="invoice-subtotal-value mb-0">(<?= $facture['modalite'] ?>)</h6>
+                                                            <h6 class="invoice-subtotal-value mb-0">(<?= $bon['modalite'] ?>)</h6>
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between border-0 pb-0">
                                                             <span class="invoice-subtotal-title">Monnaie : </span>
-                                                            <h6 class="invoice-subtotal-value mb-0"><?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0"><?= $bon['monnaie']; ?></h6>
                                                         </li>
                                                         <li class="list-group-item border-0 pb-0"><style>.green{background: #43b546; color: white;}  .green:hover{background: #3fff45; color: white;}</style>
                                                             <input name="insert" id="button_save" type="button" value="Vérification" class="btn btn-primary btn-block subtotal-preview-btn" onclick="buttonc()"/>

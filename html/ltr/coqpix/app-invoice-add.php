@@ -20,6 +20,11 @@ require_once 'php/config.php';
     $pdoSt->execute(); 
     $client = $pdoSt->fetchAll();
 
+	$pdoS = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
+    $pdoS->bindValue(':num',$_SESSION['id_session']);
+    $pdoS->execute();
+    $fournisseur = $pdoS->fetchAll();
+
 	$pdiSt = $bdd->prepare('SELECT * FROM articles INNER JOIN facture ON articles.id_fac = facture.id');
 	$pdoSt->execute();
 
@@ -62,9 +67,9 @@ require_once 'php/config.php';
             $strlen_num = strlen($max_num);
             
             if($strlen_num == "1"){
-                $max_num = '0'.$max_num;
+                $max_num = $max_num;
             }elseif($strlen_num == "2"){
-                $max_num = '0'.$max_num;
+                $max_num = $max_num;
             }elseif($strlen_num >= "3"){
                 $max_num = $max_num;
             }
@@ -103,14 +108,14 @@ require_once 'php/config.php';
             $strlen_incrementation = strlen($max_incrementation);
             
             if($strlen_incrementation == "1"){
-                $max_incrementation = '00'.$max_incrementation;
+                $max_incrementation = $max_incrementation;
             }elseif($strlen_incrementation == "2"){
-                $max_incrementation = '0'.$max_incrementation;
+                $max_incrementation = $max_incrementation;
             }elseif($strlen_incrementation >= "3"){
                 $max_incrementation = $max_incrementation;
             }
 
-            $max_incrementation = date('y').$max_incrementation;
+            $max_incrementation = $max_incrementation;
 
         }
         
@@ -260,7 +265,6 @@ require_once 'php/config.php';
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 														<h6 class="invoice-number mr-75">
 															N°
-														
 														</h6>
 														<input  type="text" name="numeroarticle" id="numeros"  value='<?= $maxid ?>' class="form-control pt-25 w-50" placeholder="FAC-0" attribut readonly="readonly">
 													</div>			
@@ -268,7 +272,7 @@ require_once 'php/config.php';
 														<h6 class="invoice-number mr-75">
 															Référence
 														</h6>
-														<input name="reffacture" id="reffacture" type="text" value='REF-' class="form-control pt-20 w-50" placeholder="XXX-">
+														<input name="reffacture" id="reffacture" type="text" value='REF-' class="form-control pt-20 w-50" placeholder="REF-">
 														<p style='position: relative; top: 7px;'>
 															&nbsp&nbsp&nbsp 
 														</p>
@@ -277,7 +281,7 @@ require_once 'php/config.php';
 														<h6 class="invoice-number mr-75">
 															Facture N°
 														</h6>
-														<input type="number" name="numerosfacture" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
+														<input type="number" name="numerosfacture" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000" attribut readonly="readonly">
 														
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
@@ -286,7 +290,7 @@ require_once 'php/config.php';
 																Date: 
 															</small>
 															<fieldset class="d-flex ">
-																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>">
+																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa">
 															</fieldset>
 														</div>
 													</div>
@@ -309,8 +313,8 @@ require_once 'php/config.php';
 															<input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom de la facture">
 															<ul class="list-group list-group-flush">
 																<div class="form-group">
-																	<label for="exampleFormControlTextarea1">Description</label>
-																	<textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"></textarea>
+																	<label for="descrip">Description</label>
+																	<textarea class="form-control" name="descrip" id="descrip" rows="5"></textarea>
 																</div>
 															</ul>
 														</div>
@@ -331,8 +335,8 @@ require_once 'php/config.php';
 																	<?php endforeach; ?>
 																</select>
 															</div>
-															<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup">Créer un client particulier</button>
-															<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup2" id="#2">Créer un client professionnel</button>
+															<button id="btnClient" type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 115px" data-toggle="modal" data-target="#popup">Créer un client particulier</button>
+															<button id="btnClient2" type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup2" id="#2">Créer un client professionnel</button>
 															<hr>
 															<label for="adresse">*Adresse :</label>
 															<fieldset class="invoice-address form-group">
@@ -342,13 +346,12 @@ require_once 'php/config.php';
 														<div class="col-lg-6 col-md-12 mt-25" style="padding-top: 0px;">
 															<div class="form-group">
 																<label for="email">*Code postal :</label>
-																<input type="number" name="codePostal1" class=" form-control" placeholder="Code Postal" onkeyup="getCp($(this))" autocomplete="off">
+																<input type="number" name="codePostal1" id="codepostal" class=" form-control" placeholder="Code Postal" onkeyup="getCp($(this))" autocomplete="off">
 																<input type="hidden" name="insee_code" id="insee_code" value="" autocomplete="off">
 															</div>
-															
 															<div class="form-group">
-																<label for="email">*Département :</label>
-																<select name="departementfirst" id="ville" class="form-control " ></select>
+																<label for="email">*Ville :</label>
+																<select name="departementfirst" id="ville" class="form-control "></select>
 															</div>													
 															<label for="email">Email :</label>
 															<fieldset class="invoice-address form-group">
@@ -368,14 +371,14 @@ require_once 'php/config.php';
 															
 															<label for="adresse">Adresse de livraison (facultative) :</label>
 															<fieldset class="invoice-address form-group">
-																<textarea name="adressetwo" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
+																<textarea name="adressetwo" id="adresse2" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
 															</fieldset>
 														</div>
 														<div class="col-lg-6 col-md-12 mt-25" style="padding-top: 0px;">
 															<div class="form-group">
 																<label for="email">Code postal :</label>
-																<input type="number" name="codePostal2" class=" form-control" placeholder="Code Postal" onkeyup="getCp2($(this))" autocomplete="off">
-																<input type="hidden" name="insee_code" id="insee_code" value="" autocomplete="off">
+																<input type="number" name="codePostal2" id="codepostal2" class=" form-control" placeholder="Code Postal" onkeyup="getCp2($(this))" autocomplete="off">
+																<input type="hidden" name="insee_code2" id="insee_code2" value="" autocomplete="off">
 															</div>
 															
 															<div class="form-group">
@@ -405,6 +408,9 @@ require_once 'php/config.php';
 																		<div class="col-1 invoice-item-title">
 																			Prix HT
 																		</div>
+																		<div class="col-1 invoice-item-title">
+																			Référence
+																		</div>
 																	</div>
 																	<div class="invoice-item d-flex border rounded mb-1">
 																		<div class="invoice-item-filed row pt-1 px-1">
@@ -424,21 +430,18 @@ require_once 'php/config.php';
 																				<input name="cout" id="cout" type="number" class="form-control" placeholder="0" onkeyup="myFunction()" step="any">
 																			</div>
 																			<div class="col-md-3 col-12 form-group">
-																				<input name="quantite" id="quantite" type="number" value="" class="form-control" placeholder="" onkeyup="myFunction()" step="any">
+																				<input name="quantite" id="quantite" type="number" value="" class="form-control" placeholder="0" onkeyup="myFunction()" step="any">
 																			</div>
 																			<div class="col-md-2 col-12 form-group">
 																				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 																				<strong id="demo" class="text-primary align-middle">00.00 €</strong>
 																			</div>
 																			<div class="col-md-4 col-12 form-group">
-																				<button type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
+																				<button id="btnClient5" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
 																				<!-- popup article déplacé -->
 																			</div>
 																		</div>
 																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																			<!-- 
-																			<label for="ref">REF :</label>
-																			-->
 																			<input name="referencearticle"  id="referencearticle" type="text" class="form-control" placeholder="Référence">
 																		</div>
 																		<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
@@ -448,7 +451,7 @@ require_once 'php/config.php';
 																					<div class="row">
 																						<div class="col-12 form-group">
 																							<label for="discount">Remise(%)</label>
-																							<input name="remise" id="remise" value="0" type="number" class="form-control" id="discount" placeholder="remise" maxlength="3" min="0" max="100">
+																							<input name="remise" id="remise" value="0" type="number" class="form-control" id="discount" placeholder="Remise" maxlength="3" min="0" max="100">
 																						</div>
 																						<div class="col-12 form-group">
 																							<label for="discount">Tva(%)</label>
@@ -530,11 +533,11 @@ require_once 'php/config.php';
 																	<div class="col-md-6 col-12">
 																		<div class="form-group">
 																			<label>Accompte :</label>
-																			<input name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un accompte sur la facture">
+																			<input id="accompte" name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un accompte sur la facture">
 																		</div>
 																		<div class="form-group">
 																			<label>Modalité de paiement:</label>
-																			<select name="modalite" class="form-control invoice-item-select">
+																			<select id="modalite" name="modalite" class="form-control invoice-item-select">
 																				<option value="Non définie" selected>Selectionnez une modalite</option>
 																				<option value="CB">CB</option>
 																				<option value="Chèque">Chèque</option>
@@ -545,7 +548,7 @@ require_once 'php/config.php';
 																		</div>
 																		<label>Monnaie :</label>
 																		<div class="form-group" id="etiq">
-																			<select name="monnaie" class="form-control invoice-item-select">
+																			<select id="monnaie" name="monnaie" class="form-control invoice-item-select">
 																				<option value="€" selected>€</option>
 																				<option value="$">$</option>
 																				<option value="Dinar">Dinar</option>
@@ -555,11 +558,11 @@ require_once 'php/config.php';
 																	<div class="col-md-6 col-12">
 																		<div class="form-group">
 																			<label>Commentaire :</label>
-																			<input name="note" type="text" class="form-control" placeholder="Ajouter une note client">
+																			<input id="note" name="note" type="text" class="form-control" placeholder="Ajouter une note client">
 																		</div>
 																		<label for="etiq">Etiquette :</label>
 																		<div class="form-group" id="etiq">
-																			<select name="etiquette" class="form-control invoice-item-select">
+																			<select id="etiquette" name="etiquette" class="form-control invoice-item-select">
 																				<option value="Inconnue" selected>Inconnue</option>
 																				<option value="Electronique">Electronique</option>
 																				<option value="Décoration">Décoration</option>
@@ -569,7 +572,7 @@ require_once 'php/config.php';
 																		</div>
 																		<label >Statut :</label>
 																		<div class="form-group">
-																			<select name="statut" class="form-control invoice-item-select">
+																			<select id="statut" name="statut" class="form-control invoice-item-select">
 																				<option value="NON PAYE" selected>Non payé</option>
 																				<option value="PAYE">Payé</option>
 																			</select>
@@ -656,7 +659,7 @@ require_once 'php/config.php';
 																												</div>
 																												<div class="form-group">
 																													<div class="controls">
-																														<label>*prenom :</label>
+																														<label>*Prenom :</label>
 																														<input name="prenom" type="text" class="form-control" placeholder="Prénom du particulier" >
 																													</div>
 																												</div>
@@ -943,7 +946,7 @@ require_once 'php/config.php';
 																												</div>
 																											</div>
 																											<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-																												<button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
+																												<button id="btnClient3" type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
 																											</div>
 																											<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
 																										
@@ -1320,7 +1323,7 @@ require_once 'php/config.php';
 																											</div>
 																										</div>
 																										<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-																											<button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
+																											<button id="btnClient4" type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
 																										</div>
 																										<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
 																									</div>
@@ -1342,121 +1345,163 @@ require_once 'php/config.php';
 											</div>
 											<!-- FIN DES 2 FORMS -->
 											<!-- POPUP ARTICLE -->
-																				<div id="popup3" class="modal">
-																					<div class="modal-dialog modal-dialog-centered">
-																						<div class="modal-content">
-																							<div class="h-auto card">
-																								<div class="card-content">
-																									<div class="card-body">
-																										<ul class="nav nav-tabs mb-2" role="tablist">
-																											<li class="nav-item">
-																												<a class="nav-link d-flex align-items-center active" id="account-tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="true">
-																													<i class='bx bxs-purchase-tag-alt'></i>
-																													<span class="d-none d-sm-block">Ajouter un article</span>
-																												</a>
-																											</li>
-																										</ul>
-																										<div class="tab-content">
-																											<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
-																											
-																												<form action="php/insert_articlespopup_facture.php" method="POST">
-																													<div class="row">
-																														<div class="col-12 col-sm-6">
-																															<div class="form-group">
-																																<div class="controls">
-																																	<label>*Désignation :</label>
-																																	<input name="article" type="text" class="form-control" placeholder="Désignation de l'article" >
-																																</div>
-																															</div>
-																															<div class="form-group">
-																																<div class="controls">
-																																	<label>Unités de mesure :</label>
-																																	<input name="umesure" type="text" class="form-control" placeholder="Unités de mesure">
-																																</div>
-																															</div>
-																														</div>
-																														<div class="col-12 col-sm-6">
-																															<div class="form-group">
-																																<label>Référence de l'article :</label>
-																																<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
-																															</div>
-																														</div>
-																														<div class="col-12">
-																															<hr>
-																															<style>
-																																.line
-																																{
-																																	text-decoration: underline;
-																																}
-																															</style>
-																														</div>
-																														<div class="col-12 col-sm-6  border">
-																															<div class="form-group text-center">
-																																<div class="controls">
-																																	<h4 class="line">VENTE</h4>
-																																</div>
-																															</div>
-																														</div>
-																														<div class="col-12 col-sm-6  border">
-																															<div class="form-group text-center">
-																																<h4 class="line">ACHAT</h4>
-																															</div>
-																														</div>
-																														<div class="col-12 col-sm-6 border">
-																															<div class="form-group">
-																																<div class="controls">
-																																	<label>Prix de vente HT :</label>
-																																	<input name="prixvente" type="number" step="any" class="form-control" placeholder="Prix de vente de l'article">
-																																</div>
-																																<div class="controls">
-																																	<label>Tva vente :</label>
-																																	<fieldset class="invoice-address form-group">
-																																		<select name="tvavente" class="form-control invoice-item-select">
-																																			<option value="20">Taux normal : 20 %</option>
-																																			<option value="10">Taux intermédiaire : 10 %</option>
-																																			<option value="5.5">Taux réduit : 5.5 %</option>
-																																			<option value="2.1">Taux particulier : 2.1 %</option>
-																																			<option value="0">Taux nul : 0 %</option>
-																																		</select>
-																																	</fieldset>
-																																</div>
-																															</div>
-																														</div>
-																														<div class="col-12 col-sm-6 border">
-																															<div class="form-group">
-																																<div class="controls">
-																																	<label>Cout d'achat HT :</label>
-																																	<input name="coutachat" type="number" step="any" class="form-control" placeholder="Cout d'achat de l'article">
-																																</div>
-																																<div class="controls">
-																																	<label>Tva achat :</label>
-																																	<fieldset class="invoice-address form-group">
-																																		<select name="tvaachat" class="form-control invoice-item-select">
-																																			<option value="20">Taux normal : 20 %</option>
-																																			<option value="10">Taux intermédiaire : 10 %</option>
-																																			<option value="5.5">Taux réduit : 5.5 %</option>
-																																			<option value="2.1">Taux particulier : 2.1 %</option>
-																																			<option value="0">Taux nul : 0 %</option>
-																																		</select>
-																																	</fieldset>
-																																</div>
-																															</div>
-																														</div>
-																														<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-																															<button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
-																														</div>
-																														<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
-																													</div>
-																													<!-- users edit account form ends -->
-																												</form>
-																											
-																										</div>
-																									</div>
-																								</div>
-																							</div>
+										<div id="popup3" class="modal">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="h-auto card">
+														<div class="card-content">
+															<div class="card-body">
+																<ul class="nav nav-tabs mb-2" role="tablist">
+																	<li class="nav-item">
+																		<a class="nav-link d-flex align-items-center active" id="account-tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="true">
+																			<i class='bx bxs-purchase-tag-alt'></i>
+																			<span class="d-none d-sm-block">Ajouter un article</span>
+																		</a>
+																	</li>
+																</ul>
+																<div class="tab-content">
+																	<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">										
+																		<form action="php/insert_articlespopup_facture.php" method="POST" enctype="multipart/form-data">
+																			<div class="row">
+																				<div class="col-12 col-sm-6">
+																					<div class="form-group">
+																						<div class="controls">
+																							<label>*Nom de l'article :</label>
+																							<input name="article" type="text" class="form-control" placeholder="Nom de l'article" >
+																						</div>
+																					</div>
+																					<div class="form-group">
+																						<div class="controls">
+																							<label>Unités de mesure :</label>
+																							<input name="umesure" type="text" class="form-control" placeholder="Unités de mesure">
 																						</div>
 																					</div>
 																				</div>
+																				<div class="col-12 col-sm-6">
+																					<div class="form-group">
+																						<label>Référence de l'article :</label>
+																						<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
+																					</div>
+																				</div>
+																				<div class="col-12">
+																					<hr><style>.line{text-decoration: underline;}</style>
+																				</div>
+																				<div class="col-12">
+																					<div class="form-group">
+																						<label>*Fournisseur</label>
+																						<select name="id_fournisseur" id="fourpour" class="form-control invoice-item-select">
+																							<option value="Pas de fournisseur">Sélectionnez un fournisseur</option>
+																							<?php foreach($fournisseur as $fournisseurr): ?>
+																								<option value="<?= $fournisseurr['id'] ?>"><?= $fournisseurr['name_fournisseur'] ?></option>
+																							<?php endforeach; ?>
+																						</select>
+																					</div>
+																					<!-- <div class="form-group">
+																						<label for="adress">*Adresse :</label>
+																						<fieldset class="invoice-address form-group">
+																							<textarea name="adresse" id="adresse" class="form-control" placeholder="Mountain View, Californie, États-Unis"></textarea>
+																						</fieldset>
+																					</div>
+																					<div class="form-group">
+																						<label for="email">*Code postal :</label>
+																						<input type="number" name="codepostal6" class="form-control required" placeholder="Code Postal" onkeyup="getCp6($(this))" autocomplete="off">
+																						<input type="hidden" name="insee_code6" id="insee_code6" value="" autocomplete="off">
+																					</div>
+																					<div class="form-group">
+																						<label for="email">*Ville :</label>
+																						<select name="departement" id="ville6" class="form-control required"  required="" disabled=""></select>
+																					</div>
+																					<div class="form-group">
+																						<label for="email">Email :</label>
+																						<fieldset class="invoice-address form-group">
+																							<input name="email" id="email" type="email" class="form-control" placeholder="Email">
+																						</fieldset>
+																					</div>
+																					<div class="form-group">
+																						<label for="email">TEL :</label>
+																						<fieldset class="invoice-address form-group">
+																							<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone">
+																						</fieldset>	
+																					</div> -->
+																				</div>
+																				<div class="col-12">
+																					<hr><style>.line{text-decoration: underline;}</style>
+																				</div>
+																				<div class="col-12 col-sm-6  border">
+																					<div class="form-group text-center">
+																						<div class="controls">
+																							<h4 class="line">VENTE</h4>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-12 col-sm-6  border">
+																					<div class="form-group text-center">
+																						<h4 class="line">ACHAT</h4>
+																					</div>
+																				</div>
+																				<div class="col-12 col-sm-6 border">
+																					<div class="form-group">
+																						<div class="controls">
+																							<label>Prix de vente HT :</label>
+																							<input name="prixvente" type="number" step="any" class="form-control" placeholder="Prix de vente de l'article">
+																						</div>
+																						<div class="controls">
+																							<label>TVA vente :</label>
+																							<fieldset class="invoice-address form-group">
+																								<select name="tvavente" class="form-control invoice-item-select">
+																									<option value="20">Taux normal : 20 %</option>
+																									<option value="10">Taux intermédiaire : 10 %</option>
+																									<option value="5.5">Taux réduit : 5.5 %</option>
+																									<option value="2.1">Taux particulier : 2.1 %</option>
+																									<option value="0">Taux nul : 0 %</option>
+																								</select>
+																							</fieldset>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-12 col-sm-6 border">
+																					<div class="form-group">
+																						<div class="controls">
+																							<label>Quantité :</label>
+																							<input name="stock" id="stock" type="number" value="" class="form-control" placeholder="Quantité acheté pour le stock" onkeyup="myFunction()" step="any">
+																						</div>
+																						<div class="controls">
+																							<label>Cout d'achat HT :</label>
+																							<input name="coutachat" type="number" step="any" class="form-control" placeholder="Cout d'achat de l'article">
+																						</div>
+																						<div class="controls">
+																							<label>TVA achat :</label>
+																							<fieldset class="invoice-address form-group">
+																								<select name="tvaachat" class="form-control invoice-item-select">
+																									<option value="20">Taux normal : 20 %</option>
+																									<option value="10">Taux intermédiaire : 10 %</option>
+																									<option value="5.5">Taux réduit : 5.5 %</option>
+																									<option value="2.1">Taux particulier : 2.1 %</option>
+																									<option value="0">Taux nul : 0 %</option>
+																								</select>
+																							</fieldset>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
+																					<input type="file" id="file" name="img" style="display:none"/>
+																					<a onclick="file.click()" class="btn btn-outline-primary">Ajouter une image à l'article</a>
+																				</div>
+																				<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
+																					<button id="btnClient6" type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
+																				</div>
+																				<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
+																			</div>
+																			<!-- users edit account form ends -->
+																		</form>										
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
                                 </div>
                             </div>
                         </div>
@@ -1498,11 +1543,14 @@ require_once 'php/config.php';
 	<script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
+	<script src="../../../app-assets/js/scripts/pages/getcp6.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <!-- END: Page JS-->
  	<script src="script.js"></script>
+	<!-- Fichier JS pour la stockage des données et la récupération des données en cas de création d'un client parti | pro ou d'un article -->
+	<script src="stockage.js"></script>
     <!-- END: Page JS-->
 <!-- partial -->
   	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

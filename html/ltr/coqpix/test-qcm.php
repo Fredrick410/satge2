@@ -14,43 +14,25 @@ $pdoSta->bindValue(':num', htmlspecialchars($num));
 $pdoSta->execute();
 $annonce = $pdoSta->fetch();
 
-if (isset($_POST['code_annonce'])) {
-
-    $code = $_POST['code_annonce'];
-    $name = $_GET['annonce'];
-
-    $query = $bdd->prepare("SELECT COUNT(*) FROM rh_annonce WHERE code_annonce = :code");
-    $query->bindValue(':code',$code);
-    $query->execute();
-
-    $count = $query->fetch();
-
-    if ($count >= 1) {
-        $_SESSION['invite'] = $_GET['num'];
-
-        header('Location: candidature-recrutement.php?' . $annonce['link'] . '$req=true');
-        exit();
-    } else {
-
-        header('Location: candidature-recrutement.php?' . $annonce['link'] . '&req=false');
-        exit();
-    }
+$pdoSta = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat=:key_candidat');
+$pdoSta->bindValue(':key_candidat', $_GET['key']);
+$pdoSta->execute();
+$candidat = $pdoSta->fetch();
+if(count($candidat) == 0){
+    header('Location: https://www.google.com/');
 }
 
-if ($annonce['code_annonce'] == "") {
-    $locked = "red";
-    $none_bts = "";
-    $none_btd = "none-validation";
-} else {
-    if (empty($_SESSION['invite'])) {
-        $locked = "red";
-        $none_bts = "";
-        $none_btd = "none-validation";
-    } else {
-        $locked = "green";
-        $none_bts = "none-validation";
-        $none_btd = "";
-    }
+$pdoSta = $bdd->prepare("SELECT COUNT(*) AS nb FROM reponses_qcm_candidat INNER JOIN rh_candidature ON (rh_candidature.id = reponses_qcm_candidat.idcandidat) WHERE key_candidat=:key_candidat");
+$pdoSta->bindValue(':key_candidat', $_GET['key']);
+$pdoSta->execute();
+$reponses_candidat = $pdoSta->fetch(PDO::FETCH_ASSOC);
+if($reponses_candidat['nb'] != 0){
+    $_SESSION['message'] = 'Vous avez déjà passé cette étape';
+    header("Location: candidature-recrutement.php?num=$num");
+}
+
+if(!isset($_SESSION['key_candidat'])){
+    $_SESSION['key_candidat'] = $_GET['key'];
 }
 
 $pdoStt = $bdd->prepare('SELECT * FROM qcm INNER JOIN rh_annonce_qcm ON (qcm.id = rh_annonce_qcm.idqcm) WHERE idannonce = :num');
@@ -116,25 +98,42 @@ foreach ($questions as $key => $desquestions) {
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
+    <style>
+        .none-validation {
+            display: none;
+        }
+
+        .legend {
+            text-transform: lowercase;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            margin-bottom: .5rem;
+            font-size: 1.5rem;
+            line-height: inherit;
+            color: inherit;
+            white-space: normal;
+            font-weight: normal;
+        }
+
+        .legend::first-letter {
+            text-transform: uppercase;
+        }
+    </style>
+
 </head>
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
 
 <body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
-    <style>
-        .none-validation {
-            display: none;
-        }
-
-        ;
-    </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: <?= $annonce['color_annonce'] ?>;">
         <div class="navbar-header d-xl-block d-none">
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item"><a class="navbar-brand" href="#">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
+                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png" alt="logo"></div>
                     </a></li>
             </ul>
         </div>
@@ -142,15 +141,7 @@ foreach ($questions as $key => $desquestions) {
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="dropdown dropdown-user nav-item">
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
                         <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" style="cursor: pointer; font-size: 25px; color: <?= $locked ?>;" data-toggle="modal" data-target="#info"><i class='bx bxs-lock'></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -164,49 +155,6 @@ foreach ($questions as $key => $desquestions) {
         <div class="content-overlay"></div>
         <div class="content-wrapper" style="padding: 0px; margin: 0px;">
             <div class="content-body">
-                <div class="form-group">
-                    &nbsp<button title="Permets d'avoir les permissions sur l'annonce de recrutement" type="button" class="btn btn-outline-success <?= $none_bts ?>" data-toggle="modal" data-target="#inlineForm">
-                        <i class='bx bxs-lock-open'></i> Unlock
-                    </button>
-                    <a title="Permets d'avoir les permissions sur l'annonce de recrutement" href="php/disconnect_recrutement.php?num=<?= $num ?>"><button type="button" class="btn btn-outline-danger <?= $none_btd ?>" data-target="#inlineForm">
-                            <i class='bx bxs-lock'></i> Lock
-                        </button></a>
-                    <!--login form Modal -->
-                    <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel33">Code d'invitation </h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <i class="bx bx-x"></i>
-                                    </button>
-                                </div>
-                                <form action="" method="POST">
-                                    <div class="modal-body">
-                                        <label>Nom Prenom : </label>
-                                        <div class="form-group">
-                                            <input type="text" name="nom_prenom" placeholder="DUPOND Jean" class="form-control">
-                                        </div>
-                                        <label>Code d'invitation : </label>
-                                        <div class="form-group">
-                                            <input type="password" name="code_annonce" placeholder="*****" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-danger" data-dismiss="modal">
-                                            <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Fermer</span>
-                                        </button>
-                                        <button type="submit" class="btn" style="background-color: <?= $annonce['color_annonce'] ?>; color: white;">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Valider</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div id="validation">
                     <div class="row">
                         <div class="col-12">
@@ -216,7 +164,7 @@ foreach ($questions as $key => $desquestions) {
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form action="#" class="wizard-horizontal" role="application" id="qcm-form">
+                                        <form action="#" class="wizard-horizontal" id="qcm-form">
                                             <?php
                                             for ($i = 0; $i < count($qcms); $i++) {
                                             ?>
@@ -227,35 +175,43 @@ foreach ($questions as $key => $desquestions) {
                                                 </h6>
                                                 <!-- Step 1 -->
                                                 <!-- body content of step 1 -->
-                                                <fieldset role="tabpanel" class="body current" aria-hidden="false">
+                                                <?php
+                                                if ($i == 0) {
+                                                ?>
+                                                    <fieldset class="body current" aria-hidden="false">
                                                     <?php
-                                                    for ($j = 0; $j < count($questions[$i]); ++$j) {
+                                                } else {
                                                     ?>
-                                                        <div class="border rounded mb-1">
-                                                            <div class="col-12">
-                                                                <legend>
-                                                                    <?= $questions[$i][$j]['libelle'] ?>
-                                                                </legend>
-                                                            </div>
-                                                            <?php
-                                                            foreach ($reponses[$i][$j] as $key => $val) {
-                                                            ?>
-                                                                <div class='form-group col-12'>
-                                                                    <input type='checkbox' name='reponses<?= $val['idquestion'] ?>[]' value='<?= $val['id'] ?>'>
-                                                                    <label for='questionQCM'><?= $val['libelle'] ?></label>
-                                                                </div>
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    <?php
+                                                        <fieldset class="body" aria-hidden="false">
+                                                        <?php
                                                     }
+                                                    for ($j = 0; $j < count($questions[$i]); ++$j) {
+                                                        ?>
+                                                            <div class="border rounded mb-1">
+                                                                <div class="col-12">
+                                                                    <label class="legend">
+                                                                        <?= $questions[$i][$j]['libelle'] ?>
+                                                                    </label>
+                                                                </div>
+                                                                <?php
+                                                                foreach ($reponses[$i][$j] as $key => $val) {
+                                                                ?>
+                                                                    <div class='form-group col-12'>
+                                                                        <input type='checkbox' id="reponse<?= $val['id'] ?>" name='reponses<?= $val['idquestion'] ?>[]' value='<?= $val['id'] ?>'>
+                                                                        <label for='reponse<?= $val['id'] ?>'><?= $val['libelle'] ?></label>
+                                                                    </div>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        <?php
+                                                    }
+                                                        ?>
+                                                        </fieldset>
+                                                        <!-- body content of step 1 end -->
+                                                    <?php
+                                                }
                                                     ?>
-                                                </fieldset>
-                                                <!-- body content of step 1 end -->
-                                            <?php
-                                            }
-                                            ?>
                                         </form>
                                     </div>
                                 </div>
@@ -267,13 +223,6 @@ foreach ($questions as $key => $desquestions) {
         </div>
     </div>
     <!-- END: Content-->
-
-    </div>
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
-
-    <div id="insertHere">
-    </div>
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
@@ -307,6 +256,20 @@ foreach ($questions as $key => $desquestions) {
 
     <!-- BEGIN: Page JS-->
     <script>
+        function addAlert(message, type) {
+            if (type == "create") {
+                $('#create_form').append(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#update_form').append(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
         //    Wizard tabs with icons setup
         // ------------------------------
         $(".wizard-horizontal").steps({
@@ -343,29 +306,37 @@ foreach ($questions as $key => $desquestions) {
                 }
                 ?>
                 if (valid != total)
-                    alert("Merci de selectionner au moins une reponse par question");
+                    addAlert("Merci de selectionner au moins une reponse par question", 'error');
                 else {
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/insert_resultat_test_qcm_candidature.php", //new path, save your work first before u try
                         type: "POST",
+                        dataType: 'json',
                         data: {
                             <?php
                             for ($i = 0; $i < count($qcms); $i++) {
                                 for ($j = 0; $j < count($questions[$i]); ++$j) {
-                                    ?>
-                                                question<?= $questions[$i][$j]['id'] ?>: question<?= $questions[$i][$j]['id'] ?>,
-                                    <?php     
+                            ?>
+                                    question<?= $questions[$i][$j]['id'] ?>: question<?= $questions[$i][$j]['id'] ?>,
+                            <?php
                                 }
                             }
                             ?>
-                            key: '<?=htmlspecialchars($_GET['key'])?>'
+                            key: '<?= htmlspecialchars($_GET['key']) ?>'
                         },
                         success: function(data) {
-                            window.location.href=data;
+                            if (data.status == "success") {
+                                addAlert("Candidature finalisée", "success");
+                                window.setTimeout(function() {
+                                    window.location.href = data.link;
+                                }, 2000);
+                            } else {
+                                addAlert(data.message, "error");
+                            }
                         }
-                });
+                    });
+                }
             }
-        }
         });
     </script>
     <!-- END: Page JS-->

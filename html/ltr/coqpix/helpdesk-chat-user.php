@@ -94,7 +94,7 @@ require_once 'php/config.php';
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
-    <input type="hidden" id="id_session" value="<?= $_SESSION['id'] ?>">
+    <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
     <div class="app-content content">
         <div class="content-area-wrapper">
             <div class="sidebar-left">

@@ -1,9 +1,10 @@
 <?php
-require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'rh');
+require_once 'php/verif_session_connect.php';
 
 $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoStt->bindValue(':numentreprise', $_SESSION['id_session']);
@@ -95,25 +96,27 @@ if (count($candidature) != 0) {
         $questions[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    foreach ($questions as $key => $desquestions) { // fixer la liste des questions
-        foreach ($desquestions as $key => $question) { // fixe une question de la liste
-            $pdoStt = $bdd->prepare('SELECT * FROM reponse WHERE idquestion = :id ORDER BY idquestion, id');
-            $pdoStt->bindValue(':id', $question['id']);
-            $pdoStt->execute();
-            $desreponses[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        $reponses[] = $desreponses;
-        unset($desreponses);
+    if (isset($questions)) {
+        foreach ($questions as $key => $desquestions) { // fixer la liste des questions
+            foreach ($desquestions as $key => $question) { // fixe une question de la liste
+                $pdoStt = $bdd->prepare('SELECT * FROM reponse WHERE idquestion = :id ORDER BY idquestion, id');
+                $pdoStt->bindValue(':id', $question['id']);
+                $pdoStt->execute();
+                $desreponses[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            $reponses[] = $desreponses;
+            unset($desreponses);
 
-        foreach ($desquestions as $key => $question) { // fixe une question de la liste
-            $pdoStt = $bdd->prepare('SELECT * FROM reponses_qcm_candidat WHERE idquestion = :idquestion and idcandidat=:idcandidat');
-            $pdoStt->bindValue(':idquestion', $question['id']);
-            $pdoStt->bindValue(':idcandidat', $candidature['id']);
-            $pdoStt->execute();
-            $desreponses[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($desquestions as $key => $question) { // fixe une question de la liste
+                $pdoStt = $bdd->prepare('SELECT * FROM reponses_qcm_candidat WHERE idquestion = :idquestion and idcandidat=:idcandidat');
+                $pdoStt->bindValue(':idquestion', $question['id']);
+                $pdoStt->bindValue(':idcandidat', $candidature['id']);
+                $pdoStt->execute();
+                $desreponses[] = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            $reponses_candidat[] = $desreponses;
+            unset($desreponses);
         }
-        $reponses_candidat[] = $desreponses;
-        unset($desreponses);
     }
 } else {
     header('Location: rh-recrutement-list.php');
@@ -149,6 +152,7 @@ if (count($candidature) != 0) {
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/calendars/app-calendar.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -194,7 +198,7 @@ if (count($candidature) != 0) {
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header text-center">
-                                    <h5 class="">Progression du candidat - <?= $pourc ?>%</h4>
+                                    <h5 class="">Progression du candidat - <?= $pourc ?>%</h5>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -223,16 +227,16 @@ if (count($candidature) != 0) {
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-12 col-sm-12 col-md-4 ">
+                                            <div class="col-12 col-sm-12 col-md-3">
                                                 <div class="list-group" role="tablist">
-                                                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab">Profiles</a>
+                                                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab">Profil</a>
                                                     <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab">Références</a>
-                                                    <a class="list-group-item list-group-item-action" id="list-level-list" data-toggle="list" href="#list-level" role="tab">Résultats des qcms</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-level-list" data-toggle="list" href="#list-level" role="tab">Résultats des QCMS</a>
                                                     <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab">Documents</a>
-                                                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Options</a>
+                                                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab">Etat du suivi</a>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-sm-12 col-md-8 mt-1">
+                                            <div class="col-12 col-sm-12 col-md-9">
                                                 <div class="tab-content text-justify" id="nav-tabContent">
                                                     <div class="tab-pane show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                                                         <div class="row">
@@ -258,7 +262,17 @@ if (count($candidature) != 0) {
                                                             </div>
                                                             <div class="col">
                                                                 <div class="text-center">
-                                                                    <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile">
+                                                                    <?php
+                                                                    if ($candidature['image_candidat'] != "") {
+                                                                    ?>
+                                                                        <img src="../../../src/img/<?= $candidature["image_candidat"] ?>" class="rounded" alt="Photo de profile" width="250px" height="300px" style="max-width: 100%; max-height: 100%; display: block;">
+                                                                    <?php
+                                                                    } else {
+                                                                    ?>
+                                                                        <img src="../../../src/img/team_img.png" class="rounded" alt="Photo de profile">
+                                                                    <?php
+                                                                    }
+                                                                    ?>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -291,13 +305,19 @@ if (count($candidature) != 0) {
                                                             <div class="form-group">
                                                                 <div class="row">
                                                                     <?php
-                                                                    for ($i = 0; $i < count($qcms); $i++) {
+                                                                    if (isset($questions)) {
+                                                                        for ($i = 0; $i < count($qcms); $i++) {
                                                                     ?>
-                                                                        <div class="col">
-                                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qcm<?= $i ?>">
-                                                                                <?= $qcms[$i]['libelle'] ?>
-                                                                            </button>
-                                                                        </div>
+                                                                            <div class="col">
+                                                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qcm<?= $i ?>">
+                                                                                    <?= $qcms[$i]['libelle'] ?>
+                                                                                </button>
+                                                                            </div>
+                                                                        <?php
+                                                                        }
+                                                                    } else {
+                                                                        ?>
+                                                                        QCMS non encore réalisés
                                                                     <?php
                                                                     }
                                                                     ?>
@@ -318,10 +338,10 @@ if (count($candidature) != 0) {
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/cv/<?= str_replace(" ", "%20", $candidature['cv_doc']) ?>" target="_blank" rel="noopener noreferrer"><i class='bx bx-show-alt' style=""></i> Prévisualiser</a>
                                                                         </div>
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/cv/<?= $candidature['cv_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/cv/<?= str_replace(" ", "%20", $candidature['cv_doc']) ?>" target="_blank" rel="noopener noreferrer" download><i class='bx bx-download' style=""></i> Télécharger</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -337,10 +357,10 @@ if (count($candidature) != 0) {
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/lettredemotivation/<?= str_replace(" ", "%20", $candidature['lettredemotivation_doc']) ?>" target="_blank" rel="noopener noreferrer"><i class='bx bx-show-alt' style=""></i> Prévisualiser</a>
                                                                         </div>
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/lettredemotivation/<?= $candidature['lettredemotivation_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/lettredemotivation/<?= str_replace(" ", "%20", $candidature['lettredemotivation_doc']) ?>" target="_blank" rel="noopener noreferrer" download><i class='bx bx-download' style=""></i> Télécharger</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -356,10 +376,10 @@ if (count($candidature) != 0) {
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" target="_blank" rel="noopener noreferrer"><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-show-alt' style=""></i> Prévisualiser</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/other/<?= str_replace(" ", "%20", $candidature['other_doc']) ?>" target="_blank" rel="noopener noreferrer"><i class='bx bx-show-alt' style=""></i> Prévisualiser</a>
                                                                         </div>
                                                                         <div class="col">
-                                                                            <a href="../../../src/recrutement/other/<?= $candidature['other_doc'] ?>" target="_blank" rel="noopener noreferrer" download><button type="button" class="btn mr-1 mb-1 btn-outline-primary btn-sm"><i class='bx bx-download' style=""></i> Télécharger</button></a>
+                                                                            <a class="btn mr-1 mb-1 btn-outline-primary btn-sm" href="../../../src/recrutement/other/<?= str_replace(" ", "%20", $candidature['other_doc']) ?>" target="_blank" rel="noopener noreferrer" download><i class='bx bx-download' style=""></i> Télécharger</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -367,11 +387,7 @@ if (count($candidature) != 0) {
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                                                        <div class="form-group">
                                                             <div class="form-group text-center">
-                                                                <label>Paramètres et options</label>
-                                                            </div>
-                                                            <div class="form-group">
                                                                 <label>Suivi de la candidature :</label>
                                                             </div>
                                                             <div class="form-group">
@@ -416,7 +432,7 @@ if (count($candidature) != 0) {
                                                                         <div class="form-group">
                                                                             <small>Entretien presentiel ou visio effectué</small>
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1">
-                                                                                <input type="checkbox" class="custom-control-input" id="suivi_entretien" <?php if ($candidature['suivi_test_specif'] == "oui") {
+                                                                                <input type="checkbox" class="custom-control-input" id="suivi_entretien" <?php if ($candidature['suivi_entretien'] == "oui") {
                                                                                                                                                                 echo "checked";
                                                                                                                                                             } ?>>
                                                                                 <label class="custom-control-label" for="suivi_entretien"></label>
@@ -438,455 +454,566 @@ if (count($candidature) != 0) {
                 </section>
                 <!-- List group navigation ends -->
                 <?php
-                $total = 0;
-                for ($i = 0; $i < count($qcms); $i++) {
-                    $score = 0;
+                if (isset($questions)) {
+                    for ($i = 0; $i < count($qcms); $i++) {
+                        $score = 0;
+                        $total = 0;
                 ?>
-                    <!-- Modal -->
-                    <div class="modal fade" id="qcm<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="modalQcm<?= $i ?>" aria-hidden="true">
-                        <div class="modal-dialog modal-xl" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Resultats du qcm : <?= $qcms[$i]['libelle'] ?></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <?php
-                                        if ($qcms[$i]['qualitatif'] == "Non") {
-                                        ?>
-                                            <div class="col-12">
-                                                <h3 id="name-qcm" class="d-flex justify-content-center"><?= $qcms[$i]['libelle'] ?></h3>
-                                                <h4 id="name-candidat" class="d-flex justify-content-center" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
-                                                <table class="table table-bordered" id="table<?= $i ?>" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Question</th>
-                                                            <th>Nombre points de la question</th>
-                                                            <th>Réponse</th>
-                                                            <th>Choix du candidat</th>
-                                                            <th>choix officiel</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        for ($j = 0; $j < count($questions[$i]); ++$j) {
-                                                        ?>
+                        <!-- Modal -->
+                        <div class="modal fade" id="qcm<?= $i ?>" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Resultats du qcm : <?= $qcms[$i]['libelle'] ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <?php
+                                            if ($qcms[$i]['qualitatif'] == "Non") {
+                                            ?>
+                                                <div class="col-12">
+                                                    <h3 id="name-qcm<?= $i ?>" class="d-flex justify-content-center"><?= $qcms[$i]['libelle'] ?></h3>
+                                                    <h4 id="name-candidat<?= $i ?>" class="d-flex justify-content-center" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
+                                                    <table class="table table-bordered" id="table<?= $i ?>" style="width:100%">
+                                                        <thead>
                                                             <tr>
-                                                                <td rowspan=<?= count($reponses[$i][$j]) ?>>
-                                                                    <?= $questions[$i][$j]['libelle'] ?>
-                                                                </td>
-
-                                                                <td rowspan=<?= count($reponses[$i][$j]) ?>>
-                                                                    <?= $questions[$i][$j]['points'] ?>
-                                                                </td>
-
-                                                                <td>
-                                                                    <?= $reponses[$i][$j][0]['libelle'] ?>
-                                                                </td>
-
-                                                                <td>
-                                                                    <?= $reponses_candidat[$i][$j][0]['vrai_ou_faux'] ?>
-                                                                </td>
-
-                                                                <td>
-                                                                    <?= $reponses[$i][$j][0]['vrai_ou_faux'] ?>
-                                                                </td>
+                                                                <th>Question</th>
+                                                                <th>Nombre points de la question</th>
+                                                                <th>Réponse</th>
+                                                                <th>Choix du candidat</th>
+                                                                <th>choix officiel</th>
                                                             </tr>
-
+                                                        </thead>
+                                                        <tbody>
                                                             <?php
-                                                            for ($k = 1; $k < count($reponses[$i][$j]); ++$k) {
+                                                            for ($j = 0; $j < count($questions[$i]); ++$j) {
                                                             ?>
                                                                 <tr>
-                                                                    <td>
-                                                                        <?= $reponses[$i][$j][$k]['libelle'] ?>
+                                                                    <td rowspan=<?= count($reponses[$i][$j]) ?>>
+                                                                        <?= $questions[$i][$j]['libelle'] ?>
+                                                                    </td>
+
+                                                                    <td rowspan=<?= count($reponses[$i][$j]) ?>>
+                                                                        <?= $questions[$i][$j]['points'] ?>
                                                                     </td>
 
                                                                     <td>
-                                                                        <?= $reponses_candidat[$i][$j][$k]['vrai_ou_faux'] ?>
+                                                                        <?= $reponses[$i][$j][0]['libelle'] ?>
                                                                     </td>
 
                                                                     <td>
-                                                                        <?= $reponses[$i][$j][$k]['vrai_ou_faux'] ?>
+                                                                        <?= $reponses_candidat[$i][$j][0]['vrai_ou_faux'] ?>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <?= $reponses[$i][$j][0]['vrai_ou_faux'] ?>
                                                                     </td>
                                                                 </tr>
 
-                                                        <?php
-                                                            }
-                                                            $officiel = 0;
-                                                            for ($k = 0; $k < count($reponses[$i][$j]); ++$k) {
-                                                                if ($reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai') {
-                                                                    $officiel++;
+                                                                <?php
+                                                                for ($k = 1; $k < count($reponses[$i][$j]); ++$k) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <?= $reponses[$i][$j][$k]['libelle'] ?>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <?= $reponses_candidat[$i][$j][$k]['vrai_ou_faux'] ?>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <?= $reponses[$i][$j][$k]['vrai_ou_faux'] ?>
+                                                                        </td>
+                                                                    </tr>
+
+                                                            <?php
                                                                 }
-                                                            }
-                                                            $k = 0;
-                                                            $candidat = 0;
-                                                            while ($k < count($reponses[$i][$j])) {
-                                                                if ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' and $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai') {
-                                                                    $candidat++;
-                                                                } elseif ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' and $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Faux') {
-                                                                    $candidat = 0;
-                                                                    break;
+                                                                $officiel = 0;
+                                                                for ($k = 0; $k < count($reponses[$i][$j]); ++$k) {
+                                                                    if ($reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai') {
+                                                                        $officiel++;
+                                                                    }
                                                                 }
-                                                                $k++;
+                                                                $k = 0;
+                                                                $candidat = 0;
+                                                                while ($k < count($reponses[$i][$j])) {
+                                                                    if ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' and $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Vrai') {
+                                                                        $candidat++;
+                                                                    } elseif ($reponses_candidat[$i][$j][$k]['vrai_ou_faux'] == 'Vrai' and $reponses[$i][$j][$k]['vrai_ou_faux'] == 'Faux') {
+                                                                        $candidat = 0;
+                                                                        break;
+                                                                    }
+                                                                    $k++;
+                                                                }
+                                                                $score += $candidat / $officiel * $questions[$i][$j]['points'];
+                                                                $total += $questions[$i][$j]['points'];
                                                             }
-                                                            $score += $candidat / $officiel * $questions[$i][$j]['points'];
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                                <label id="total">Total : <?= $score ?></label>
-                                            </div>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <div class="col-4">
-                                                <div class="d-flex flex-column align-items-center">
-                                                    <h3 id="name-qcm"><?= $qcms[$i]['libelle'] ?></h3>
-                                                    <h4 id="name-candidat" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                    <label id="total<?= $i ?>">Total : <?= $score ?>/<?= $total ?></label>
+                                                    <br>
+                                                    <label id="pourcentage<?= $i ?>">Pourcentage : <?= ($score / $total) * 100 ?>%</label>
                                                 </div>
-                                                <div class="d-flex flex-column text-justify">
-                                                    <p id="comment-red<?= $i ?>">
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <div class="col-4">
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <h3 id="name-qcm<?= $i ?>"><?= $qcms[$i]['libelle'] ?></h3>
+                                                        <h4 id="name-candidat<?= $i ?>" style="color: grey;"><?= $candidature['nom_candidat'] ?> <?= $candidature['prenom_candidat'] ?></h4>
+                                                    </div>
+                                                    <div class="d-flex flex-column text-justify">
+                                                        <p id="comment-red<?= $i ?>">
 
-                                                    </p>
-                                                    <br>
-                                                    <p id="comment-blue<?= $i ?>">
+                                                        </p>
+                                                        <br>
+                                                        <p id="comment-blue<?= $i ?>">
 
-                                                    </p>
-                                                    <br>
-                                                    <p id="comment-yellow<?= $i ?>">
+                                                        </p>
+                                                        <br>
+                                                        <p id="comment-yellow<?= $i ?>">
 
-                                                    </p>
-                                                    <br>
-                                                    <p id="comment-green<?= $i ?>">
+                                                        </p>
+                                                        <br>
+                                                        <p id="comment-green<?= $i ?>">
 
-                                                    </p>
-                                                    <br>
-                                                    <p id="comment-purple<?= $i ?>">
+                                                        </p>
+                                                        <br>
+                                                        <p id="comment-purple<?= $i ?>">
 
-                                                    </p>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6 ml-auto">
-                                                <canvas id="myChart<?= $i ?>" width="400" height="400"></canvas>
-                                                <script src="../../../app-assets/vendors/js/charts/chart.min.js"></script>
-                                                <script>
-                                                    var id_candidat = <?= $candidature['id'] ?>;
-                                                    var id_qcm_candidat = <?= $qcms[$i]['idqcm'] ?>;
+                                                <div class="col-6 ml-auto">
+                                                    <canvas id="myChart<?= $i ?>" width="400" height="400"></canvas>
+                                                    <script src="../../../app-assets/vendors/js/charts/chart.min.js"></script>
+                                                    <script>
+                                                        var id_candidat = <?= $candidature['id'] ?>;
+                                                        var id_qcm_candidat = <?= $qcms[$i]['idqcm'] ?>;
 
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: '../../../html/ltr/coqpix/php/rh-ajax-graph.php',
-                                                        data: {
-                                                            action: 'showData',
-                                                            id_candidat: id_candidat,
-                                                            qcm_candidat: id_qcm_candidat
-                                                        },
-                                                        headers: {
-                                                            'X-Requested-With': 'XMLHttpRequest'
-                                                        },
-                                                        dataType: 'json',
-                                                        success: function(response) {
-                                                            max_value = response['max_value'];
-                                                            tested_status = response['status'];
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: '../../../html/ltr/coqpix/php/rh-ajax-graph.php',
+                                                            data: {
+                                                                action: 'showData',
+                                                                id_candidat: id_candidat,
+                                                                qcm_candidat: id_qcm_candidat
+                                                            },
+                                                            headers: {
+                                                                'X-Requested-With': 'XMLHttpRequest'
+                                                            },
+                                                            dataType: 'json',
+                                                            success: function(response) {
+                                                                max_value = response['max_value'];
+                                                                tested_status = response['status'];
+                                                                var red_last = null;
+                                                                var blue_last = null;
+                                                                var yellow_last = null;
+                                                                var green_last = null;
+                                                                var purple_last = null;
 
-                                                            var red_deter = [response['result_rep']['parametre_rep']['A'] / max_value * 10, "Détermination"];
-                                                            var red_amb = [response['result_rep']['parametre_rep']['B'] / max_value * 10, "Ambition"];
-                                                            var red_gout = [response['result_rep']['parametre_rep']['C'] / max_value * 10, "Gout de l'effort"];
-                                                            var red_esp = [response['result_rep']['parametre_rep']['D'] / max_value * 10, "Esprit de compétition"];
+                                                                var red_deter = [response['result_rep']['parametre_rep']['A'] / max_value * 10, "Détermination", "red"];
+                                                                var red_amb = [response['result_rep']['parametre_rep']['B'] / max_value * 10, "Ambition", "red"];
+                                                                var red_gout = [response['result_rep']['parametre_rep']['C'] / max_value * 10, "Gout de l'effort", "red"];
+                                                                var red_esp = [response['result_rep']['parametre_rep']['D'] / max_value * 10, "Esprit de compétition", "red"];
 
-                                                            var red = [red_deter, red_amb, red_gout, red_esp];
-                                                            var sum_red = summ(red, tested_status, 0);
-                                                            var moy_red = sum_red[0] / sum_red[1]; // moyenne des valeur differente de 0
-                                                            var max_red = getMaxTableau(red);
-                                                            var max2_red = getMaxTableau(red.filter(function(max) {
-                                                                return max != max_red;
-                                                            }));
+                                                                var red = [red_deter, red_amb, red_gout, red_esp];
+                                                                var sum_red = summ(red, tested_status, 0);
+                                                                var moy_red = sum_red[0] / sum_red[1]; // moyenne des valeurs differentes de null
+                                                                var max_red = getMaxTableau(red);
+                                                                var max2_red = getMaxTableau(red.filter(function(max) {
+                                                                    return max != max_red;
+                                                                }));
 
-                                                            var blue_ais = [response['result_rep']['parametre_rep']['E'] / max_value * 10, "Assurance en public"];
-                                                            var blue_ouv = [response['result_rep']['parametre_rep']['F'] / max_value * 10, "Ouverture aux autres"];
-                                                            var blue_dip = [response['result_rep']['parametre_rep']['G'] / max_value * 10, "Diplomatie"];
-                                                            var blue_pers = [response['result_rep']['parametre_rep']['H'] / max_value * 10, "Persuasion"];
+                                                                var blue_ais = [response['result_rep']['parametre_rep']['E'] / max_value * 10, "Assurance en public", "blue"];
+                                                                var blue_ouv = [response['result_rep']['parametre_rep']['F'] / max_value * 10, "Ouverture aux autres", "blue"];
+                                                                var blue_dip = [response['result_rep']['parametre_rep']['G'] / max_value * 10, "Diplomatie", "blue"];
+                                                                var blue_pers = [response['result_rep']['parametre_rep']['H'] / max_value * 10, "Persuasion", "blue"];
 
-                                                            var blue = [blue_ais, blue_ouv, blue_dip, blue_pers];
-                                                            var sum_blue = summ(blue, tested_status, 1);
-                                                            var moy_blue = sum_blue[0] / sum_blue[1]; // moyenne des valeur differente de 0
-                                                            var max_blue = getMaxTableau(blue);
-                                                            var max2_blue = getMaxTableau(blue.filter(function(max) {
-                                                                return max != max_blue;
-                                                            }));
+                                                                var blue = [blue_ais, blue_ouv, blue_dip, blue_pers];
+                                                                var sum_blue = summ(blue, tested_status, 1);
+                                                                var moy_blue = sum_blue[0] / sum_blue[1]; // moyenne des valeurs differentes de null
+                                                                var max_blue = getMaxTableau(blue);
+                                                                var max2_blue = getMaxTableau(blue.filter(function(max) {
+                                                                    return max != max_blue;
+                                                                }));
 
-                                                            var yellow_diri = [response['result_rep']['parametre_rep']['I'] / max_value * 10, "Diriger"];
-                                                            var yellow_rep = [response['result_rep']['parametre_rep']['J'] / max_value * 10, "Prise de responsabilités"];
-                                                            var yellow_org = [response['result_rep']['parametre_rep']['K'] / max_value * 10, "Organisation"];
-                                                            var yellow_visio = [response['result_rep']['parametre_rep']['L'] / max_value * 10, "Vision"];
+                                                                var yellow_diri = [response['result_rep']['parametre_rep']['I'] / max_value * 10, "Diriger", "yellow"];
+                                                                var yellow_rep = [response['result_rep']['parametre_rep']['J'] / max_value * 10, "Prise de responsabilités", "yellow"];
+                                                                var yellow_org = [response['result_rep']['parametre_rep']['K'] / max_value * 10, "Organisation", "yellow"];
+                                                                var yellow_visio = [response['result_rep']['parametre_rep']['L'] / max_value * 10, "Vision", "yellow"];
 
-                                                            var yellow = [yellow_diri, yellow_rep, yellow_org, yellow_visio];
-                                                            var sum_yellow = summ(yellow, tested_status, 2);
-                                                            var moy_yellow = sum_yellow[0] / sum_yellow[1]; // moyenne des valeur differente de 0
-                                                            var max_yellow = getMaxTableau(yellow);
-                                                            var max2_yellow = getMaxTableau(yellow.filter(function(max) {
-                                                                return max != max_yellow;
-                                                            }));
+                                                                var yellow = [yellow_diri, yellow_rep, yellow_org, yellow_visio];
+                                                                var sum_yellow = summ(yellow, tested_status, 2);
+                                                                var moy_yellow = sum_yellow[0] / sum_yellow[1]; // moyenne des valeurs differentes de null
+                                                                var max_yellow = getMaxTableau(yellow);
+                                                                var max2_yellow = getMaxTableau(yellow.filter(function(max) {
+                                                                    return max != max_yellow;
+                                                                }));
 
-                                                            var green_conf = [response['result_rep']['parametre_rep']['M'] / max_value * 10, "Confiance en soi"];
-                                                            var green_ind = [response['result_rep']['parametre_rep']['N'] / max_value * 10, "Indépendance d'esprit"];
-                                                            var green_crea = [response['result_rep']['parametre_rep']['O'] / max_value * 10, "Créativité"];
-                                                            var green_auto = [response['result_rep']['parametre_rep']['P'] / max_value * 10, "Autonomie"];
+                                                                var green_conf = [response['result_rep']['parametre_rep']['M'] / max_value * 10, "Confiance en soi", "green"];
+                                                                var green_ind = [response['result_rep']['parametre_rep']['N'] / max_value * 10, "Indépendance d'esprit", "green"];
+                                                                var green_crea = [response['result_rep']['parametre_rep']['O'] / max_value * 10, "Créativité", "green"];
+                                                                var green_auto = [response['result_rep']['parametre_rep']['P'] / max_value * 10, "Autonomie", "green"];
 
-                                                            var green = [green_conf, green_ind, green_crea, green_auto];
-                                                            var sum_green = summ(green, tested_status, 3);
-                                                            var moy_green = sum_green[0] / sum_green[1]; // moyenne des valeur differente de 0
-                                                            var max_green = getMaxTableau(green);
-                                                            var max2_green = getMaxTableau(green.filter(function(max) {
-                                                                return max != max_green;
-                                                            }));
+                                                                var green = [green_conf, green_ind, green_crea, green_auto];
+                                                                var sum_green = summ(green, tested_status, 3);
+                                                                var moy_green = sum_green[0] / sum_green[1]; // moyenne des valeurs differentes de null
+                                                                var max_green = getMaxTableau(green);
+                                                                var max2_green = getMaxTableau(green.filter(function(max) {
+                                                                    return max != max_green;
+                                                                }));
 
-                                                            var purple_gest = [response['result_rep']['parametre_rep']['Q'] / max_value * 10, "Gestion du stress"];
-                                                            var purple_react = [response['result_rep']['parametre_rep']['R'] / max_value * 10, "Réactivité"];
-                                                            var purple_pat = [response['result_rep']['parametre_rep']['S'] / max_value * 10, "Patience"];
-                                                            var purple_resp = [response['result_rep']['parametre_rep']['T'] / max_value * 10, "Respect de la hiérarchie"];
+                                                                var purple_gest = [response['result_rep']['parametre_rep']['Q'] / max_value * 10, "Gestion du stress", "purple"];
+                                                                var purple_react = [response['result_rep']['parametre_rep']['R'] / max_value * 10, "Réactivité", "purple"];
+                                                                var purple_pat = [response['result_rep']['parametre_rep']['S'] / max_value * 10, "Patience", "purple"];
+                                                                var purple_resp = [response['result_rep']['parametre_rep']['T'] / max_value * 10, "Respect de la hiérarchie", "purple"];
 
-                                                            var purple = [purple_gest, purple_react, purple_pat, purple_resp];
-                                                            var sum_purple = summ(purple, tested_status, 4);
-                                                            var moy_purple = sum_purple[0] / sum_purple[1]; // moyenne des valeur differente de 0
-                                                            var max_purple = getMaxTableau(purple);
-                                                            var max2_purple = getMaxTableau(purple.filter(function(max) {
-                                                                return max != max_purple;
-                                                            }));
+                                                                var purple = [purple_gest, purple_react, purple_pat, purple_resp];
+                                                                var sum_purple = summ(purple, tested_status, 4);
+                                                                var moy_purple = sum_purple[0] / sum_purple[1]; // moyenne des valeurs differentes de null
+                                                                var max_purple = getMaxTableau(purple);
+                                                                var max2_purple = getMaxTableau(purple.filter(function(max) {
+                                                                    return max != max_purple;
+                                                                }));
 
-                                                            var tableVar = [red_deter, red_amb, red_gout, red_esp, blue_ais, blue_ouv, blue_dip, blue_pers, yellow_diri, yellow_rep, yellow_org, yellow_visio, green_conf, green_ind, green_crea, green_auto, purple_gest, purple_react, purple_pat, purple_resp];
-
-                                                            var text_moy_red = "faible";
-                                                            text_moy_red = moy_red > 3 && moy_red < 7 ? "moyenne" : text_moy_red;
-                                                            text_moy_red = moy_red > 7 ? "élevée" : text_moy_red;
-                                                            var text_red_deter = "faible";
-                                                            text_red_deter = red_deter > 3 && red_deter < 7 ? "moyenne" : text_red_deter;
-                                                            text_red_deter = red_deter > 7 ? "élevée" : text_red_deter;
-                                                            var text_red_amb = "faible";
-                                                            text_red_amb = red_amb > 3 && red_amb < 7 ? "moyenne" : text_red_amb;
-                                                            text_red_amb = red_amb > 7 ? "élevée" : text_red_amb;
-                                                            var text_red_gout = "faible";
-                                                            text_red_gout = red_gout > 3 && red_gout < 7 ? "moyenne" : text_red_gout;
-                                                            text_red_gout = red_gout > 7 ? "élevée" : text_red_gout;
-                                                            var text_red_esp = "faible";
-                                                            text_red_esp = red_esp > 3 && red_esp < 7 ? "moyenne" : text_red_esp;
-                                                            text_red_esp = red_esp > 7 ? "élevée" : text_red_esp;
-
-                                                            var text_moy_blue = "faible";
-                                                            text_moy_blue = moy_blue > 3 && moy_blue < 7 ? "moyenne" : text_moy_blue;
-                                                            text_moy_blue = moy_blue > 7 ? "élevée" : text_moy_blue;
-                                                            var text_blue_ais = "faible";
-                                                            text_blue_ais = blue_ais > 3 && blue_ais < 7 ? "moyenne" : text_blue_ais;
-                                                            text_blue_ais = blue_ais > 7 ? "élevée" : text_blue_ais;
-                                                            var text_blue_ouv = "faible";
-                                                            text_blue_ouv = blue_ouv > 3 && blue_ouv < 7 ? "moyenne" : text_blue_ouv;
-                                                            text_blue_ouv = blue_ouv > 7 ? "élevée" : text_blue_ouv;
-                                                            var text_blue_dip = "faible";
-                                                            text_blue_dip = blue_dip > 3 && blue_dip < 7 ? "moyenne" : text_blue_dip;
-                                                            text_blue_dip = blue_dip > 7 ? "élevée" : text_blue_dip;
-                                                            var text_blue_pers = "faible";
-                                                            text_blue_pers = blue_pers > 3 && blue_pers < 7 ? "moyenne" : text_blue_pers;
-                                                            text_blue_pers = blue_pers > 7 ? "élevée" : text_blue_pers;
-
-                                                            var text_moy_yellow = "faible";
-                                                            text_moy_yellow = moy_yellow > 3 && moy_yellow < 7 ? "moyenne" : text_moy_yellow;
-                                                            text_moy_yellow = moy_yellow > 7 ? "élevée" : text_moy_yellow;
-                                                            var text_yellow_diri = "faible";
-                                                            text_yellow_diri = yellow_diri > 3 && yellow_diri < 7 ? "moyenne" : text_yellow_diri;
-                                                            text_yellow_diri = yellow_diri > 7 ? "élevée" : text_yellow_diri;
-                                                            var text_yellow_rep = "faible";
-                                                            text_yellow_rep = yellow_rep > 3 && yellow_rep < 7 ? "moyenne" : text_yellow_rep;
-                                                            text_yellow_rep = yellow_rep > 7 ? "élevée" : text_yellow_rep;
-                                                            var text_yellow_org = "faible";
-                                                            text_yellow_org = yellow_org > 3 && yellow_org < 7 ? "moyenne" : text_yellow_org;
-                                                            text_yellow_org = yellow_org > 7 ? "élevée" : text_yellow_org;
-                                                            var text_yellow_visio = "faible";
-                                                            text_yellow_visio = yellow_visio > 3 && yellow_visio < 7 ? "moyenne" : text_yellow_visio;
-                                                            text_yellow_visio = yellow_visio > 7 ? "élevée" : text_yellow_visio;
-
-                                                            var text_moy_green = "faible";
-                                                            text_moy_green = moy_green > 3 && moy_green < 7 ? "moyenne" : text_moy_green;
-                                                            text_moy_green = moy_green > 7 ? "élevée" : text_moy_green;
-                                                            var text_green_conf = "faible";
-                                                            text_green_conf = green_conf > 3 && green_conf < 7 ? "moyenne" : text_green_conf;
-                                                            text_green_conf = green_conf > 7 ? "élevée" : text_green_conf;
-                                                            var text_green_ind = "faible";
-                                                            text_green_ind = green_ind > 3 && green_ind < 7 ? "moyenne" : text_green_ind;
-                                                            text_green_ind = green_ind > 7 ? "élevée" : text_green_ind;
-                                                            var text_green_crea = "faible";
-                                                            text_green_crea = green_crea > 3 && green_crea < 7 ? "moyenne" : text_green_crea;
-                                                            text_green_crea = green_crea > 7 ? "élevée" : text_green_crea;
-                                                            var text_green_auto = "faible";
-                                                            text_green_auto = green_auto > 3 && green_auto < 7 ? "moyenne" : text_green_auto;
-                                                            text_green_auto = green_auto > 7 ? "élevée" : text_green_auto;
-
-                                                            var text_moy_purple = "faible";
-                                                            text_moy_purple = moy_purple > 3 && moy_purple < 7 ? "moyenne" : text_moy_purple;
-                                                            text_moy_purple = moy_purple > 7 ? "élevée" : text_moy_purple;
-                                                            var text_purple_gest = "faible";
-                                                            text_purple_gest = purple_gest > 3 && purple_gest < 7 ? "moyenne" : text_purple_gest;
-                                                            text_purple_gest = purple_gest > 7 ? "élevée" : text_purple_gest;
-                                                            var text_purple_react = "faible";
-                                                            text_purple_react = purple_react > 3 && purple_react < 7 ? "moyenne" : text_purple_react;
-                                                            text_purple_react = purple_react > 7 ? "élevée" : text_purple_react;
-                                                            var text_purple_pat = "faible";
-                                                            text_purple_pat = purple_pat > 3 && purple_pat < 7 ? "moyenne" : text_purple_pat;
-                                                            text_purple_pat = purple_pat > 7 ? "élevée" : text_purple_pat;
-                                                            var text_purple_resp = "faible";
-                                                            text_purple_resp = purple_resp > 3 && purple_resp < 7 ? "moyenne" : text_purple_resp;
-                                                            text_purple_resp = purple_resp > 7 ? "élevée" : text_purple_resp;
-
-                                                            var max_moy = getMaxTableau([moy_red, moy_green, moy_blue, moy_purple, moy_yellow]);
-                                                            document.getElementById("comment-red<?= $i ?>").innerHTML = "Performance individuelle " + text_moy_red + "(" + (moy_red * 10) + "%).";
-                                                            document.getElementById("comment-blue<?= $i ?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "(" + (moy_blue * 10) + "%).";
-                                                            document.getElementById("comment-yellow<?= $i ?>").innerHTML = "Capacité de manager " + text_moy_yellow + "(" + (moy_yellow * 10) + "%).";
-                                                            document.getElementById("comment-green<?= $i ?>").innerHTML = "Autonomie " + text_moy_green + "(" + (moy_green * 10) + "%).";
-                                                            document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
-
-                                                            // methode filter Impossible
-
-                                                            var finalVar = [];
-                                                            var finalLabel = [];
-                                                            for (let i = 0; i < tableVar.length; i++) { // suppr colone table vide.
-                                                                var contains = tested_status.some(elem => {
-                                                                    return JSON.stringify({
-                                                                        "statu": tableVar[i][1]
-                                                                    }) === JSON.stringify(elem);
+                                                                var tableVar = [];
+                                                                red.forEach(function(element) {
+                                                                    if (element[0] != null) {
+                                                                        tableVar.push(element);
+                                                                    }
                                                                 });
-                                                                if (contains) {
-                                                                    finalLabel.push(tableVar[i][1]);
-                                                                    finalVar.push(tableVar[i][0]);
+                                                                blue.forEach(function(element) {
+                                                                    if (element[0] != null) {
+                                                                        tableVar.push(element);
+                                                                    }
+                                                                });
+                                                                yellow.forEach(function(element) {
+                                                                    if (element[0] != null) {
+                                                                        tableVar.push(element);
+                                                                    }
+                                                                });
+                                                                green.forEach(function(element) {
+                                                                    if (element[0] != null) {
+                                                                        tableVar.push(element);
+                                                                    }
+                                                                });
+                                                                purple.forEach(function(element) {
+                                                                    if (element[0] != null) {
+                                                                        tableVar.push(element);
+                                                                    }
+                                                                });
+
+                                                                var text_moy_red = "faible";
+                                                                text_moy_red = moy_red > 3 && moy_red < 7 ? "moyenne" : text_moy_red;
+                                                                text_moy_red = moy_red > 7 ? "élevée" : text_moy_red;
+                                                                var text_red_deter = "faible";
+                                                                text_red_deter = red_deter > 3 && red_deter < 7 ? "moyenne" : text_red_deter;
+                                                                text_red_deter = red_deter > 7 ? "élevée" : text_red_deter;
+                                                                var text_red_amb = "faible";
+                                                                text_red_amb = red_amb > 3 && red_amb < 7 ? "moyenne" : text_red_amb;
+                                                                text_red_amb = red_amb > 7 ? "élevée" : text_red_amb;
+                                                                var text_red_gout = "faible";
+                                                                text_red_gout = red_gout > 3 && red_gout < 7 ? "moyenne" : text_red_gout;
+                                                                text_red_gout = red_gout > 7 ? "élevée" : text_red_gout;
+                                                                var text_red_esp = "faible";
+                                                                text_red_esp = red_esp > 3 && red_esp < 7 ? "moyenne" : text_red_esp;
+                                                                text_red_esp = red_esp > 7 ? "élevée" : text_red_esp;
+
+                                                                var text_moy_blue = "faible";
+                                                                text_moy_blue = moy_blue > 3 && moy_blue < 7 ? "moyenne" : text_moy_blue;
+                                                                text_moy_blue = moy_blue > 7 ? "élevée" : text_moy_blue;
+                                                                var text_blue_ais = "faible";
+                                                                text_blue_ais = blue_ais > 3 && blue_ais < 7 ? "moyenne" : text_blue_ais;
+                                                                text_blue_ais = blue_ais > 7 ? "élevée" : text_blue_ais;
+                                                                var text_blue_ouv = "faible";
+                                                                text_blue_ouv = blue_ouv > 3 && blue_ouv < 7 ? "moyenne" : text_blue_ouv;
+                                                                text_blue_ouv = blue_ouv > 7 ? "élevée" : text_blue_ouv;
+                                                                var text_blue_dip = "faible";
+                                                                text_blue_dip = blue_dip > 3 && blue_dip < 7 ? "moyenne" : text_blue_dip;
+                                                                text_blue_dip = blue_dip > 7 ? "élevée" : text_blue_dip;
+                                                                var text_blue_pers = "faible";
+                                                                text_blue_pers = blue_pers > 3 && blue_pers < 7 ? "moyenne" : text_blue_pers;
+                                                                text_blue_pers = blue_pers > 7 ? "élevée" : text_blue_pers;
+
+                                                                var text_moy_yellow = "faible";
+                                                                text_moy_yellow = moy_yellow > 3 && moy_yellow < 7 ? "moyenne" : text_moy_yellow;
+                                                                text_moy_yellow = moy_yellow > 7 ? "élevée" : text_moy_yellow;
+                                                                var text_yellow_diri = "faible";
+                                                                text_yellow_diri = yellow_diri > 3 && yellow_diri < 7 ? "moyenne" : text_yellow_diri;
+                                                                text_yellow_diri = yellow_diri > 7 ? "élevée" : text_yellow_diri;
+                                                                var text_yellow_rep = "faible";
+                                                                text_yellow_rep = yellow_rep > 3 && yellow_rep < 7 ? "moyenne" : text_yellow_rep;
+                                                                text_yellow_rep = yellow_rep > 7 ? "élevée" : text_yellow_rep;
+                                                                var text_yellow_org = "faible";
+                                                                text_yellow_org = yellow_org > 3 && yellow_org < 7 ? "moyenne" : text_yellow_org;
+                                                                text_yellow_org = yellow_org > 7 ? "élevée" : text_yellow_org;
+                                                                var text_yellow_visio = "faible";
+                                                                text_yellow_visio = yellow_visio > 3 && yellow_visio < 7 ? "moyenne" : text_yellow_visio;
+                                                                text_yellow_visio = yellow_visio > 7 ? "élevée" : text_yellow_visio;
+
+                                                                var text_moy_green = "faible";
+                                                                text_moy_green = moy_green > 3 && moy_green < 7 ? "moyenne" : text_moy_green;
+                                                                text_moy_green = moy_green > 7 ? "élevée" : text_moy_green;
+                                                                var text_green_conf = "faible";
+                                                                text_green_conf = green_conf > 3 && green_conf < 7 ? "moyenne" : text_green_conf;
+                                                                text_green_conf = green_conf > 7 ? "élevée" : text_green_conf;
+                                                                var text_green_ind = "faible";
+                                                                text_green_ind = green_ind > 3 && green_ind < 7 ? "moyenne" : text_green_ind;
+                                                                text_green_ind = green_ind > 7 ? "élevée" : text_green_ind;
+                                                                var text_green_crea = "faible";
+                                                                text_green_crea = green_crea > 3 && green_crea < 7 ? "moyenne" : text_green_crea;
+                                                                text_green_crea = green_crea > 7 ? "élevée" : text_green_crea;
+                                                                var text_green_auto = "faible";
+                                                                text_green_auto = green_auto > 3 && green_auto < 7 ? "moyenne" : text_green_auto;
+                                                                text_green_auto = green_auto > 7 ? "élevée" : text_green_auto;
+
+                                                                var text_moy_purple = "faible";
+                                                                text_moy_purple = moy_purple > 3 && moy_purple < 7 ? "moyenne" : text_moy_purple;
+                                                                text_moy_purple = moy_purple > 7 ? "élevée" : text_moy_purple;
+                                                                var text_purple_gest = "faible";
+                                                                text_purple_gest = purple_gest > 3 && purple_gest < 7 ? "moyenne" : text_purple_gest;
+                                                                text_purple_gest = purple_gest > 7 ? "élevée" : text_purple_gest;
+                                                                var text_purple_react = "faible";
+                                                                text_purple_react = purple_react > 3 && purple_react < 7 ? "moyenne" : text_purple_react;
+                                                                text_purple_react = purple_react > 7 ? "élevée" : text_purple_react;
+                                                                var text_purple_pat = "faible";
+                                                                text_purple_pat = purple_pat > 3 && purple_pat < 7 ? "moyenne" : text_purple_pat;
+                                                                text_purple_pat = purple_pat > 7 ? "élevée" : text_purple_pat;
+                                                                var text_purple_resp = "faible";
+                                                                text_purple_resp = purple_resp > 3 && purple_resp < 7 ? "moyenne" : text_purple_resp;
+                                                                text_purple_resp = purple_resp > 7 ? "élevée" : text_purple_resp;
+
+                                                                var max_moy = getMaxTableau([moy_red, moy_green, moy_blue, moy_purple, moy_yellow]);
+                                                                if (!isNaN(moy_red)) {
+                                                                    document.getElementById("comment-red<?= $i ?>").innerHTML = "Performance individuelle " + text_moy_red + "(" + (moy_red * 10) + "%).";
                                                                 }
-                                                            }
+                                                                if (!isNaN(moy_blue)) {
+                                                                    document.getElementById("comment-blue<?= $i ?>").innerHTML = "Capacité de communication interpersonnelle " + text_moy_blue + "(" + (moy_blue * 10) + "%).";
+                                                                }
+                                                                if (!isNaN(moy_yellow)) {
+                                                                    document.getElementById("comment-yellow<?= $i ?>").innerHTML = "Capacité de manager " + text_moy_yellow + "(" + (moy_yellow * 10) + "%).";
+                                                                }
+                                                                if (!isNaN(moy_green)) {
+                                                                    document.getElementById("comment-green<?= $i ?>").innerHTML = "Autonomie " + text_moy_green + "(" + (moy_green * 10) + "%).";
+                                                                }
+                                                                if (!isNaN(moy_purple)) {
+                                                                    document.getElementById("comment-purple<?= $i ?>").innerHTML = "Maîtrise de soi " + text_moy_purple + "(" + (moy_purple * 10) + "%).";
+                                                                }
 
-                                                            var ctx = document.getElementById('myChart<?= $i ?>').getContext('2d');
-                                                            var myChart = new Chart(ctx, {
-                                                                type: 'radar',
-                                                                data: {
-                                                                    labels: finalLabel,
-                                                                    datasets: [{
-                                                                        label: 'Résultat Test',
-                                                                        data: finalVar,
-                                                                        backgroundColor: [
-                                                                            'rgba(255, 99, 132, 0.2)',
-                                                                            'rgba(255, 99, 132, 0.2)',
-                                                                            'rgba(255, 99, 132, 0.2)',
-                                                                            'rgba(255, 99, 132, 0.2)',
+                                                                // methode filter
 
-                                                                            'rgba(54, 162, 235, 0.2)',
-                                                                            'rgba(54, 162, 235, 0.2)',
-                                                                            'rgba(54, 162, 235, 0.2)',
-                                                                            'rgba(54, 162, 235, 0.2)',
-
-                                                                            'rgba(255, 206, 86, 0.2)',
-                                                                            'rgba(255, 206, 86, 0.2)',
-                                                                            'rgba(255, 206, 86, 0.2)',
-                                                                            'rgba(255, 206, 86, 0.2)',
-
-                                                                            'rgba(75, 192, 192, 0.2)',
-                                                                            'rgba(75, 192, 192, 0.2)',
-                                                                            'rgba(75, 192, 192, 0.2)',
-                                                                            'rgba(75, 192, 192, 0.2)',
-
-                                                                            'rgba(153, 102, 255, 0.2)',
-                                                                            'rgba(153, 102, 255, 0.2)',
-                                                                            'rgba(153, 102, 255, 0.2)',
-                                                                            'rgba(153, 102, 255, 0.2)'
-                                                                        ],
-                                                                        borderColor: [
-                                                                            'rgba(255, 99, 132, 1)',
-                                                                            'rgba(255, 99, 132, 1)',
-                                                                            'rgba(255, 99, 132, 1)',
-                                                                            'rgba(255, 99, 132, 1)',
-
-                                                                            'rgba(54, 162, 235, 1)',
-                                                                            'rgba(54, 162, 235, 1)',
-                                                                            'rgba(54, 162, 235, 1)',
-                                                                            'rgba(54, 162, 235, 1)',
-
-                                                                            'rgba(255, 206, 86, 1)',
-                                                                            'rgba(255, 206, 86, 1)',
-                                                                            'rgba(255, 206, 86, 1)',
-                                                                            'rgba(255, 206, 86, 1)',
-
-                                                                            'rgba(75, 192, 192, 1)',
-                                                                            'rgba(75, 192, 192, 1)',
-                                                                            'rgba(75, 192, 192, 1)',
-                                                                            'rgba(75, 192, 192, 1)',
-
-                                                                            'rgba(153, 102, 255, 1)',
-                                                                            'rgba(153, 102, 255, 1)',
-                                                                            'rgba(153, 102, 255, 1)',
-                                                                            'rgba(153, 102, 255, 1)'
-                                                                        ],
-                                                                        borderWidth: 1
-                                                                    }]
-                                                                },
-                                                                options: {
-                                                                    scales: {
-                                                                        y: {
-                                                                            beginAtZero: true
+                                                                var finalVar = [];
+                                                                var finalLabel = [];
+                                                                var red = [];
+                                                                var blue = [];
+                                                                var yellow = [];
+                                                                var green = [];
+                                                                var purple = [];
+                                                                for (let i = 0; i < tableVar.length; i++) {
+                                                                    var contains = tested_status.some(elem => {
+                                                                        return JSON.stringify({
+                                                                            "statu": tableVar[i][1]
+                                                                        }) === JSON.stringify(elem);
+                                                                    });
+                                                                    if (contains) {
+                                                                        finalLabel.push(tableVar[i][1]);
+                                                                        if (tableVar[i][2] == "red") {
+                                                                            red.push(tableVar[i][0]);
+                                                                            blue.push(0);
+                                                                            yellow.push(0);
+                                                                            green.push(0);
+                                                                            purple.push(0);
+                                                                        } else if (tableVar[i][2] == "blue") {
+                                                                            if (i != 0 && blue.every(item => item === 0)) {
+                                                                                if (tableVar[i - 1][2] == 'red') {
+                                                                                    red[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'yellow') {
+                                                                                    yellow[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'green') {
+                                                                                    green[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'purple') {
+                                                                                    purple[i] = tableVar[i][0];
+                                                                                }
+                                                                            }
+                                                                            blue.push(tableVar[i][0]);
+                                                                            red.push(0);
+                                                                            yellow.push(0);
+                                                                            green.push(0);
+                                                                            purple.push(0);
+                                                                        } else if (tableVar[i][2] == "yellow") {
+                                                                            if (i != 0 && yellow.every(item => item === 0)) {
+                                                                                if (tableVar[i - 1][2] == 'red') {
+                                                                                    red[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'blue') {
+                                                                                    blue[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'green') {
+                                                                                    green[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'purple') {
+                                                                                    purple[i] = tableVar[i][0];
+                                                                                }
+                                                                            }
+                                                                            yellow.push(tableVar[i][0]);
+                                                                            blue.push(0);
+                                                                            red.push(0);
+                                                                            green.push(0);
+                                                                            purple.push(0);
+                                                                        } else if (tableVar[i][2] == "green") {
+                                                                            if (i != 0 && green.every(item => item === 0)) {
+                                                                                if (tableVar[i - 1][2] == 'red') {
+                                                                                    red[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'blue') {
+                                                                                    blue[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'yellow') {
+                                                                                    yellow[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'purple') {
+                                                                                    purple[i] = tableVar[i][0];
+                                                                                }
+                                                                            }
+                                                                            green.push(tableVar[i][0]);
+                                                                            blue.push(0);
+                                                                            yellow.push(0);
+                                                                            red.push(0);
+                                                                            purple.push(0);
+                                                                        } else {
+                                                                            if (i != 0 && purple.every(item => item === 0)) {
+                                                                                if (tableVar[i - 1][2] == 'red') {
+                                                                                    red[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'blue') {
+                                                                                    blue[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'yellow') {
+                                                                                    yellow[i] = tableVar[i][0];
+                                                                                } else if (tableVar[i - 1][2] == 'green') {
+                                                                                    green[i] = tableVar[i][0];
+                                                                                }
+                                                                            }
+                                                                            purple.push(tableVar[i][0]);
+                                                                            blue.push(0);
+                                                                            yellow.push(0);
+                                                                            green.push(0);
+                                                                            red.push(0);
                                                                         }
                                                                     }
                                                                 }
-                                                            });
-                                                        },
-                                                        error: function(response) {
-                                                            console.log(response);
-                                                        },
-                                                        complete: function(response) {
-                                                            console.log('complete');
-                                                        }
-                                                    });
-
-                                                    function getMaxTableau(tableauNumérique) {
-                                                        return Math.max.apply(null, tableauNumérique);
-                                                    }
-
-                                                    function summ(table, tested_status, id) {
-                                                        var sumtable = [];
-                                                        let sum = 0;
-                                                        let nonvide = 0;
-
-                                                        for (let b = 0; b < table.length; b++) {
-                                                            var contains = tested_status.some(elem => {
-                                                                return JSON.stringify({
-                                                                    "statu": table[b][1]
-                                                                }) === JSON.stringify(elem);
-                                                            });
-                                                            if (contains) {
-                                                                nonvide++;
-                                                            } else {
-                                                                table[b][0] = null;
+                                                                if (tableVar[tableVar.length - 1][2] == 'red') {
+                                                                    red[0] = tableVar[tableVar.length - 1][0];
+                                                                } else if (tableVar[tableVar.length - 1][2] == 'blue') {
+                                                                    blue[0] = tableVar[tableVar.length - 1][0];
+                                                                } else if (tableVar[tableVar.length - 1][2] == 'yellow') {
+                                                                    yellow[0] = tableVar[tableVar.length - 1][0];
+                                                                } else if (tableVar[tableVar.length - 1][2] == 'green') {
+                                                                    purple[0] = tableVar[tableVar.length - 1][0];
+                                                                }
+                                                                var ctx = document.getElementById('myChart<?= $i ?>').getContext('2d');
+                                                                var myChart = new Chart(ctx, {
+                                                                    type: 'radar',
+                                                                    data: {
+                                                                        labels: finalLabel,
+                                                                        datasets: [{
+                                                                                label: 'Performance individuelle',
+                                                                                data: red,
+                                                                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                                                                borderColor: 'rgb(255, 99, 132)',
+                                                                                borderWidth: 1
+                                                                            },
+                                                                            {
+                                                                                label: 'Capacité de communication interpersonnelle',
+                                                                                data: blue,
+                                                                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                                                borderColor: 'rgb(54, 162, 235)',
+                                                                                borderWidth: 1
+                                                                            },
+                                                                            {
+                                                                                label: 'Capacité de manager',
+                                                                                data: yellow,
+                                                                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                                                                borderColor: 'rgb(255, 206, 86)',
+                                                                                borderWidth: 1
+                                                                            },
+                                                                            {
+                                                                                label: 'Autonomie',
+                                                                                data: green,
+                                                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                                                borderColor: 'rgb(75, 192, 192)',
+                                                                                borderWidth: 1
+                                                                            },
+                                                                            {
+                                                                                label: 'Maîtrise de soi',
+                                                                                data: purple,
+                                                                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                                                                borderColor: 'rgba(153, 102, 255)',
+                                                                                borderWidth: 1
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    options: {
+                                                                        scales: {
+                                                                            y: {
+                                                                                beginAtZero: true
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+                                                            },
+                                                            error: function(response) {
+                                                                console.log(response);
+                                                            },
+                                                            complete: function(response) {
+                                                                console.log('complete');
                                                             }
-                                                            sum += table[b][0];
+                                                        });
+
+                                                        function getMaxTableau(tableauNumérique) {
+                                                            return Math.max.apply(null, tableauNumérique);
                                                         }
-                                                        sumtable[0] = sum;
-                                                        sumtable[1] = nonvide;
-                                                        return sumtable;
-                                                    }
-                                                </script>
-                                            </div>
-                                        <?php
-                                        }
-                                        ?>
+
+                                                        function summ(table, tested_status, id) {
+                                                            var sumtable = [];
+                                                            let sum = 0;
+                                                            let nonvide = 0;
+
+                                                            for (let b = 0; b < table.length; b++) {
+                                                                var contains = tested_status.some(elem => {
+                                                                    return JSON.stringify({
+                                                                        "statu": table[b][1]
+                                                                    }) === JSON.stringify(elem);
+                                                                });
+                                                                if (contains) {
+                                                                    nonvide++;
+                                                                } else {
+                                                                    table[b][0] = null;
+                                                                }
+                                                                sum += table[b][0];
+                                                            }
+                                                            sumtable[0] = sum;
+                                                            sumtable[1] = nonvide;
+                                                            return sumtable;
+                                                        }
+                                                    </script>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" id="exportPdf<?= $i ?>">Télécharger</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success" id="exportPdf<?= $i ?>">Télécharger</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 <?php
+                    }
                 }
                 ?>
                 <?php
-                if ($candidature['statut'] == "En cours") {
+                if ($candidature['statut'] == "En cours" and isset($questions)) {
                 ?>
                     <!-- Block level buttons start -->
                     <section id="block-level-buttons">
@@ -897,10 +1024,10 @@ if (count($candidature) != 0) {
                                         <div class="card-body" style="background-color: none;">
                                             <div class="row">
                                                 <div class="col">
-                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=success"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?= htmlentities("Admis à entretien") ?>"><button type="button" class="btn mb-1 btn-outline-success btn-lg btn-block">Accepter le candidat</button></a>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=failure"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Resufer le candidat</button></a>
+                                                    <a href="php/edit_rh_statut.php?num=<?= $_GET['num'] ?>&type=<?= htmlentities("Refusé avant entretien") ?>"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Refuser le candidat</button></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -916,7 +1043,6 @@ if (count($candidature) != 0) {
             <!-- Block level buttons end -->
         </div>
     </div>
-    </div>
     <!-- END: Content-->
 
     <!-- BEGIN: Vendor JS-->
@@ -927,6 +1053,7 @@ if (count($candidature) != 0) {
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
+    <script src="../../../cuba/assets/js/bootstrap/popper.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -967,7 +1094,7 @@ if (count($candidature) != 0) {
             function downloadPDFWithjsPDF(val, qualitatif) {
                 if (qualitatif == "Non") {
                     var doc = new jspdf.jsPDF('p', 'pt', 'a4');
-                    var qcm = document.querySelector('#name-qcm').innerText;
+                    var qcm = document.querySelector('#name-qcm' + val).innerText;
 
                     doc.setFontSize(20);
                     doc.text('Résultat du qcm : ' + qcm, doc.internal.pageSize.width / 2, 60, null, null, 'center');
@@ -994,10 +1121,11 @@ if (count($candidature) != 0) {
                     doc.text("Résultats", doc.internal.pageSize.width / 2, 260, null, null, 'center');
 
                     doc.setFontSize(12);
-                    doc.text(document.querySelector('#total').innerText, doc.internal.pageSize.width - 40, 278, null, null, 'right');
+                    doc.text(document.querySelector('#total' + val).innerText, doc.internal.pageSize.width - 40, 278, null, null, 'right');
+                    doc.text(document.querySelector('#pourcentage' + val).innerText, doc.internal.pageSize.width - 40, 296, null, null, 'right');
                     doc.autoTable({
                         html: '#table' + val,
-                        startY: 290,
+                        startY: 314,
 
                         margin: {
                             horizontal: 40
@@ -1055,7 +1183,7 @@ if (count($candidature) != 0) {
                         pageSize.getHeight();
                     doc.text(str, doc.internal.pageSize.width - 30, pageHeight - 10);
 
-                    var qcm = document.querySelector('#name-qcm').innerText;
+                    var qcm = document.querySelector('#name-qcm' + val).innerText;
 
                     doc.setFontSize(20);
                     doc.text('Résultat du qcm : ' + qcm, doc.internal.pageSize.width / 2, 60, null, null, 'center');
