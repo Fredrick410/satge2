@@ -130,10 +130,17 @@ require_once 'php/get_documents.php';
                             </div> 
                         </li>
                         <li class="col-4">
+                            <?php if($doc_contrat == "1"){ ?>
+                            <a class="btn btn-contrat" href="" target="_blank">
+                            <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
+                            <label>Voir mon contrat</label>
+                            </a>
+                            <?php }else{ ?>
                             <a class="btn btn-contrat" href="generate-pdf-2.php" target="_blank">
                                 <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
                                 <label>Générer mon contrat</label>
                             </a>
+                            <?php } ?>
                         </li>
                     </ul>
             </div>
