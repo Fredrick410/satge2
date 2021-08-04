@@ -105,7 +105,7 @@ require_once 'php/get_documents.php';
             </div>
             <div class="col-8 m-0 p-2" id="div-info">
                     <ul class="row">
-                        <li class="col-6">
+                        <li class="col-4">
                             <div class="form-group" id="info-gauche">
                                 <div class="form-row m-0 p-2">
                                     <label>Prénom du dirigeant</label>
@@ -117,7 +117,7 @@ require_once 'php/get_documents.php';
                                 </div>
                             </div>
                         </li>
-                        <li class="col-6">
+                        <li class="col-4">
                             <div class="form-group" id="info-droite">
                                 <div class="form-row m-0 p-2">
                                     <label>Nom du dirigeant</label>
@@ -128,6 +128,9 @@ require_once 'php/get_documents.php';
                                     <p name="tel_diri" class="form-control"> <?= $crea['tel_diri'] ?> </p>
                                 </div> 
                             </div> 
+                        </li>
+                        <li class="col-4">
+                            
                         </li>
                     </ul>
             </div>

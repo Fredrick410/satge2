@@ -259,7 +259,7 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Nom de l'entreprise (Non-modifiable)</label>
-                                                                            <input type="text" name="name_crea" id="name_crea" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['name_crea'] ?>" disabled>
+                                                                            <input type="text" name="name_crea" id="name_crea" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['name_crea'] ?>" readonly>
                                                                         </div>
                                                                     </div>
                                                                 </div>                                    
@@ -288,6 +288,14 @@ require_once 'php/verif_session_crea.php';
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Secteur d'activité</label>
+                                                                            <input type="text" name="secteur_dactivite" id="secteur_dactivite" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['secteur_dactivite'] ?>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div> 
                                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
                                                                     <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark">Sauvegarder</button>
                                                                 </div>
