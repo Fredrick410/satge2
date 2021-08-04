@@ -3,7 +3,7 @@ include "mail.php";
 $message = "Bonjour,\n\n" .
 "Vous venez de valider votre dépot de document. La prochaine etape est la réalisation du test prévu pour ce poste.\n\n" .
 "Merci d'utiliser le lien suivant pour acceder au test: lien.\n\n" .
-"Il est aussi disponible dans le cas ou vous souhaitez le faire plus tard et sera invalide dès la finalisation de votre candidature.\n\n" .
+"Il est aussi disponible dans le cas ou vous souhaitez le faire plus tard et sera indisponible dès la finalisation de votre candidature.\n\n" .
 "A bientôt !\n\n" .
 "Service des Ressources Humaines.\n\n" .
 "Envoyé par Coqpix.";
