@@ -1,64 +1,78 @@
-<?php 
-
+<?php
 error_reporting(E_ALL);
 session_start();
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-    $explode = explode(';',$_GET['key']);
+$explode = explode(';', $_GET['key']);
 
-    $num = $explode[2];
+$num = $explode[2];
 
-    $pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
-    $pdoSta->bindValue(':num',$num);
-    $pdoSta->execute();
-    $annonce = $pdoSta->fetch();
+$pdoSta = $bdd->prepare('SELECT * FROM rh_annonce WHERE id=:num');
+$pdoSta->bindValue(':num', $num);
+$pdoSta->execute();
+$annonce = $pdoSta->fetch();
 
-    $pdoSta = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat=:key_candidat');
-    $pdoSta->bindValue(':key_candidat',$_GET['key']);
-    $pdoSta->execute();
-    $candidat = $pdoSta->fetch();
+$pdoSta = $bdd->prepare('SELECT * FROM rh_candidature WHERE key_candidat=:key_candidat');
+$pdoSta->bindValue(':key_candidat', $_GET['key']);
+$pdoSta->execute();
+$candidat = $pdoSta->fetch();
+if(count($candidat) == 0){
+    header('Location: https://www.google.com/');
+}
 
-    if(isset($_POST['code_annonce'])){
+$pdoSta = $bdd->prepare("SELECT COUNT(*) AS nb FROM reponses_qcm_candidat INNER JOIN rh_candidature ON (rh_candidature.id = reponses_qcm_candidat.idcandidat) WHERE key_candidat=:key_candidat");
+$pdoSta->bindValue(':key_candidat', $_GET['key']);
+$pdoSta->execute();
+$reponses_candidat = $pdoSta->fetch(PDO::FETCH_ASSOC);
+if($reponses_candidat['nb'] != 0){
+    $_SESSION['message'] = 'Vous avez déjà passé cette étape';
+    header("Location: candidature-recrutement.php?num=$num");
+}
 
-        $code = $_POST['code_annonce'];
-        $name = $_GET['annonce'];
+if(!isset($_SESSION['key_candidat'])){
+    $_SESSION['key_candidat'] = $_GET['key'];
+}
 
-        $query = $bdd->prepare("SELECT * FROM rh_annonce WHERE code_annonce = :code"); 
-        $query->bindValue(':code',$code);
-        $query->execute();
-        $count = $query->rowCount();
+if (isset($_POST['code_annonce'])) {
 
-        if($count >= 1) 
-        {
-            $_SESSION['invite'] = $_GET['num'];
+    $code = $_POST['code_annonce'];
+    $name = $_GET['annonce'];
 
-            header('Location: candidature-recrutement.php?'.$annonce['link'].'$req=true');
-            exit();
-        }else{
+    $query = $bdd->prepare("SELECT * FROM rh_annonce WHERE code_annonce = :code");
+    $query->bindValue(':code', $code);
+    $query->execute();
+    $count = $query->rowCount();
 
-            header('Location: candidature-recrutement.php?'.$annonce['link'].'&req=false');
-            exit();
-        }  
+    if ($count >= 1) {
+        $_SESSION['invite'] = $_GET['num'];
+
+        header('Location: candidature-recrutement.php?' . $annonce['link'] . '$req=true');
+        exit();
+    } else {
+
+        header('Location: candidature-recrutement.php?' . $annonce['link'] . '&req=false');
+        exit();
     }
+}
 
-    if($annonce['code_annonce'] == ""){
+if ($annonce['code_annonce'] == "") {
+    $locked = "red";
+    $none_bts = "";
+    $none_btd = "none-validation";
+} else {
+    if (empty($_SESSION['invite'])) {
         $locked = "red";
         $none_bts = "";
         $none_btd = "none-validation";
-    }else{
-        if(empty($_SESSION['invite'])){
-            $locked = "red";
-            $none_bts = "";
-            $none_btd = "none-validation";
-        }else{
-            $locked = "green";
-            $none_bts = "none-validation";
-            $none_btd = "";
-        }
+    } else {
+        $locked = "green";
+        $none_bts = "none-validation";
+        $none_btd = "";
     }
-    
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -104,11 +118,20 @@ require_once 'php/config.php';
 <!-- BEGIN: Body-->
 
 <body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
-<style>
-    .none-validation{display: none;}
-    .text_a{color: grey; cursor: pointer;}
-    .text_a:hover{color: orange;}
-</style>
+    <style>
+        .none-validation {
+            display: none;
+        }
+
+        .text_a {
+            color: grey;
+            cursor: pointer;
+        }
+
+        .text_a:hover {
+            color: orange;
+        }
+    </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: <?= $annonce['color_annonce'] ?>;">
         <div class="navbar-header d-xl-block d-none">
@@ -117,23 +140,6 @@ require_once 'php/config.php';
                         <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
                     </a></li>
             </ul>
-        </div>
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
-                        <li class="dropdown dropdown-user nav-item">
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="php/disconnect-admin.php"><i class="bx bx-power-off mr-50"></i> Se déconnecter</a>
-                            </div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                    </ul>
-                    <ul class="nav navbar-nav float-right d-flex align-items-center">                        
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" style="cursor: pointer; font-size: 25px; color: <?= $locked ?>;" data-toggle="modal" data-target="#info"><i class='bx bxs-lock'></i></a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </nav>
     <!-- END: Header-->
@@ -149,20 +155,33 @@ require_once 'php/config.php';
                         <h4>Etape 3 - Téléchargement des fichiers</h4>
                     </div>
                     <div class="form-group">
-                        <h5 style='padding-left: 20px;'>Annonce N°<?= $annonce['id'] ?> - <?= $annonce['name_annonce'] ?> - <?php if($candidat['sexe_candidat'] == "femme"){echo "Mme ".$candidat['nom_candidat']."";}else{echo 'Mr '.$candidat['nom_candidat'].'';} ?> <p style="display: inline; color: <?php if($annonce['statut'] == "actif"){echo "green";}else{echo 'red';} ?>;">(<?php if($annonce['statut'] == "actif"){echo "Actif";}else{echo 'En pause';} ?>)</p></h5>
+                        <h5 style='padding-left: 20px;'>Annonce N°<?= $annonce['id'] ?> - <?= $annonce['name_annonce'] ?> - <?php if ($candidat['sexe_candidat'] == "femme") {
+                                                                                                                                echo "Mme " . $candidat['nom_candidat'] . "";
+                                                                                                                            } else {
+                                                                                                                                echo 'Mr ' . $candidat['nom_candidat'] . '';
+                                                                                                                            } ?> <p style="display: inline; color: <?php if ($annonce['statut'] == "actif") {
+                                                                                                                                                                        echo "green";
+                                                                                                                                                                    } else {
+                                                                                                                                                                        echo 'red';
+                                                                                                                                                                    } ?>;">(<?php if ($annonce['statut'] == "actif") {
+                                                                                                                                                                                echo "Actif";
+                                                                                                                                                                            } else {
+                                                                                                                                                                                echo 'En pause';
+                                                                                                                                                                            } ?>)</p>
+                        </h5>
                     </div>
                     <div class="form-group" style='padding-left: 20px;'>
                         <div class="form-group line">
                             <h4>CONDITIONS D'ACCEPTATIONS</h4>
                         </div>
                         <div class="form-group">
-                            <p>Les documents demandé devront respecter l'intégralité des condictions sous peine d'un refus de création d'entreprise.</p>
+                            <p>Les documents demandés devront respecter l'intégralité des conditions sous peine d'un refus de candidature.</p>
                             <div class="form-group">
                                 <p>Les documents devront :</p>
-                                <label> - Être fournie sous un format numérique de préférence en PDF. (PNG, JPG, JPEG)</label><br>
-                                <label> - Être fournie en intégralité (Tous les bords visibles)</label><br>
-                                <label> - Être fournie en couleur de préférence.</label><br>
-                                <label> - Être parfaitement net et visible</label>
+                                <label> - Être fournis sous un format numérique de préférence en PDF. (PNG, JPG, JPEG)</label><br>
+                                <label> - Être fournis en intégralité (Tous les bords visibles)</label><br>
+                                <label> - Être fournis en couleur de préférence.</label><br>
+                                <label> - Être parfaitement nets et visibles</label>
                             </div>
                         </div>
                     </div>
@@ -172,122 +191,115 @@ require_once 'php/config.php';
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col border <?php if($candidat['cv_doc'] !== ""){echo "none-validation";} ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
+                        <div class="col border <?php if ($candidat['cv_doc'] !== "") {
+                                                    echo "none-validation";
+                                                } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Dépot de votre CV</label>                   
+                                <label>Dépot de votre CV</label>
                             </div>
                             <div class="form-group">
                                 <a href="https://www.cidj.com/emploi-jobs-stages/nos-conseils-pour-trouver-un-job-ou-un-emploi/comment-rediger-son-cv-pour-trouver-un-emploi" target="_blank"><small class="text_a">Comment bien réaliser son cv ?</small></a>
                             </div>
                             <div class="form-group">
                                 <label>Mon cv</label>
-                                <a href="candidature-recrutement-files-two.php?key=<?= $_GET['key'] ?>&document=cv"><div class="custom-file" style="cursor: pointer;">
-                                    <input class="custom-file-input" id="inputGroupFile01">
-                                    <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
-                                </div></a>
+                                <a href="candidature-recrutement-files-two.php?key=<?= $_GET['key'] ?>&document=cv">
+                                    <div class="custom-file" style="cursor: pointer;">
+                                        <input class="custom-file-input" id="inputGroupFile01">
+                                        <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col border <?php if($candidat['cv_doc'] == ""){echo "none-validation";} ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
+                        <div class="col border <?php if ($candidat['cv_doc'] == "") {
+                                                    echo "none-validation";
+                                                } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Cv déja deposé !</label>                   
+                                <label>Cv déja deposé !</label>
                             </div>
                             <div class="form-group">
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <p><?= $candidat['cv_doc'] ?> <a href="../../../src/recrutement/cv/<?= $candidat['cv_doc'] ?>" download><i class="bx bx-download"></i></a></p>
+                                <p><?= $candidat['cv_doc'] ?> <a id="cv" href="../../../src/recrutement/cv/<?= $candidat['cv_doc'] ?>" download><i class="bx bx-download"></i></a><a href="#" id="delete-cv" class="bx bx-trash"></a></p>
                             </div>
                         </div>
-                        <div class="col border <?php if($candidat['lettredemotivation_doc'] !== ""){echo "none-validation";} ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
+                        <div class="col border <?php if ($candidat['lettredemotivation_doc'] !== "") {
+                                                    echo "none-validation";
+                                                } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Dépot de la lettre de motivation</label>                   
+                                <label>Dépot de la lettre de motivation</label>
                             </div>
                             <div class="form-group">
                                 <a href="https://www.jobup.ch/fr/job-coach/conseils-checklistes/comment-rediger-une-bonne-lettre-de-motivation/" target="_blank"><small class="text_a">Comment bien écrire ma lettre de motivation ?</small></a>
                             </div>
                             <div class="form-group">
                                 <label>Ma lettre de motivation</label>
-                                <a href="candidature-recrutement-files-two.php?key=<?= $_GET['key'] ?>&document=lettredemotivation"><div class="custom-file" style="cursor: pointer;">
-                                    <input class="custom-file-input" id="inputGroupFile01">
-                                    <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
-                                </div></a>
+                                <a href="candidature-recrutement-files-two.php?key=<?= $_GET['key'] ?>&document=lettredemotivation">
+                                    <div class="custom-file" style="cursor: pointer;">
+                                        <input class="custom-file-input" id="inputGroupFile01">
+                                        <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col border <?php if($candidat['lettredemotivation_doc'] == ""){echo "none-validation";} ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
+                        <div class="col border <?php if ($candidat['lettredemotivation_doc'] == "") {
+                                                    echo "none-validation";
+                                                } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Lettre de motivation déja deposé !</label>                   
+                                <label>Lettre de motivation déja deposé !</label>
                             </div>
                             <div class="form-group">
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <p><?= $candidat['lettredemotivation_doc'] ?> <a href="../../../src/recrutement/lzttredemotivation/<?= $candidat['lettredemotivation_doc'] ?>" download><i class="bx bx-download"></i></a></p>
+                                <p><?= $candidat['lettredemotivation_doc'] ?> <a id="lettredemotivation" href="../../../src/recrutement/lettredemotivation/<?= $candidat['lettredemotivation_doc'] ?>" download><i class="bx bx-download"></i></a><a href="#" id="delete-lettredemotivation" class="bx bx-trash"></a></p>
                             </div>
                         </div>
-                        <div class="col border <?php if($candidat['other_doc'] !== ""){echo "none-validation";} ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
+                        <div class="col border <?php if ($candidat['other_doc'] !== "") {
+                                                    echo "none-validation";
+                                                } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Dépot de documents supplementaires</label>                   
+                                <label>Dépot de documents supplementaires</label>
                             </div>
                             <div class="form-group">
                                 <br>
                             </div>
                             <div class="form-group">
                                 <label>Autres documents</label>
-                                <a href="candidature-recrutement-files-two.php?key=<?= $_GET['key'] ?>&document=other"><div class="custom-file" style="cursor: pointer;">
-                                    <input class="custom-file-input" id="inputGroupFile01">
-                                    <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
-                                </div></a>
+                                <a href="candidature-recrutement-files-two.php?key=<?= $_GET['key'] ?>&document=other">
+                                    <div class="custom-file" style="cursor: pointer;">
+                                        <input class="custom-file-input" id="inputGroupFile01">
+                                        <label class="custom-file-label" for="inputGroupFile01">Choisir un fichier</label>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col border <?php if($candidat['other_doc'] == ""){echo "none-validation";} ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
+                        <div class="col border <?php if ($candidat['other_doc'] == "") {
+                                                    echo "none-validation";
+                                                } ?>" style="margin: 50px; background-color: #d7cfcd; border-radius: 10px;">
                             <div class="form-group text-center" style="padding-top: 20px;">
-                                <label>Cv déja deposé !</label>                   
+                                <label>Autre document déja deposé !</label>
                             </div>
                             <div class="form-group">
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <p><?= $candidat['other_doc'] ?> <a href="../../../src/recrutement/other/<?= $candidat['other_doc'] ?>" download><i class="bx bx-download"></i></a></p>
+                                <p><?= $candidat['other_doc'] ?> <a id="other" href="../../../src/recrutement/other/<?= $candidat['other_doc'] ?>" download><i class="bx bx-download"></i></a><a href="#" id="delete-other" class="bx bx-trash"></a></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group text-center">
-                    <!-- Button trigger for default modal -->
-                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#defaultSize">
-                        Validation de votre candidature
-                    </button>
-
-                    <!--Default size Modal -->
-                    <div class="modal fade text-left" id="defaultSize" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel18">Félicitation !</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <i class="bx bx-x"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Vous aurez la possibilitée de voir le suivit de votre candidature avec les informations
-                                    suivante : <br><br>
-                                    Clé d'authentification : <?= $explode[0] ?>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Annuler</span>
-                                    </button>
-                                    <a href="https://www.google.com/"><button type="button" class="btn btn-success ml-1">
-                                        <i class="bx bx-check d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Confirmer</span>
-                                    </button></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <!--Modal lg size -->
+                <div id="message">
                 </div>
+                <form action="php/valider_documents.php" method="post">
+                    <div class="form-group text-center">
+                        <!-- Button trigger for default modal -->
+                        <button type="submit" class="btn btn-outline-success" name="confirm" value="confirm">
+                            Validation de vos documents
+                        </button>
+                        <input type="hidden" name="key" value="<?= htmlspecialchars($_GET['key']) ?>">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -302,22 +314,98 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="../../../cuba/assets/js/jquery-3.5.1.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
     <script src="../../../app-assets/js/scripts/configs/horizontal-menu.js"></script>
     <script src="../../../app-assets/js/core/app-menu.js"></script>
-    <script src="../../../app-assets/js/core/app.js"></script>
-    <script src="../../../app-assets/js/scripts/components.js"></script>
     <script src="../../../app-assets/js/scripts/footer.js"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/modal/components-modal.js"></script>
-    <script src="../../../app-assets/js/scripts/forms/wizard-steps.js"></script>
+    <script>
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
+        $(document).ready(function() {
+            $('#delete-cv').click(function() {
+                key = '<?= htmlspecialchars($_GET['key']) ?>';
+                cv = document.getElementById('cv').href;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/delete-file.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        filepath: cv,
+                        key: key
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            window.location.reload();
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
+            });
+
+            $('#delete-lettredemotivation').click(function() {
+                key = '<?= htmlspecialchars($_GET['key']) ?>';
+                cv = document.getElementById('lettredemotivation').href;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/delete-file.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        filepath: cv,
+                        key: key
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            window.location.reload();
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
+            });
+
+            $('#delete-other').click(function() {
+                key = '<?= htmlspecialchars($_GET['key']) ?>';
+                cv = document.getElementById('other').href;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/delete-file.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        filepath: cv,
+                        key: key
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            window.location.reload();
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     <!-- END: Page JS-->
-    <!-- TIMEOUT -->
-    <?php include('timeout.php'); ?>
 </body>
 <!-- END: Body-->
 

@@ -250,24 +250,21 @@ $entreprise = $pdoSta->fetch();
                                                             <label for="critere" class="col-form-label">Critère evalué</label>
                                                             <select class="form-control" name="critere" id="critere">
                                                                 <option value="">Selectionner un critère d'évaluation</option>
-                                                                <option <?php if ($question['statu'] == "paramA") {
-                                                                            echo "selected";
-                                                                        } ?>>paramA</option>
-                                                                <option <?php if ($question['statu'] == "paramB") {
-                                                                            echo "selected";
-                                                                        } ?>>paramB</option>
-                                                                <option <?php if ($question['statu'] == "paramC") {
-                                                                            echo "selected";
-                                                                        } ?>>paramC</option>
-                                                                <option <?php if ($question['statu'] == "paramD") {
-                                                                            echo "selected";
-                                                                        } ?>>paramD</option>
-                                                                <option <?php if ($question['statu'] == "paramE") {
-                                                                            echo "selected";
-                                                                        } ?>>paramE</option>
-                                                                <option <?php if ($question['statu'] == "paramF") {
-                                                                            echo "selected";
-                                                                        } ?>>paramF</option>
+                                                                <option value="paramA" <?php if ($question['statu'] == "paramA") {
+                                                                                            echo "selected";
+                                                                                        } ?>>Performance individuelle</option>
+                                                                <option value="paramB" <?php if ($question['statu'] == "paramB") {
+                                                                                            echo "selected";
+                                                                                        } ?>>Capacité de communication interpersonnelle</option>
+                                                                <option value="paramC" <?php if ($question['statu'] == "paramC") {
+                                                                                            echo "selected";
+                                                                                        } ?>>Capacité de manager</option>
+                                                                <option value="paramD" <?php if ($question['statu'] == "paramD") {
+                                                                                            echo "selected";
+                                                                                        } ?>>Autonomie</option>
+                                                                <option value="paramE" <?php if ($question['statu'] == "paramE") {
+                                                                                            echo "selected";
+                                                                                        } ?>>Maîtrise de soi</option>
                                                             </select>
                                                         </div>
 
@@ -569,6 +566,7 @@ $entreprise = $pdoSta->fetch();
                         critere: critere,
                         critere_reponse: critere_reponse
                     },
+                    dataType: "json",
                     success: function(data) {
                         if (data.status == "success") {
                             addAlert("Question mise a jour", "success");

@@ -1,31 +1,31 @@
-<?php 
-
-include 'php/verif_session_connect.php';
+<?php
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+$authorised_roles = array('admin', 'rh');
+require_once 'php/verif_session_connect.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise',$_SESSION['id']);
-    $true = $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+$pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+$pdoS->bindValue(':numentreprise', $_SESSION['id']);
+$true = $pdoS->execute();
+$entreprise = $pdoS->fetch();
 
-    $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num ORDER BY id DESC LIMIT 4');
-    $pdoS->bindValue(':num',$_SESSION['id_session']);
-    $pdoS->execute();
-    $candidature_limit = $pdoS->fetchAll();
+$pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num ORDER BY id DESC LIMIT 4');
+$pdoS->bindValue(':num', $_SESSION['id_session']);
+$pdoS->execute();
+$candidature_limit = $pdoS->fetchAll();
 
-    $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num');
-    $pdoS->bindValue(':num',$_SESSION['id_session']);
-    $pdoS->execute();
-    $candidature = $pdoS->fetchAll();
+$pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num');
+$pdoS->bindValue(':num', $_SESSION['id_session']);
+$pdoS->execute();
+$candidature = $pdoS->fetchAll();
 
-    $pdoS = $bdd->prepare('SELECT * FROM rh_annonce WHERE id_session = :num');
-    $pdoS->bindValue(':num',$_SESSION['id_session']);
-    $pdoS->execute();
-    $annonce = $pdoS->fetchAll();
-    $count_annonce = count($annonce);
+$pdoS = $bdd->prepare('SELECT * FROM rh_annonce WHERE id_session = :num');
+$pdoS->bindValue(':num', $_SESSION['id_session']);
+$pdoS->execute();
+$annonce = $pdoS->fetchAll();
+$count_annonce = count($annonce);
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +46,11 @@ require_once 'php/config.php';
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/charts/apexcharts.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/pickers/daterange/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/searchPanes.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/searchPanes.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/select.dataTables.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -72,10 +75,16 @@ require_once 'php/config.php';
 
 <!-- BEGIN: Body-->
 
-<body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
-<style>
-    .none-validation{display: none;}
-</style>
+<body class="vertical-layout vertical-menu-modern <?php if ($entreprise['theme_web'] == "light") {
+                                                        echo "semi-";
+                                                    } ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if ($entreprise["theme_web"] == "light") {
+                                                                                                                                                                                                        echo "semi-";
+                                                                                                                                                                                                    } ?>dark-layout">
+    <style>
+        .none-validation {
+            display: none;
+        }
+    </style>
     <!-- BEGIN: Header-->
     <?php $btnreturn = true;
     include('php/menu_header_front.php'); ?>
@@ -100,21 +109,23 @@ require_once 'php/config.php';
                     <div class="row">
                         <div class="col-md-12 mt-1">
                             <div class="card-columns">
-                                <div class="form-group <?php if($count_annonce > 0){echo "none-validation";} ?>">
+                                <div class="form-group <?php if ($count_annonce > 0) {
+                                                            echo "none-validation";
+                                                        } ?>">
                                     Aucune annonce de recrutement
                                 </div>
-                                <?php foreach($annonce as $annonces): ?>
-                                <?php
-                                
+                                <?php foreach ($annonce as $annonces) : ?>
+                                    <?php
+
                                     $pdoS = $bdd->prepare('SELECT * FROM rh_candidature WHERE id_session = :num AND name_annonce=:name_annonce');
-                                    $pdoS->bindValue(':num',$_SESSION['id_session']);
-                                    $pdoS->bindValue(':name_annonce',$annonces['name_annonce']);
+                                    $pdoS->bindValue(':num', $_SESSION['id_session']);
+                                    $pdoS->bindValue(':name_annonce', $annonces['name_annonce']);
                                     $pdoS->execute();
                                     $candidature_candidature = $pdoS->fetchAll();
-                                    $count_candidature = count($candidature_candidature); 
+                                    $count_candidature = count($candidature_candidature);
                                     $link = $annonces['link'];
-                                ?>
-                                    <div class="card text-center bg-transparent" style="border-right: none; border-bottom: none; border-top: none; border-left: 5px solid <?= $annonces['color_annonce'] ?>;" >
+                                    ?>
+                                    <div class="card text-center bg-transparent" style="border-right: none; border-bottom: none; border-top: none; border-left: 5px solid <?= $annonces['color_annonce'] ?>;">
                                         <div class="card-content">
                                             <div class="card-body">
                                                 <div class="form-group">
@@ -122,7 +133,7 @@ require_once 'php/config.php';
                                                 </div>
                                                 <div class="form-group">
                                                     <span>Nombre de candidature : <?= $count_candidature ?> candidats</span><br>
-                                                    <textarea id="to-copy"><?= str_replace("rh-recrutement-list.php", "candidature-recrutement.php?$link", "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]")?></textarea>
+                                                    <textarea id="to-copy"><?= str_replace("rh-recrutement-list.php", "candidature-recrutement.php?$link", "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?></textarea>
                                                     <button id="copy" type="button" style="border: none;"><span style="color: <?= $annonces['color_annonce'] ?>; cursor: pointer;">Cliquez pour copier le lien de partage <i class='bx bxs-copy-alt' style="position: relative; top: 2px;"></i></span></button>
                                                 </div>
                                                 <div class="row">
@@ -130,7 +141,51 @@ require_once 'php/config.php';
                                                         <a href="rh-recrutement-list-details.php?annonce=<?= $annonces['name_annonce'] ?>"><button class="btn mt-50" style="background-color: <?= $annonces['color_annonce'] ?>; color: white;">Voir</button></a>
                                                     </div>
                                                     <div class="col">
-                                                        <a href="php/change_delete_rh_annonce.php?fonction=change&num=<?= $annonces['id'] ?>&statut=<?php if($annonces['statut'] == "actif"){ echo "actif";}else{echo "pause";} ?>"><button class="btn btn-<?php if($annonces['statut'] == "actif"){ echo "warning";}else{echo "success";} ?> mt-50"><?php if($annonces['statut'] == "actif"){ echo "Pause";}else{echo "Activer";} ?></button></a>
+                                                        <?php
+                                                        if ($annonces['statut'] == "actif") {
+                                                        ?>
+                                                            <a href="php/change_delete_rh_annonce.php?fonction=change&num=<?= $annonces['id'] ?>&statut=actif"><button class="btn btn-warning mt-50">Pause</button></a>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <button type="button" class="btn btn-success mt-50" data-toggle="modal" data-target="#activer<?= $annonces['id'] ?>">Activer</button>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                        <div class="modal fade" id="activer<?= $annonces['id'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Activer annonce</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <i class="bx bx-x"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="form-group">
+                                                                            <label for="moment-activation<?= $annonces['id'] ?>" class="form-control-label">Quand activer l'annonce?</label>
+                                                                            <select name="moment-activation<?= $annonces['id'] ?>" id="moment-activation<?= $annonces['id'] ?>" class="form-control">
+                                                                                <option value="now">Maintenant</option>
+                                                                                <option value="later">Plus tard</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group" id="date-form<?= $annonces['id'] ?>" style="display: none;">
+                                                                            <label for="date<?= $annonces['id'] ?>" class="form-control-label">Date d'activation</label>
+                                                                            <input type="date" name="date<?= $annonces['id'] ?>" id="date<?= $annonces['id'] ?>" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                                            <span class="d-none d-sm-block">Annuler</span>
+                                                                        </button>
+                                                                        <button type="button" value="<?= $annonces['id'] ?>" class="btn btn-success active-annonce">
+                                                                            <span class="d-none d-sm-block">Activer</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col">
                                                         <a href="php/change_delete_rh_annonce.php?num=<?= $annonces['id'] ?>&fonction=delete"><button class="btn mt-50" style="background-color: #ea0000; color: white;">Supprimer</button></a>
@@ -155,54 +210,86 @@ require_once 'php/config.php';
                     <div class="card">
                         <div class="table-responsive">
                             <!-- table start -->
-                            <table id="table-marketing-campaigns" class="table mb-0">
+                            <table class="table">
                                 <thead>
-                                    <tr>
-                                        <th>Nom</th>
-                                        <th>Nom de l'annonce</th>
-                                        <th>Age</th>
-                                        <th>Durée</th>
-                                        <th>Statut</th>
-                                        <th>Action</th>
+                                    <tr class="group" style="background-color: gainsboro;">
+                                        <th colspan="6">Dernières candidatures recues</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="group">
-                                        <td colspan="6">Aujourd'hui</td>
-                                    </tr>
-                                    <?php foreach($candidature_limit as $candidatures_limit): ?>
-                                        <tr>
-                                            <td class="text-bold-600"><img class="rounded-circle mr-1" src="../../../app-assets/images/cards/face-regular-24.png" alt="card"><?= $candidatures_limit['nom_candidat'] ?> <?= $candidatures_limit['prenom_candidat'] ?></td>
-                                            <td><?= $candidatures_limit['name_annonce'] ?></td>
-                                            <td class="text-bold-600"><span><?= $candidatures_limit['age_candidat'] ?> ans</span>
-                                            </td>
-                                            <td class="text-bold-600"><?= $candidatures_limit['time_candidat'] ?></td>
-                                            <td class="text-success"><?= $candidatures_limit['statut'] ?></td>
-                                            <td>
-                                                <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures_limit['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    <tr class="group">
-                                        <td colspan="6">Tous les jours</td>
-                                    </tr>
-                                    <?php foreach($candidature as $candidatures): ?>
-                                        <tr>
-                                            <td class="text-bold-600"><img class="rounded-circle mr-1" src="../../../app-assets/images/cards/face-regular-24.png" alt="card"><?= $candidatures['nom_candidat'] ?> <?= $candidatures['prenom_candidat'] ?></td>
-                                            <td><?= $candidatures['name_annonce'] ?></td>
-                                            <td class="text-bold-600"><span><?= $candidatures['age_candidat'] ?> ans</span>
-                                            </td>
-                                            <td class="text-bold-600"><?= $candidatures['time_candidat'] ?></td>
-                                            <td class="text-success"><?= $candidatures['statut'] ?></td>
-                                            <td>
-                                                <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures['id'] ?>">Voir &nbsp&nbsp&nbsp<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                    <table id="table-candidatures-last" class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Nom de l'annonce</th>
+                                                <th>Age</th>
+                                                <th>Durée</th>
+                                                <th>Statut</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($candidature_limit as $candidatures_limit) : ?>
+                                                <tr>
+                                                    <td class="text-bold-600"><img class="rounded-circle mr-1" src="../../../app-assets/images/cards/face-regular-24.png" alt="card"><?= $candidatures_limit['nom_candidat'] ?> <?= $candidatures_limit['prenom_candidat'] ?></td>
+                                                    <td><?= $candidatures_limit['name_annonce'] ?></td>
+                                                    <td class="text-bold-600"><span><?= $candidatures_limit['age_candidat'] ?> ans</span>
+                                                    </td>
+                                                    <td class="text-bold-600"><?= $candidatures_limit['time_candidat'] ?></td>
+                                                    <td class="text-success"><?= $candidatures_limit['statut'] ?></td>
+                                                    <td>
+                                                        <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures_limit['id'] ?>">Voir &nbsp;&nbsp;&nbsp;<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
                                 </tbody>
                             </table>
                             <!-- table ends -->
                         </div>
+                    </div>
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr class="group" style="background-color: gainsboro;">
+                                        <th colspan="6">Tous les jours</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <table id="table-candidatures" class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Nom de l'annonce</th>
+                                                <th>Age</th>
+                                                <th>Durée</th>
+                                                <th>Statut</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($candidature as $candidatures) : ?>
+                                                <tr>
+                                                    <td class="text-bold-600"><img class="rounded-circle mr-1" src="../../../app-assets/images/cards/face-regular-24.png" alt="card"><?= $candidatures['nom_candidat'] ?> <?= $candidatures['prenom_candidat'] ?></td>
+                                                    <td><?= $candidatures['name_annonce'] ?></td>
+                                                    <td class="text-bold-600"><span><?= $candidatures['age_candidat'] ?> ans</span>
+                                                    </td>
+                                                    <td class="text-bold-600"><?= $candidatures['time_candidat'] ?></td>
+                                                    <td class="text-success"><?= $candidatures['statut'] ?></td>
+                                                    <td>
+                                                        <a class="dropdown-item" href="rh-recrutement-view.php?num=<?= $candidatures['id'] ?>">Voir &nbsp;&nbsp;&nbsp;<i class='bx bx-show-alt' style="position: relative; top: 3px;"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </tbody>
+                            </table>
+                            <!-- table ends -->
+                        </div>
+
                     </div>
                 </section>
                 <!-- table Marketing campaigns ends -->
@@ -210,7 +297,7 @@ require_once 'php/config.php';
         </div>
     </div>
     <!-- END: Content-->
-    
+
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
     <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
@@ -220,10 +307,11 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-    <script src="../../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
-    <script src="../../../app-assets/vendors/js/charts/apexcharts.min.js"></script>
-    <script src="../../../app-assets/vendors/js/pickers/daterange/moment.min.js"></script>
-    <script src="../../../app-assets/vendors/js/pickers/daterange/daterangepicker.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.searchPanes.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/searchPanes.bootstrap4.min.js"></script>
+    <script src="../../../app-assets/vendors/js/tables/datatable/dataTables.select.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -235,10 +323,73 @@ require_once 'php/config.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/table-extended.js"></script>
+    <script>
+        $(document).ready(function() {
+            var table = $('#table-candidatures').DataTable({
+                dom: 'Pfrtip',
+                columnDefs: [{
+                        searchPanes: {
+                            show: true
+                        },
+                        targets: [1]
+                    },
+                    {
+                        searchPanes: {
+                            show: true
+                        },
+                        targets: [4]
+                    }
+                ]
+            });
+            $('#table-candidatures_filter').children().children().on('keyup', function() {
+                table
+                    .columns(0)
+                    .search(this.value)
+                    .draw();
+            });
+            <?php
+            foreach ($annonce as $annonces) {
+            ?>
+                $('#moment-activation<?= $annonces['id'] ?>').change(function() {
+                    var active = document.getElementById("moment-activation<?= $annonces['id'] ?>").value;
+                    if (active == "now") {
+                        $('#date-form<?= $annonces['id'] ?>').hide();
+                    } else {
+                        $('#date-form<?= $annonces['id'] ?>').show();
+                    }
+                });
+            <?php
+            }
+            ?>
+            $('.active-annonce').click(function() {
+                var id = this.value;
+                var active = document.getElementById("moment-activation" + id).value;
+                var date = document.getElementById("date" + id).value;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/change_delete_rh_annonce.php", //new path, save your work first before u try
+                    type: "GET",
+                    data: {
+                        fonction: "change",
+                        num: id,
+                        statut: "pause",
+                        active: active,
+                        date: date
+                    },
+                    success: function(data) {
+                        //if(data.include("qcm")){
+                        //$('#libelle' + id).val(data);
+                        //}
+                        //else{
+                        window.location.reload();
+                        //}
+                    }
+                });
+            });
+        });
+    </script>
     <!-- END: Page JS-->
-        <!-- TIMEOUT -->
-        <?php include('timeout.php'); ?>
+    <!-- TIMEOUT -->
+    <?php include('timeout.php'); ?>
 </body>
 <!-- END: Body-->
 
