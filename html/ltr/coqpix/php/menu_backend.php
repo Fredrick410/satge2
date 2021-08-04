@@ -23,7 +23,7 @@
                     </li>
                 </ul>
             </li>
-            <?php if(substr($_SESSION['role'],1,2) == '1') { ?>
+            <?php if(substr($_SESSION['role'],1,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="balance"></i><span>Juridique</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Création Société</a>
@@ -57,7 +57,7 @@
                     </li>
                 </ul>
             </li>
-            <?php } if(substr($_SESSION['role'],2,3) == '1') { ?>
+            <?php } if(substr($_SESSION['role'],2,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="umbrella"></i><span>Social</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="salaire.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Bulletin de salaires</a>
@@ -85,7 +85,7 @@
                     </li>
                 </ul>
             </li>
-            <?php if(substr($_SESSION['role'],3,4) == '1') { ?>
+            <?php if(substr($_SESSION['role'],3,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="credit-card-out"></i><span>Fiscal</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="declarationtva.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Déclaration TVA</a>
