@@ -12,71 +12,71 @@ ini_set('display_startup_errors', TRUE);
     }else{
         $numerosfacture = $_POST['numerosfacture'];
     }
-    $numeroarticle = $_POST['numeroarticle'];
+    $numeroarticle = htmlspecialchars($_POST['numeroarticle']);
     if($_POST['dte'] == ""){
         $dte = "00-00-00";
     }else{
-        $dte = $_POST['dte'];
+        $dte = htmlspecialchars($_POST['dte']);
     }
 
     if($_POST['nomproduit'] == ""){
         $nomproduit = "nom produit";
     }else{
-        $nomproduit = $_POST['nomproduit'];
+        $nomproduit = htmlspecialchars($_POST['nomproduit']);
     }
 
     if($_POST['facturepour'] == ""){
         $facturepour = "Facture pour";
     }else{
-        $facturepour = $_POST['facturepour'];
+        $facturepour = htmlspecialchars($_POST['facturepour']);
     }
 
     if($_POST['adressefirst']== ""){
         $adresse = "Adresse";
     }else{
-        $adresse = $_POST['adressefirst'];
+        $adresse = htmlspecialchars($_POST['adressefirst']);
     }
 
     if($_POST['departementfirst'] == ""){
         $departement = "31100";
     }else{
-        $departement = $_POST['departementfirst'];
+        $departement = htmlspecialchars($_POST['departementfirst']);
     }
 
     if($_POST['departementtwo'] == ""){
         $departement2 = "31100";
     }else{
-        $departement2 = $_POST['departementtwo'];
+        $departement2 = htmlspecialchars($_POST['departementtwo']);
     }
 
     if($_POST['adressetwo']== ""){
         $adresse2 = "Adresse";
     }else{
-        $adresse2 = $_POST['adressetwo'];
+        $adresse2 = htmlspecialchars($_POST['adressetwo']);
     }
 
     if($_POST['emailfirst']== ""){
         $email = "email@email.com";
     }else{
-        $email = $_POST['emailfirst'];
+        $email = htmlspecialchars($_POST['emailfirst']);
     }
 
     if($_POST['telfirst']== ""){
         $tel = "06.00.00.00.00";
     }else{
-        $tel = $_POST['telfirst'];
+        $tel = htmlspecialchars($_POST['telfirst']);
     }
 
     if($_POST['note'] == ""){
         $note = "Pas de commentaire";
     }else{
-        $note = $_POST['note'];
+        $note = htmlspecialchars($_POST['note']);
     }
 
     if($_POST['accompte'] == ""){
         $accompte = "O";
     }else{
-        $accompte = $_POST['accompte'];
+        $accompte = htmlspecialchars($_POST['accompte']);
     }
 
 
