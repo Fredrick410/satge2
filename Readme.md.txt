@@ -156,5 +156,7 @@ branche de Leo :
 branche de oscar : 
 	tache réalisée le 04/08/2021 :
 		- aide à rayan sur bookmark.php
+		- contrat / front fini (générer et afficher)
+
 		
 
