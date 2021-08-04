@@ -211,11 +211,11 @@ body{
     border: none !important;
     background-color: #29fe8c !important;
     color: #051441; 
-    width: 80%;
-    min-width: 150px;
+    width: 90%;
+    min-width: 200px;
     min-height: 150px;
     height: 70%;
-    margin: 8% 10%;
+    margin: 8% 5%;
 }
 
 input[type="checkbox"].solu {
