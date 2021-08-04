@@ -147,7 +147,14 @@ branche de Leo :
 		- affichage de la fiche dans le front à la page d'accueil quand créée
 		- fix bug visuel dans le back
 
+	tache réalisée le 29/07/2021
+		- fiche de renseignement accessible dans le back
+
+	tache réalisée le 04/08/2021
+		- ajout bouton annuler et modifier domiciliation
+
 branche de oscar : 
 	tache réalisée le 04/08/2021 :
 		- aide à rayan sur bookmark.php
 		
+
