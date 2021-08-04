@@ -146,3 +146,8 @@ branche de Leo :
 		- enregistrement de la fiche de renseignement dans la base de données
 		- affichage de la fiche dans le front à la page d'accueil quand créée
 		- fix bug visuel dans le back
+
+branche de oscar : 
+	tache réalisée le 04/08/2021 :
+		- aide à rayan sur bookmark.php
+		
