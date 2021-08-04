@@ -198,7 +198,23 @@ require_once 'php/verif_session_crea.php';
                                                                     <div class="form-group">
                                                                         <div class="controls">
                                                                             <label>Adresse du dirigeant</label>
-                                                                            <input type="text" name="adresse_diri" class="form-control border rounded-pill border-dark" placeholder="Ex: 2 Rue de Rivoli, 75004 Paris" value="<?= $crea['adresse_diri'] ?>" required>
+                                                                            <input type="text" name="adresse_diri" class="form-control border rounded-pill border-dark" placeholder="Ex: 2 Rue de Rivoli" value="<?= $crea['adresse_diri'] ?>" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Ville</label>
+                                                                            <input type="text" name="ville_diri" class="form-control border rounded-pill border-dark" placeholder="Ex: Paris" value="<?= $crea['ville_diri'] ?>" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Code Postal</label>
+                                                                            <input type="text" name="cp_diri" class="form-control border rounded-pill border-dark" placeholder="Ex: 75004" value="<?= $crea['cp_diri'] ?>" required>
                                                                         </div>
                                                                     </div>
                                                                 </div>

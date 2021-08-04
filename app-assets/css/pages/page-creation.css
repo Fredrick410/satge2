@@ -202,6 +202,22 @@ body{
     bottom: 0;
 }
 
+.btn-primary:hover {
+    background-color: #051441 !important;
+    color: #29fe8c; 
+}
+
+.btn-contrat {
+    border: none !important;
+    background-color: #29fe8c !important;
+    color: #051441; 
+    width: 80%;
+    min-width: 150px;
+    min-height: 150px;
+    height: 70%;
+    margin: 8% 10%;
+}
+
 input[type="checkbox"].solu {
     display: none;
 }
@@ -268,6 +284,11 @@ input[type="checkbox"].solu + label:hover{
     height: 30px;
 }
 
+#img-doc1{
+    height: 75px;
+    margin: 20px;
+}
+
 #scroll-doc a{
     border-radius: 10px;
     margin: 10px;
@@ -296,9 +317,6 @@ input[type="checkbox"].solu + label:hover{
         min-width: 100%;
         top: 50px;
     }
-}
-
-@media screen and (max-width: 800px) {
     #div-entreprise{
         border-radius: 40px;
         margin: 30px auto;
@@ -308,14 +326,10 @@ input[type="checkbox"].solu + label:hover{
         min-width: 100%;
         border-radius: 40px 40px 0 0;
     }
-    #div-info{
-        min-width: 100%;
-    }
-}
-
-@media screen and (max-width: 700px) {
     #div-info ul li{
         min-width: 100%;
+        text-align: center;
+        margin: auto 28%;
     }
 }
 

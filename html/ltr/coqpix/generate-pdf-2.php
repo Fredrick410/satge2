@@ -1,7 +1,20 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+require_once 'php/config.php';
+require_once 'php/verif_session_crea.php';
+
 require_once('../../../app-assets/data/tcpdf_min/tcpdf.php');
 $certificate = "../../../app-assets/data/tcpdf_min/config/cert/tcpdf.crt";
+
+$pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
+$pdoSta->bindValue(':num',$_SESSION['id_crea'], PDO::PARAM_INT);
+$pdoSta->execute();
+$info = $pdoSta->fetch();
+
+$today = date("d/m/y");
 
 // Extend the TCPDF class to create custom Header and Footer
 class MYPDF extends TCPDF {
@@ -87,10 +100,10 @@ Ci-après dénommée <span style="font-weight: bold;">« Le prestataire »</span
 <span style="text-decoration: underline; font-weight: bold;">ET</span><br>
 <br>
 <br>
-<span style="color: red;">NOM DE SOCIETE</span><br>
-Ayant son siège social sis <span style="color: red;">ADRESSE</span><br>
-Immatriculée au RCS de <span style="color: red;">VILLE</span> au numéro en cours d’immatriculation<br>
-Représentée par <span style="color: red;">NOM PRENOM</span>, dûment habilité(e) à l\'effet des présentes,<br>
+'.$info['name_crea'].'<br>
+Ayant son siège social sis '.$info['adresse_diri'].', '.$info['ville_diri'].' '.$info['cp_diri'].'<br>
+Immatriculée au RCS de '.$info['ville_diri'].' au numéro en cours d’immatriculation<br>
+Représentée par '.$info['nom_diri'].' '.$info['prenom_diri'].', dûment habilité(e) à l\'effet des présentes,<br>
 <br>
 <br>
 Ci-après dénommée <span style="font-weight: bold;">« Le client »</span><br>
@@ -102,7 +115,7 @@ Ci-après dénommées individuellement <span style="font-weight: bold;">« la Pa
 <br>
 <span style="text-decoration: underline; font-weight: bold;">IL A ETE PREALABLEMENT EXPOSE CE OUI SUIT :</span><br>
 <br>
-La société <span style="color: red;">NOM DE SOCIETE</span> est une société ayant une activité dans le secteur <span style="color: red;">SECTEUR ACTIVITE</span>. Elle a souhaité faire appel aux services du Prestataire, en tant que société gérant sa comptabilité, durant une durée indéterminée.<br>
+La société '.$info['name_crea'].' est une société ayant une activité dans le secteur '.$info['secteur_dactivite'].'. Elle a souhaité faire appel aux services du Prestataire, en tant que société gérant sa comptabilité, durant une durée indéterminée.<br>
 <br>
 Par le présent contrat (ci-après « le Contrat »), les Parties ont entendu définir les conditions selon lesquelles elles coopéreront.<br>
 <br>
@@ -147,7 +160,7 @@ Le Client aura la pleine et entière propriété des rapports et documents de tr
 <br>
 <span style="text-decoration: underline; font-weight: bold;">ARTICLE 2 - NATURE ET ETENDUE DES PRESTATIONS</span><br>
 <br>
-Le Prestataire interviendra, à la demande du Client, sur des missions de comptabilité qui sont la gestion et le suivie comptable de la société <span style="color: red;">NOM DE SOCIETE</span> tel que défini dans l’annexe aux présentes, et de déclarations fiscales par notamment la mise en place des déclarations de TVA, Impôts sur les sociétés et autres taxes et impôts.<br> 
+Le Prestataire interviendra, à la demande du Client, sur des missions de comptabilité qui sont la gestion et le suivie comptable de la société '.$info['name_crea'].' tel que défini dans l’annexe aux présentes, et de déclarations fiscales par notamment la mise en place des déclarations de TVA, Impôts sur les sociétés et autres taxes et impôts.<br> 
 <br>
 Le client s’engage à déposer via scan sur la plateforme en ligne Coqpix avant tous les 10 du mois ses pièces comptables du mois précédent avec les éléments suivants :<br>
 
@@ -192,7 +205,7 @@ Le Prestataire déclare respecter l\'ensemble des réglementations qui lui sont 
 <br>
 En contrepartie des Prestations rendues par le Prestataire, et conformément à la pratique de la profession, le Client paiera au Prestataire des honoraires définis en euros par mensualité suivant le tarif de la prestation annuel défini comme tel :<br>
 <span style="text-indent: 15px;"><br>
-•	<span style="color: red;">PRIX</span> € H.T/mois<br>
+•	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; € H.T/mois<br>
 </span><br>
 Ces honoraires seront payables par prélèvement avant le 10 du mois. En cas de non-paiement à son échéance d’une facture, les sommes restantes dues porteront intérêt à compter de ladite échéance un taux égal à 10% du montant par échéance et ce jusqu’au paiement intégral. Dans le cas où le client n’aurait toujours pas honoré son obligation de paiement après relances du prestataire, ce dernier pourra bloquer l’accès aux données du client jusqu’au complet paiement. <br>
 <br>
@@ -218,9 +231,9 @@ Ne sont cependant pas considérés comme étant des Informations Confidentielles
 <span style="font-weight: bold;">7.3 Protection des Informations Confidentielles. </span><br>
 Le Prestataire s’engage à ce que les informations confidentielles communiquées par le Client dans le cadre du présent contrat : <br>
 <span style="text-indent: 15px;"><br>
--	soient protégées et gardées strictement confidentielles et ne soient pas divulguées directement ou<br> indirectement à des tiers, sauf sur injonction d’un Tribunal ou d’une Administration ;<br>
+•	soient protégées et gardées strictement confidentielles et ne soient pas divulguées directement ou<br> indirectement à des tiers, sauf sur injonction d’un Tribunal ou d’une Administration ;<br>
 <br>
--	ne soient pas reproduites, copiées, dupliquées totalement ou partiellement sans le consentement exprès et<br> préalable du Client. <br>
+•	ne soient pas reproduites, copiées, dupliquées totalement ou partiellement sans le consentement exprès et<br> préalable du Client. <br>
 </span><br>
 Il s’engage également à ce que les membres de son personnel respectent les dispositions visées ci-dessous. <br>
 <br>
@@ -263,7 +276,7 @@ Le Contrat est soumis et interprété conformément au droit Espagnol.<br>
 Tout litige concernant l\'interprétation, la validité, l\'exécution du Contrat et/ou des opérations qui en seront la suite et/ou la conséquence sera en premier lieu, résolue par voie de conciliation et en cas d\'échec, de médiation ou d’arbitrage puis soumis à la compétence exclusive des tribunaux compétents du ressort du <span style="font-weight: bold;">Tribunal de Commerce de Barcelone</span> et de la <span style="font-weight: bold;">Cour d\'appel de Barcelone</span>.<br>
 <br>
 <br><br><br><br><br><br><br><br>
-Fait à Barcelone, le <span style="color: red;">DATE</span>.<br>
+Fait à Barcelone, le '.$today.'.<br>
 <br>
 En deux exemplaires originaux dont un pour chaque Partie. <br>
 <br>
