@@ -130,7 +130,7 @@ require_once 'php/get_documents.php';
                             </div> 
                         </li>
                         <li class="col-4">
-                            <a class="btn btn-contrat" href="generate-pdf-2.php">
+                            <a class="btn btn-contrat" href="generate-pdf-2.php" target="_blank">
                                 <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
                                 <label>Mon contrat</label>
                             </a>
