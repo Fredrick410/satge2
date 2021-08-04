@@ -149,3 +149,6 @@ branche de Leo :
 
 	tache réalisée le 29/07/2021
 		- fiche de renseignement accessible dans le back
+
+	tache réalisée le 04/08/2021
+		- ajout bouton annuler et modifier domiciliation

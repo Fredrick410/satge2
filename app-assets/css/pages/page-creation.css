@@ -187,6 +187,19 @@ body{
 #doc_domiciliation embed{
     margin: auto;
     border-radius: 37px;
+    z-index: 1;
+}
+
+.btn-primary {
+    border: none !important;
+    background-color: #29fe8c !important;
+    color: #000; 
+    width: 33%;
+    min-width: 100px;
+    margin: 0 33%;
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
 }
 
 input[type="checkbox"].solu {

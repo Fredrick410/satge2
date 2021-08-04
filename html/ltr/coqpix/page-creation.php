@@ -183,7 +183,16 @@ require_once 'php/get_documents.php';
             <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation" <?= $affichage_doc ?>>
                 <h2>Domiciliation</h2>
                 <div class="row" id="doc_domiciliation">
+
                     <embed src=../../../src/crea_societe/domiciliation/<?= $crea['doc_domiciliation'] ?> width=100% height=100% type='application/pdf'/>
+                
+                    <div class="col">
+                        <button class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark" onclick="location.replace('php/domiciliation-cancel.php')">Annuler</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark" onclick="location.href = 'domiciliation.php'">Modifier</button>
+                    </div>
+                    
                 </div>
             </div>
 
