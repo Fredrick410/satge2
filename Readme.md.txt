@@ -158,5 +158,8 @@ branche de oscar :
 		- aide à rayan sur bookmark.php
 		- contrat / front fini (générer et afficher)
 
-		
+branche de Leo :
+	tache réalisée le 05/08/2021 :
+		- back ajout de la partie "en ligne" dans le portefeuille qui affiche les contrats ma créa (WIP)
+		- fix du doggo		
 

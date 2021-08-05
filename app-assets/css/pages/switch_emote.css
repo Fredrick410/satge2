@@ -384,14 +384,32 @@ label.toggle-item:before {
   animation: 0.2s linear cup 1s forwards;
 }
 #doggo:checked + label .dog {
-  left: 68px;
+  left: 51px;
   transform: rotate(360deg);
 }
 #doggo:checked + label .mouth {
   transform: scale(1);
   transition-delay: 0.7s;
+  top: 23px;
 }
 #doggo:checked + label .ear.right {
+  transform: scaleX(-1) rotate(-35deg);
+  transition-delay: 0.6s;
+}
+
+#doggo2:checked ~ .cup {
+  animation: 0.2s linear cup 1s forwards;
+}
+#doggo2:checked + label .dog {
+  left: 51px;
+  transform: rotate(360deg);
+}
+#doggo2:checked + label .mouth {
+  transform: scale(1);
+  transition-delay: 0.7s;
+  top: 23px;
+}
+#doggo2:checked + label .ear.right {
   transform: scaleX(-1) rotate(-35deg);
   transition-delay: 0.6s;
 }
