@@ -11,11 +11,11 @@ $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
 $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
-$pdoS = $bdd->prepare('SELECT * FROM mission WHERE id = :num');
+$pdoS = $bdd->prepare('SELECT * FROM mission WHERE id_session = :num ORDER BY id');
 $pdoS->bindValue(':num', $_SESSION['id_session']);
 $pdoS->execute();
-$mission = $pdoS->fetchAll();
-
+$missions = $pdoS->fetchAll();
+//print("<pre>". print_r($missions,true)."</pre>");
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +85,9 @@ $mission = $pdoS->fetchAll();
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <?php var_dump($mission); ?>
+                <div id="message">
+
+                </div>
                 <!-- Basic Kanban App -->
                 <div class="kanban-overlay"></div>
                 <section id="kanban-wrapper">
@@ -225,106 +227,43 @@ $mission = $pdoS->fetchAll();
     <!-- END: Page JS-->
 
     <script>
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
+
         $(document).ready(function() {
             var kanban_curr_el, kanban_curr_item_id, kanban_item_title, kanban_data, kanban_item, kanban_users;
-
             // Kanban Board and Item Data passed by json
-            var kanban_board_data = [{
-                    id: "kanban-board-1",
-                    title: "Marketing",
-                    item: [{
-                            id: "11",
-                            title: "Facebook Campaign 😎",
-                            border: "success",
-                            dueDate: "Feb 6",
-                            comment: 1,
-                            attachment: 3,
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-11.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-12.jpg"
-                            ]
+            var kanban_board_data = [
+                <?php
+                for ($i = 0; $i < count($missions); $i++) {
+                    if ($i != count($missions) - 1) {
+                ?> {
+                            id: "kanban-<?= $missions[$i]['id'] ?>",
+                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>"
                         },
-                        {
-                            id: "12",
-                            title: "Type Something",
-                            border: "info",
-                            image: "../../../app-assets/images/banner/banner-21.jpg",
-                            dueDate: "Feb 10"
+                    <?php
+                    } else {
+                        $last_id = $missions[$i]['id'];
+                    ?> {
+                            id: "kanban-<?= $missions[$i]['id'] ?>",
+                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>"
                         }
-                    ]
-                },
-                {
-                    id: "kanban-board-2",
-                    title: "UI Designing",
-                    item: [{
-                            id: "21",
-                            title: "Flat UI Kit Design",
-                            border: "secondary"
-                        },
-                        {
-                            id: "22",
-                            title: "Drag people onto a card to indicate that.",
-                            border: "info",
-                            dueDate: "Jan 1",
-                            comment: 8,
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-24.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-14.jpg"
-                            ]
-                        },
-                        {
-                            id: "23",
-                            title: "Application Design",
-                            border: "warning"
-                        },
-                        {
-                            id: "24",
-                            title: "BBQ Logo Design 😱",
-                            border: "primary",
-                            dueDate: "Jan 6",
-                            comment: 10,
-                            attachment: 6,
-                            badgeContent: "AK",
-                            badgeColor: "danger"
-                        }
-                    ]
-                },
-                {
-                    id: "kanban-board-3",
-                    title: "Developing",
-                    item: [{
-                            id: "31",
-                            title: "Database Management System (DBMS) is a collection of programs",
-                            border: "warning",
-                            dueDate: "Mar 1",
-                            comment: 10,
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-20.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-22.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-13.jpg"
-                            ]
-                        },
-                        {
-                            id: "32",
-                            title: "Admin Dashboard 🙂",
-                            border: "success",
-                            dueDate: "Mar 6",
-                            comment: 7,
-                            badgeContent: "AD",
-                            badgeColor: "primary"
-                        },
-                        {
-                            id: "33",
-                            title: "Fix bootstrap progress bar with & issue",
-                            border: "primary",
-                            dueDate: "Mar 9",
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-1.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-2.jpg"
-                            ]
-                        }
-                    ]
+                <?php
+                    }
                 }
+                ?>
             ];
 
             // Kanban Board
@@ -491,11 +430,21 @@ $mission = $pdoS->fetchAll();
             // Add new kanban board
             //---------------------
             var addBoardDefault = document.getElementById("add-kanban");
-            var i = 1;
+            <?php
+            if (isset($last_id)) {
+            ?>
+                var i = <?= $last_id + 1 ?>;
+            <?php
+            } else {
+            ?>
+                var i = 1;
+            <?php
+            }
+            ?>
             addBoardDefault.addEventListener("click", function() {
                 KanbanExample.addBoards([{
                     id: "kanban-" + i, // generate random id for each new kanban
-                    title: "Default Title"
+                    title: "Nom de la mission"
                 }]);
                 var kanbanNewBoard = KanbanExample.findBoard("kanban-" + i)
 
@@ -503,6 +452,26 @@ $mission = $pdoS->fetchAll();
                     $(".kanban-title-board").on("mouseenter", function() {
                         $(this).attr("contenteditable", "true");
                         $(this).addClass("line-ellipsis");
+                    });
+                    $(".kanban-title-board").on("mouseleave", function() {
+                        // On recupere le nom de la mission et son id
+                        var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
+                        var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
+                        console.log(name_mission);
+                        $.ajax({
+                            url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                            type: "POST",
+                            data: {
+                                name_mission: name_mission,
+                                id_mission: id_mission
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.status != 'success') {
+                                    addAlert(data.message);
+                                }
+                            }
+                        });
                     });
                     kanbanNewBoardData =
                         '<div class="dropdown">' +
@@ -526,6 +495,20 @@ $mission = $pdoS->fetchAll();
                     .attr("data-id");
                 addEventListener("click", () => {
                     KanbanExample.removeBoard($id);
+                    var id_mission = $id.replaceAll('kanban-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/delete_mission.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_mission: id_mission
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
                 });
             });
 
@@ -590,6 +573,27 @@ $mission = $pdoS->fetchAll();
             $(".kanban-title-board").on("mouseenter", function() {
                 $(this).attr("contenteditable", "true");
                 $(this).addClass("line-ellipsis");
+            });
+
+            $(".kanban-title-board").on("mouseleave", function() {
+                // On recupere le nom de la mission et son id
+                var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
+                var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
+                console.log(name_mission);
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        name_mission: name_mission,
+                        id_mission: id_mission
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        }
+                    }
+                });
             });
 
             // kanban Item - Pick-a-Date
