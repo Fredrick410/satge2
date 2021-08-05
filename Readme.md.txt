@@ -163,4 +163,8 @@ branche de oscar :
 		- aide sur bookmark.php pour la taille des icones
 
 		
+branche de Leo :
+	tache réalisée le 05/08/2021 :
+		- back ajout de la partie "en ligne" dans le portefeuille qui affiche les contrats ma créa (WIP)
+		- fix du doggo		
 
