@@ -158,5 +158,9 @@ branche de oscar :
 		- aide à rayan sur bookmark.php
 		- contrat / front fini (générer et afficher)
 
+	tache réalisée le 05/08/2021 :
+		- bouton générer contrat / voir contrat + verif si le compte est complété
+		- aide sur bookmark.php pour la taille des icones
+
 		
 
