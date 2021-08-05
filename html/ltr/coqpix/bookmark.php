@@ -155,6 +155,14 @@ $bookmark_favo = $pdoSt->fetchAll();
     .media {
       padding-top: 50px;
     }
+
+    .bookmark-tabcontent .details-bookmark.list-bookmark .bookmark-card img {
+      width: 80px;
+    }
+
+    .bookmark-tabcontent .details-bookmark .bookmark-card img {
+      width: 80px;
+    }
   </style>
 
   <div class="app-content content" style="margin-top: 50px;">
@@ -246,14 +254,15 @@ $bookmark_favo = $pdoSt->fetchAll();
                           <li><span class="text-dark font-weight-bolder">Theme de recherche</span><span class="pull-right"><a class="text-dark" href="#" data-bs-toggle="modal" data-bs-target="#createtag"><i data-feather="plus-circle"></i></a></span></span></li>
                           <br>
                           <?php foreach ($etiq as $etiquette) : ?>
-                            <ul>  
+                            <ul class="mx-3">  
+                              <li class="navbar-expand" style="list-style: disc; color: <?= $etiquette['color_etiq']; ?>;">
                               <a href="">
-                                <li class="navbar-expand" style="list-style: disc; color: <?= $etiquette['color_etiq']; ?>;"><span class="title text-dark pull-left" style="font-size: 16px"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></span> 
+                                <label class="title text-dark pull-left" style="font-size: 16px"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></label> 
                                   <a href="php/delete_etiq_bookmark.php?num=<?= $etiquette['id']?>" class="fa fa-trash pull-right" style ="display:inline; justify-content: space-between; color: red;"></a>
                                   <a href="etiquette_edit_book.php?num=<?= $etiquette['id'] ?>" class="fa fa-edit pull-right" style ="display:inline; justify-content: space-between; color: blue;" ></a>
                                   <a class="show trash_etiq" data-bs-toggle="pill" role="tab" aria-selected="false"></a>
-                                </li>
                               </a>
+                              </li>
                             </ul>
                           <?php endforeach; ?>
                         </ul>
@@ -302,10 +311,10 @@ $bookmark_favo = $pdoSt->fetchAll();
                                     <div class="col-xl-3 col-md-4 xl-50">
                                       <a href="<?= $bookmarks['url_search'] ?>"><div class="card card-with-border bookmark-card o-hidden">
                                         <div class="details-website">
-                                          <img class="img-fluid" src="<?= get_favicon($bookmarks['url_search'])  ?>" alt="" height="80" width="80">
+                                          <img class="img-fluid" src="<?= get_favicon($bookmarks['url_search'])  ?>" alt="" >
                                           <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks['id'] ?>&favo=<?= $bookmarks['favorite_search'] ?>"><i style="color: <?php if ($bookmarks['favorite_search'] !== "no") {echo "yellow";} ?>;" class="fa fa-star"></i></a></div>
                                           <div class="desciption-data">
-                                            <div class="title-bookmark" style="background-color:<?= $ma ?>;">
+                                            <div class="title-bookmark" >
                                               <h6 class="title_0"><?= $bookmarks['name_search'] ?></h6>
                                               <p class="weburl_0"><?= substr($bookmarks['url_search'], 0, 30) ?></p>
                                               <div class="">
@@ -321,7 +330,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                                                   <li><a href="#"><i data-feather="link"></i></a></li>
                                                   <li><a href="#"><i data-feather="share-2"></i></a></li>
                                                   <li><a href="php/delete_bookmark.php?num=<?= $bookmarks['id'] ?>"><i data-feather="trash-2"></i></a></li>
-                                                  <li  class="pull-right text-end"><a href="#" title="<?= $bookmarks['etiquette_search'] ?>"><i data-feather="tag"></i></a></li>
+                                                  <li  class="pull-right text-end"><a href="#" title="<?= $bookmarks['etiquette_search'] ?>"><i class="bx bxs-purchase-tag" style="font-size: 1.2rem; margin: 3px; color:<?= $ma ?>;"></i></a></li>
                                                 </ul>
                                               </div>
                                             </div>
@@ -350,7 +359,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                             <div class="card-body">
                               <div class="details-bookmark">
                                 <div class="row" id="favouriteData">
-                                  <?php foreach ($bookmark_favo as $bookmarks_favo) : ?>
+                                  <?php foreach ($bookmark_favo as $bookmarks_favo) : $ma = $bookmarks_favo['etiquette_search'] ?>
                                     <div class="col-xl-3 col-md-4 xl-50">
                                       <div class="card card-with-border bookmark-card o-hidden">
                                         <div class="details-website">
@@ -366,7 +375,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                                                   <li><a href="#"><i data-feather="link"></i></a></li>
                                                   <li><a href="#"><i data-feather="share-2"></i></a></li>
                                                   <li><a href="php/delete_bookmark.php?num=<?= $bookmarks_favo['id'] ?>"><i data-feather="trash-2"></i></a></li>
-                                                  <li class="pull-right text-end"><a href="#" title="<?= $bookmarks_favo['etiquette_search'] ?>"><i data-feather="tag"></i></a></li>
+                                                  <li  class="pull-right text-end"><a href="#" title="<?= $bookmarks['etiquette_search'] ?>"><i class="bx bxs-purchase-tag" style="font-size: 1.2rem; margin: 3px; color: <?= $ma ?>;"></i></a></li>
                                                 </ul>
                                               </div>
                                               <div class="content-general">
