@@ -226,6 +226,9 @@ require_once 'php/config.php';
                                                                         N°
 														</h6>
 														<input type="number" name="id" id="numeros" value='<?= $facture['id'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
+                                                        <p style='position: relative; top: 7px;'>
+                                                            &nbsp&nbsp&nbsp 
+                                                        </p>
                                                 <h6 class="invoice-number mr-75">
                                                                 Référence
                                                             </h6>
@@ -383,14 +386,15 @@ require_once 'php/config.php';
                                                         <?php endforeach; ?>
                                                         <hr>
                                                         <div class="row mb-50">
-                                                            <div class="col-3 col-md-4 invoice-item-title">Article</div>
-                                                            <div class="col-3 invoice-item-title">Coût</div>
-                                                            <div class="col-3 invoice-item-title">Quantite</div>
-                                                            <div class="col-3 col-md-2 invoice-item-title">Prix</div>
+                                                            <div class="col-3 col-md-3 invoice-item-title">Article</div>
+                                                            <div class="col-2 invoice-item-title">Coût</div>
+                                                            <div class="col-2 invoice-item-title">Quantite</div>
+                                                            <div class="col-2 invoice-item-title">Prix</div>
+                                                            <div class="col-1 invoice-item-title">Référence</div>
                                                         </div>
                                                         <div class="invoice-item d-flex border-black rounded mb-1">
                                                             <div class="invoice-item-filed row pt-1 px-1">
-                                                                <div class="col-12 col-md-4 form-group">
+																<div class="col-12 col-md-4 form-group">
                                                                     <select id="article" class="form-control invoice-item-select border-black">
                                                                         <option value="Pas d'article">Sélectionnez un article</option>
                                                                         <optgroup label="Liste des articles">
@@ -412,14 +416,12 @@ require_once 'php/config.php';
                                                                 <div class="col-md-2 col-12 form-group">
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                 </div>
-                                                                
-                                                                <div class="col-md-3 col-12 form-group">
-                                                                    <label for="ref">REF :</label>
-                                                                    <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
-                                                                </div>
                                                             </div>
-                                                            <div class="invoice-icon d-flex flex-column justify-content-between border-left-black p-25">
-                                                                <div class="dropdown">
+                                                            <div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
+                                                                <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
+                                                            </div>
+                                                            <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
+																<div class="dropdown" style="margin-top: 15px;">
                                                                     <i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
                                                                     <div class="dropdown-menu p-1">
                                                                         <div class="row">

@@ -264,7 +264,7 @@ if ($count == 1) {
         sleep(2);
         header('Location: ../page-creation.php');
       } else {
-        header('Location: ../../../../');
+        header('Location: ../../../../?error=0');
         exit();
       }
     }

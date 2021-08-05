@@ -129,15 +129,10 @@ $entreprise = $pdoStt->fetch();
                     <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon bx bx-menu"></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav bookmark-icons">
-                    <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour">
+                    <li class="nav-item d-none d-lg-block"><a class="nav-link" href="rh-recrutement-list.php" data-toggle="tooltip" data-placement="top" title="Retour">
                             <div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div>
                         </a></li>
                 </ul>
-                <script>
-                    function retourn() {
-                        window.history.back();
-                    }
-                </script>
                 <!-- qcm list -->
                 <section class="invoice-list-wrapper">
                     <!-- create qcm button-->
@@ -189,46 +184,7 @@ $entreprise = $pdoStt->fetch();
                                             <?= $questions[$i]['points'] ?>
                                         </td>
                                         <td>
-                                            <div class="invoice-action"><br>
-                                                <a href="#modal<?= $questions[$i]['id'] ?>" class="invoice-action-view mr-1" data-toggle="modal">
-                                                    <i class="bx bx-show-alt"></i>
-                                                </a>
-
-                                                <div class="modal fade" id="modal<?= $questions[$i]['id'] ?>" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Details</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <i class="bx bx-x"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <ul>
-                                                                    <?= $questions[$i]['libelle'] ?>
-                                                                    <?php
-                                                                    var_dump($reponses);
-                                                                    foreach ($reponses as $key => $value) {
-                                                                        if ($value[0]['idquestion'] === $questions[$i]['id']) {
-                                                                            foreach ($value as $key => $val) {
-                                                                    ?>
-                                                                                <li><?= $val['libelle'] ?> : <?= $val['vrai_ou_faux'] ?></li>
-                                                                    <?php
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    ?>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
-                                                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                                                    <span class="d-none d-sm-block">Close</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="invoice-action">
                                                 <a href="question-edit-admin.php?id=<?= $questions[$i]['id'] ?>&idqcm=<?= $qcms[0]['id'] ?>"" class=" invoice-action-edit cursor-pointer">
                                                     <i class="bx bx-edit"></i>
                                                 </a>&nbsp;&nbsp;&nbsp;&nbsp;

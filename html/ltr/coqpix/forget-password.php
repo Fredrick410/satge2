@@ -16,7 +16,7 @@ if (isset($key) && !empty($key)) {
     if (!($mail = $req_key_reset->fetch())) {
         header('Location: ../../../index.php');
     }
-    \\ AJOUTER l envoie de mail
+    
     
 } else {
     header('Location: ../../../index.php');

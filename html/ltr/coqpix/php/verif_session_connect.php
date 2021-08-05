@@ -24,7 +24,7 @@ else
    }
    else {
    sleep(2);
-   header('Location: ../page-not-authorized.html');
+   header('Location: page-not-authorized.html');
    exit;
    }
 }
