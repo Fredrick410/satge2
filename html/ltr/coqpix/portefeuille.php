@@ -561,7 +561,17 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <th><?= $portefeuilles['nom_diri'] ?></th>
                                                                     <th class="text-bold-500"><?= $portefeuilles['tel_diri'] ?></th>
                                                                     <th><?= $portefeuilles['estimation'] ?> €</th>
-                                                                    <th><a href="php/change_portefeuille.php?num=<?= $portefeuilles['id'] ?>&type=prospect"><i class='bx bxs-user-check icon_verif' ></i></a> <a href="portefeuille-upload.php?num=<?= $portefeuilles['id'] ?>&type=prospect&name_entreprise=<?= $portefeuilles['name_entreprise'] ?>"><i class='bx bxs-send icon_send'></i></a><a href="php/delete_prospect.php?id=<?= $portefeuilles['id'] ?>"><i class='bx bxs-trash'></i></a></th>
+                                                                    <th>
+                                                                        <a href="php/change_portefeuille.php?num=<?= $portefeuilles['id'] ?>&type=prospect">
+                                                                            <i class='bx bxs-user-check icon_verif' ></i>
+                                                                        </a>&nbsp&nbsp 
+                                                                        <a href="portefeuille-upload.php?num=<?= $portefeuilles['id'] ?>&type=prospect&name_entreprise=<?= $portefeuilles['name_entreprise'] ?>">
+                                                                            <i class='bx bxs-send icon_send'></i>
+                                                                        </a>&nbsp&nbsp
+                                                                        <a href="php/delete_prospect.php?id=<?= $portefeuilles['id'] ?>">
+                                                                            <i class='bx bxs-trash'></i>
+                                                                        </a>
+                                                                    </th>
                                                                 </tr>
                                                             <?php endforeach; ?>
                                                         </tbody>
@@ -602,7 +612,17 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <th><?= $contrat['nom_diri'] ?></th>
                                                                     <th class="text-bold-500"><?= $contrat['tel_diri'] ?></th>
                                                                     <th> €</th>
-                                                                    <th><a href="php/change_portefeuille.php?num=<?= $contrat['id'] ?>&type=prospect"><i class='bx bxs-user-check icon_verif' ></i></a> <a href="portefeuille-upload.php?num=<?= $contrat['id'] ?>&type=prospect&name_entreprise=<?= $contrat['name_crea'] ?>"><i class='bx bxs-send icon_send'></i></a><a href="php/delete_prospect.php?id=<?= $contrat['id'] ?>"><i class='bx bxs-trash'></i></a></th>
+                                                                    <th>
+                                                                        <a href="../../../src/crea_societe/contrat/<?= $contrat['doc_contrat'] ?> ?>" target="_blank">
+                                                                            <i class='bx bx-file icon_files'></i>
+                                                                        </a>
+                                                                        <a href="portefeuille-upload.php?num=<?= $contrat['id'] ?>&type=prospect&name_entreprise=<?= $contrat['name_crea'] ?>">
+                                                                            <i class='bx bxs-send icon_send'></i>
+                                                                        </a>&nbsp&nbsp
+                                                                        <a href="php/delete_contrat.php?id=<?= $contrat['id'] ?>">
+                                                                            <i class='bx bxs-trash'></i>
+                                                                        </a>
+                                                                    </th>
                                                                 </tr>
                                                             <?php endforeach; ?>
                                                         </tbody>
@@ -663,7 +683,14 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <th><?= $portefeuilles_encours['nom_diri'] ?></th>
                                                     <th class="text-bold-500"><?= $portefeuilles_encours['tel_diri'] ?></th>
                                                     <th><?= $portefeuilles_encours['estimation'] ?> €</th>
-                                                    <th><a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_encours['lettredemission'] ?>" target="_blank"><i class='bx bx-file icon_files'></i></a> <a href="portefeuille-upload.php?num=<?= $portefeuilles_encours['id'] ?>&type=encours&name_entreprise=<?= $portefeuilles_encours['name_entreprise'] ?>"><i class='bx bxs-send icon_send'></i></a></th>
+                                                    <th>
+                                                        <a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_encours['lettredemission'] ?>" target="_blank">
+                                                            <i class='bx bx-file icon_files'></i>
+                                                        </a>
+                                                        <a href="portefeuille-upload.php?num=<?= $portefeuilles_encours['id'] ?>&type=encours&name_entreprise=<?= $portefeuilles_encours['name_entreprise'] ?>">
+                                                            <i class='bx bxs-send icon_send'></i>
+                                                        </a>
+                                                    </th>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -708,7 +735,17 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <td class="text-bold-500"><?= $portefeuilles_actif['tel_diri'] ?></td>
                                                     <td style="color: red;"><?= $sum_dette ?> €</td>
                                                     <td><?= $portefeuilles_actif['date_crea'] ?></td>
-                                                    <td><a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_actif['lettredemission'] ?>" target="_blank"><i class='bx bx-file icon_files'></i></a>  <a href="../../../src/portefeuille/rib/<?= $portefeuilles_actif['rib'] ?>" target="_blank"><i class='bx bx-credit-card icon_card'></i></a>  <a href="portefeuille-leave.php?num=<?= $portefeuilles_actif['id'] ?>&name_entreprise=<?= $portefeuilles_actif['name_entreprise'] ?>"><i class='bx bx-x icon_x'></i></a></td>
+                                                    <td>
+                                                        <a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_actif['lettredemission'] ?>" target="_blank">
+                                                            <i class='bx bx-file icon_files'></i>
+                                                        </a>  &nbsp&nbsp
+                                                        <a href="../../../src/portefeuille/rib/<?= $portefeuilles_actif['rib'] ?>" target="_blank">
+                                                            <i class='bx bx-credit-card icon_card'></i>
+                                                        </a>  &nbsp
+                                                        <a href="portefeuille-leave.php?num=<?= $portefeuilles_actif['id'] ?>&name_entreprise=<?= $portefeuilles_actif['name_entreprise'] ?>">
+                                                            <i class='bx bx-x icon_x'></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
