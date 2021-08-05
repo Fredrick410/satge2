@@ -47,7 +47,6 @@ if (isset($_POST['name_mission']) and isset($_POST['id_mission'])) {
     }
     if (!isset($mission) or empty($mission)) {
         try {
-            echo "ok";
             $pdo = $bdd->prepare('INSERT INTO mission(name_mission, id_session) VALUES (:name_mission,:id_session)');
             $pdo->bindValue(':name_mission', $name_mission);
             $pdo->bindValue(':id_session', $_SESSION['id_session']);
@@ -60,7 +59,6 @@ if (isset($_POST['name_mission']) and isset($_POST['id_mission'])) {
         }
     } else {
         try {
-            echo "ko";
             $pdo = $bdd->prepare('UPDATE mission SET name_mission = :name_mission WHERE id = :id');
             $pdo->bindValue(':name_mission', $name_mission);
             $pdo->bindValue(':id', $id_mission);

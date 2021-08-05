@@ -11,11 +11,25 @@ $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
 $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
+//Recuperation des missions
 $pdoS = $bdd->prepare('SELECT * FROM mission WHERE id_session = :num ORDER BY id');
 $pdoS->bindValue(':num', $_SESSION['id_session']);
 $pdoS->execute();
 $missions = $pdoS->fetchAll();
-//print("<pre>". print_r($missions,true)."</pre>");
+
+//Pour chaque mission on recupere les taches associees.
+foreach ($missions as $mission) {
+    $pdoS = $bdd->prepare('SELECT * FROM task WHERE id_mission = :num ORDER BY id');
+    $pdoS->bindValue(':num', $mission['id']);
+    $pdoS->execute();
+    $tasks[] = $pdoS->fetchAll();
+}
+
+$pdoSttt = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
+$pdoSttt->bindValue(':num', $_SESSION['id_session']);
+$pdoSttt->execute();
+$membres = $pdoSttt->fetchAll();
+//print("<pre>". print_r($tasks,true)."</pre>");
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +52,7 @@ $missions = $pdoS->fetchAll();
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/jkanban/jkanban.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/editors/quill/quill.snow.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/pickers/pickadate/pickadate.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/select/select2.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -114,51 +129,60 @@ $missions = $pdoS->fetchAll();
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label>Card Title</label>
-                                            <input type="text" class="form-control edit-kanban-item-title" placeholder="kanban Title">
+                                            <label>Libellé de la tache</label>
+                                            <input type="text" class="form-control edit-kanban-item-title" placeholder="Ex: Test">
                                         </div>
                                         <div class="form-group">
-                                            <label>Due Date</label>
-                                            <input type="text" class="form-control edit-kanban-item-date" placeholder="21 August, 2019">
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label>Label</label>
-                                                    <select class="form-control text-white">
-                                                        <option class="bg-primary" selected>Primary</option>
-                                                        <option class="bg-danger">Danger</option>
-                                                        <option class="bg-success">Success</option>
-                                                        <option class="bg-info">Info</option>
-                                                        <option class="bg-warning">Warning</option>
-                                                        <option class="bg-secondary">Secondary</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label>Member</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar m-0 mr-1">
-                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-20.jpg" height="36" width="36" alt="avtar img holder">
-                                                        </div>
-                                                        <div class="badge-circle badge-circle-light-secondary">
-                                                            <i class="bx bx-plus"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <label>Date de début</label>
+                                            <input type="text" class="form-control edit-kanban-item-date" placeholder="Ex: Mercredi 21 Août 2019">
                                         </div>
                                         <div class="form-group">
-                                            <label>Attachment</label>
+                                            <label>Date de fin</label>
+                                            <input type="text" class="form-control edit-kanban-item-date" placeholder="Ex: Mercredi 21 Août 2019">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Etiquette</label>
+                                            <select id="color" class="form-control text-white">
+                                                <option class="bg-primary" selected>Primary</option>
+                                                <option class="bg-danger">Danger</option>
+                                                <option class="bg-success">Success</option>
+                                                <option class="bg-info">Info</option>
+                                                <option class="bg-warning">Warning</option>
+                                                <option class="bg-secondary">Secondary</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Membres</label>
+                                            <?php
+                                            if (isset($membres) and count($membres) != 0) {
+                                            ?>
+                                                <select class="form-control js-example-basic-multiple" name="membres[]" multiple="multiple">
+                                                    <?php
+                                                    foreach ($membres as $membre) {
+                                                    ?>
+                                                    <option value="<?=$membre['id']?>"><?=$membre['nom'] . " ". $membre['prenom']?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                Aucun membre
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Pièce jointe</label>
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="emailAttach">
-                                                <label class="custom-file-label" for="emailAttach">Attach file</label>
+                                                <input type="file" class="custom-file-input" id="fichier" accept="pdf|doc|docx|jpg|jpeg|png">
+                                                <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
                                             </div>
                                         </div>
                                         <!-- Compose mail Quill editor -->
                                         <div class="form-group">
-                                            <label>Comment</label>
+                                            <label>Commentaire</label>
                                             <div class="snow-container border rounded p-1">
                                                 <div class="compose-editor"></div>
                                                 <div class="d-flex justify-content-end">
@@ -169,7 +193,7 @@ $missions = $pdoS->fetchAll();
                                                             <button class="ql-underline"></button>
                                                             <button class="ql-link"></button>
                                                             <button class="ql-image"></button>
-                                                            <button class="btn btn-sm btn-primary btn-comment ml-25">Comment</button>
+                                                            <button class="btn btn-sm btn-primary btn-comment ml-25">Commenter</button>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -180,11 +204,11 @@ $missions = $pdoS->fetchAll();
                                 <div class="card-footer d-flex justify-content-end">
                                     <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
                                         <i class='bx bx-trash mr-50'></i>
-                                        <span>Delete</span>
+                                        <span>Supprimer</span>
                                     </button>
                                     <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
                                         <i class='bx bx-send mr-50'></i>
-                                        <span>Save</span>
+                                        <span>Sauvegarder</span>
                                     </button>
                                 </div>
                             </form>
@@ -212,6 +236,8 @@ $missions = $pdoS->fetchAll();
     <script src="../../../app-assets/vendors/js/editors/quill/quill.min.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
+    <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -223,7 +249,7 @@ $missions = $pdoS->fetchAll();
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <!-- <script src="../../../app-assets/js/scripts/pages/app-kanban.js"></script> -->
+    <script src="../../../app-assets/js/scripts/forms/select/form-select2.js"></script>
     <!-- END: Page JS-->
 
     <script>
@@ -243,22 +269,76 @@ $missions = $pdoS->fetchAll();
 
 
         $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
             var kanban_curr_el, kanban_curr_item_id, kanban_item_title, kanban_data, kanban_item, kanban_users;
             // Kanban Board and Item Data passed by json
             var kanban_board_data = [
                 <?php
+                $last_id_task = 1;
                 for ($i = 0; $i < count($missions); $i++) {
                     if ($i != count($missions) - 1) {
                 ?> {
                             id: "kanban-<?= $missions[$i]['id'] ?>",
-                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>"
+                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>",
+                            item: [
+                                <?php
+                                if (isset($tasks[$i]) and count($tasks[$i]) != 0) {
+                                    for ($j = 0; $j < count($tasks[$i]); $j++) {
+                                        if ($j != count($tasks[$i]) - 1) {
+                                ?> {
+                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                            },
+                                        <?php
+                                        } else {
+                                        ?> {
+                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                            }
+                                        <?php
+                                        }
+                                        if ($last_id_task < $tasks[$i][$j]['id']) {
+                                            $last_id_task = $tasks[$i][$j]['id'];
+                                        }
+                                        ?>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            ]
                         },
                     <?php
                     } else {
-                        $last_id = $missions[$i]['id'];
+                        $last_id_mission = $missions[$i]['id'];
                     ?> {
                             id: "kanban-<?= $missions[$i]['id'] ?>",
-                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>"
+                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>",
+                            item: [
+                                <?php
+                                if (isset($tasks[$i]) and count($tasks[$i]) != 0) {
+                                    for ($j = 0; $j < count($tasks[$i]); $j++) {
+                                        if ($j != count($tasks[$i]) - 1) {
+                                ?> {
+                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                            },
+                                        <?php
+                                        } else {
+                                        ?> {
+                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                            }
+                                        <?php
+                                        }
+                                        if ($last_id_task < $tasks[$i][$j]['id']) {
+                                            $last_id_task = $tasks[$i][$j]['id'];
+                                        }
+                                        ?>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            ]
                         }
                 <?php
                     }
@@ -279,7 +359,6 @@ $missions = $pdoS->fetchAll();
 
                     // Set el to var kanban_curr_el, use this variable when updating title
                     kanban_curr_el = el;
-
                     // Extract  the kan ban item & id and set it to respective vars
                     kanban_item_title = $(el).contents()[0].data;
                     kanban_curr_item_id = $(el).attr("data-eid");
@@ -308,6 +387,21 @@ $missions = $pdoS->fetchAll();
                         var text = e.target[0].value;
                         KanbanExample.addElement(boardId, {
                             title: text
+                        });
+                        var id_mission = boardId.replaceAll('kanban-', '');
+                        $.ajax({
+                            url: "../../../html/ltr/coqpix/php/insert_tache.php", //new path, save your work first before u try
+                            type: "POST",
+                            data: {
+                                name_task: text,
+                                id_mission: id_mission
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.status != 'success') {
+                                    addAlert(data.message);
+                                }
+                            }
                         });
                         formItem.parentNode.removeChild(formItem);
                     });
@@ -431,9 +525,9 @@ $missions = $pdoS->fetchAll();
             //---------------------
             var addBoardDefault = document.getElementById("add-kanban");
             <?php
-            if (isset($last_id)) {
+            if (isset($last_id_mission)) {
             ?>
-                var i = <?= $last_id + 1 ?>;
+                var i = <?= $last_id_mission + 1 ?>;
             <?php
             } else {
             ?>
@@ -457,7 +551,6 @@ $missions = $pdoS->fetchAll();
                         // On recupere le nom de la mission et son id
                         var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
                         var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
-                        console.log(name_mission);
                         $.ajax({
                             url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
                             type: "POST",
@@ -555,6 +648,20 @@ $missions = $pdoS->fetchAll();
                 $delete_item = kanban_curr_item_id;
                 addEventListener("click", function() {
                     KanbanExample.removeElement($delete_item);
+                    var id_task = $delete_item.replaceAll('kanban-item-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/delete_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
                 });
             });
 
@@ -564,7 +671,7 @@ $missions = $pdoS->fetchAll();
                 modules: {
                     toolbar: ".compose-quill-toolbar"
                 },
-                placeholder: "Write a Comment... ",
+                placeholder: "Ecrire un commentaire... ",
                 theme: "snow"
             });
 
@@ -579,7 +686,6 @@ $missions = $pdoS->fetchAll();
                 // On recupere le nom de la mission et son id
                 var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
                 var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
-                console.log(name_mission);
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
                     type: "POST",
@@ -597,7 +703,24 @@ $missions = $pdoS->fetchAll();
             });
 
             // kanban Item - Pick-a-Date
-            $(".edit-kanban-item-date").pickadate();
+            $(".edit-kanban-item-date").pickadate({
+                /*selectYears: true,
+                selectMonths: true,*/
+                labelMonthNext: 'Mois suivant',
+                labelMonthPrev: 'Mois précédent',
+                labelMonthSelect: 'Selectionner le mois',
+                labelYearSelect: 'Selectionner une année',
+                monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+                weekdaysFull: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                today: 'Aujourd\'hui',
+                clear: 'Réinitialiser',
+                close: 'Fermer',
+                format: 'dddd dd mmmm yyyy',
+                formatSubmit: 'yyyy/mm/dd'
+            });
 
             // Perfect Scrollbar - card-content on kanban-sidebar
             if ($(".kanban-sidebar .edit-kanban-item .card-content").length > 0) {
@@ -607,10 +730,10 @@ $missions = $pdoS->fetchAll();
             }
 
             // select default bg color as selected option
-            $("select").addClass($(":selected", this).attr("class"));
+            $("#color").addClass($(":selected", this).attr("class"));
 
             // change bg color of select form-control
-            $("select").change(function() {
+            $("#color").change(function() {
                 $(this)
                     .removeClass($(this).attr("class"))
                     .addClass($(":selected", this).attr("class") + " form-control text-white");
