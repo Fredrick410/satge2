@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-$authorised_roles = array('admin', 'rh');
 require_once 'php/verif_session_connect.php';
 
 if (!isset($_GET['id']))
@@ -183,11 +182,11 @@ $entreprise = $pdoSta->fetch();
                                                             <label for="critere" class="col-form-label">Critère evalué</label>
                                                             <select class="form-control" name="critere" id="critere">
                                                                 <option value="">Sélectionner un critère d'évaluation</option>
-                                                                <option>paramA</option>
-                                                                <option>paramB</option>
-                                                                <option>paramC</option>
-                                                                <option>paramD</option>
-                                                                <option>paramE</option>
+                                                                <option value="paramA">Performance individuelle</option>
+                                                                <option value="paramB">Capacité de communication interpersonnelle</option>
+                                                                <option value="paramC">Capacité de manager</option>
+                                                                <option value="paramD">Autonomie</option>
+                                                                <option value="paramE">Maîtrise de soi</option>
                                                             </select>
                                                         </div>
 
@@ -462,6 +461,7 @@ $entreprise = $pdoSta->fetch();
                         critere: critere,
                         critere_reponse: critere_reponse
                     },
+                    dataType: "json",
                     success: function(data) {
                         if (data.status == "success") {
                             addAlert("Question ajoutée", "success");

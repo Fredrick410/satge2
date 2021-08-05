@@ -13,15 +13,15 @@ ini_set('display_startup_errors', TRUE);
 
     }
 
-    $size_files = $_FILES['files']['size'];                                       // Nous recuperons la taille du fichier
-    $name_files = $_FILES['files']['name'];                                       // Nous recuperons le nom du fichier
+    $size_files = htmlspecialchars($_FILES['files']['size']);                                       // Nous recuperons la taille du fichier
+    $name_files = htmlspecialchars($_FILES['files']['name']);                                       // Nous recuperons le nom du fichier
     $img_files = strtolower(substr(strrchr($name_files, '.'), 1));               // Nous recuperons le type du fichier ex pdf ect
     $dte_files = date('d-m-Y');                                                  // Nous recuperons la date ou le fichier à etait upload
     $dte_j = date('j');
     $dte_m = date('m');                                                          // Nous recuperons le mois
     $dte_a = date('Y'); 
     
-    $tmpName = $_FILES['files']['tmp_name'];                                     //chemin du document
+    $tmpName = htmlspecialchars($_FILES['files']['tmp_name']);                                     //chemin du document
     $path = "../../../../src/files/fac-achat/". $name_files;                     // chemin vers le serveur
 
     $resultat = move_uploaded_file($tmpName, $path);

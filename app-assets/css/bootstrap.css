@@ -788,6 +788,11 @@ pre code {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.form-control-purple {
+  color: #ad40c9;
+  border: 2px solid #79099b;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -805,6 +810,12 @@ pre code {
   border-color: #5A8DEE;
   outline: 0;
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form-control-purple:focus {
+  color: #742ea3 !important;
+  background-color: #FFFFFF ! important;
+  border-color: #aa30cf !important;
 }
 
 .form-control::placeholder {
@@ -4326,6 +4337,10 @@ button.bg-danger:focus {
 
 .text-primary {
   color: #5A8DEE !important;
+}
+
+.text-purple {
+  color: #5f11a0 !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
