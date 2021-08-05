@@ -14,13 +14,26 @@ function getTicketsSupport(filtre) {
         const resultat = JSON.parse(requeteAjax.responseText);
         const html = resultat.reverse().map(function(ticket) {
 
-            let statut = '';
+            let html_statut = '';
             if (ticket.statut == "OUVERT") {
-                statut = "success";
+                html_statut = "success";
             } else if (ticket.statut == "URGENT") {
-                statut = "warning";
+                html_statut = "warning";
             } else {
-                statut = "danger"
+                html_statut = "danger";
+            }
+
+            let html_theme = '';
+            if (ticket.theme == "COMPTA") {
+                html_theme = `<span class="bullet bullet-sm" style="background-color: yellow;"></span>`;
+            } else if (ticket.theme == "JURIDIQUE") {
+                html_theme = `<span class="bullet bullet-danger bullet-sm"></span>`;
+            } else if (ticket.theme == "FISCALITÉ") {
+                html_theme = `<span class="bullet bullet-warning bullet-sm"></span>`;
+            } else if (ticket.theme == "SOCIAL") {
+                html_theme = `<span class="bullet bullet-info bullet-sm"></span>`;
+            } else {
+                html_theme = `<span class="bullet bullet-light bullet-sm"></span>`;
             }
 
             if (ticket.nb_notifs > 0) {
@@ -33,13 +46,14 @@ function getTicketsSupport(filtre) {
                                 <small class="mx-50 m-0 truncate">${ticket.nom + ' ' + ticket.prenom + ' | ' + ticket.nameentreprise}</small>
                             </div>
                             <div class="d-flex align-items-center">
-                                <div class="d-flex mr-1">
+                                <div class="mr-1">
                                     <span class="badge badge-light-primary badge-pill">${ticket.nb_notifs} non lu(s)</span>
                                 </div>
-                                <div class="d-flex">
-                                    <span class="badge badge-light-${statut} badge-pill">${ticket.statut}</span>
-                                </div>
-                            </div>
+                                <div class="mr-1">
+                                    <span class="badge badge-light-${html_statut} badge-pill">${ticket.statut}</span>
+                                </div>`
+                                + html_theme +
+                            `</div>
                         </div>
                     </li></a>`
 
@@ -53,10 +67,11 @@ function getTicketsSupport(filtre) {
                                 <small class="mx-50 m-0 truncate">${ticket.nom + ' ' + ticket.prenom + ' | ' + ticket.nameentreprise}</small>
                             </div>
                             <div class="d-flex align-items-center">
-                                <div class="d-flex">
-                                    <span class="badge badge-light-${statut} badge-pill">${ticket.statut}</span>
-                                </div>
-                            </div>
+                                <div class="mr-1">
+                                    <span class="badge badge-light-${html_statut} badge-pill">${ticket.statut}</span>
+                                </div>`
+                                + html_theme +
+                            `</div>
                         </div>
                     </li></a>`
 
@@ -78,22 +93,14 @@ function getTicketsSupport(filtre) {
 
 getTicketsSupport("all");
 
-$(".all-tickets").click(function(e) {
+$(".filtre-tickets").click(function(e) {
     e.preventDefault;
-    getTicketsSupport("all");
+    let filtre = $(this).children('input')[0].value;
+    getTicketsSupport(filtre);
 });
 
-$(".filtre-non-lu").click(function(e) {
+$(".theme-tickets").click(function(e) {
     e.preventDefault;
-    getTicketsSupport("non lu");
-});
-
-$(".filtre-ouvert").click(function(e) {
-    e.preventDefault;
-    getTicketsSupport("ouvert");
-});
-
-$(".filtre-fermé").click(function(e) {
-    e.preventDefault;
-    getTicketsSupport("fermé");
+    let theme = $(this).children('input')[0].value;
+    getTicketsSupport(theme);
 });

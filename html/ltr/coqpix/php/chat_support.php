@@ -9,6 +9,8 @@ require_once 'config.php';
 
 if (isset($_GET['statut']) && ($_GET['statut'] === "urgent" || $_GET['statut'] === "fermé" || $_GET['statut'] === "ouvert")) {
     changerStatutTicket($_GET['statut']);
+} else if (isset($_GET['theme']) && ($_GET['theme'] === "général" || $_GET['theme'] === "compta" || $_GET['theme'] === "juridique" || $_GET['theme'] === "fiscalité" || $_GET['theme'] === "social")) { 
+    changerThemeTicket($_GET['theme']);
 } else if (isset($_GET['method']) && $_GET['method'] === "post") {
     postMessage();
 } else {
@@ -86,6 +88,22 @@ function changerStatutTicket($statut) {
     //2- Crée une requete qui permettra la suppression des messages dans la base de données
     $query = $bdd->prepare('UPDATE support_ticket SET statut = :statut WHERE id_ticket = :id_ticket');
     $query->bindValue(':statut', $statut);
+    $query->bindValue(':id_ticket', $id_ticket);
+    $query->execute();
+
+}
+
+function changerThemeTicket($theme) {
+
+    //on definit la variable bdd dans la function 
+    global $bdd;
+
+    //1- Analyer les parametres passés en POST
+    $id_ticket = htmlspecialchars($_POST['id_ticket']);
+
+    //2- Crée une requete qui permettra la suppression des messages dans la base de données
+    $query = $bdd->prepare('UPDATE support_ticket SET theme = :theme WHERE id_ticket = :id_ticket');
+    $query->bindValue(':theme', $theme);
     $query->bindValue(':id_ticket', $id_ticket);
     $query->execute();
 

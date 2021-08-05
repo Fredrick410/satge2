@@ -142,7 +142,7 @@ function postMessageSupport(event, auteur, id_membre, id_ticket) {
 
 /**
  * Il nous faut une fonction qui permet de changer
- * cle statut d'un ticket sans recharger la page
+ * le statut d'un ticket sans recharger la page
  */
 function changerStatutTicket(id_ticket, statut) {
 
@@ -153,6 +153,25 @@ function changerStatutTicket(id_ticket, statut) {
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
+
+    requeteAjax.send(data);
+    return false;
+
+}
+
+/**
+ * Il nous faut une fonction qui permet de changer
+ * le theme d'un ticket sans recharger la page
+ */
+ function changerThemeTicket(id_ticket, theme) {
+
+    // 3. Elle doit conditionner les données
+    const data = new FormData();
+    data.append('id_ticket', id_ticket);
+
+    // 4. Elle doit configurer une requête ajax en POST et envoyer les données
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
 
     requeteAjax.send(data);
     return false;
@@ -224,8 +243,21 @@ $("#fermer_ticket").click(function(e) {
 $("#ticket_urgent").click(function(e) {
     e.preventDefault
     let id_ticket = document.getElementById("id_ticket").value;
-    document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-warning badge-pill ml-1">urgent</span>`;
-    changerStatutTicket(id_ticket, "urgent");
+    let statut = document.getElementById("statut").textContent;
+    if (statut == "urgent") {
+        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-success badge-pill ml-1">ouvert</span>`;
+        changerStatutTicket(id_ticket, "ouvert");
+    } else {
+        document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-warning badge-pill ml-1">urgent</span>`;
+        changerStatutTicket(id_ticket, "urgent");
+    }
+});
+
+$(".theme-ticket").click(function(e) {
+    e.preventDefault
+    let id_ticket = document.getElementById("id_ticket").value;
+    let theme = $(this).children('span')[1].textContent;
+    changerThemeTicket(id_ticket, theme);
 });
 
 // S'execute lorsqu'on clique sur "Envoyer une requête" dans Support

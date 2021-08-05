@@ -111,7 +111,7 @@ require_once 'php/config.php';
                         <!-- todo app menu -->
                         <div class="todo-app-menu">
                             <!-- sidebar list start -->
-                            <div class="sidebar-menu-list">
+                            <div class="sidebar-menu-list h-100">
                                 <div class="list-group">
                                     <a href="javascript:void(0);" class="all-tickets list-group-item border-0 active">
                                         <span class="fonticon-wrap mr-50">
@@ -128,6 +128,12 @@ require_once 'php/config.php';
                                         </span>
                                         <span> Non lu</span>
                                     </a>
+                                    <a href="javascript:void(0);" class=" filtre-urgent list-group-item border-0">
+                                        <span class="fonticon-wrap mr-50">
+                                            <i class="livicon-evo" data-options="name: warning-alt.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent;"></i>
+                                        </span>
+                                        <span> Urgent</span>
+                                    </a>
                                     <a href="javascript:void(0);" class="filtre-ouvert list-group-item border-0">
                                         <span class="fonticon-wrap mr-50">
                                             <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent;"></i>
@@ -141,7 +147,7 @@ require_once 'php/config.php';
                                         <span> Fermé</span>
                                     </a>
                                 </div>
-                                <label class="filter-label mt-2 mb-1 pt-25">Labels</label>
+                                <label class="filter-label mt-2 mb-1 pt-25">Thèmes</label>
                                 <div class="list-group">
                                     <a href="#" class="list-group-item border-0 d-flex align-items-center justify-content-between">
                                         <span>Général</span>
@@ -197,11 +203,46 @@ require_once 'php/config.php';
                                                 <span id="statut" class="badge badge-light-<?php if ($infos_ticket['statut'] == "ouvert") { echo "success"; } else if ($infos_ticket['statut'] == "fermé") { echo "danger"; } else { echo "warning"; } ?> badge-pill ml-1"><?= $infos_ticket['statut'] ?></span>
                                             </div>
                                         </div>
-                                        <div class="chat-header-icons">
-                                            <div class="fonticon-wrap">
-                                                <a id="ticket_urgent" class="text-warning mr-50" href="JavaScript:void(0);"><i class="bx bx-error" style="font-size: 25px;"></i></a>
-                                                <a id="fermer_ticket" class="text-danger mr-50" href="JavaScript:void(0);"><i class="bx bx-lock" style="font-size: 25px;"></i></a>
-                                            <div>
+                                        <div class="d-flex chat-header-icons">
+                                            <div class="d-flex flex-column justify-content-center" style="padding: 0 10px;">
+                                                <span class="fonticon-wrap">
+                                                    <a id="ticket_urgent" class="text-warning" href="JavaScript:void(0);"><i class="bx bx-error" style="font-size: 25px;"></i></a>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center" style="padding-right: 10px;">
+                                                <span class="fonticon-wrap">
+                                                    <a id="fermer_ticket" class="text-danger" href="JavaScript:void(0);"><i class="bx bx-lock" style="font-size: 25px;"></i></a>
+                                                <span>
+                                            </div>
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="fonticon-wrap">
+                                                        <i class="bx bx-purchase-tag" style="font-size: 25px;"></i>
+                                                    </span>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a href="javaScript:void(0);" class="theme-ticket dropdown-item align-items-center">
+                                                        <span class="bullet bullet-light bullet-sm mr-50"></span>
+                                                        <span>général</span>
+                                                    </a>
+                                                    <a href="javaScript:void(0);" class="theme-ticket dropdown-item align-items-center">
+                                                        <span class="bullet bullet-sm mr-50" style="background-color: yellow;"></span>
+                                                        <span>compta</span>
+                                                    </a>
+                                                    <a href="javaScript:void(0);" class="theme-ticket dropdown-item align-items-center">
+                                                        <span class="bullet bullet-danger bullet-sm mr-50"></span>
+                                                        <span>juridique</span>
+                                                    </a>
+                                                    <a href="javaScript:void(0);" class="theme-ticket dropdown-item align-items-center">
+                                                        <span class="bullet bullet-warning bullet-sm mr-50"></span>
+                                                        <span>fiscalité</span>
+                                                    </a>
+                                                    <a href="javaScript:void(0);" class="theme-ticket dropdown-item align-items-center">
+                                                        <span class="bullet bullet-info bullet-sm mr-50"></span>
+                                                        <span>social</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </header>
                                 </div>
