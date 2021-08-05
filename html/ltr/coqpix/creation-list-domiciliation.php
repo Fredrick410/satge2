@@ -4,20 +4,22 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-$authorised_roles = array('admin', 'juriste');
+//$authorised_roles = array('admin', 'juriste');
 require_once 'php/verif_session_connect_admin.php';
 
 $SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE ""');
 $SQL2->execute();
 $list_doc = $SQL2->fetchAll();
-    
+
+if(isset($_GET['id'])){
 $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
 $pdoSta->bindValue(':num',$_GET['id']);
 $pdoSta->execute();
 $crea = $pdoSta->fetch();
 
-$dateee = substr($crea['depo_contrat'], 0, 10);
+$dateee = substr($crea['depo_domi'], 0, 10);
 
+}
 ?>
 
 <!DOCTYPE html>
@@ -251,7 +253,7 @@ $dateee = substr($crea['depo_contrat'], 0, 10);
                                                 <?php 
                                                 $j=0;
                                                 foreach($list_doc as $doc): 
-                                                    $contrat = $bdd->prepare('SELECT depo_contrat FROM crea_societe WHERE id=:num');
+                                                    $contrat = $bdd->prepare('SELECT depo_domi FROM crea_societe WHERE id=:num');
                                                     $contrat->bindValue(':num',$doc['id']);
                                                     $contrat->execute();
                                                     $contrat = $contrat->fetch();
@@ -267,7 +269,7 @@ $dateee = substr($crea['depo_contrat'], 0, 10);
                                                                         <img src="../../../app-assets/images/ico/<?=$doc['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                     </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $doc['name_crea'] ?></span></a>
-                                                                    <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if($contrat['depo_contrat'] == ""){echo "d-none";} ?>" style="display:inline-block; top:3px; left:10px;">
+                                                                    <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if($contrat['depo_domi'] == ""){echo "d-none";} ?>" style="display:inline-block; top:3px; left:10px;">
                                                                                                 <span><i class="bx bx-check"></i></span>
                                                                     </div>
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $doc['status_crea'] ?>">
@@ -344,17 +346,17 @@ $dateee = substr($crea['depo_contrat'], 0, 10);
                                                                             <form action="php/valider_contrat.php?id=<?= $_GET['id'] ?>&valid=true" method="POST" style="display:inline-block">
                                                                                 <input type="hidden" name="num_creation" value="<?= $_GET['id'] ?>">
                                                                                 <div class="d-flex align-items-center">
-                                                                                    <small class="text-muted mr-75 <?php if($crea['depo_contrat'] !== ""){echo "none-validation";} ?>">
+                                                                                    <small class="text-muted mr-75 <?php if($crea['depo_domi'] !== ""){echo "none-validation";} ?>">
                                                                                          - Transmis le : 
                                                                                     </small>
-                                                                                    <small class="text-muted mr-75 <?php if($crea['depo_contrat'] == ""){echo "none-validation";} ?>">
+                                                                                    <small class="text-muted mr-75 <?php if($crea['depo_domi'] == ""){echo "none-validation";} ?>">
                                                                                          - Dépot au domiciliateur le <?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($dateee)); ?>
                                                                                     </small>
                                                                                     <fieldset class="d-flex justify-content-end">
-                                                                                        <input name="depo_contrat" type="date" class="form-control mb-50 mb-sm-0 <?php if($crea['depo_contrat'] !== ""){echo "none-validation";} ?>" placeholder="jj-mm-aa" style="margin: 5px; position: relative;">
-                                                                                        <button type="submit" class="btn btn-icon btn-light-success <?php if($crea['depo_contrat'] !== ""){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
+                                                                                        <input name="depo_domi" type="date" class="form-control mb-50 mb-sm-0 <?php if($crea['depo_domi'] !== ""){echo "none-validation";} ?>" placeholder="jj-mm-aa" style="margin: 5px; position: relative;">
+                                                                                        <button type="submit" class="btn btn-icon btn-light-success <?php if($crea['depo_domi'] !== ""){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
 
-                                                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if($crea['depo_contrat'] == ""){echo "none-validation";} ?>" style="position: relative; top: 20%;">
+                                                                                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if($crea['depo_domi'] == ""){echo "none-validation";} ?>" style="position: relative; top: 20%;">
                                                                                             <p class="mb-0">Déposé</p>
                                                                                             <input onchange="contrat_depo()" name="greffe_check"  type="checkbox" class="custom-control-input" id="customSwitch98" checked>
                                                                                             <label class="custom-control-label" for="customSwitch98">
