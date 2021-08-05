@@ -257,7 +257,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                             <ul class="mx-3">  
                               <li class="navbar-expand" style="list-style: disc; color: <?= $etiquette['color_etiq']; ?>;">
                               <a href="">
-                                <label class="title text-dark pull-left" style="font-size: 16px"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></label> 
+                                <label class="title text-dark pull-left" style="font-size: 16px"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></label>
                                   <a href="php/delete_etiq_bookmark.php?num=<?= $etiquette['id']?>" class="fa fa-trash pull-right" style ="display:inline; justify-content: space-between; color: red;"></a>
                                   <a href="etiquette_edit_book.php?num=<?= $etiquette['id'] ?>" class="fa fa-edit pull-right" style ="display:inline; justify-content: space-between; color: blue;" ></a>
                                   <a class="show trash_etiq" data-bs-toggle="pill" role="tab" aria-selected="false"></a>
@@ -316,7 +316,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                                           <div class="desciption-data">
                                             <div class="title-bookmark" >
                                               <h6 class="title_0"><?= $bookmarks['name_search'] ?></h6>
-                                              <p class="weburl_0"><?= substr($bookmarks['url_search'], 0, 30) ?></p>
+                                              <p class="weburl_0"><?= substr($bookmarks['url_search'], 0, 20) ?>...</p>
                                               <div class="">
                                                 <!--<p class="collection_0 text-dark"><.?= $bookmarks['etiquette_search'] ?></p>-->
                                                 <p class="text-dark desc_0"><?= $bookmarks['description_search'] ?></p>
@@ -363,7 +363,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                                     <div class="col-xl-3 col-md-4 xl-50">
                                       <div class="card card-with-border bookmark-card o-hidden">
                                         <div class="details-website">
-                                          <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="80" width="80">
+                                          <a href="<?= $bookmarks_favo['url_search']?>"> <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="80" width="80"><a>
                                           <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks_favo['id'] ?>&favo=<?= $bookmarks_favo['favorite_search'] ?>"><i style="color: <?php if ($bookmarks_favo['favorite_search'] !== "no") {
                                                                                                                                                                                                                   } ?>;" class="fa fa-star"></i></a></div>
                                           <div class="desciption-data">
@@ -424,6 +424,54 @@ $bookmark_favo = $pdoSt->fetchAll();
                             </div>
                           </div>
                         <?php endforeach; ?>
+
+                        <!--affichage par theme de recherche-->
+                        <div class="fade tab-pane" id="" role="tabpanel" aria-labelledby="-tab">
+                          <div class="card mb-0">
+                            <div class="card-header d-flex">
+                              <h6 class="mb-0">Mes favoris</h6>
+                              <ul>
+                                <li><a class="grid-bookmark-view" href="#"><i data-feather="grid"></i></a></li>
+                                <li><a class="list-layout-view" href="#"><i data-feather="list"></i></a></li>
+                              </ul>
+                            </div>
+                            <div class="card-body">
+                              <div class="details-bookmark">
+                                <div class="row" id="favouriteData">
+                                  <?php foreach ($bookmark_favo as $bookmarks_favo) : ?>
+                                    <div class="col-xl-3 col-md-4 xl-50">
+                                      <div class="card card-with-border bookmark-card o-hidden">
+                                        <div class="details-website">
+                                          <a href="<?= $bookmarks_favo['url_search']?>"> <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="80" width="80"><a>
+                                          <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks_favo['id'] ?>&favo=<?= $bookmarks_favo['favorite_search'] ?>"><i style="color: <?php if ($bookmarks_favo['favorite_search'] !== "no") {
+                                                                                                                                                                                                                  } ?>;" class="fa fa-star"></i></a></div>
+                                          <div class="desciption-data">
+                                            <div class="title-bookmark">
+                                              <h6  class="title_0"><?= $bookmarks_favo['name_search'] ?></h6>
+                                              <p class="weburl_0"><?= substr($bookmarks_favo['url_search'], 0, 30) ?>...</p>
+                                              <div class="hover-block">
+                                                <ul>
+                                                  <li><a href="#"><i data-feather="link"></i></a></li>
+                                                  <li><a href="#"><i data-feather="share-2"></i></a></li>
+                                                  <li><a href="php/delete_bookmark.php?num=<?= $bookmarks_favo['id'] ?>"><i data-feather="trash-2"></i></a></li>
+                                                  <li class="pull-right text-end"><a href="#" title="<?= $bookmarks_favo['etiquette_search'] ?>"><i data-feather="tag"></i></a></li>
+                                                </ul>
+                                              </div>
+                                              <div class="content-general">
+                                                <p class="desc_0"><?= $bookmarks_favo['description_search'] ?></p><span class="collection_0"><?= $bookmarks_favo['etiquette_search'] ?></span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <?php endforeach; ?>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--end affichage-->
 
                         <!--popup theme de recherche-->
                         <div class="modal fade modal-bookmark" id="createtag" tabindex="-1" role="dialog" aria-hidden="true">
