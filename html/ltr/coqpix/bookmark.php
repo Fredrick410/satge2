@@ -254,7 +254,7 @@ $bookmark_favo = $pdoSt->fetchAll();
                           <li><span class="text-dark font-weight-bolder">Theme de recherche</span><span class="pull-right"><a class="text-dark" href="#" data-bs-toggle="modal" data-bs-target="#createtag"><i data-feather="plus-circle"></i></a></span></span></li>
                           <br>
                           <?php foreach ($etiq as $etiquette) : ?>
-                            <ul class="mx-3">  
+                            <ul class="">  
                               <li class="navbar-expand" style="list-style: disc; color: <?= $etiquette['color_etiq']; ?>;">
                               <a href="">
                                 <label class="title text-dark pull-left" style="font-size: 16px"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></label>

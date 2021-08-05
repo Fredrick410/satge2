@@ -27,6 +27,81 @@ require_once 'php/get_documents.php';
         $affichage_doc = "";
     }
 
+    if($crea['status_crea'] == "EURL"){
+            $linkview = "morale";
+    }else{        
+        if($crea['status_crea'] == "SARL"){
+            $linkview = "morale";
+        }else{
+            if($crea['status_crea'] == "SAS"){
+                $linkview = "morale";
+            }else{
+                if($crea['status_crea'] == "SASU"){
+                    $linkview = "morale";
+                }else{
+                    if($crea['status_crea'] == "SCI"){
+                        $linkview = "morale";
+                    }else{
+                        if($crea['status_crea'] == "EIRL"){
+                            $linkview = "physique";
+                        }else{
+                            if($crea['status_crea'] == "Micro-entreprise"){
+                                $linkview = "physique";
+                            }else{
+                                $linkview = "physique";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    $verif = false;
+    $color = '#C0C0C0';
+
+    if($linkview == 'morale'){
+        if($doc_pieceid == "1"){
+            if($doc_cerfaM0 == "1"){
+                if($doc_cerfaMBE == "1"){
+                    if($doc_justificatifss == "1"){
+                        if($doc_pouvoir == "1"){
+                            if($doc_attestation == "1"){
+                                if($doc_depot == "1"){
+                                    
+                                    $verif = true;    
+                                    $color = '#29fe8c';                                                
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }else{
+        if($doc_pieceid == "1"){
+            if($doc_cerfaM0 == "1"){
+                if($doc_xp == "1"){
+                    if($doc_justificatifd == "1"){
+                        if($doc_peirl == "1"){
+                            if($doc_affectation == "1"){
+                                if($doc_pouvoir == "1"){
+                                    if($doc_attestation == "1"){
+                                        
+                                        $verif = true;  
+                                        $color = '#29fe8c';                                                
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -131,16 +206,23 @@ require_once 'php/get_documents.php';
                         </li>
                         <li class="col-4">
                             <?php if($doc_contrat == "1"){ ?>
-                            <a class="btn btn-contrat" href="../../../src/crea_societe/contrat/<?= $crea['doc_contrat'] ?>" target="_blank">
+                            <a class="btn btn-contrat" style="background-color: #29fe8c;" href="../../../src/crea_societe/contrat/<?= $crea['doc_contrat'] ?>" target="_blank">
                             <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
                             <label>Voir mon contrat</label>
                             </a>
-                            <?php }else{ ?>
-                            <a class="btn btn-contrat" href="generate-pdf-2.php" target="_blank">
+                            <?php }else{ 
+                                if($verif == true){ ?>
+                            <a class="btn btn-contrat" style="background-color: <?= $color ?>;" href="generate-pdf-2.php" target="_blank">
                                 <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
                                 <label>Générer mon contrat</label>
                             </a>
-                            <?php } ?>
+                            <?php }else{ ?>
+                            <a class="btn btn-contrat" onclick="alert('Veuillez compléter votre compte avant de générer votre contrat');" style="background-color: <?= $color ?>;" href="#">
+                                <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
+                                <label>Générer mon contrat</label>
+                            </a>
+                            <?php  }
+                            } ?>
                         </li>
                     </ul>
             </div>
