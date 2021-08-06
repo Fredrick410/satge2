@@ -191,13 +191,13 @@ $(".chat-support").click(function() {
         let id_ticket = $(this).children('input:nth(0)').val();
         let objet = $(this).children('input:nth(1)').val();
 
-        document.getElementById("id_chat_front").value = id_ticket;
-        document.getElementById("nom_chat_front").innerHTML = objet;
-        document.getElementById("img_chat_front").src = "../../../app-assets/images/ico/chatpix3.png";
+        document.getElementById("id_chat").value = id_ticket;
+        document.getElementById("nom_chat").innerHTML = objet;
+        document.getElementById("image_chat").src = "../../../app-assets/images/ico/chatpix3.png";
 
         getMessagesSupport(auteur, id_ticket);
 
-        document.getElementById("type_chat_front").value = "support";
+        document.getElementById("type_chat").value = "support";
     }
 
 });
@@ -208,12 +208,12 @@ $(".btn-envoyer-msg").click(function(event) {
     // Si on dans le front
     if (auteur == "user") {
 
-        var type_chat = document.getElementById("type_chat_front").value
+        var type_chat = document.getElementById("type_chat").value
 
         // On vérifie que le chat sélectionné est bien le support
         if (type_chat == "support") {
             let id_membre = document.getElementById("id_session").value;
-            let id_ticket = document.getElementById("id_chat_front").value;
+            let id_ticket = document.getElementById("id_chat").value;
             postMessageSupport(event, "user", id_membre, id_ticket);
         }
 

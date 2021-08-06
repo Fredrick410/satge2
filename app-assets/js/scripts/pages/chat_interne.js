@@ -14,11 +14,11 @@ function getDateEnLettres(date) {
 
 }
 
-function getMessages(id_membre_1, id_membre_2) {
+function getMessages(id_source, id_destination, type_message) {
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?id_membre_1="+id_membre_1+"&id_membre_2="+id_membre_2);
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?type_message="+type_message+"&id_source="+id_source+"&id_destination="+id_destination);
 
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
@@ -32,8 +32,8 @@ function getMessages(id_membre_1, id_membre_2) {
         const resultat = JSON.parse(requeteAjax.responseText);
         const html = resultat.reverse().map(function(message) {
 
-            let message_a_droite = message.id_membre_from == id_membre_1 ? '' : 'chat-left';
-            let auteur_a_droite = message.id_membre_from == id_membre_1 ? 'right' : 'left';
+            let message_a_droite = message.id_membre_from == id_source ? '' : 'chat-left';
+            let auteur_a_droite = message.id_membre_from == id_source ? 'right' : 'left';
 
             next_date = new Date(message.date_message);
 
@@ -76,10 +76,12 @@ function getMessages(id_membre_1, id_membre_2) {
                     </div>
                 </div>`;
 
-            if (id_membre_2 == 0) {
-                return html_date + html_auteur + html_message;
-            } else {
+            if (type_message == "privé") {
                 return html_date + html_message;
+            }
+
+            if (type_message == "channel") {
+                return html_date + html_auteur + html_message;
             }
 
         }).join('');
@@ -100,8 +102,8 @@ function getMessages(id_membre_1, id_membre_2) {
  * Il nous faut une fonction pour envoyer le nouveau
  * message au serveur et rafraichir les messages
  */
-function postMessage(event, id_membre_1, id_membre_2) {
-    
+function postMessage(event, id_source, id_destination, type_message) {
+
     // 1. Elle doit stoper le submit du formulaire
     event.preventDefault();
 
@@ -110,8 +112,9 @@ function postMessage(event, id_membre_1, id_membre_2) {
 
     // 3. Elle doit conditionner les données
     const data = new FormData();
-    data.append('id_membre_1', id_membre_1);
-    data.append('id_membre_2', id_membre_2);
+    data.append('type_message', type_message);
+    data.append('id_source', id_source);
+    data.append('id_destination', id_destination);
     data.append('texte', texte.value);
 
     // 4. Elle doit configurer une requête ajax en POST et envoyer les données
@@ -121,7 +124,7 @@ function postMessage(event, id_membre_1, id_membre_2) {
     requeteAjax.onload = function() {
         texte.value = '';
         texte.focus();
-        getMessages(id_membre_1, id_membre_2);
+        getMessages(id_source, id_destination, type_message);
     }
 
     requeteAjax.send(data);
@@ -130,7 +133,7 @@ function postMessage(event, id_membre_1, id_membre_2) {
 }
 
 // S'execute lorsqu'on clique sur un contact dans "CHAT INTERNE"
-$(".chat-interne").click(function() {
+$(".chat-privé").click(function() {
 
     let id_session = document.getElementById("id_session").value;
 
@@ -138,45 +141,48 @@ $(".chat-interne").click(function() {
     let nom = $(this).children('input:nth(1)').val();
     let img = $(this).children('input:nth(2)').val();
 
-    document.getElementById("id_chat_front").value = id;
-    document.getElementById("nom_chat_front").innerHTML = nom;
-    document.getElementById("img_chat_front").src = "../../../src/img/" + img;
+    document.getElementById("id_chat").value = id;
+    document.getElementById("nom_chat").innerHTML = nom;
+    document.getElementById("image_chat").innerHTML = `<img src="../../../src/img/${img}" alt="avatar" height="36" width="36" />`;
 
-    getMessages(id_session, id);
+    getMessages(id_session, id, "privé");
 
-    document.getElementById("type_chat_front").value = "interne";
+    document.getElementById("type_chat").value = "privé";
 
 });
 
 // S'execute lorsqu'on clique sur le chat global dans "CHAT INTERNE"
-$(".chat-global").click(function() {
-
+$(".chat-channel").click(function() {
+    
     let id_session = document.getElementById("id_session").value;
 
-    let img = $(this).children('input:nth(0)').val();
+    let id = $(this).children('input:nth(0)').val();
+    let nom = $(this).children('input:nth(1)').val();
 
-    document.getElementById("nom_chat_front").innerHTML = "Global";
-    document.getElementById("img_chat_front").src = "../../../src/img/" + img;
+    document.getElementById("id_chat").value = id;
+    document.getElementById("nom_chat").innerHTML = nom;
+    document.getElementById("image_chat").innerHTML = '';
 
-    getMessages(id_session, 0);
+    getMessages(id_session, id, "channel");
 
-    document.getElementById("type_chat_front").value = "global";
+    document.getElementById("type_chat").value = "channel";
 
 });
 
 // S'execute lorsqu'on appuie sur "Envoyer" un message
 $(".btn-envoyer-msg").click(function(event) {
-    let type_chat = document.getElementById("type_chat_front").value
+
+    let type_chat = document.getElementById("type_chat").value
     let id_session = document.getElementById("id_session").value;
+    let id = document.getElementById("id_chat").value;
 
     // On vérifie que le chat sélectionné est bien le support
-    if (type_chat == "interne") {
-        let id = document.getElementById("id_chat_front").value;
-        postMessage(event, id_session, id);
+    if (type_chat == "privé") {
+        postMessage(event, id_session, id, "privé");
     }
 
-    if (type_chat == "global") {
-        postMessage(event, id_session, 0);
+    if (type_chat == "channel") {
+        postMessage(event, id_session, id, "channel");
     }
 
 });
