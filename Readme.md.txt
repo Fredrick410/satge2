@@ -168,3 +168,7 @@ branche de Leo :
 		- back ajout de la partie "en ligne" dans le portefeuille qui affiche les contrats ma créa (WIP)
 		- fix du doggo		
 
+branche de oscar : 
+	tache réalisée le 06/08/2021 :
+		- ajout du prix au contrat dans le back office
+		- signature dans ma crea du client après l'ajout du prix

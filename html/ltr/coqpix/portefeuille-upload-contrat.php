@@ -182,7 +182,7 @@ require_once 'php/config.php';
         <div class="content-wrapper">
             <div class="col-lg-12">
                 <div class="form-group">
-                    <button onclick="history.go(-1)" type="button" class="btn btn-icon btn-light-danger mr-1 mb-1"><i class='bx bx-arrow-back'></i></button>
+                    <a href="portefeuille.php" type="button" class="btn btn-icon btn-light-danger mr-1 mb-1"><i class='bx bx-arrow-back'></i></a>
                 </div>
                 <div class="row">
                     <div class="col" style="border-right: 1px solid grey;">

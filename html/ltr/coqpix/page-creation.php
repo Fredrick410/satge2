@@ -171,7 +171,7 @@ require_once 'php/get_documents.php';
                 <a class="dropdown-user-link" href="#" data-toggle="dropdown">
                     <img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar"><br>
                     <h3> <?= $crea['name_crea'] ?> </h3>
-                    <span class="user-status">En ligne</span>
+                    <span class="user-status">En ligne</span> <span class="bx bx-cog"></span> <span class="bx bx-log-out"></span>
                 </a>
                 <div class="dropdown-menu pb-0" style="margin-left: 40%;">
                     <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Information entreprise/dirigeant</a>
@@ -211,9 +211,9 @@ require_once 'php/get_documents.php';
                             <label>Voir mon contrat<img id="vx1" src="../../../app-assets/images/pages/v.png"></label>
                             </a>
                             <?php if($crea['estimation_contrat'] == ''){ ?>
-                                <a class="btn btn-primary1" style="background-color: #C0C0C0;"><label style="font-size: 13px;" class="m-0" disabled><span class="bx bx-pen"></span> Signer mon contrat</label></a>
+                                <a class="btn btn-primary1" style="background-color: #C0C0C0;"><label style="font-size: 13px;" class="m-0" onclick="alert('Veuillez attendre que Coqpix indique le coût du contrat s\'il vous plait');"><span class="bx bx-pen"></span> Signer mon contrat</label></a>
                             <?php }else{ ?>
-                                <a href="signature-contrat.php" class="btn btn-primary1" style="background-color: #29fe8c;"><label style="font-size: 13px;" class="m-0" ><span class="bx bx-pen"></span> Signer mon contrat</label></a>
+                                <a href="signature-contrat.php" href="#" class="btn btn-primary1" style="background-color: #29fe8c;"><label style="font-size: 13px;" class="m-0" ><span class="bx bx-pen"></span> Signer mon contrat</label></a>
                             <?php } ?>
                             <?php }else{ 
                                 if($verif == true){ ?>
