@@ -5,30 +5,42 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
-        $update = $bdd->prepare('UPDATE entreprise SET nameentreprise = ?, numerossiret = ?, pays_entreprise = ?, adresseentreprise = ?, descr_entreprise = ?, telentreprise = ?, link_website = ?, emailentreprise = ?, datecreation = ?, datedecloture = ?, iban_entreprise = ?, nom_diri = ?, prenom_diri = ?, adresse_diri = ?, telentreprise = ?, email_diri = ? WHERE id = ?');
-        $update->execute(array(
-            htmlspecialchars($_GET['nameentreprise']),
-            htmlspecialchars($_GET['numerossiret']),
-            htmlspecialchars($_GET['pays_entreprise']),
-            htmlspecialchars($_GET['adresseentreprise']),
-            htmlspecialchars($_GET['descr_entreprise']),
-            htmlspecialchars($_GET['telentreprise']),
-            htmlspecialchars($_GET['link_website']),
-            htmlspecialchars($_GET['emailentreprise']),
-            htmlspecialchars($_GET['datecreation']),
-            htmlspecialchars($_GET['datedecloture']),
-            htmlspecialchars($_GET['iban_entreprise']),
-            htmlspecialchars($_GET['nom_diri']),
-            htmlspecialchars($_GET['prenom_diri']),
-            htmlspecialchars($_GET['adresse_diri']),
-            htmlspecialchars($_GET['tel_diri']),
-            htmlspecialchars($_GET['email_diri']),
-            htmlspecialchars($_GET['numentreprise'])
-        ));
+        $update_entreprise = $bdd->prepare('UPDATE entreprise SET nameentreprise = :nameentreprise, 
+                                                                  numerossiret = :numerossiret,
+                                                                  pays_entreprise = :pays,
+                                                                  adresseentreprise = :adresse,
+                                                                  descr_entreprise = :descr,
+                                                                  telentreprise = :tel,
+                                                                  link_website = :website,
+                                                                  emailentreprise = :email,
+                                                                  datecreation = :datecreation,
+                                                                  datedecloture = :datecloture,
+                                                                  iban_entreprise = :iban
+                                                                  WHERE id = :id_entreprise');
+        $update_entreprise->bindValue(':nameentreprise', htmlspecialchars($_GET['nameentreprise']));
+        $update_entreprise->bindValue(':numerossiret', htmlspecialchars($_GET['numerossiret']));
+        $update_entreprise->bindValue(':pays', htmlspecialchars($_GET['pays_entreprise']));
+        $update_entreprise->bindValue(':adresse', htmlspecialchars($_GET['adresseentreprise']));
+        $update_entreprise->bindValue(':descr', htmlspecialchars($_GET['descr_entreprise']));
+        $update_entreprise->bindValue(':tel', htmlspecialchars($_GET['telentreprise']));
+        $update_entreprise->bindValue(':website', htmlspecialchars($_GET['link_website']));
+        $update_entreprise->bindValue(':email', htmlspecialchars($_GET['emailentreprise']));
+        $update_entreprise->bindValue(':datecreation', htmlspecialchars($_GET['datecreation']));
+        $update_entreprise->bindValue(':datecloture', htmlspecialchars($_GET['datedecloture']));
+        $update_entreprise->bindValue(':iban', htmlspecialchars($_GET['iban_entreprise']));
+        $update_entreprise->bindValue(':id_entreprise', htmlspecialchars($_GET['numentreprise']));
+        $update_entreprise->execute();
+
+        $update_membre = $bdd->prepare('UPDATE membres SET nom = :nom, prenom = :prenom, tel = :tel, email = :email WHERE id = :id_membre');
+        $update_membre->bindValue(':nom', htmlspecialchars($_GET['nom_membre']));
+        $update_membre->bindValue(':prenom', htmlspecialchars($_GET['prenom_membre']));
+        $update_membre->bindValue(':tel', htmlspecialchars($_GET['tel_membre']));
+        $update_membre->bindValue(':email', htmlspecialchars($_GET['email_membre']));
+        $update_membre->bindValue(':id_membre', htmlspecialchars($_GET['id_membre']));
+        $update_membre->execute();
 
         sleep(1);
         header('Location: ../page-user-profile.php');
         die();
     
-
 ?>
