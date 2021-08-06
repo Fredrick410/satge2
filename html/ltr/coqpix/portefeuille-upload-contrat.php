@@ -137,6 +137,12 @@ require_once 'php/config.php';
     background-color: crimson;
     border: 1px solid #212121;
     }
+
+    .btn-yellow {
+    background-color: #f3e53c;
+    border: 1px solid #C7CF00;
+    border-radius: 5px;
+    }
 </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: #f3e53c;">
@@ -180,14 +186,18 @@ require_once 'php/config.php';
                 </div>
                 <div class="row">
                     <div class="col" style="border-right: 1px solid grey;">
-                        <h5 class="m-1">Ajout du prix dans le contrat</h5>
-                        <div class="form-group" style="width: 300px; margin: 20px auto;">
-                            <label>Prix du contrat</label><br>
-                            <input placeholder="saisir un prix">
+                        <h5 class="m-1" style="font-weight: bold;">Ajouter le prix au contrat</h5>
+                        <div class="form-group" style="width: 300px; margin: 50px auto; text-align: center;">
+                            <h6 style="font-weight: bold;">Prix du contrat:</h6><br>
+                            <form action="generate-pdf-3.php" method="POST">
+                                <input type="text" name="prix" class="w-100 mb-1" style="text-align: center;" placeholder="saisir un prix" required><br>
+                                <input type="text" name="id_crea" class="" value="<?= $_GET['num']; ?>" hidden>
+                                <button type="submit" class="btn-yellow my-1 mx-auto w-75">Valider le prix</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col">
-                        <h5 class="m-1">Contrat sans prix</h5>
+                        <h5 class="m-1" style="font-weight: bold;">Contrat de prestations de service</h5>
                         <embed src=../../../src/crea_societe/contrat/<?= $crea['doc_contrat'] ?> width="100%" height="600px" type='application/pdf'/>
                     </div>
                 </div>
@@ -221,72 +231,6 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
-
-<!--<script type="text/javascript">
-
-function valider() {
-    document.forms["formSaisie"].submit();
-}
-
-</script>
-<script>// Code By Webdevtrick ( https://webdevtrick.com )
-function readFile(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      var htmlPreview =
-        '<img width="200" src="' + e.target.result + '" />' +
-        '<p>' + input.files[0].name + '</p>';
-      var wrapperZone = $(input).parent();
-      var previewZone = $(input).parent().parent().find('.preview-zone');
-      var boxZone = $(input).parent().parent().find('.preview-zone').find('.box').find('.box-body');
-
-      wrapperZone.removeClass('dragover');
-      previewZone.removeClass('hidden');
-      boxZone.empty();
-      boxZone.append(htmlPreview);
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-function reset(e) {
-  e.wrap('<form>').closest('form').get(0).reset();
-  e.unwrap();
-}
-
-$(".dropzone").change(function() {
-  readFile(this);
-});
-
-$('.dropzone-wrapper').on('dragover', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).addClass('dragover');
-});
-
-$('.dropzone-wrapper').on('dragover', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).addClass('dragover');
-});
-
-$('.dropzone-wrapper').on('dragleave', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).removeClass('dragover');
-});
-
-$('.remove-preview').on('click', function() {
-  var boxZone = $(this).parents('.preview-zone').find('.box-body');
-  var previewZone = $(this).parents('.preview-zone');
-  var dropzone = $(this).parents('.form-group').find('.dropzone');
-  boxZone.empty();
-  previewZone.addClass('hidden');
-  reset(dropzone);
-});</script>-->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
     <!-- TIMEOUT -->

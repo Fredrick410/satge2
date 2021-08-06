@@ -210,6 +210,11 @@ require_once 'php/get_documents.php';
                             <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
                             <label>Voir mon contrat<img id="vx1" src="../../../app-assets/images/pages/v.png"></label>
                             </a>
+                            <?php if($crea['estimation_contrat'] == ''){ ?>
+                                <a class="btn btn-primary1" style="background-color: #C0C0C0;"><label style="font-size: 13px;" class="m-0" disabled><span class="bx bx-pen"></span> Signer mon contrat</label></a>
+                            <?php }else{ ?>
+                                <a href="signature-contrat.php" class="btn btn-primary1" style="background-color: #29fe8c;"><label style="font-size: 13px;" class="m-0" ><span class="bx bx-pen"></span> Signer mon contrat</label></a>
+                            <?php } ?>
                             <?php }else{ 
                                 if($verif == true){ ?>
                             <a class="btn btn-contrat" style="background-color: <?= $color ?>;" href="generate-pdf-2.php" target="_blank">

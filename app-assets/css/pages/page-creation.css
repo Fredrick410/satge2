@@ -13,6 +13,17 @@
     src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
 }
 
+@font-face{
+    font-family: "holligate";
+    src: url("../../data/tcpdf_min/fonts/holligate.ttf");
+}
+
+#appercu{
+    font-family: holligate;
+    color: black;
+    font-size: 3em;
+}
+
 body{
     background-color: #EDF1FF;
 }
@@ -207,14 +218,39 @@ body{
     color: #29fe8c; 
 }
 
+.btn-primary1 {
+    border: none !important;
+    color: #051441; 
+    width: 90%;
+    min-width: 200px;
+    margin: 0 5%;
+}
+
 .btn-contrat {
     border: none !important;
     color: #051441; 
     width: 90%;
     min-width: 200px;
-    min-height: 150px;
-    height: 70%;
+    min-height: 100px;
+    height: 60%;
     margin: 8% 5%;
+}
+
+.content-body h5, .content-body h4{
+    font-family: mukta malar bold;
+    color: #051441;
+}
+
+.btn-signature {
+    color: #051441;
+    background-color: #29fe8c;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-signature:hover {
+    background-color: #051441;
+    color: #29fe8c;
 }
 
 input[type="checkbox"].solu {
@@ -284,7 +320,7 @@ input[type="checkbox"].solu + label:hover{
 }
 
 #img-doc1{
-    height: 75px;
+    height: 60px;
     margin: 20px;
 }
 
@@ -311,6 +347,12 @@ input[type="checkbox"].solu + label:hover{
 
 #ax{
     background-color: #C0C0C0;
+}
+
+#sig-canvas {
+    border: 2px dotted #CCCCCC;
+    border-radius: 15px;
+    cursor: crosshair;
 }
 
 @media screen and (max-width: 1310px) {

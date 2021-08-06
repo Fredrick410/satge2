@@ -4,13 +4,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-require_once 'php/verif_session_crea.php';
 
 require_once('../../../app-assets/data/tcpdf_min/tcpdf.php');
 $certificate = "../../../app-assets/data/tcpdf_min/config/cert/tcpdf.crt";
 
+$update = $bdd->prepare('UPDATE crea_societe SET estimation_contrat = ? WHERE id = ?');
+$update->execute(array( ($_POST['prix']), $_POST['id_crea']  ));
+
 $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
-$pdoSta->bindValue(':num',$_SESSION['id_crea'], PDO::PARAM_INT);
+$pdoSta->bindValue(':num',$_POST['id_crea'], PDO::PARAM_INT);
 $pdoSta->execute();
 $info = $pdoSta->fetch();
 
@@ -26,9 +28,6 @@ class MYPDF extends TCPDF {
         $this->Image($image_file, 15, 10, '', 25, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         $image_file2 = K_PATH_IMAGES.'../../../app-assets/images/pages/aeca.png';
         $this->Image($image_file2, 140, 12, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        // set bacground image
-        $img_file = K_PATH_IMAGES.'../../../app-assets/images/pages/specimen.png';
-        $this->Image($img_file, 15, 10, 235, 350, '', '', '', false, 300, '', false, false, 0);
     }
 
     // Page footer
@@ -208,7 +207,7 @@ Le Prestataire déclare respecter l\'ensemble des réglementations qui lui sont 
 <br>
 En contrepartie des Prestations rendues par le Prestataire, et conformément à la pratique de la profession, le Client paiera au Prestataire des honoraires définis en euros par mensualité suivant le tarif de la prestation annuel défini comme tel :<br>
 <span style="text-indent: 15px;"><br>
-•	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; € H.T/mois<br>
+•	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$info['estimation_contrat'].' € H.T/mois<br>
 </span><br>
 Ces honoraires seront payables par prélèvement avant le 10 du mois. En cas de non-paiement à son échéance d’une facture, les sommes restantes dues porteront intérêt à compter de ladite échéance un taux égal à 10% du montant par échéance et ce jusqu’au paiement intégral. Dans le cas où le client n’aurait toujours pas honoré son obligation de paiement après relances du prestataire, ce dernier pourra bloquer l’accès aux données du client jusqu’au complet paiement. <br>
 <br>
@@ -326,11 +325,10 @@ $file_name = 'contrat_coqpix_idcrea'.$info['id'].'_date-'.date("H-i-s").'.pdf';
 // END OF FILE
 //============================================================+
 
-require_once 'php/verif_session_crea.php';
 require_once 'php/config.php';
 
     $update = $bdd->prepare('UPDATE crea_societe SET doc_contrat = ? WHERE id = ?');
     $update->execute(array( ($file_name), $info['id']  ));
-    header('Location: page-creation');
+    header('Location: portefeuille-upload-contrat?num='.$_POST['id_crea'].'.php');
 
 ?>
