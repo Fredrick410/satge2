@@ -208,18 +208,18 @@ require_once 'php/get_documents.php';
                             <?php if($doc_contrat == "1"){ ?>
                             <a class="btn btn-contrat" style="background-color: #29fe8c;" href="../../../src/crea_societe/contrat/<?= $crea['doc_contrat'] ?>" target="_blank">
                             <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
-                            <label>Voir mon contrat</label>
+                            <label>Voir mon contrat<img id="vx1" src="../../../app-assets/images/pages/v.png"></label>
                             </a>
                             <?php }else{ 
                                 if($verif == true){ ?>
                             <a class="btn btn-contrat" style="background-color: <?= $color ?>;" href="generate-pdf-2.php" target="_blank">
                                 <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
-                                <label>Générer mon contrat</label>
+                                <label style="font-size: 13px;">Générer mon contrat<img id="vx1" src="../../../app-assets/images/pages/v.png"></label>
                             </a>
                             <?php }else{ ?>
                             <a class="btn btn-contrat" onclick="alert('Veuillez compléter votre compte avant de générer votre contrat');" style="background-color: <?= $color ?>;" href="#">
                                 <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
-                                <label>Générer mon contrat</label>
+                                <label style="font-size: 13px;">Générer mon contrat<img id="vx1" src="../../../app-assets/images/pages/x.png"></label>
                             </a>
                             <?php  }
                             } ?>

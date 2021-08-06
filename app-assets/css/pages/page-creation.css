@@ -300,6 +300,11 @@ input[type="checkbox"].solu + label:hover{
     margin-left: 10px;
 }
 
+#vx1 {
+    width: 20px;
+    margin-left: 10px;
+}
+
 #av{
     background-color: #29fe8c;
 }
