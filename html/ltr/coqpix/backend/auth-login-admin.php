@@ -1,42 +1,45 @@
 <!DOCTYPE html>
-<html class="loading" lang="fr" data-textdirection="ltr">
+<html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="Coqpix crée By audit action plus est une application dans le domaine de la gestion d'entreprise et la comptabilité connectée">
-    <meta name="keywords" content="application, audit action plus, expert comptable, application facile, Youness Haddou, web application">
-    <meta name="author" content="Audit action plus - Youness Haddou">
-    <title>Connexion</title>
-    <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/ico/favicon.png">
+    <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Connexion - Admin</title>
+    <link rel="apple-touch-icon" href="../../../../app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/vendors.min.czzss">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/vendors/css/vendors.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/components.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/themes/dark-layout.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/themes/semi-dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/themes/semi-dark-layout.css">
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
-    <link rel="stylesheet" type="text/css" href="app-assets/css/pages/authentication.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../../app-assets/css/pages/authentication.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
 </head>
 <!-- END: Head-->
+
+<!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern semi-dark-layout 1-column  navbar-sticky footer-static bg-auth-image blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="1-column" data-layout="semi-dark-layout">
     <!-- BEGIN: Content-->
@@ -56,8 +59,9 @@
                                 <div class="col-12 col-md-5 px-0">
                                     <div class=" mb-0 p-2 h-100">
                                         <div class=" pb-3">
-                                            <a href="html/ltr/coqpix/backend/auth-login-admin.php">
-                                                <img class="logocoq" src="app-assets/images/logo/logo_connexion.png" />
+                                            <a href="../../../../">
+                                                <img class="logocoq" src="../../../../app-assets/images/logo/logo_connexion.png" />
+                                                <h1 class="text-purple"> Administrateur</h1> 
                                             </a>
                                         </div>
                                         <?php if(isset($_GET["error"])) {
@@ -67,7 +71,7 @@
                                         <div class="">
                                             <div class="">
                                                 
-                                                <form action="html/ltr/coqpix/php/verif.php" method="GET">
+                                                <form action="../php/verif-admin.php" method="GET">
                                                     <div class="form-group mb-3">
                                                         <label class="h3" for="exampleInputEmail1" ><div class="text-purple">E-Mail :</div></label>
                                                         <input name="emailentreprise" type="email" class="form-control form-control-purple text-purple rounded-pill" id="exampleInputEmail1" placeholder="Adresse email"  required></div>
@@ -82,20 +86,16 @@
                                                                 <label class="text-purple" for="exampleCheck1">Rester connecté</label>
                                                             </div>
                                                         </div>
-                                                        <!-- MOT DE PASSE OUBLIER -->
+                                                        <!-- MOT DE PASSE OUBLIER 
                                                         <div class="text-right"><a href="html/ltr/coqpix/reset-password.php" class="card-link text-purple text-decoration-underline">Mot de passe oublié</a></div>
+                                                        -->
                                                     </div>
                                                     <div class="row mb-1">
                                                         <div class="col-2"></div>
                                                         <input type="submit" value="Se connecter" class="btn rounded-pill btn-purple glow col-8 position-relative">
                                                     </div>
                                                 </form>
-                                                <form action="html/ltr/coqpix/creation-societe.php">
-                                                    <div class="row">
-                                                        <div class="col-2"></div>
-                                                        <input type="submit" class="btn rounded-pill btn-purple col-8 mt-2 font-weight-bold" value="S'inscrire">
-                                                    </div> 
-                                                </form> 
+                                                        <h5 class="text-purple text-center mt-2 font-weight-bold"> Contactez contact@auditactionplus.com en cas de probleme </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -125,24 +125,25 @@
 
 
     <!-- BEGIN: Vendor JS-->
-    <script src="app-assets/vendors/js/vendors.min.js"></script>
-    <script src="app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
-    <script src="app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
-    <script src="app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+    <script src="../../../../app-assets/vendors/js/vendors.min.js"></script>
+    <script src="../../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
+    <script src="../../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+    <script src="../../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
+    <script src="../../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
-    <script src="app-assets/js/core/app-menu.js"></script>
-    <script src="app-assets/js/core/app.js"></script>
-    <script src="app-assets/js/scripts/components.js"></script>
-    <script src="app-assets/js/scripts/footer.js"></script>
+    <script src="../../../../app-assets/js/scripts/configs/horizontal-menu.js"></script>
+    <script src="../../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
+    <script src="../../../../app-assets/js/core/app-menu.js"></script>
+    <script src="../../../../app-assets/js/core/app.js"></script>
+    <script src="../../../../app-assets/js/scripts/components.js"></script>
+    <script src="../../../../app-assets/js/scripts/footer.js"></script>
     <!-- END: Theme JS-->
-    
-    
+
     <!-- BEGIN: Page JS-->
     <!-- END: Page JS-->
 
