@@ -33,10 +33,10 @@ require_once 'config.php';
         exit();
     }
     
-    $name_files = $_FILES['doc_files']['name'];                         
+    $name_files = htmlspecialchars($_FILES['doc_files']['name']);                         
     $date_now = '-'.date("H-i-s");
     $type_files = "." . strtolower(substr(strrchr($name_files, '.'), 1));
-    $target_file = $_FILES['doc_files']['tmp_name'];                                     
+    $target_file = htmlspecialchars($_FILES['doc_files']['tmp_name']);                                     
     $real_name = substr($name_files, 0, -4);
     $file_name = $dir. $real_name . $date_now . $type_files; 
 
