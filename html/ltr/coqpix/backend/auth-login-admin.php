@@ -71,7 +71,7 @@
                                         <div class="">
                                             <div class="">
                                                 
-                                                <form action="html/ltr/coqpix/php/verif-admin.php" method="GET">
+                                                <form action="../php/verif-admin.php" method="GET">
                                                     <div class="form-group mb-3">
                                                         <label class="h3" for="exampleInputEmail1" ><div class="text-purple">E-Mail :</div></label>
                                                         <input name="emailentreprise" type="email" class="form-control form-control-purple text-purple rounded-pill" id="exampleInputEmail1" placeholder="Adresse email"  required></div>
