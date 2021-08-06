@@ -236,8 +236,10 @@ require_once 'php/verif_session_connect_admin.php';
     .icon_send_c:hover{color: orange;}
     .icon_verif{position: relative; color: grey; font-size: 20px;}
     .icon_verif:hover{color: green;}
-    .icon_files{position: relative; left: -10px; color: green; font-size: 20px;}
+    .icon_files{position: relative; left: -10px; color: red; font-size: 20px;}
     .icon_files:hover{opacity: 0.5;}
+    .icon_files1{position: relative; left: -10px; color: green; font-size: 20px;}
+    .icon_files1:hover{opacity: 0.5;}
     .icon_card{position: relative; left: -10px; color: #3c6eca; font-size: 20px;}
     .icon_card:hover{opacity: 0.5;}
     .icon_x{position: relative; left: -10px; top: 3px; color: red; font-size: 25px;}
@@ -536,7 +538,7 @@ require_once 'php/verif_session_connect_admin.php';
                         </div>
                         <div id="div_local" class="form-group">
                             <div>
-                                <h5>Client (Local)</h5>
+                                <h5>Prospect (Local)</h5>
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive" style='overflow: hidden;'>
@@ -587,7 +589,7 @@ require_once 'php/verif_session_connect_admin.php';
 
                         <div id="div_enligne" class="form-group none-validation">
                             <div>
-                                <h5>Client (En ligne)</h5>
+                                <h5>Prospect (En ligne)</h5>
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive" style='overflow: hidden;'>
@@ -616,7 +618,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <a href="../../../src/crea_societe/contrat/<?= $contrat['doc_contrat'] ?> ?>" target="_blank">
                                                                             <i class='bx bx-file icon_files'></i>
                                                                         </a>
-                                                                        <a href="portefeuille-upload.php?num=<?= $contrat['id'] ?>&type=prospect&name_entreprise=<?= $contrat['name_crea'] ?>">
+                                                                        <a href="portefeuille-upload-contrat.php?num=<?= $contrat['id'] ?>">
                                                                             <i class='bx bxs-send icon_send'></i>
                                                                         </a>&nbsp&nbsp
                                                                         <a href="php/delete_contrat.php?id=<?= $contrat['id'] ?>">

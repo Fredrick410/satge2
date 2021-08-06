@@ -26,6 +26,9 @@ class MYPDF extends TCPDF {
         $this->Image($image_file, 15, 10, '', 25, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         $image_file2 = K_PATH_IMAGES.'../../../app-assets/images/pages/aeca.png';
         $this->Image($image_file2, 140, 12, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        // set bacground image
+        $img_file = K_PATH_IMAGES.'../../../app-assets/images/pages/specimen.png';
+        $this->Image($img_file, 15, 10, 235, 350, '', '', '', false, 300, '', false, false, 0);
     }
 
     // Page footer
@@ -46,7 +49,7 @@ $pdf = new MYPDF('p', 'mm', 'A4', true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('');
-$pdf->SetTitle('Domiciliation d\'entreprise : fiche de renseignement');
+$pdf->SetTitle('Contrat de prestations de service');
 $pdf->SetSubject('');
 $pdf->SetKeywords('');
 
@@ -205,7 +208,7 @@ Le Prestataire déclare respecter l\'ensemble des réglementations qui lui sont 
 <br>
 En contrepartie des Prestations rendues par le Prestataire, et conformément à la pratique de la profession, le Client paiera au Prestataire des honoraires définis en euros par mensualité suivant le tarif de la prestation annuel défini comme tel :<br>
 <span style="text-indent: 15px;"><br>
-•	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; € H.T/mois<br>
+•	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$prix.' € H.T/mois<br>
 </span><br>
 Ces honoraires seront payables par prélèvement avant le 10 du mois. En cas de non-paiement à son échéance d’une facture, les sommes restantes dues porteront intérêt à compter de ladite échéance un taux égal à 10% du montant par échéance et ce jusqu’au paiement intégral. Dans le cas où le client n’aurait toujours pas honoré son obligation de paiement après relances du prestataire, ce dernier pourra bloquer l’accès aux données du client jusqu’au complet paiement. <br>
 <br>
