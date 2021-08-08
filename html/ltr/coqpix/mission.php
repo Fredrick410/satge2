@@ -25,11 +25,18 @@ foreach ($missions as $mission) {
     $tasks[] = $pdoS->fetchAll();
 }
 
+//On recupere la liste des membres de cette entreprise
 $pdoSttt = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
 $pdoSttt->bindValue(':num', $_SESSION['id_session']);
 $pdoSttt->execute();
 $membres = $pdoSttt->fetchAll();
 //print("<pre>". print_r($tasks,true)."</pre>");
+
+//On recupere la liste des equipes de cette entreprise
+$pdoS = $bdd->prepare('SELECT * FROM teams WHERE id_session = :num');
+$pdoS->bindValue(':num', $_SESSION['id_session']);
+$pdoS->execute();
+$teams = $pdoS->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +60,7 @@ $membres = $pdoSttt->fetchAll();
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/editors/quill/quill.snow.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/pickers/pickadate/pickadate.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/select/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/file-uploaders/dropzone.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -67,6 +75,7 @@ $membres = $pdoSttt->fetchAll();
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-kanban.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/file-uploaders/dropzone.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -119,7 +128,7 @@ $membres = $pdoSttt->fetchAll();
                     <div class="kanban-sidebar">
                         <div class="card shadow-none quill-wrapper">
                             <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
-                                <h3 class="card-title">UI Design</h3>
+                                <h3 class="card-title">Modifier une tâche</h3>
                                 <button type="button" class="close close-icon">
                                     <i class="bx bx-x"></i>
                                 </button>
@@ -129,38 +138,32 @@ $membres = $pdoSttt->fetchAll();
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label>Libellé de la tache</label>
-                                            <input type="text" class="form-control edit-kanban-item-title" placeholder="Ex: Test">
+                                            <label>Libellé de la tâche</label>
+                                            <input type="text" class="form-control edit-kanban-item-title" id="name_task" placeholder="Ex: Test">
                                         </div>
                                         <div class="form-group">
                                             <label>Date de début</label>
-                                            <input type="text" class="form-control edit-kanban-item-date" placeholder="Ex: Mercredi 21 Août 2019">
+                                            <input type="text" class="form-control edit-kanban-item-date" id="date_task" placeholder="Ex: Mercredi 21 Août 2019">
                                         </div>
                                         <div class="form-group">
                                             <label>Date de fin</label>
-                                            <input type="text" class="form-control edit-kanban-item-date" placeholder="Ex: Mercredi 21 Août 2019">
+                                            <input type="text" class="form-control edit-kanban-item-date" id="dateecheance_task" placeholder="Ex: Mercredi 21 Août 2019">
                                         </div>
                                         <div class="form-group">
                                             <label>Etiquette</label>
-                                            <select id="color" class="form-control text-white">
-                                                <option class="bg-primary" selected>Primary</option>
-                                                <option class="bg-danger">Danger</option>
-                                                <option class="bg-success">Success</option>
-                                                <option class="bg-info">Info</option>
-                                                <option class="bg-warning">Warning</option>
-                                                <option class="bg-secondary">Secondary</option>
-                                            </select>
+                                            <input type="text" class="form-control" id="etiquette_task" placeholder="Nom de l'etiquette">
+                                            <input type="color" class="form-control" id="color_etiq">
                                         </div>
                                         <div class="form-group">
-                                            <label>Membres</label>
+                                            <label for="membres">Membres</label>
                                             <?php
                                             if (isset($membres) and count($membres) != 0) {
                                             ?>
-                                                <select class="form-control js-example-basic-multiple" name="membres[]" multiple="multiple">
+                                                <select class="form-control js-example-basic-multiple" id="membres" multiple>
                                                     <?php
                                                     foreach ($membres as $membre) {
                                                     ?>
-                                                    <option value="<?=$membre['id']?>"><?=$membre['nom'] . " ". $membre['prenom']?></option>
+                                                        <option value="<?= $membre['id'] ?>"><?= $membre['nom'] . " " . $membre['prenom'] ?></option>
                                                     <?php
                                                     }
                                                     ?>
@@ -174,10 +177,38 @@ $membres = $pdoSttt->fetchAll();
                                             ?>
                                         </div>
                                         <div class="form-group">
+                                            <label for="equipe">Equipe</label>
+                                            <?php
+                                            if (isset($teams) and count($teams) != 0) {
+                                            ?>
+                                                <select class="form-control js-example-basic-multiple" id="equipes" multiple>
+                                                    <?php
+                                                    foreach ($teams as $team) {
+                                                    ?>
+                                                        <option value="<?= $team['id'] ?>"><?= $membre['name_team'] ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <br>Aucune équipe
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Pièce jointe</label>
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="fichier" accept="pdf|doc|docx|jpg|jpeg|png">
-                                                <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
+                                            <div class="dropzone dropzone-area" id="dpz-multiple-files">
+                                                <div class="dz-message">Télécharger un fichier</div>
+                                                <input type="hidden" id="id_task">
+                                                <div class="fallback">
+                                                    <div class="custom-file">
+                                                        <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
+                                                        <input name="fichier" class="custom-file-input" id="fichier" type="file" multiple/>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- Compose mail Quill editor -->
@@ -238,6 +269,7 @@ $membres = $pdoSttt->fetchAll();
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
     <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/dropzone.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -270,7 +302,7 @@ $membres = $pdoSttt->fetchAll();
 
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
-            var kanban_curr_el, kanban_curr_item_id, kanban_item_title, kanban_data, kanban_item, kanban_users;
+            var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_data, kanban_item, kanban_users;
             // Kanban Board and Item Data passed by json
             var kanban_board_data = [
                 <?php
@@ -360,11 +392,46 @@ $membres = $pdoSttt->fetchAll();
                     // Set el to var kanban_curr_el, use this variable when updating title
                     kanban_curr_el = el;
                     // Extract  the kan ban item & id and set it to respective vars
-                    kanban_item_title = $(el).contents()[0].data;
+                    kanban_curr_item_title = $(el).contents()[0].data;
                     kanban_curr_item_id = $(el).attr("data-eid");
-
+                    var id_task = kanban_curr_item_id.replaceAll('kanban-item-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/get_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status == 'success') {
+                                var date_task = $('#date_task').pickadate('picker');
+                                date_task.set('select', data.task.date_task);
+                                var dateecheance_task = $('#dateecheance_task').pickadate('picker');
+                                dateecheance_task.set('select', data.task.dateecheance_task);
+                                $("#etiquette_task").val(data.task.etiquette_task);
+                                $("#color_etiq").val(data.task.color_etiq);
+                                var selected_membres = [];
+                                var selected_teams = [];
+                                if (data.membres.length != 0) {
+                                    data.membres.forEach(element => {
+                                        selected_membres.push(element['id']);
+                                    });
+                                }
+                                $("#membres").val(selected_membres);
+                                if (data.teams) {
+                                    data.teams.forEach(element => {
+                                        selected_teams.push(element['id']);
+                                    });
+                                }
+                                $("#equipes").val(selected_teams);
+                                $("#id_task").val(id_task);
+                            } else {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
                     // set edit title
-                    $(".edit-kanban-item .edit-kanban-item-title").val(kanban_item_title);
+                    $("#name_task").val(kanban_curr_item_title);
                 },
 
                 buttonClick: function(el, boardId) {
@@ -426,17 +493,6 @@ $membres = $pdoSttt->fetchAll();
                     (board_item_users = board_item_dueDate = board_item_comment = board_item_attachment = board_item_image = board_item_badge =
                         " ");
 
-                    // check if users are defined or not and loop it for getting value from user's array
-                    if (typeof $(board_item_el).attr("data-users") !== "undefined") {
-                        for (kanban_users in kanban_board_data[kanban_data].item[kanban_item].users) {
-                            board_item_users +=
-                                '<li class="avatar pull-up my-0">' +
-                                '<img class="media-object rounded-circle" src=" ' +
-                                kanban_board_data[kanban_data].item[kanban_item].users[kanban_users] +
-                                '" alt="Avatar" height="24" width="24">' +
-                                "</li>";
-                        }
-                    }
                     // check if dueDate is defined or not
                     if (typeof $(board_item_el).attr("data-dueDate") !== "undefined") {
                         board_item_dueDate =
@@ -447,7 +503,7 @@ $membres = $pdoSttt->fetchAll();
                             "</span>" +
                             "</div>";
                     }
-                    // check if comment is defined or not
+                    /*// check if comment is defined or not
                     if (typeof $(board_item_el).attr("data-comment") !== "undefined") {
                         board_item_comment =
                             '<div class="kanban-comment d-flex align-items-center mr-50">' +
@@ -456,7 +512,7 @@ $membres = $pdoSttt->fetchAll();
                             $(board_item_el).attr("data-comment") +
                             "</span>" +
                             "</div>";
-                    }
+                    }*/
                     // check if attachment is defined or not
                     if (typeof $(board_item_el).attr("data-attachment") !== "undefined") {
                         board_item_attachment =
@@ -536,48 +592,63 @@ $membres = $pdoSttt->fetchAll();
             }
             ?>
             addBoardDefault.addEventListener("click", function() {
-                KanbanExample.addBoards([{
-                    id: "kanban-" + i, // generate random id for each new kanban
-                    title: "Nom de la mission"
-                }]);
-                var kanbanNewBoard = KanbanExample.findBoard("kanban-" + i)
+                name_mission = "Nom de la mission";
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        name_mission: name_mission
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            i = data.id;
+                            KanbanExample.addBoards([{
+                                id: "kanban-" + i, // generate random id for each new kanban
+                                title: "Nom de la mission"
+                            }]);
 
-                if (kanbanNewBoard) {
-                    $(".kanban-title-board").on("mouseenter", function() {
-                        $(this).attr("contenteditable", "true");
-                        $(this).addClass("line-ellipsis");
-                    });
-                    $(".kanban-title-board").on("mouseleave", function() {
-                        // On recupere le nom de la mission et son id
-                        var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
-                        var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
-                        $.ajax({
-                            url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
-                            type: "POST",
-                            data: {
-                                name_mission: name_mission,
-                                id_mission: id_mission
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                                if (data.status != 'success') {
-                                    addAlert(data.message);
-                                }
+                            var kanbanNewBoard = KanbanExample.findBoard("kanban-" + i);
+
+                            if (kanbanNewBoard) {
+                                $(".kanban-title-board").on("mouseenter", function() {
+                                    $(this).attr("contenteditable", "true");
+                                    $(this).addClass("line-ellipsis");
+                                });
+                                $(".kanban-title-board").on("mouseleave", function() {
+                                    // On recupere le nom de la mission et son id
+                                    var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
+                                    var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
+                                    $.ajax({
+                                        url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                                        type: "POST",
+                                        data: {
+                                            name_mission: name_mission,
+                                            id_mission: id_mission
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            if (data.status != 'success') {
+                                                addAlert(data.message);
+                                            }
+                                        }
+                                    });
+                                });
+                                kanbanNewBoardData =
+                                    '<div class="dropdown">' +
+                                    '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
+                                    '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
+                                    '<a class="dropdown-item" href="#"><i class="bx bx-link mr-50"></i>Copy Link</a>' +
+                                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Delete</a>' +
+                                    "</div>" + "</div>";
+                                var kanbanNewDropdown = $(kanbanNewBoard).find("header");
+                                $(kanbanNewDropdown).append(kanbanNewBoardData);
                             }
-                        });
-                    });
-                    kanbanNewBoardData =
-                        '<div class="dropdown">' +
-                        '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
-                        '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
-                        '<a class="dropdown-item" href="#"><i class="bx bx-link mr-50"></i>Copy Link</a>' +
-                        '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Delete</a>' +
-                        "</div>" + "</div>";
-                    var kanbanNewDropdown = $(kanbanNewBoard).find("header");
-                    $(kanbanNewDropdown).append(kanbanNewBoardData);
-                }
-                i++;
-
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
             });
 
             // Delete kanban board
@@ -739,6 +810,47 @@ $membres = $pdoSttt->fetchAll();
                     .addClass($(":selected", this).attr("class") + " form-control text-white");
             });
         });
+    </script>
+
+    <script>
+        /********************************************
+         *               Add multiple files         *
+         ********************************************/
+        Dropzone.options.dpzMultipleFiles = {
+            url: "php/insert_files_tache.php",
+            paramName: "fichier", // The name that will be used to transfer the file
+            maxFilesize: 5, // MB
+            clickable: true,
+            addRemoveLinks: true,
+            dictRemoveFile: "Trash",
+            removedfile: function(file) {
+                var name = file.name;
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete.php',
+                    data: "id=" + name,
+                    dataType: 'html'
+                });
+            },
+            maxThumbnailFilesize: 1, // MB
+            acceptedFiles: 'image/jpg,image/jpeg,image/png,application/pdf',
+            params: {
+                id_task: $('#id_task').val()
+            },
+            init: function() {
+
+                // Using a closure.
+                var _this = this;
+
+                // Setup the observer for the button.
+                $("#clear-dropzone").on("click", function() {
+                    // Using "_this" here, because "this" doesn't point to the dropzone anymore
+                    _this.removeAllFiles();
+                    // If you want to cancel uploads as well, you
+                    // could also call _this.removeAllFiles(true);
+                });
+            }
+        }
     </script>
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

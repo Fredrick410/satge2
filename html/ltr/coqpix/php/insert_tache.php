@@ -10,7 +10,7 @@ if (isset($_POST['name_task']) and !empty($_POST['name_task'])) {
     $name_task = htmlspecialchars($_POST['name_task']);
 } else {
     $response_array['status'] = 'error';
-    $response_array['message'] = "Nom de tache vide";
+    $response_array['message'] = "Nom de tâche vide";
     echo json_encode($response_array);
     exit();
 }

@@ -14,7 +14,7 @@ if (isset($_POST['id_task'])) {
             $id_task = htmlspecialchars($_POST['id_task']);
         } else {
             $response_array['status'] = 'error';
-            $response_array['message'] = "Identifiant de tache vide";
+            $response_array['message'] = "Identifiant de tâche vide";
             echo json_encode($response_array);
             exit();
         }
