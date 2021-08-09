@@ -236,10 +236,12 @@ require_once 'php/verif_session_connect_admin.php';
     .icon_send_c:hover{color: orange;}
     .icon_verif{position: relative; color: grey; font-size: 20px;}
     .icon_verif:hover{color: green;}
-    .icon_files{position: relative; left: -10px; color: red; font-size: 20px;}
+    .icon_files{position: relative; left: -10px; color: green; font-size: 20px;}
     .icon_files:hover{opacity: 0.5;}
     .icon_files1{position: relative; left: -10px; color: orange; font-size: 20px;}
     .icon_files1:hover{opacity: 0.5;}
+    .icon_files2{position: relative; left: -10px; color: red; font-size: 20px;}
+    .icon_files2:hover{opacity: 0.5;}
     .icon_card{position: relative; left: -10px; color: #3c6eca; font-size: 20px;}
     .icon_card:hover{opacity: 0.5;}
     .icon_x{position: relative; left: -10px; top: 3px; color: red; font-size: 25px;}
@@ -616,7 +618,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <th> <?= $contrat['estimation_contrat'] ?> €</th>
                                                                     <th>
                                                                         <a href="../../../src/crea_societe/contrat/<?= $contrat['doc_contrat'] ?> ?>" target="_blank">
-                                                                            <i class='bx bx-file icon_<?php if($contrat['estimation_contrat'] == ''){ echo "files"; }else{ echo "files1"; } ?>'></i>
+                                                                            <i class='bx bx-file icon_<?php if($contrat['estimation_contrat'] == ''){ echo "files2"; }else{ echo "files1"; } ?>'></i>
                                                                         </a>
                                                                         <a href="portefeuille-upload-contrat.php?num=<?= $contrat['id'] ?>">
                                                                             <i class='bx bxs-send icon_send'></i>
