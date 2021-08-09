@@ -7,6 +7,7 @@ require_once 'php/config.php';
 require_once 'php/verif_session_crea.php';
 require_once 'php/get_documents_physique.php';
 require_once 'php/get_documents.php';
+require_once 'php/get_info.php';
     
     $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
     $pdoSta->bindValue(':num',$_SESSION['id_crea'], PDO::PARAM_INT);
@@ -68,10 +69,30 @@ require_once 'php/get_documents.php';
                         if($doc_pouvoir == "1"){
                             if($doc_attestation == "1"){
                                 if($doc_depot == "1"){
+                                    if($nom_diri == "1"){                                    
+                                        if($prenom_diri == "1"){                                        
+                                            if($tel_diri == "1"){
+                                                if($email_diri == "1"){
+                                                    if($adresse_diri == "1"){
+                                                        if($ville_diri == "1"){
+                                                            if($cp_diri == "1"){
+                                                                if($status_crea == "1"){
+                                                                    if($secteur_dactivite == "1"){
+                                                                        if($name_crea == "1"){
                                     
-                                    $verif = true;    
-                                    $color = '#29fe8c';                                                
-                                    
+                                                                            $verif = true;    
+                                                                            $color = '#29fe8c';     
+                                                                            
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }                                    
                                 }
                             }
                         }
@@ -88,10 +109,30 @@ require_once 'php/get_documents.php';
                             if($doc_affectation == "1"){
                                 if($doc_pouvoir == "1"){
                                     if($doc_attestation == "1"){
-                                        
-                                        $verif = true;  
-                                        $color = '#29fe8c';                                                
-                                        
+                                        if($nom_diri == "1"){                                    
+                                            if($prenom_diri == "1"){                                        
+                                                if($tel_diri == "1"){
+                                                    if($email_diri == "1"){
+                                                        if($adresse_diri == "1"){
+                                                            if($ville_diri == "1"){
+                                                                if($cp_diri == "1"){
+                                                                    if($status_crea == "1"){
+                                                                        if($secteur_dactivite == "1"){
+                                                                            if($name_crea == "1"){
+                                    
+                                                                                $verif = true;    
+                                                                                $color = '#29fe8c';     
+                                                                            
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }                                 
                                     }
                                 }
                             }
