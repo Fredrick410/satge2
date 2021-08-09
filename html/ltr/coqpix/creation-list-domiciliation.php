@@ -350,7 +350,7 @@ $dateee = substr($crea['depo_domi'], 0, 10);
                                                                                          - Transmis le : 
                                                                                     </small>
                                                                                     <small class="text-muted mr-75 <?php if($crea['depo_domi'] == ""){echo "none-validation";} ?>">
-                                                                                         - Dépot au domiciliateur le <?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($dateee)); ?>
+                                                                                         - Transmis au domiciliateur le <?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($dateee)); ?>
                                                                                     </small>
                                                                                     <fieldset class="d-flex justify-content-end">
                                                                                         <input name="depo_domi" type="date" class="form-control mb-50 mb-sm-0 <?php if($crea['depo_domi'] !== ""){echo "none-validation";} ?>" placeholder="jj-mm-aa" style="margin: 5px; position: relative;">
