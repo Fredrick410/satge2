@@ -177,3 +177,7 @@ branche de oscar :
 		- contrat fini (signature, prix, transfert dans portefeuille)
 		- maj affichage page portefeuille.php
 		- creation get_info.php pour verif info compte
+		
+branche de Leo :
+	tache réalisée le 09/08/2021 :
+		- passage de la table "crea_societe" à "portefeuille" quand le contrat est signé
