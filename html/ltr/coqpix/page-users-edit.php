@@ -100,23 +100,23 @@ require_once 'php/config.php';
                                 <div class="tab-content">
                                     <div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
                                         <!-- users edit media object start -->
-                                        <form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
-                                        <div class="media mb-2">
-                                            <a class="mr-2" href="#">
-                                                <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64">
-                                            </a>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">Image de l'entreprise</h4>
-                                                <div class="col-12 px-0 d-flex">
-                                                    <input type="file" accept="image/png, image/jpg, image/jpeg" name="FILES" required>                                                   
-                                                </div><br>
-                                                <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary">
+                                        <form action="php/insert_image.php" method="POST" enctype="multipart/form-data">
+                                            <div class="media mb-2">
+                                                <a class="mr-2" href="#">
+                                                    <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64">
+                                                </a>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading">Image de l'entreprise</h4>
+                                                    <div class="col-12 px-0 d-flex">
+                                                        <input type="file" accept="image/png, image/jpg, image/jpeg" name="FILES" required>                                                   
+                                                    </div><br>
+                                                    <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary">
+                                                </div>
                                             </div>
-                                        </div>
                                         </form>
                                         <!-- users edit media object ends -->
                                         <!-- users edit account form start -->
-                                        <form action="php/edit_profile_1.php" method="GET">
+                                        <form action="php/edit_profile_1.php" method="POST">
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
@@ -132,12 +132,12 @@ require_once 'php/config.php';
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                    <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Pays de la société :</label>
                                                             <input name="pays_entreprise" type="text" class="form-control" placeholder="Pays" value="<?= $entreprise['pays_entreprise']; ?>" required data-validation-required-message="Pays de la société">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Adresse société :</label>
                                                             <input name="adresseentreprise" type="text" class="form-control" placeholder="Adresse de la societe" value="<?= $entreprise['adresseentreprise']; ?>" required data-validation-required-message="L'adresse de la societe est obligatoire">
@@ -209,6 +209,22 @@ require_once 'php/config.php';
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
                                                     <h5 class="mb-1"><i class="bx bx-link mr-25"></i>Mes informations</h5>
+
+                                                    <!-- <form action="php/insert_image_membre.php" method="POST" enctype="multipart/form-data">
+                                                        <div class="media mb-2">
+                                                            <a class="mr-2" href="#">
+                                                                <img src="../../../src/img/<?= $membre['img_membres'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64">
+                                                            </a>
+                                                            <div class="media-body">
+                                                                <h4 class="media-heading">Mon image de profil</h4>
+                                                                <div class="col-12 px-0 d-flex">
+                                                                    <input type="file" accept="image/png, image/jpg, image/jpeg" name="FILES" required>                                                   
+                                                                </div><br>
+                                                                <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary">
+                                                            </div>
+                                                        </div>
+                                                    </form> -->
+
                                                     <div class="form-group">
                                                         <label>Nom :</label>
                                                         <input name="nom_membre" class="form-control" type="text" placeholder="Nom" value="<?= $membre['nom']; ?>">
@@ -234,7 +250,7 @@ require_once 'php/config.php';
                                                 <input name="numentreprise" type="hidden" value="<?= $entreprise['id'] ?>">
                                                 <input name="id_membre" type="hidden" value="<?= $_SESSION['id_membre'] ?>">
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                    <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
+                                                    <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Valider<i class='bx bx-right-arrow-alt'></i></button>
                                                 </div>
                                                 <label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
                                             </div>

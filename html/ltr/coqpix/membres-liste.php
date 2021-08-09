@@ -86,7 +86,7 @@ require_once 'php/config.php';
                 <section class="users-list-wrapper">
                     <div class="users-list-filter px-1">
                         <form>
-                            <div class="row rounded py-2 mb-2">
+                            <div class="row rounded py-2">
                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
                                     <a href="membres-add.php" class=""><button type="button" class="btn btn-primary btn-block glow users-list-clear mb-0">Ajouter un membre</button></a>
                                 </div>
@@ -122,7 +122,7 @@ require_once 'php/config.php';
                                                     <td><?= $membres['prenom'] ?></td>
                                                     <td><?= $membres['startdte'] ?></td>
                                                     <td><?= $membres['role_membres'] ?></td>
-                                                    <td><span class="badge badge-light-success"><?= $membres['status_membres'] ?></span></td>
+                                                    <td><span class="badge badge-light-<?php if ($membres['status_membres'] === "Active") { echo "success"; } else { echo "danger"; } ?>"><?= $membres['status_membres'] ?></span></td>
                                                     <td><a href="membres-edit.php?nummembre=<?= $membres['id'] ?>"><i class="bx bx-edit-alt"></i>&nbsp&nbsp&nbsp&nbsp&nbsp</a><a href="php/delete_membres.php?nummembres=<?= $membres['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>
                                                     
                                                 </tr>

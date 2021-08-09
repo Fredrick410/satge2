@@ -7,10 +7,14 @@ require_once 'config.php';
 
 //A - on analyse la requete via l'URL
 
-if (isset($_GET['method']) and $_GET['method'] === "post") {
+if (isset($_GET['method']) && $_GET['method'] === "post") {
     postMessage();
 } else {
-    getMessages();
+    if (isset($_GET['method']) && $_GET['method'] === "getMembres") {
+        getMembres();
+    } else {
+        getMessages();
+    }
 }
 
 //B- function qui va permettre de recupérer les messages.
@@ -41,7 +45,7 @@ function getMessages() {
     
     if ($type_message == "channel") {
 
-        $query = $bdd->prepare('SELECT Msg.id_membre_from, Msg.id_membre_to, Msg.date_message, Msg.heure_message, Msg.texte, upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres FROM message Msg, membres M WHERE Msg.id_membre_from = M.id AND Msg.id_channel = :id_channel ORDER BY Msg.date_message DESC, Msg.heure_message DESC LIMIT 30');
+        $query = $bdd->prepare('SELECT Msg.id_membre, Msg.date_message, Msg.heure_message, Msg.texte, upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres FROM message_channel Msg, membres M WHERE Msg.id_membre = M.id AND Msg.id_channel = :id_channel ORDER BY Msg.date_message DESC, Msg.heure_message DESC LIMIT 30');
         $query->bindValue(':id_channel', $id_destination);
         $query->execute();
 
@@ -54,6 +58,31 @@ function getMessages() {
     //3 - On affiche les données en JSON
 
     echo json_encode($messages);
+
+}
+
+function getMembres() {
+
+    //on definit la variable bdd dans la fonction 
+    global $bdd;
+
+    //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de données
+
+    $id_membre = htmlspecialchars($_GET['id_membre']);
+    $id_entreprise = htmlspecialchars($_GET['id_entreprise']);
+
+    $query = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :id_entreprise ORDER BY (SELECT id_message FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre ORDER BY date_message DESC, heure_message DESC LIMIT 1)');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->bindValue(':id_entreprise', $id_entreprise);
+    $query->execute();
+
+    //2 - On va traiter les resultats
+
+    $membres = $query->fetchAll();
+
+    //3 - On affiche les données en JSON
+
+    echo json_encode($membres);
 
 }
 

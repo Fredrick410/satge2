@@ -10,10 +10,10 @@ require_once 'php/config.php';
     $select_entreprise->execute();
     $entreprise = $select_entreprise->fetch();
 
-    $select_membre = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :num');
-    $select_membre->bindValue(':num', $_SESSION['id']);
-    $select_membre->bindValue(':id_membre', $_SESSION['id_membre']);
-    $select_membre->execute();
+    // $select_membre = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :num ORDER BY (SELECT id_message FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre ORDER BY date_message DESC, heure_message DESC LIMIT 1)');
+    // $select_membre->bindValue(':num', $_SESSION['id']);
+    // $select_membre->bindValue(':id_membre', $_SESSION['id_membre']);
+    // $select_membre->execute();
 
     $select_ticket = $bdd->prepare('SELECT * FROM support_ticket WHERE id_membre = :num AND statut != "fermé"');
     $select_ticket->bindValue(':num',$_SESSION['id_membre']);
@@ -153,7 +153,7 @@ require_once 'php/config.php';
                             </div>
                         </div>
                         <div class="chat-sidebar-list-wrapper">
-                            <h6 class="px-2 pt-2">CHAT INTRA-ENTREPRISE<i class="bx bx-plus float-right cursor-pointer"></i></h6>
+                            <h6 class="px-2 pt-2">CHAT INTRA-ENTREPRISE<i id="creer_channel" class="bx bx-plus float-right cursor-pointer"></i></h6>
                             <ul class="chat-sidebar-list">
                                 <!-- <li>
                                     <h6 class="mb-0"># Everybody</h6>
@@ -166,26 +166,8 @@ require_once 'php/config.php';
                                     </li>
                                 <?php } ?>
                             </ul>
-                            <ul class="chat-sidebar-list">
-                                <?php while ($membre = $select_membre->fetch()) { ?>
-                                    <li class="chat-privé">
-                                        <input type="hidden" value="<?= $membre['id'] ?>">
-                                        <input type="hidden" value="<?= $membre['nom']." ".$membre['prenom'] ?>">
-                                        <input type="hidden" value="<?= $membre['img_membres'] ?>">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar m-0 mr-50"><img src="../../../src/img/<?= $membre['img_membres'] ?>" height="36" width="36" alt="loading">
-                                                <?php
-                                                    if ($membre['nb_notifs'] != 0) { ?>
-                                                        <span class="avatar-status-offline bg-primary"></span> <?php
-                                                    }
-                                                ?>
-                                            </div>
-                                            <div class="chat-sidebar-name">
-                                                <h6 class="mb-0 <?php if ($membre['nb_notifs'] != 0) { echo "font-weight-bold"; } ?>"><?php if ($membre['id'] != $_SESSION['id_membre']) { echo $membre['nom']." ".$membre['prenom']; } else { echo "Vous uniquement"; } ?></h6><span class="text-muted <?php if ($membre['nb_notifs'] != 0) { echo "font-weight-bold"; } ?>"><?= $membre['role_membres'] ?></span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                <?php } ?>
+                            <ul class="liste-membres chat-sidebar-list">
+                                
                             </ul>
                             <h6 class="px-2 pt-2">SUPPORT</h6>
                             <div class="m-1">
@@ -196,7 +178,7 @@ require_once 'php/config.php';
                             </div>
                             <ul class="liste-chat-support chat-sidebar-list">
                                 <?php while ($ticket = $select_ticket->fetch()) { ?>
-                                    <li class="chat-support mail-read">
+                                    <li class="chat-support">
                                         <input type="hidden" value="<?= $ticket['id_ticket'] ?>">
                                         <input type="hidden" value="<?= $ticket['objet'] ?>">
                                         <div class="d-flex align-items-center">
@@ -236,8 +218,7 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
-                                            <div id="image_chat" class="avatar m-0 mr-1">
-                                                
+                                            <div id="image_chat" class="avatar m-0 mr-1">           
                                             </div>
                                             <h6 id="nom_chat" class="mb-0"></h6>
                                             <input id ="id_chat" type="hidden" value=""> 
@@ -272,6 +253,7 @@ require_once 'php/config.php';
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
                                             <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
+                                            <input type="hidden" id="id" value="<?= $_SESSION['id'] ?>">
                                             <?php if (isset($_GET['req']) && !empty($_GET['req'])) { ?><input type="hidden" id="req" value="<?= $_GET['req'] ?>"><?php } ?>
                                             <input type="hidden" id="auteur" value="user">
                                             <input type="hidden" id="type_chat" value="">

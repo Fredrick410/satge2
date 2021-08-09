@@ -89,31 +89,12 @@ require_once 'php/config.php';
                                 <ul class="nav nav-tabs mb-2" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link d-flex align-items-center active" id="account-tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="true">
-                                            <i class="bx bx-user mr-25"></i><span class="d-none d-sm-block">Compte membre</span>
+                                            <i class="bx bx-user mr-25"></i><span class="d-none d-sm-block">Ajouter un membre</span>
                                         </a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
-
-                                        <!-- <form action="php/insert_images_members.php" method="POST" enctype="multipart/form-data">
-                                        <div class="media mb-2">
-                                            <a class="mr-2" href="#">
-                                                <img src="../../../src/img/<?php foreach($image as $images): ?><?= $images['images'] ?><?php endforeach; ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="64" width="64">
-                                            </a>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">Image du membre</h4>
-                                                <input type="file" name="images" accept="image/png, image/jpg, image/jpeg"><br>
-                                                <input type="hidden" name="name_entreprise" value="<?php foreach($entrepri as $entreprise): ?><?= $entreprise['nameentreprise'] ?><?php endforeach; ?>">
-                                                
-                                                <br>
-                                                <div class="col-12 px-0 d-flex">
-                                                    <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary mr-25">
-                                                    <a href="php/reset_images.php" class="btn btn-sm btn-light-secondary">Réinitialiser</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </form> -->
 
                                         <!-- users edit account form start -->
                                         <form action="php/insert_membre.php" method="POST" novalidate>
@@ -372,95 +353,91 @@ require_once 'php/config.php';
                                                             <input type="date" name="dtenaissance" class="form-control" placeholder="jj-mm-aa">
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <div class="controls">
-                                                            <label>*Nom de l'entreprise :</label>
-                                                            <input type="text" name="name_entreprise" class="form-control" value="<?= $entreprise['nameentreprise'] ?>" placeholder="Mon entreprise" required data-validation-required-message="Nom de l'entreprise obligatoire">
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="table-responsive">
                                                         <table class="table mt-1">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Module de permission</th>
-                                                                    <th>Ventes</th>
-                                                                    <th>Achats</th>
-                                                                    <th>Projets</th>
-                                                                    <th>Inventaires</th>
+                                                                    <th>Permissions</th>
+                                                                    <th>Aucune</th>
+                                                                    <th>Level 1</th>
+                                                                    <th>Level 2</th>
+                                                                    <th>Level 3</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                            
                                                                 <tr>
-                                                                    <td>Lire</td>
+                                                                    <td>Ventes</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="view" type="checkbox" id="users-checkbox5" class="checkbox-input"><label for="users-checkbox5"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="0" checked />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="view" type="checkbox" id="users-checkbox6" class="checkbox-input">
-                                                                            <label for="users-checkbox6"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="1" />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="view" type="checkbox" id="users-checkbox7" class="checkbox-input"><label for="users-checkbox7"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="2" />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="view" type="checkbox" id="users-checkbox8" class="checkbox-input">
-                                                                            <label for="users-checkbox8"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="3" />
                                                                     </td>
                                                                 </tr>
+                                                            
                                                                 <tr>
-                                                                    <td>Ecrire</td>
+                                                                    <td>Achats</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="write" type="checkbox" id="users-checkbox9" class="checkbox-input">
-                                                                            <label for="users-checkbox9"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="0" checked/>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="write" type="checkbox" id="users-checkbox10" class="checkbox-input">
-                                                                            <label for="users-checkbox10"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="1" />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="write" type="checkbox" id="users-checkbox11" class="checkbox-input"><label for="users-checkbox11"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="2" />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="write" type="checkbox" id="users-checkbox12" class="checkbox-input"><label for="users-checkbox12"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="3" />
                                                                     </td>
                                                                 </tr>
+
                                                                 <tr>
-                                                                    <td>Tout</td>
+                                                                    <td>Projets</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="all" type="checkbox" id="users-checkbox1" class="checkbox-input">
-                                                                            <label for="users-checkbox1"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="0" checked/>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="all" type="checkbox" id="users-checkbox2" class="checkbox-input"><label for="users-checkbox2"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="1" />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="all" type="checkbox" id="users-checkbox3" class="checkbox-input"><label for="users-checkbox3"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="2" />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="all" type="checkbox" id="users-checkbox4" class="checkbox-input">
-                                                                            <label for="users-checkbox4"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="3" />
                                                                     </td>
                                                                 </tr>
+                                                            
+                                                                <tr>
+                                                                    <td>Membres</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="0" checked/>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="1" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="2" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="3" />
+                                                                    </td>
+                                                                </tr>
+                                                                  
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                    <input type="hidden" name="role_membres" value="Employer">
+                                                    <input type="hidden" name="id_entreprise" value="<?= $_SESSION['id'] ?>">
                                                     <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Sauvegarder</button>
                                                     <a href="membres-list.php"><button type="submit" class="btn btn-light">Annuler</button></a>
                                                 </div>

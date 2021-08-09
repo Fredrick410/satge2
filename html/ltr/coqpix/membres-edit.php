@@ -16,10 +16,10 @@ require_once 'php/config.php';
     $pdoSt->execute();
     $image = $pdoSt->fetchAll();
 
-    $pdo = $bdd->prepare('SELECT * FROM membres WHERE id = :num');
-    $pdo->bindValue(':num',$_GET['nummembre']);
-    $pdo->execute();
-    $membre = $pdo->fetchAll();
+    $select_membre = $bdd->prepare('SELECT * FROM membres WHERE id = :num');
+    $select_membre->bindValue(':num',$_GET['nummembre']);
+    $select_membre->execute();
+    $membre = $select_membre->fetch();
 
 ?>
 
@@ -102,50 +102,27 @@ require_once 'php/config.php';
                                 <div class="tab-content">
                                     <div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 
-                                        <!-- <form action="php/insert_images_members_2.php" method="POST" enctype="multipart/form-data">
-                                        <div class="media mb-2">
-                                            <a class="mr-2" href="#">
-                                                <img src="../../../src/img/<?php foreach($membre as $membres): ?><?= $membres['img_membres'] ?><?php endforeach; ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="64" width="64">
-                                            </a>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">Image du membre</h4>
-                                                <input type="file" name="images" accept="image/png, image/jpg, image/jpeg" required ><br>
-                                                <input type="hidden" name="id" value="<?php foreach($membre as $membres): ?><?= $membres['id'] ?><?php endforeach; ?>">
-                                                <input type="hidden" name="nummembre" value="<?= ($_GET['nummembre']); ?>">
-                                                
-                                                <br>
-                                                <div class="col-12 px-0 d-flex">
-                                                    <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary mr-25">
-                                                    <a href="php/reset_images.php" class="btn btn-sm btn-light-secondary">Réinitialiser</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </form> -->
-
                                         <!-- users edit account form start -->
-                                        <form action="php/edit_membre.php" method="POST" novalidate>
-                                        <?php foreach($membre as $membres): ?>
-                                        <input type="hidden" name="img_membre" value="astro4.gif">
-                                        <input type="hidden" name="id" value="<?php foreach($membre as $membress): ?><?= $membress['id'] ?><?php endforeach; ?>">
+                                        <form action="php/edit_membre.php?id_membre=<?= $_GET['nummembre'] ?>" method="POST" novalidate>
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Nom :</label>
-                                                            <input name="nom" type="text" class="form-control" placeholder="Nom du membre" value="<?= $membres['nom'] ?>" required data-validation-required-message="Nom obligatoire">
+                                                            <input name="nom" type="text" class="form-control" placeholder="Nom du membre" value="<?= $membre['nom'] ?>" required data-validation-required-message="Nom obligatoire">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Prénom :</label>
-                                                            <input name="prenom" type="text" class="form-control" placeholder="Prénom du membre" value="<?= $membres['prenom'] ?>" required data-validation-required-message="Prénom obligatoire">
+                                                            <input name="prenom" type="text" class="form-control" placeholder="Prénom du membre" value="<?= $membre['prenom'] ?>" required data-validation-required-message="Prénom obligatoire">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Pays :</label>
                                                             <select name="pays" class="form-control invoice-item-select">
-                                                                <option value="<?= $membres['pays'] ?>"><?= $membres['pays'] ?></option>
+                                                                <option value="<?= $membre['pays'] ?>"><?= $membre['pays'] ?></option>
                                                                 <optgroup label="Europe">
                                                                 <option value="allemagne">Allemagne</option>
                                                                 <option value="albanie">Albanie</option>
@@ -357,7 +334,7 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Langue :</label>
-                                                            <input type="text" name="langue" langue class="form-control" placeholder="" value="<?= $membres['langue'] ?>" required data-validation-required-message="Langue obligatoire">
+                                                            <input type="text" name="langue" langue class="form-control" placeholder="" value="<?= $membre['langue'] ?>" required data-validation-required-message="Langue obligatoire">
                                                         </div>                                                  
                                                     </div>
                                                 </div>
@@ -365,25 +342,19 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Téléphone :</label>
-                                                            <input type="text" name="tel" class="form-control" placeholder="06.00.00.00.00" value="<?= $membres['tel'] ?>" required data-validation-required-message="Numéros de télephone obligatoire ">
+                                                            <input type="text" name="tel" class="form-control" placeholder="06.00.00.00.00" value="<?= $membre['tel'] ?>" required data-validation-required-message="Numéros de télephone obligatoire ">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*E-mail :</label>
-                                                            <input type="email" name="email" class="form-control" placeholder="Membre@contact.fr" value="<?= $membres['email'] ?>" required data-validation-required-message="Email obligatoire">
+                                                            <input type="email" name="email" class="form-control" placeholder="Membre@contact.fr" value="<?= $membre['email'] ?>" required data-validation-required-message="Email obligatoire">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>Date de naissance :</label>
-                                                            <input type="date" name="dtenaissance" class="form-control" placeholder="jj-mm-aa" value="<?= $membres['dtenaissance'] ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="controls">
-                                                            <label>*Nom de l'entreprise :</label>
-                                                            <input type="text" name="name_entreprise" class="form-control" value="<?= $membres['name_entreprise'] ?>" placeholder="Mon entreprise" required data-validation-required-message="Nom de l'entreprise obligatoire">
+                                                            <input type="date" name="dtenaissance" class="form-control" placeholder="jj-mm-aa" value="<?= $membre['dtenaissance'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -392,89 +363,90 @@ require_once 'php/config.php';
                                                         <table class="table mt-1">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Module de permission</th>
-                                                                    <th>Ventes</th>
-                                                                    <th>Achats</th>
-                                                                    <th>Projets</th>
-                                                                    <th>Inventaires</th>
+                                                                    <th>Permissions</th>
+                                                                    <th>Aucune</th>
+                                                                    <th>Level 1</th>
+                                                                    <th>Level 2</th>
+                                                                    <th>Level 3</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                            
                                                                 <tr>
-                                                                    <td>Lire</td>
+                                                                    <td>Ventes</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="view" type="checkbox" id="users-checkbox5" class="checkbox-input"<?php if($membres['perms_ventes'] == "view"){echo "checked";} ?>><label for="users-checkbox5"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="0" <?php if ($membre['perm_ventes'] == 0) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="view" type="checkbox" id="users-checkbox6" class="checkbox-input"<?php if($membres['perms_achats'] == "view"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox6"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="1" <?php if ($membre['perm_ventes'] == 1) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="view" type="checkbox" id="users-checkbox7" class="checkbox-input"<?php if($membres['perms_projets'] == "view"){echo "checked";} ?>><label for="users-checkbox7"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="2" <?php if ($membre['perm_ventes'] == 2) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="view" type="checkbox" id="users-checkbox8" class="checkbox-input"<?php if($membres['perms_inventaires'] == "view"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox8"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="3" <?php if ($membre['perm_ventes'] == 3) { echo "checked"; } ?> />
                                                                     </td>
                                                                 </tr>
+                                                            
                                                                 <tr>
-                                                                    <td>Ecrire</td>
+                                                                    <td>Achats</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="write" type="checkbox" id="users-checkbox9" class="checkbox-input" <?php if($membres['perms_ventes'] == "write"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox9"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="0" <?php if ($membre['perm_achats'] == 0) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="write" type="checkbox" id="users-checkbox10" class="checkbox-input"<?php if($membres['perms_achats'] == "write"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox10"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="1" <?php if ($membre['perm_achats'] == 1) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="write" type="checkbox" id="users-checkbox11" class="checkbox-input"<?php if($membres['perms_projets'] == "write"){echo "checked";} ?>><label for="users-checkbox11"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="2" <?php if ($membre['perm_achats'] == 2) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="write" type="checkbox" id="users-checkbox12" class="checkbox-input"<?php if($membres['perms_inventaires'] == "write"){echo "checked";} ?>><label for="users-checkbox12"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="3" <?php if ($membre['perm_achats'] == 3) { echo "checked"; } ?> />
                                                                     </td>
                                                                 </tr>
+
                                                                 <tr>
-                                                                    <td>Tout</td>
+                                                                    <td>Projets</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="all" type="checkbox" id="users-checkbox1" class="checkbox-input"<?php if($membres['perms_ventes'] == "all"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox1"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="0" <?php if ($membre['perm_projets'] == 0) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="all" type="checkbox" id="users-checkbox2" class="checkbox-input"<?php if($membres['perms_achats'] == "all"){echo "checked";} ?>><label for="users-checkbox2"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="1" <?php if ($membre['perm_projets'] == 1) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="all" type="checkbox" id="users-checkbox3" class="checkbox-input"<?php if($membres['perms_projets'] == "all"){echo "checked";} ?>><label for="users-checkbox3"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="2" <?php if ($membre['perm_projets'] == 2) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="all" type="checkbox" id="users-checkbox4" class="checkbox-input"<?php if($membres['perms_inventaires'] == "all"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox4"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="3" <?php if ($membre['perm_projets'] == 3) { echo "checked"; } ?> />
                                                                     </td>
                                                                 </tr>
+                                                            
+                                                                <tr>
+                                                                    <td>Membres</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="0" <?php if ($membre['perm_membres'] == 0) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="1" <?php if ($membre['perm_membres'] == 1) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="2" <?php if ($membre['perm_membres'] == 2) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="3" <?php if ($membre['perm_membres'] == 3) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                </tr>
+                                                                  
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                    <input type="hidden" name="role_membres" value="Employer">
                                                     <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Sauvegarder</button>
-                                                    <a href="membres-list.php"><button type="submit" class="btn btn-light">Annuler</button></a>
+                                                    <a href="membres-liste.php"><div class="btn btn-light">Annuler</div></a>
                                                 </div>
                                             </div>
-                            <?php endforeach; ?>
                                         </form>
+
                                         <!-- users edit account form ends -->
                                     </div>
                                 </div>
