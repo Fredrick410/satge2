@@ -357,7 +357,7 @@ $dateee = substr($crea['depo_domi'], 0, 10);
                                                                                         <button type="submit" class="btn btn-icon btn-light-success <?php if($crea['depo_domi'] !== ""){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
 
                                                                                         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if($crea['depo_domi'] == ""){echo "none-validation";} ?>" style="position: relative; top: 20%;">
-                                                                                            <p class="mb-0">Déposé</p>
+                                                                                            <p class="mb-0">Transmis</p>
                                                                                             <input onchange="contrat_depo()" name="greffe_check"  type="checkbox" class="custom-control-input" id="customSwitch98" checked>
                                                                                             <label class="custom-control-label" for="customSwitch98">
                                                                                                 <span class="switch-icon-left"><i class="bx bx-check"></i></span>
