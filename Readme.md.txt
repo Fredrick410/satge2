@@ -173,6 +173,11 @@ branche de oscar :
 		- ajout du prix au contrat dans le back office
 		- signature dans ma crea du client après l'ajout du prix
 
+	tache réalisée le 09/08/2021 :
+		- contrat fini (signature, prix, transfert dans portefeuille)
+		- maj affichage page portefeuille.php
+		- creation get_info.php pour verif info compte
+		
 branche de Leo :
 	tache réalisée le 09/08/2021 :
 		- passage de la table "crea_societe" à "portefeuille" quand le contrat est signé

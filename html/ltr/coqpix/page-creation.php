@@ -253,9 +253,12 @@ require_once 'php/get_info.php';
                             </a>
                             <?php if($crea['estimation_contrat'] == ''){ ?>
                                 <a class="btn btn-primary1" style="background-color: #C0C0C0;"><label style="font-size: 13px;" class="m-0" onclick="alert('Veuillez attendre que Coqpix indique le coût du contrat s\'il vous plait');"><span class="bx bx-pen"></span> Signer mon contrat</label></a>
-                            <?php }else{ ?>
+                            <?php }else{ 
+                                if($crea['portefeuille_contrat'] == 'false'){ ?>
                                 <a href="signature-contrat.php" href="#" class="btn btn-primary1" style="background-color: #29fe8c;"><label style="font-size: 13px;" class="m-0" ><span class="bx bx-pen"></span> Signer mon contrat</label></a>
-                            <?php } ?>
+                                <?php }else{ ?>
+                                    <p style="width: 100%; text-align: center;">Contrat signé 👍🏽</p>
+                            <?php } } ?>
                             <?php }else{ 
                                 if($verif == true){ ?>
                             <a class="btn btn-contrat" style="background-color: <?= $color ?>;" href="generate-pdf-2.php" target="_blank">

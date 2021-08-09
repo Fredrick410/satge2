@@ -246,8 +246,11 @@ require_once 'php/verif_session_connect_admin.php';
     .icon_card:hover{opacity: 0.5;}
     .icon_x{position: relative; left: -10px; top: 3px; color: red; font-size: 25px;}
     .icon_x:hover{opacity: 0.5;}
-    .icon_size{
-        font-size: 30px;
+    .icon_size{font-size: 30px;}
+    @media screen and (max-width: 1200px) {
+        #chart-taille{
+            min-width: 100%;
+        }
     }
 </style>
 
@@ -461,7 +464,8 @@ require_once 'php/verif_session_connect_admin.php';
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
+                <div class="col form-group" id="chart-taille">
                     <div class="card">
                         <div class="form-group">
                             <h5 style="padding-left: 20px; padding-top: 20px;">Ensemble des dettes : <?= $sum['somme'] ?> €</h5><br>
@@ -475,10 +479,10 @@ require_once 'php/verif_session_connect_admin.php';
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="col form-group" id="chart-taille">
                     <div class="row">
                         <div class="col-12 col-md-12">
-                            <div class="card">
+                            <div class="card" style="height: 103%;">
                                 <div class="card-header">
                                     <h4 class="card-title">Evolution du nombre </h4>
                                 </div>
@@ -490,6 +494,7 @@ require_once 'php/verif_session_connect_admin.php';
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="form-group">
                     <hr>
