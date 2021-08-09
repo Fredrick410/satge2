@@ -142,6 +142,10 @@ $teams = $pdoS->fetchAll();
                                             <input type="text" class="form-control edit-kanban-item-title" id="name_task" placeholder="Ex: Test">
                                         </div>
                                         <div class="form-group">
+                                            <label>Description de la tâche</label>
+                                            <textarea name="description_task" id="description_task" cols="30" rows="10" wrap="hard"></textarea>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Date de début</label>
                                             <input type="text" class="form-control edit-kanban-item-date" id="date_task" placeholder="Ex: Mercredi 21 Août 2019">
                                         </div>
@@ -181,11 +185,11 @@ $teams = $pdoS->fetchAll();
                                             <?php
                                             if (isset($teams) and count($teams) != 0) {
                                             ?>
-                                                <select class="form-control js-example-basic-multiple" id="equipes" multiple>
+                                                <select class="form-control js-example-basic-multiple" id="teams" multiple>
                                                     <?php
                                                     foreach ($teams as $team) {
                                                     ?>
-                                                        <option value="<?= $team['id'] ?>"><?= $membre['name_team'] ?></option>
+                                                        <option value="<?= $team['id'] ?>"><?= $team['name_team'] ?></option>
                                                     <?php
                                                     }
                                                     ?>
@@ -200,13 +204,13 @@ $teams = $pdoS->fetchAll();
                                         </div>
                                         <div class="form-group">
                                             <label>Pièce jointe</label>
-                                            <div class="dropzone dropzone-area" id="dpz-multiple-files">
+                                            <div id="dpz-multiple-files" class="dropzone">
                                                 <div class="dz-message">Télécharger un fichier</div>
                                                 <input type="hidden" id="id_task">
                                                 <div class="fallback">
                                                     <div class="custom-file">
                                                         <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
-                                                        <input name="fichier" class="custom-file-input" id="fichier" type="file" multiple/>
+                                                        <input name="fichier" class="custom-file-input" id="fichier" type="file" multiple />
                                                     </div>
                                                 </div>
                                             </div>
@@ -267,7 +271,8 @@ $teams = $pdoS->fetchAll();
     <script src="../../../app-assets/vendors/js/editors/quill/quill.min.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
-    <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="../../../app-assets/vendors/js/pickers/daterange/moment.min.js"></script>
+    <script src="../../../app-assets/vendors/js/"></script>
     <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
     <script src="../../../app-assets/vendors/js/extensions/dropzone.min.js"></script>
     <!-- END: Page Vendor JS-->
@@ -299,6 +304,45 @@ $teams = $pdoS->fetchAll();
             }
         }
 
+        Dropzone.autoDiscover = false;
+
+        /********************************************
+         *               Add multiple files         *
+         ********************************************/
+        var myDropzone = new Dropzone("#dpz-multiple-files", {
+            url: "php/insert_files_tache.php",
+            paramName: "fichier", // The name that will be used to transfer the file
+            maxFilesize: 5, // MB
+            clickable: true,
+            addRemoveLinks: true,
+            dictRemoveFile: "Trash",
+            removedfile: function(file) {
+                var name = file.name;
+                var id_task = document.getElementById('id_task').value;
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete_file_tache.php',
+                    data: {
+                        id_task: id_task,
+                        filename: name
+                    },
+                    dataType: 'html'
+                });
+            },
+            maxThumbnailFilesize: 1, // MB
+            acceptedFiles: 'image/jpg,image/jpeg,image/png,application/pdf',
+            init: function() {
+
+                // Using a closure.
+                var _this = this;
+
+                this.on("sending", function(file, xhr, formData) {
+                    var id_task = document.getElementById('id_task').value;
+                    formData.append("id_task", id_task);
+                });
+            }
+        });
+
 
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
@@ -319,13 +363,49 @@ $teams = $pdoS->fetchAll();
                                         if ($j != count($tasks[$i]) - 1) {
                                 ?> {
                                                 "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             },
                                         <?php
                                         } else {
                                         ?> {
                                                 "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             }
                                         <?php
                                         }
@@ -352,13 +432,49 @@ $teams = $pdoS->fetchAll();
                                         if ($j != count($tasks[$i]) - 1) {
                                 ?> {
                                                 "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             },
                                         <?php
                                         } else {
                                         ?> {
                                                 "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>"
+                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             }
                                         <?php
                                         }
@@ -404,27 +520,43 @@ $teams = $pdoS->fetchAll();
                         dataType: 'json',
                         success: function(data) {
                             if (data.status == 'success') {
+                                $("#description_task").val(data.task.description_task);
+
                                 var date_task = $('#date_task').pickadate('picker');
-                                date_task.set('select', data.task.date_task);
+                                moment.locale('fr');
+                                date_task.set('select', moment(data.task.date_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
+
                                 var dateecheance_task = $('#dateecheance_task').pickadate('picker');
-                                dateecheance_task.set('select', data.task.dateecheance_task);
+                                dateecheance_task.set('select', moment(data.task.dateecheance_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
+
                                 $("#etiquette_task").val(data.task.etiquette_task);
                                 $("#color_etiq").val(data.task.color_etiq);
                                 var selected_membres = [];
                                 var selected_teams = [];
                                 if (data.membres.length != 0) {
                                     data.membres.forEach(element => {
-                                        selected_membres.push(element['id']);
+                                        selected_membres.push(element['id_membre']);
                                     });
                                 }
                                 $("#membres").val(selected_membres);
+                                $('#membres').trigger('change');
                                 if (data.teams) {
                                     data.teams.forEach(element => {
-                                        selected_teams.push(element['id']);
+                                        selected_teams.push(element['id_team']);
                                     });
                                 }
-                                $("#equipes").val(selected_teams);
+                                $("#teams").val(selected_teams);
+                                $('#teams').trigger('change');
                                 $("#id_task").val(id_task);
+
+                                $.each(data.docs, function(key, value) {
+                                    var mockFile = {
+                                        name: value.name,
+                                        size: value.size
+                                    };
+                                    myDropzone.options.addedfile.call(myDropzone, mockFile);
+                                    myDropzone.options.thumbnail.call(myDropzone, mockFile, "../../../src/task/document/" + value.name);
+                                });
                             } else {
                                 addAlert(data.message);
                             }
@@ -452,9 +584,6 @@ $teams = $pdoS->fetchAll();
                     formItem.addEventListener("submit", function(e) {
                         e.preventDefault();
                         var text = e.target[0].value;
-                        KanbanExample.addElement(boardId, {
-                            title: text
-                        });
                         var id_mission = boardId.replaceAll('kanban-', '');
                         $.ajax({
                             url: "../../../html/ltr/coqpix/php/insert_tache.php", //new path, save your work first before u try
@@ -467,6 +596,11 @@ $teams = $pdoS->fetchAll();
                             success: function(data) {
                                 if (data.status != 'success') {
                                     addAlert(data.message);
+                                } else {
+                                    KanbanExample.addElement(boardId, {
+                                        id: data.id,
+                                        title: text
+                                    });
                                 }
                             }
                         });
@@ -708,9 +842,55 @@ $teams = $pdoS->fetchAll();
             // Updating Data Values to Fields
             // -------------------------------
             $(".update-kanban-item").on("click", function(e) {
-                // var $edit_title = $(".edit-kanban-item .edit-kanban-item-title").val();
-                // $(kanban_curr_el).txt($edit_title);
                 e.preventDefault();
+                var id_task = $("#id_task").val();
+                var $edit_title = $("#name_task").val();
+                var description_task = $('#description_task').val();
+                var date_task = $('#date_task').siblings('input[type=hidden]').val();
+                var dateecheance_task = $('#dateecheance_task').siblings('input[type=hidden]').val();
+                var etiquette_task = $("#etiquette_task").val();
+                var color_etiq = $("#color_etiq").val();
+                console.log(color_etiq);
+                var selected_membres = [];
+                var selected_teams = [];
+                var membres = $('#membres').select2('data');
+                var teams = $('#teams').select2('data');
+                if (membres != null) {
+                    membres.forEach((element) => {
+                        selected_membres.push(element.id);
+                    });
+                }
+                if (teams != null) {
+                    teams.forEach((element) => {
+                        selected_teams.push(element.id);
+                    });
+                }
+                console.log(date_task);
+                console.log(dateecheance_task);
+                if (selected_membres.length != 0 || selected_teams.length != 0) {
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task,
+                            name_task: $edit_title,
+                            description_task: description_task,
+                            date_task: date_task,
+                            dateecheance_task: dateecheance_task,
+                            etiquette_task: etiquette_task,
+                            color_etiq: color_etiq,
+                            selected_membres: selected_membres,
+                            selected_teams: selected_teams
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
+                }
+                $(kanban_curr_el).txt = $edit_title;
             });
 
             // Delete Kanban Item
@@ -785,12 +965,13 @@ $teams = $pdoS->fetchAll();
                 monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
                 weekdaysFull: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
                 weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-                weekdaysLetter: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
                 today: 'Aujourd\'hui',
                 clear: 'Réinitialiser',
                 close: 'Fermer',
-                format: 'dddd dd mmmm yyyy',
-                formatSubmit: 'yyyy/mm/dd'
+                format: 'dd-mm-yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                hiddenSuffix: ''
             });
 
             // Perfect Scrollbar - card-content on kanban-sidebar
@@ -810,47 +991,6 @@ $teams = $pdoS->fetchAll();
                     .addClass($(":selected", this).attr("class") + " form-control text-white");
             });
         });
-    </script>
-
-    <script>
-        /********************************************
-         *               Add multiple files         *
-         ********************************************/
-        Dropzone.options.dpzMultipleFiles = {
-            url: "php/insert_files_tache.php",
-            paramName: "fichier", // The name that will be used to transfer the file
-            maxFilesize: 5, // MB
-            clickable: true,
-            addRemoveLinks: true,
-            dictRemoveFile: "Trash",
-            removedfile: function(file) {
-                var name = file.name;
-                $.ajax({
-                    type: 'POST',
-                    url: 'delete.php',
-                    data: "id=" + name,
-                    dataType: 'html'
-                });
-            },
-            maxThumbnailFilesize: 1, // MB
-            acceptedFiles: 'image/jpg,image/jpeg,image/png,application/pdf',
-            params: {
-                id_task: $('#id_task').val()
-            },
-            init: function() {
-
-                // Using a closure.
-                var _this = this;
-
-                // Setup the observer for the button.
-                $("#clear-dropzone").on("click", function() {
-                    // Using "_this" here, because "this" doesn't point to the dropzone anymore
-                    _this.removeAllFiles();
-                    // If you want to cancel uploads as well, you
-                    // could also call _this.removeAllFiles(true);
-                });
-            }
-        }
     </script>
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

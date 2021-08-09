@@ -59,7 +59,18 @@ try {
     echo json_encode($response_array);
     exit();
 }
+try {
+    $pdo = $bdd->prepare('SELECT * FROM task ORDER BY id DESC LIMIT 1');
+    $pdo->execute();
+    $task = $pdo->fetch();
+} catch (Exception $e) {
+    $response_array['status'] = 'error';
+    $response_array['message'] = $e->getMessage();
+    echo json_encode($response_array);
+    exit();
+}
 $response_array['status'] = 'success';
+$response_array['id'] = $task['id'];
 echo json_encode($response_array);
 exit();
 
