@@ -21,6 +21,8 @@
                     </li>
                     <li data-menu=""><a class="dropdown-item align-items-center" href="utilisateurs.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
                     </li>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="membre-back.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Membres Back</a>
+                    </li>
                 </ul>
             </li>
             <?php if(substr($_SESSION['role'],1,1) == '1') { ?>

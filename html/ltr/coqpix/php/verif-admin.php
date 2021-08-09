@@ -41,7 +41,7 @@ ini_set('display_startup_errors', TRUE);
 
  }else{ 
 
-      header('Location: ../backend/auth-login-admin.html');
+      header('Location: ../backend/auth-login-admin.php');
       exit;
  } 
 
