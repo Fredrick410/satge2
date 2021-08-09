@@ -94,8 +94,12 @@ require_once 'php/verif_session_crea.php';
                     <div class="col" style="border-right: 1px solid grey;">
                         <h4 class="m-1" style="font-weight: bold;">Signer le contrat</h5>
                         <div class="form-group" style="width: 500px; margin: 50px auto; text-align: center;">
-                            <h5 style="font-weight: bold;">Signature :</h6><br>
                             <form action="generate-pdf-4.php" method="POST" >
+                              <div class="form-check my-3">
+                                <input type="checkbox" name="condition" class="form-check-input" id="condition"  required>
+                                <label for="condition" class="form-check-label" style="margin-left: 10px;">J'ai lu et j'accepte les conditions générales</label>
+                              </div>
+                              <h5 style="font-weight: bold;">Signature :</h6><br>
                                 <input type="text" name="signature" id="signature" class="w-100 mb-3 py-1" style="text-align: center;" placeholder="Nom et prénom" required  onkeyup="appercu.innerHTML=this.value">
                                 <label for="appercu" class="mr-2" style="color: #051441; font-family: mukta malar bold; font-size: 15px;">Aperçu :</label>
                                 <span id="appercu" readonly></span><br>

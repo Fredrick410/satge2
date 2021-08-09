@@ -359,6 +359,6 @@ require_once 'php/config.php';
     )); 
 
 
-    header('Location: signature-contrat.php');
+    header('Location: page-creation.php');
 
 ?>
