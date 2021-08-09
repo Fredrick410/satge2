@@ -4,12 +4,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-$authorised_roles = array('admin', 'juriste');
 require_once 'php/verif_session_connect_admin.php';
 
-$SQL2 = $bdd->prepare('SELECT * FROM chat_crea WHERE you NOT LIKE "coqpix"');
-$SQL2->execute();
-$list_msg = $SQL2->fetchAll();
+
+$SQL = $bdd->prepare('SELECT * FROM chat_crea WHERE lu = "1" AND you NOT LIKE "coqpix"');
+$SQL->execute();
+$list_msg_lu = $SQL->fetchAll();
 
 ?>
 
@@ -219,8 +219,8 @@ $list_msg = $SQL2->fetchAll();
                                         <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
                                             <!--<select onclick="affiche_conv();" id="type_conv" class="form-select border-1 form-control" aria-label="Default select example" style="width:20%;">
                                                 <option value="1">Conversation(s) non lue(s)</option>
-                                                <option value="2">Conversation(s) archivée(s)</option>
-                                                <option value="3" selected>Toutes les conversations</option>
+                                                <option value="2" selected>Conversation(s) archivée(s)</option>
+                                                <option value="3">Toutes les conversations</option>
                                             </select>-->
                                             <div class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><span>Filtre des conversations</span></a>
                                                 <ul class="dropdown-menu">
@@ -261,7 +261,7 @@ $list_msg = $SQL2->fetchAll();
                                                 <?php 
                                                 $expediteur = array();
                                                 $j=0;
-                                                foreach($list_msg as $msg): 
+                                                foreach($list_msg_lu as $msg): 
                                                     $PDO = $bdd->prepare('SELECT * FROM crea_societe WHERE name_crea LIKE :nom ');
                                                     $PDO->bindValue(':nom', $msg['you']);
                                                     $PDO->execute();
@@ -304,8 +304,15 @@ $list_msg = $SQL2->fetchAll();
                                                                 <div class="avatar mr-75">
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
-                                                                    <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
-                                                                   
+                                                                    <a><span class="list-group-item-text text-truncate line namecolor" id="nom" ><?= $msg['you'] ?></span></a>
+                                                                    <!--Bouton nonlu-->
+                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="unsave"  onclick='retablir(`<?=$msg["destination"]?>`);'>
+                                                                        <span class="fonticon-wrap">
+                                                                            <i id="img_save" class="livicon-evo" data-options="name: bell.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
+                                                                            </i>
+                                                                        </span>
+                                                                    </button>
+                                                                    <!--FIN nonlu-->
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
                                                                     <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
                                                                 </div>

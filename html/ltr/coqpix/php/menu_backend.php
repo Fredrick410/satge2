@@ -28,7 +28,7 @@
             <?php if(substr($_SESSION['role'],1,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="balance"></i><span>Juridique</span></a>
                 <ul class="dropdown-menu">
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Création Société</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation-nonlu.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Création Société</a>
                     </li>
                     <li data-menu=""><a class="dropdown-item align-items-center" href="acte-modification.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Modification</a>
                     </li>

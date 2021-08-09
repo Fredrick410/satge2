@@ -13,6 +13,22 @@
     src: url("../Mukta_Malar/MuktaMalar-Light.ttf");
 }
 
+@font-face{
+    font-family: "holligate";
+    src: url("../../data/tcpdf_min/fonts/holligate.ttf");
+}
+
+#appercu{
+    font-family: holligate;
+    color: black;
+    background-color: white;
+    font-size: 3em;
+    border: 1px solid #051441;
+    border-radius: 10px;
+    border-style: dashed;
+    padding: 5px 15px;
+}
+
 body{
     background-color: #EDF1FF;
 }
@@ -144,7 +160,7 @@ body{
     border-radius: 40px;
     background-color: white;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
-    margin-top: 20px;
+    margin-top: 30px;
     max-height: 50%;
     min-width: 100%;
 }
@@ -176,6 +192,80 @@ body{
     width: 100px;
 }
 
+#doc_domiciliation{
+    border-radius: 40px;
+    background-color: white;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.2);
+    height: 100%;
+    min-width: 100%;
+}
+
+#doc_domiciliation embed{
+    margin: auto;
+    border-radius: 37px;
+    z-index: 1;
+}
+
+.btn-primary {
+    border: none !important;
+    background-color: #29fe8c !important;
+    color: #051441; 
+    width: 33%;
+    min-width: 100px;
+    margin: 0 33%;
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+}
+
+.btn-primary:hover {
+    background-color: #051441 !important;
+    color: #29fe8c; 
+}
+
+.btn-primary1 {
+    border: none;
+    color: #051441; 
+    width: 90%;
+    min-width: 200px;
+    margin: 0 5%;
+}
+
+.btn-primary1:hover{
+    border: 1px solid #051441;
+}
+
+.btn-contrat {
+    border: none ;
+    color: #051441; 
+    width: 90%;
+    min-width: 200px;
+    min-height: 100px;
+    height: 60%;
+    margin: 8% 5%;
+}
+
+.btn-contrat:hover{
+    border: 1px solid #051441;
+}
+
+.content-body h5, .content-body h4{
+    font-family: mukta malar bold;
+    color: #051441;
+}
+
+.btn-signature {
+    color: #051441;
+    background-color: #29fe8c;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-signature:hover {
+    background-color: #051441;
+    color: #29fe8c;
+}
+
 input[type="checkbox"].solu {
     display: none;
 }
@@ -189,7 +279,6 @@ input[type="checkbox"].solu + label:hover{
 }
 
 #div-document{
-    height: 380px;
     position: relative;
 }
 
@@ -203,7 +292,7 @@ input[type="checkbox"].solu + label:hover{
     background-color: white;
     border-radius: 40px;
     box-shadow: 4px 4px 4px rgba(0,0,0,0.2);   
-    height: 380px;
+    height: 388px;
 }
 
 #doc-manquant h4{
@@ -243,6 +332,11 @@ input[type="checkbox"].solu + label:hover{
     height: 30px;
 }
 
+#img-doc1{
+    height: 60px;
+    margin: 20px;
+}
+
 #scroll-doc a{
     border-radius: 10px;
     margin: 10px;
@@ -255,12 +349,29 @@ input[type="checkbox"].solu + label:hover{
     margin-left: 10px;
 }
 
+#vx1 {
+    width: 20px;
+    margin-left: 10px;
+}
+
 #av{
     background-color: #29fe8c;
+    border: none;
 }
 
 #ax{
     background-color: #C0C0C0;
+    border: none;
+}
+
+#av:hover, #ax:hover{
+    border: 1px solid #051441;
+}
+
+#sig-canvas {
+    border: 2px dotted #CCCCCC;
+    border-radius: 15px;
+    cursor: crosshair;
 }
 
 @media screen and (max-width: 1310px) {
@@ -271,9 +382,6 @@ input[type="checkbox"].solu + label:hover{
         min-width: 100%;
         top: 50px;
     }
-}
-
-@media screen and (max-width: 800px) {
     #div-entreprise{
         border-radius: 40px;
         margin: 30px auto;
@@ -283,14 +391,10 @@ input[type="checkbox"].solu + label:hover{
         min-width: 100%;
         border-radius: 40px 40px 0 0;
     }
-    #div-info{
-        min-width: 100%;
-    }
-}
-
-@media screen and (max-width: 700px) {
     #div-info ul li{
         min-width: 100%;
+        text-align: center;
+        margin: auto 28%;
     }
 }
 

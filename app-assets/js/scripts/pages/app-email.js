@@ -18,6 +18,7 @@ $(function () {
     email_application = $(".email-application"),
     userNewMailSideBar = $(".compose-new-mail-sidebar"),
     email_user_list = $(".email-user-list"),
+    list_users = $("#list-users"),
     email_app_list = $(".email-app-list"),
     checkbox_con = $(".user-action .checkbox-con"),
     $primary = "#5A8DEE";
@@ -241,6 +242,39 @@ $(function () {
       }
     }
   });
+//Search conv
+  $("#conv-search").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $('.media').css('animation', 'none')
+    if (value != "") {
+      list_users.find(".users-list-wrapper li").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+      var tbl_row = $(".email-user-list .users-list-wrapper li:visible").length; //here tbl_row is table name
+
+      //Check if table has row or not
+      if (tbl_row == 0) {
+        list_users.find('.no-results').addClass('show');
+      }
+      else {
+        if (list_users.find('.no-results').hasClass('show')) {
+          list_users.find('.no-results').removeClass('show');
+        }
+      }
+    }
+    else {
+      // If filter box is empty
+      list_users.find(".users-list-wrapper li").show();
+      if (list_users.find('.no-results').hasClass('show')) {
+        list_users.find('.no-results').removeClass('show');
+      }
+    }
+  });
+
+
+
+
+
   // manually hide dropdown menu
   $(".email-detail-head .dropdown-item").on("click", function () {
     $(".dropdown-toggle").dropdown('hide');

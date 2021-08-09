@@ -101,7 +101,7 @@ require_once 'php/verif_session_connect_admin.php';
                                     Nouveau
                                 </button>
                             </div>
-                            <div class="sidebar-menu-list">
+                            <div class="sidebar-menu-list" >
                                 <!-- sidebar menu  -->
                                 <?php include('php/sidebar_crea.php'); ?>
                                 <!-- sidebar menu  end-->

@@ -11,7 +11,7 @@ if(!empty($_SESSION['id_admin']))
 else
 {  
    sleep(2);
-   header('Location: backend/auth-login-admin.html');
+   header('Location: backend/auth-login-admin.php');
    exit;
 }
 

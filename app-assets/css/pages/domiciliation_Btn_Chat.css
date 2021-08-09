@@ -28,13 +28,16 @@
 }
 
 /* Button used to open the chat form - fixed at the bottom of the page */
-.open-button {    
+  .open-button {    
     border: none;
+    border-radius: 20px;
     cursor: pointer;
     position: fixed;
-    bottom: 7%;
-    right: 7%;
-    width: 50px;
+    bottom: 3%;
+    right: 4%;
+    width: 100px;
+    padding: 15px;
+    background-color: #051441;
   }
 
   .notification {
@@ -58,7 +61,7 @@
     display: none;
     position: fixed;
     bottom: 7%;
-    right: 7%;
+    right: 4%;
     height: 60%;
     width: 25%;
     min-width: 300px;
