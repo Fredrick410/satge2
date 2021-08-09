@@ -257,7 +257,7 @@ require_once 'php/get_info.php';
                                 if($crea['portefeuille_contrat'] == 'false'){ ?>
                                 <a href="signature-contrat.php" href="#" class="btn btn-primary1" style="background-color: #29fe8c;"><label style="font-size: 13px;" class="m-0" ><span class="bx bx-pen"></span> Signer mon contrat</label></a>
                                 <?php }else{ ?>
-                                    <p style="width: 100%; text-align: center;">Contrat signé 👍🏽</p>
+                                    <p style="width: 100%; text-align: center; margin: 10px 0 0 20px;">Contrat signé 👍🏽</p>
                             <?php } } ?>
                             <?php }else{ 
                                 if($verif == true){ ?>
