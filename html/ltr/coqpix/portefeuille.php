@@ -176,7 +176,7 @@ require_once 'php/verif_session_connect_admin.php';
     $sum_dece = $pdoSta->fetch();
     if($sum_dece['somme'] == ""){$somme_dece= "0";}else{$somme_dece = $sum_dece['somme'];}
 
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_contrat NOT LIKE ""');
+    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_contrat NOT LIKE "" AND portefeuille_contrat="false"');
     $pdoSta->execute();
     $liste_contrat = $pdoSta->fetchAll();
 ?>

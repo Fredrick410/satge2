@@ -311,6 +311,8 @@ ob_clean();
 
 $dir = realpath(__DIR__ . '/../../..');
 $dir = $dir.'/src/crea_societe/contrat/';
+$DIRECTORY = realpath(__DIR__ . '/../../..');
+$DIRECTORY = $DIRECTORY.'/src/portefeuille/lettredemission/';
 
 if (!is_dir($dir)) {
     mkdir($dir, 0777, true);
@@ -320,7 +322,7 @@ $file_name = 'contrat_coqpix_idcrea'.$info['id'].'_date-'.date("H-i-s").'.pdf';
 
 
     $pdf->Output($dir.$file_name, 'F');
-
+    $pdf->Output($DIRECTORY.$file_name, 'F');
 //============================================================+
 // END OF FILE
 //============================================================+
@@ -329,6 +331,34 @@ require_once 'php/config.php';
 
     $update = $bdd->prepare('UPDATE crea_societe SET doc_contrat = ? WHERE id = ?');
     $update->execute(array( ($file_name), $info['id']  ));
+    $update = $bdd->prepare('UPDATE crea_societe SET portefeuille_contrat = ? WHERE id = ?');
+    $update->execute(array( ("true"), $info['id']  ));
+
+
+    $insert = $bdd->prepare('INSERT INTO portefeuille (name_entreprise, nom_diri, prenom_diri, tel_diri, email_diri, estimation, prix, lettredemission, rib, date_crea, date_crea_d, date_crea_m, date_crea_a, date_charge, statut, dette, prevelement, raison, date_leave) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert->execute(array(
+        htmlspecialchars($info['name_crea']),
+        htmlspecialchars($info['nom_diri']),
+        htmlspecialchars($info['prenom_diri']),
+        htmlspecialchars($info['tel_diri']),
+        htmlspecialchars($info['email_diri']),
+        htmlspecialchars($info['estimation_contrat']),
+        htmlspecialchars($info['estimation_contrat']),
+        htmlspecialchars($file_name),
+        htmlspecialchars("no"),
+        htmlspecialchars($info['date_crea']),
+        htmlspecialchars(""),
+        htmlspecialchars(""),
+        htmlspecialchars(""),
+        htmlspecialchars(""),
+        htmlspecialchars("encours"),
+        htmlspecialchars("0"),
+        htmlspecialchars(""),
+        htmlspecialchars(""),
+        htmlspecialchars(""),
+    )); 
+
+
     header('Location: signature-contrat.php');
 
 ?>

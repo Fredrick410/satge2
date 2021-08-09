@@ -172,3 +172,7 @@ branche de oscar :
 	tache réalisée le 06/08/2021 :
 		- ajout du prix au contrat dans le back office
 		- signature dans ma crea du client après l'ajout du prix
+
+branche de Leo :
+	tache réalisée le 09/08/2021 :
+		- passage de la table "crea_societe" à "portefeuille" quand le contrat est signé
