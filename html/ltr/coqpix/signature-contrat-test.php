@@ -124,7 +124,7 @@ require_once 'php/verif_session_crea.php';
 	                        	</div>
 	                        </div>
                             <form action="generate-pdf-4.php" id="form-signature" method="POST" enctype="multipart/form-data">
-                              <textarea id="sig-dataUrl" class="form-control" rows="5" name="signature" form="form-signature" hidden>Data URL for your signature will go here!</textarea>
+                              <textarea id="sig-dataUrl" class="form-control" rows="5" name="signature" form="form-signature" hidden required></textarea>
                               
                               <div class="form-check my-1">
                                 <input type="checkbox" name="condition" class="form-check-input" id="condition"  required>
