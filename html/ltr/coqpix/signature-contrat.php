@@ -97,7 +97,7 @@ require_once 'php/verif_session_crea.php';
                             <form action="generate-pdf-4.php" method="POST" >
                               <div class="form-check my-3">
                                 <input type="checkbox" name="condition" class="form-check-input" id="condition"  required>
-                                <label for="condition" class="form-check-label" style="margin-left: 10px;">J'ai lu et j'accepte les conditions générales</label>
+                                <label for="condition" class="form-check-label" style="margin-left: 10px;">Je reconnais avoir lu et accepté les conditions générales de prestations</label>
                               </div>
                               <h5 style="font-weight: bold;">Signature :</h6><br>
                                 <input type="text" name="signature" id="signature" class="w-100 mb-3 py-1" style="text-align: center;" placeholder="Nom et prénom" required  onkeyup="appercu.innerHTML=this.value">
