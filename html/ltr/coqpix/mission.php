@@ -315,18 +315,25 @@ $teams = $pdoS->fetchAll();
             maxFilesize: 5, // MB
             clickable: true,
             addRemoveLinks: true,
-            dictRemoveFile: "Trash",
+            dictRemoveFile: "Supprimer",
             removedfile: function(file) {
-                var name = file.name;
+                var fileuploaded = file.previewElement.querySelector("[data-dz-name]");
+                var name = fileuploaded.innerHTML;
                 var id_task = document.getElementById('id_task').value;
                 $.ajax({
                     type: 'POST',
-                    url: 'delete_file_tache.php',
+                    url: 'php/delete_file_tache.php',
                     data: {
                         id_task: id_task,
-                        filename: name
+                        namedoc_task: name
                     },
-                    dataType: 'html'
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        }
+                        file.previewElement.remove();
+                    }
                 });
             },
             maxThumbnailFilesize: 1, // MB
@@ -339,6 +346,17 @@ $teams = $pdoS->fetchAll();
                 this.on("sending", function(file, xhr, formData) {
                     var id_task = document.getElementById('id_task').value;
                     formData.append("id_task", id_task);
+                });
+
+                this.on("success", function(file, responseText) {
+                    var a = document.createElement('a');
+                    a.setAttribute('href', "../../../src/task/document/" + responseText.trim());
+                    a.setAttribute('target', "_blank");
+                    a.setAttribute('class', "btn btn-outline-primary");
+                    a.innerHTML = "Visualiser";
+                    file.previewTemplate.appendChild(a);
+                    var fileuploded = file.previewElement.querySelector("[data-dz-name]");
+                    fileuploded.innerHTML = responseText.trim();
                 });
             }
         });
@@ -549,13 +567,22 @@ $teams = $pdoS->fetchAll();
                                 $('#teams').trigger('change');
                                 $("#id_task").val(id_task);
 
+                                myDropzone.removeAllFiles(true);
+
                                 $.each(data.docs, function(key, value) {
                                     var mockFile = {
                                         name: value.name,
-                                        size: value.size
+                                        size: value.size,
+                                        status: 'success'
                                     };
                                     myDropzone.options.addedfile.call(myDropzone, mockFile);
-                                    myDropzone.options.thumbnail.call(myDropzone, mockFile, "../../../src/task/document/" + value.name);
+                                    myDropzone.files.push(mockFile);
+                                    var a = document.createElement('a');
+                                    a.setAttribute('href', "../../../src/task/document/" + mockFile.name);
+                                    a.setAttribute('target', "_blank");
+                                    a.setAttribute('class', "btn btn-outline-primary");
+                                    a.innerHTML = "Download";
+                                    myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
                                 });
                             } else {
                                 addAlert(data.message);

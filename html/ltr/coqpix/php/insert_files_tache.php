@@ -52,24 +52,7 @@ if (!empty($_FILES)) {
             echo $e->GetMessage();
             exit();
         }
+        echo $file_name;
         exit();
     }
-}
-else {
-    $result  = array();
- 
-    $files = scandir($storeFolder);                 //1
-    if ($files !== false) {
-        foreach ( $files as $file ) {
-            if ( '.'!=$file && '..'!=$file) {       //2
-                $obj['name'] = $file;
-                $obj['size'] = filesize($storeFolder.$file);
-                $result[] = $obj;
-            }
-        }
-    }
-     
-    header('Content-type: text/json');              //3
-    header('Content-type: application/json');
-    echo json_encode($result);
 }
