@@ -297,8 +297,9 @@ $pdf->writeHTMLCell(90, '', '', $y, $left, 0, 0, 1, true, 'C', true);
 $pdf->writeHTMLCell(90, '', '', '', $right, 0, 1, 1, true, 'C', true);
 $y = $pdf->getY();
 $pdf->Image(K_PATH_IMAGES.'../../../app-assets/images/pages/sign.png', 30, $y+10, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-$pdf->SetFont('holligate', '', 25);
-$pdf->writeHTMLCell(90, '', 110, '', $_POST['signature'], 0, 1, 1, true, 'C', true);
+$pdf->Image($_POST['signature'], 100, $y+10, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+/*$pdf->SetFont('holligate', '', 25);
+$pdf->writeHTMLCell(90, '', 110, '', $_POST['signature'], 0, 1, 1, true, 'C', true);*/
 // reset pointer to the last page
 $pdf->lastPage();
 
