@@ -110,25 +110,22 @@ require_once 'php/verif_session_crea.php';
 	                        	</div>
 	                        	<div class="row">
 	                        		<div class="col-md-12">
-	                        			<button class="btn btn-primary2" id="sig-submitBtn">Voir la signature</button>
+	                        			
 	                        			<button class="btn btn-default" id="sig-clearBtn">Effacer la signature</button>
 	                        		</div>
 	                        	</div>
 	                        	<br/>
-	                        	<div class="row">
-	                        		<div class="col-md-12">
-	                        			<textarea id="sig-dataUrl" class="form-control" rows="5" hidden>Data URL for your signature will go here!</textarea>
-	                        		</div>
-	                        	</div>
+	                        	
 	                        	<br/>
 	                        	<div class="row">
 	                        		<div class="col-md-12">
-	                        			<img id="sig-image" width="200" height="75" src="" alt="Ta signature s'affichera ici !"/>
+	                        			<img id="sig-image" width="200" height="75" src="" alt="Ta signature s'affichera ici !" hidden/>
 	                        		</div>
 	                        	</div>
 	                        </div>
-                            <form action="generate-pdf-4.php" method="POST" enctype="multipart/form-data">
-                              <input type="hidden" id="signature" name="signature" value="">
+                            <form action="generate-pdf-4.php" id="form-signature" method="POST" enctype="multipart/form-data">
+                              <textarea id="sig-dataUrl" class="form-control" rows="5" name="signature" form="form-signature" hidden>Data URL for your signature will go here!</textarea>
+                              
                               <div class="form-check my-1">
                                 <input type="checkbox" name="condition" class="form-check-input" id="condition"  required>
                                 <label for="condition" class="form-check-label" style="margin-left: 10px;">Je reconnais avoir lu et accepté les conditions générales de prestations</label>
@@ -280,11 +277,10 @@ require_once 'php/verif_session_crea.php';
     sigText.innerHTML = "Data URL for your signature will go here!";
     sigImage.setAttribute("src", "");
   }, false);
-  submitBtn.addEventListener("click", function(e) {
+  canvas.addEventListener("click", function(e) {
     var dataUrl = canvas.toDataURL();
     sigText.innerHTML = dataUrl;
     sigImage.setAttribute("src", dataUrl);
-    document.getElementByName("signature").setAttribute("value", dataUrl);
   }, false);
 
 })();
