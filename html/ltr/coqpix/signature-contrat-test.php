@@ -117,7 +117,7 @@ require_once 'php/verif_session_crea.php';
 	                        	<br/>
 	                        	<div class="row">
 	                        		<div class="col-md-12">
-	                        			<textarea id="sig-dataUrl" name="signature" class="form-control" rows="5" hidden>Data URL for your signature will go here!</textarea>
+	                        			<textarea id="sig-dataUrl" class="form-control" rows="5" hidden>Data URL for your signature will go here!</textarea>
 	                        		</div>
 	                        	</div>
 	                        	<br/>
@@ -128,8 +128,8 @@ require_once 'php/verif_session_crea.php';
 	                        	</div>
 	                        </div>
                             <form action="generate-pdf-4.php" method="POST" enctype="multipart/form-data">
-                              <input type="file" id="sig-container" >
-                              <div class="form-check my-3">
+                              <input type="hidden" id="signature" name="signature" value="">
+                              <div class="form-check my-1">
                                 <input type="checkbox" name="condition" class="form-check-input" id="condition"  required>
                                 <label for="condition" class="form-check-label" style="margin-left: 10px;">Je reconnais avoir lu et accepté les conditions générales de prestations</label>
                               </div>
@@ -273,7 +273,6 @@ require_once 'php/verif_session_crea.php';
   // Set up the UI
   var sigText = document.getElementById("sig-dataUrl");
   var sigImage = document.getElementById("sig-image");
-  var sigContainer = document.getElementById("sig-container");
   var clearBtn = document.getElementById("sig-clearBtn");
   var submitBtn = document.getElementById("sig-submitBtn");
   clearBtn.addEventListener("click", function(e) {
@@ -285,7 +284,7 @@ require_once 'php/verif_session_crea.php';
     var dataUrl = canvas.toDataURL();
     sigText.innerHTML = dataUrl;
     sigImage.setAttribute("src", dataUrl);
-    /*sigContainer.value = dataUrl;*/
+    document.getElementByName("signature").setAttribute("value", dataUrl);
   }, false);
 
 })();
