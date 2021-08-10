@@ -165,7 +165,7 @@ require_once 'php/verif_session_crea.php';
   var canvas = document.getElementById("sig-canvas");
   var ctx = canvas.getContext("2d");
   ctx.strokeStyle = "#222222";
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 2;
 
   var drawing = false;
   var mousePos = {
