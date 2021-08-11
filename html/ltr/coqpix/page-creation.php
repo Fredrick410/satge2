@@ -7,6 +7,7 @@ require_once 'php/config.php';
 require_once 'php/verif_session_crea.php';
 require_once 'php/get_documents_physique.php';
 require_once 'php/get_documents.php';
+require_once 'php/get_info.php';
     
     $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
     $pdoSta->bindValue(':num',$_SESSION['id_crea'], PDO::PARAM_INT);
@@ -17,6 +18,129 @@ require_once 'php/get_documents.php';
         $disparition = "harrypottergood";
     }else{
         $disparition = "harrypotter";
+    }
+
+    if ($crea['doc_domiciliation'] == '') {
+        $affichage_domi = "";
+        $affichage_doc = "hidden";
+    } else {
+        $affichage_domi = "hidden";
+        $affichage_doc = "";
+    }
+
+    if($crea['status_crea'] == "EURL"){
+            $linkview = "morale";
+    }else{        
+        if($crea['status_crea'] == "SARL"){
+            $linkview = "morale";
+        }else{
+            if($crea['status_crea'] == "SAS"){
+                $linkview = "morale";
+            }else{
+                if($crea['status_crea'] == "SASU"){
+                    $linkview = "morale";
+                }else{
+                    if($crea['status_crea'] == "SCI"){
+                        $linkview = "morale";
+                    }else{
+                        if($crea['status_crea'] == "EIRL"){
+                            $linkview = "physique";
+                        }else{
+                            if($crea['status_crea'] == "Micro-entreprise"){
+                                $linkview = "physique";
+                            }else{
+                                $linkview = "physique";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    $verif = false;
+    $color = '#C0C0C0';
+
+    if($linkview == 'morale'){
+        if($doc_pieceid == "1"){
+            if($doc_cerfaM0 == "1"){
+                if($doc_cerfaMBE == "1"){
+                    if($doc_justificatifss == "1"){
+                        if($doc_pouvoir == "1"){
+                            if($doc_attestation == "1"){
+                                if($doc_depot == "1"){
+                                    if($nom_diri == "1"){                                    
+                                        if($prenom_diri == "1"){                                        
+                                            if($tel_diri == "1"){
+                                                if($email_diri == "1"){
+                                                    if($adresse_diri == "1"){
+                                                        if($ville_diri == "1"){
+                                                            if($cp_diri == "1"){
+                                                                if($status_crea == "1"){
+                                                                    if($secteur_dactivite == "1"){
+                                                                        if($name_crea == "1"){
+                                    
+                                                                            $verif = true;    
+                                                                            $color = '#29fe8c';     
+                                                                            
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }else{
+        if($doc_pieceid == "1"){
+            if($doc_cerfaM0 == "1"){
+                if($doc_xp == "1"){
+                    if($doc_justificatifd == "1"){
+                        if($doc_peirl == "1"){
+                            if($doc_affectation == "1"){
+                                if($doc_pouvoir == "1"){
+                                    if($doc_attestation == "1"){
+                                        if($nom_diri == "1"){                                    
+                                            if($prenom_diri == "1"){                                        
+                                                if($tel_diri == "1"){
+                                                    if($email_diri == "1"){
+                                                        if($adresse_diri == "1"){
+                                                            if($ville_diri == "1"){
+                                                                if($cp_diri == "1"){
+                                                                    if($status_crea == "1"){
+                                                                        if($secteur_dactivite == "1"){
+                                                                            if($name_crea == "1"){
+                                    
+                                                                                $verif = true;    
+                                                                                $color = '#29fe8c';     
+                                                                            
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }                                 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 ?>
@@ -88,7 +212,7 @@ require_once 'php/get_documents.php';
                 <a class="dropdown-user-link" href="#" data-toggle="dropdown">
                     <img class="round" src="../../../app-assets/images/ico/astro1.gif" alt="avatar"><br>
                     <h3> <?= $crea['name_crea'] ?> </h3>
-                    <span class="user-status">En ligne</span>
+                    <span class="user-status">En ligne</span> <span class="bx bx-cog"></span> <span class="bx bx-log-out"></span>
                 </a>
                 <div class="dropdown-menu pb-0" style="margin-left: 40%;">
                     <div class="dropdown-divider mb-0"></div><a class="dropdown-item" style="color: #051441; font-family: mukta malar medium;" href="page-creation-edit.php"><i class="bx bxs-pencil mr-50"></i> Information entreprise/dirigeant</a>
@@ -97,7 +221,7 @@ require_once 'php/get_documents.php';
             </div>
             <div class="col-8 m-0 p-2" id="div-info">
                     <ul class="row">
-                        <li class="col-6">
+                        <li class="col-4">
                             <div class="form-group" id="info-gauche">
                                 <div class="form-row m-0 p-2">
                                     <label>Prénom du dirigeant</label>
@@ -109,7 +233,7 @@ require_once 'php/get_documents.php';
                                 </div>
                             </div>
                         </li>
-                        <li class="col-6">
+                        <li class="col-4">
                             <div class="form-group" id="info-droite">
                                 <div class="form-row m-0 p-2">
                                     <label>Nom du dirigeant</label>
@@ -121,12 +245,40 @@ require_once 'php/get_documents.php';
                                 </div> 
                             </div> 
                         </li>
+                        <li class="col-4">
+                            <?php if($doc_contrat == "1"){ ?>
+                            <a class="btn btn-contrat" style="background-color: #29fe8c;" href="../../../src/crea_societe/contrat/<?= $crea['doc_contrat'] ?>" target="_blank">
+                            <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
+                            <label>Voir mon contrat<img id="vx1" src="../../../app-assets/images/pages/v.png"></label>
+                            </a>
+                            <?php if($crea['estimation_contrat'] == ''){ ?>
+                                <a class="btn btn-primary1" style="background-color: #C0C0C0;"><label style="font-size: 13px;" class="m-0" onclick="alert('Veuillez attendre que Coqpix indique le coût du contrat s\'il vous plait');"><span class="bx bx-pen"></span> Signer mon contrat</label></a>
+                            <?php }else{ 
+                                if($crea['portefeuille_contrat'] == 'false'){ ?>
+                                <a href="signature-contrat.php" href="#" class="btn btn-primary1" style="background-color: #29fe8c;"><label style="font-size: 13px;" class="m-0" ><span class="bx bx-pen"></span> Signer mon contrat</label></a>
+                                <?php }else{ ?>
+                                    <p style="width: 100%; text-align: center; margin: 10px 0 0 20px;">Contrat signé 👍🏽</p>
+                            <?php } } ?>
+                            <?php }else{ 
+                                if($verif == true){ ?>
+                            <a class="btn btn-contrat" style="background-color: <?= $color ?>;" href="generate-pdf-2.php" target="_blank">
+                                <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
+                                <label style="font-size: 13px;">Générer mon contrat<img id="vx1" src="../../../app-assets/images/pages/v.png"></label>
+                            </a>
+                            <?php }else{ ?>
+                            <a class="btn btn-contrat" onclick="alert('Veuillez compléter votre compte avant de générer votre contrat');" style="background-color: <?= $color ?>;" href="#">
+                                <img src="../../../app-assets/images/pages/doc.png" id="img-doc1">
+                                <label style="font-size: 13px;">Générer mon contrat<img id="vx1" src="../../../app-assets/images/pages/x.png"></label>
+                            </a>
+                            <?php  }
+                            } ?>
+                        </li>
                     </ul>
             </div>
         </div>
 
         <div class="row pt-2 pb-5" id="div-dodo">
-            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation">
+            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation" <?= $affichage_domi ?>>
                 <h2>Domiciliation</h2>
                 <div class="row p-2" id="se-domicilier">
                     <h3>Pas encore d'adresse ? Je me <a href="domiciliation.php" id="domicilie">domicilie</a></h3><br>
@@ -171,6 +323,23 @@ require_once 'php/get_documents.php';
                     </ul>
                 </div>
             </div>
+
+            <div class="col-6 m-0 px-3 pt-2" id="div-domiciliation" <?= $affichage_doc ?>>
+                <h2>Domiciliation</h2>
+                <div class="row" id="doc_domiciliation">
+
+                    <embed src=../../../src/crea_societe/domiciliation/<?= $crea['doc_domiciliation'] ?> width=100% height=100% type='application/pdf'/>
+                
+                    <div class="col">
+                        <button class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark" onclick="location.replace('php/domiciliation-cancel.php')">Annuler</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark" onclick="location.href = 'domiciliation.php'">Modifier</button>
+                    </div>
+                    
+                </div>
+            </div>
+
             <?php require_once('php/page-creation-document.php') ?>
         </div>
         <?php require_once('php/chat_domiciliation.php')?>

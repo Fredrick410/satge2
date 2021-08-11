@@ -56,7 +56,7 @@
                                 <div class="col-12 col-md-5 px-0">
                                     <div class=" mb-0 p-2 h-100">
                                         <div class=" pb-3">
-                                            <a href="html/ltr/coqpix/backend/auth-login-admin.html">
+                                            <a href="html/ltr/coqpix/backend/auth-login-admin.php">
                                                 <img class="logocoq" src="app-assets/images/logo/logo_connexion.png" />
                                             </a>
                                         </div>

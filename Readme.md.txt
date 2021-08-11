@@ -126,3 +126,58 @@ branche de oscar :
 
 	tache réalisée le 13/07/2021 :
 		- avancée sur generate-pdf.php
+
+	tache réalisée le 19/07/2021 :
+		- avancée formulaire contrat
+		- contrat (signature, lien des infos, ...)
+
+	tache réalisée le 23/07/2021 :
+		- changement du contrat en fiche de renseignement pour multiburo
+		- formulaire refait pour la fiche de renseignement
+
+	tache réalisée le 27/07/2021 :
+		- nouveau front pour la page creation edit
+		
+	tache réalisée le 28/07/2021 :
+		- ajout pattern pour l'IBAN
+
+branche de Leo :
+	tache réalisée le 28/07/2021
+		- enregistrement de la fiche de renseignement dans la base de données
+		- affichage de la fiche dans le front à la page d'accueil quand créée
+		- fix bug visuel dans le back
+
+	tache réalisée le 29/07/2021
+		- fiche de renseignement accessible dans le back
+
+	tache réalisée le 04/08/2021
+		- ajout bouton annuler et modifier domiciliation
+
+branche de oscar : 
+	tache réalisée le 04/08/2021 :
+		- aide à rayan sur bookmark.php
+		- contrat / front fini (générer et afficher)
+
+	tache réalisée le 05/08/2021 :
+		- bouton générer contrat / voir contrat + verif si le compte est complété
+		- aide sur bookmark.php pour la taille des icones
+
+		
+branche de Leo :
+	tache réalisée le 05/08/2021 :
+		- back ajout de la partie "en ligne" dans le portefeuille qui affiche les contrats ma créa (WIP)
+		- fix du doggo		
+
+branche de oscar : 
+	tache réalisée le 06/08/2021 :
+		- ajout du prix au contrat dans le back office
+		- signature dans ma crea du client après l'ajout du prix
+
+	tache réalisée le 09/08/2021 :
+		- contrat fini (signature, prix, transfert dans portefeuille)
+		- maj affichage page portefeuille.php
+		- creation get_info.php pour verif info compte
+		
+branche de Leo :
+	tache réalisée le 09/08/2021 :
+		- passage de la table "crea_societe" à "portefeuille" quand le contrat est signé

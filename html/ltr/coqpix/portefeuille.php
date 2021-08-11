@@ -176,7 +176,9 @@ require_once 'php/verif_session_connect_admin.php';
     $sum_dece = $pdoSta->fetch();
     if($sum_dece['somme'] == ""){$somme_dece= "0";}else{$somme_dece = $sum_dece['somme'];}
 
-
+    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_contrat NOT LIKE "" AND portefeuille_contrat="false"');
+    $pdoSta->execute();
+    $liste_contrat = $pdoSta->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -236,12 +238,19 @@ require_once 'php/verif_session_connect_admin.php';
     .icon_verif:hover{color: green;}
     .icon_files{position: relative; left: -10px; color: green; font-size: 20px;}
     .icon_files:hover{opacity: 0.5;}
+    .icon_files1{position: relative; left: -10px; color: orange; font-size: 20px;}
+    .icon_files1:hover{opacity: 0.5;}
+    .icon_files2{position: relative; left: -10px; color: red; font-size: 20px;}
+    .icon_files2:hover{opacity: 0.5;}
     .icon_card{position: relative; left: -10px; color: #3c6eca; font-size: 20px;}
     .icon_card:hover{opacity: 0.5;}
     .icon_x{position: relative; left: -10px; top: 3px; color: red; font-size: 25px;}
     .icon_x:hover{opacity: 0.5;}
-    .icon_size{
-        font-size: 30px;
+    .icon_size{font-size: 30px;}
+    @media screen and (max-width: 1200px) {
+        #chart-taille{
+            min-width: 100%;
+        }
     }
 </style>
 
@@ -455,7 +464,8 @@ require_once 'php/verif_session_connect_admin.php';
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
+                <div class="col form-group" id="chart-taille">
                     <div class="card">
                         <div class="form-group">
                             <h5 style="padding-left: 20px; padding-top: 20px;">Ensemble des dettes : <?= $sum['somme'] ?> €</h5><br>
@@ -469,10 +479,10 @@ require_once 'php/verif_session_connect_admin.php';
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="col form-group" id="chart-taille">
                     <div class="row">
                         <div class="col-12 col-md-12">
-                            <div class="card">
+                            <div class="card" style="height: 103%;">
                                 <div class="card-header">
                                     <h4 class="card-title">Evolution du nombre </h4>
                                 </div>
@@ -484,6 +494,7 @@ require_once 'php/verif_session_connect_admin.php';
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="form-group">
                     <hr>
@@ -511,40 +522,130 @@ require_once 'php/verif_session_connect_admin.php';
                 <div class="row">
                     <div class="col" style="border-right: 1px solid grey;">
                         
-                        <div class="form-group">
-                            <div class="table-responsive" style='overflow: hidden;'>
-                                <section>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="table-responsive">
-                                                <table class="table add-rows">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Nom société</th>
-                                                            <th>Nom dirigeant</th>
-                                                            <th>Téléphone</th>
-                                                            <th>Estimation</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php foreach($portefeuille_prospect as $portefeuilles): ?>
-                                                            <tr class="table-<?php if($portefeuilles['statut'] == "prospect!validation"){echo "primary";}else{echo "active";} ?>">
-                                                                <th class="text-bold-500"><a class="a_view" href="portefeuille-view.php?num=<?= $portefeuilles['id'] ?>"><?= $portefeuilles['name_entreprise'] ?></a></th>
-                                                                <th><?= $portefeuilles['nom_diri'] ?></th>
-                                                                <th class="text-bold-500"><?= $portefeuilles['tel_diri'] ?></th>
-                                                                <th><?= $portefeuilles['estimation'] ?> €</th>
-                                                                <th><a href="php/change_portefeuille.php?num=<?= $portefeuilles['id'] ?>&type=prospect"><i class='bx bxs-user-check icon_verif' ></i></a> <a href="portefeuille-upload.php?num=<?= $portefeuilles['id'] ?>&type=prospect&name_entreprise=<?= $portefeuilles['name_entreprise'] ?>"><i class='bx bxs-send icon_send'></i></a><a href="php/delete_prospect.php?id=<?= $portefeuilles['id'] ?>"><i class='bx bxs-trash'></i></a></th>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                        <div class="form-group text-center" style="height: 108px;">
+                            <div onclick="action_switch2();" class="toggle dog-rollover">
+                                <input class="bt_input" id="doggo2" type="checkbox"/>
+                                <label class="toggle-item" for="doggo2">
+                                    <div class="dog">
+                                        <div class="ear"></div>
+                                        <div class="ear right"></div>
+                                        <div class="face">
+                                            <div class="eyes"></div>
+                                            <div class="mouth"></div>
                                         </div>
                                     </div>
-                                </section>
+                                </label>
+                            </div>
+                            <div>
+                                <label style="color: orange;">Local</label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<label style="color: green;">En ligne</label>
                             </div>
                         </div>
+                        <div class="form-group" style="margin-bottom: 64px;">
+
+                        </div>
+                        <div id="div_local" class="form-group">
+                            <div>
+                                <h5>Prospect (Local)</h5>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive" style='overflow: hidden;'>
+                                    
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table add-rows">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Nom société</th>
+                                                                <th>Nom dirigeant</th>
+                                                                <th>Téléphone</th>
+                                                                <th>Estimation</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach($portefeuille_prospect as $portefeuilles): ?>
+                                                                <tr class="table-<?php if($portefeuilles['statut'] == "prospect!validation"){echo "primary";}else{echo "active";} ?>">
+                                                                    <th class="text-bold-500"><a class="a_view" href="portefeuille-view.php?num=<?= $portefeuilles['id'] ?>"><?= $portefeuilles['name_entreprise'] ?></a></th>
+                                                                    <th><?= $portefeuilles['nom_diri'] ?></th>
+                                                                    <th class="text-bold-500"><?= $portefeuilles['tel_diri'] ?></th>
+                                                                    <th><?= $portefeuilles['estimation'] ?> €</th>
+                                                                    <th>
+                                                                        <a href="php/change_portefeuille.php?num=<?= $portefeuilles['id'] ?>&type=prospect">
+                                                                            <i class='bx bxs-user-check icon_verif' ></i>
+                                                                        </a>&nbsp&nbsp 
+                                                                        <a href="portefeuille-upload.php?num=<?= $portefeuilles['id'] ?>&type=prospect&name_entreprise=<?= $portefeuilles['name_entreprise'] ?>">
+                                                                            <i class='bx bxs-send icon_send'></i>
+                                                                        </a>&nbsp&nbsp
+                                                                        <a href="php/delete_prospect.php?id=<?= $portefeuilles['id'] ?>">
+                                                                            <i class='bx bxs-trash'></i>
+                                                                        </a>
+                                                                    </th>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="div_enligne" class="form-group none-validation">
+                            <div>
+                                <h5>Prospect (En ligne)</h5>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive" style='overflow: hidden;'>
+                                    
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table add-rows">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Nom société</th>
+                                                                <th>Nom dirigeant</th>
+                                                                <th>Téléphone</th>
+                                                                <th>Estimation</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach($liste_contrat as $contrat): ?>
+                                                                <tr class="table-active">
+                                                                    <th class="text-bold-500"><a class="a_view"><?= $contrat['name_crea'] ?></a></th>
+                                                                    <th><?= $contrat['nom_diri'] ?></th>
+                                                                    <th class="text-bold-500"><?= $contrat['tel_diri'] ?></th>
+                                                                    <th> <?= $contrat['estimation_contrat'] ?> €</th>
+                                                                    <th>
+                                                                        <a href="../../../src/crea_societe/contrat/<?= $contrat['doc_contrat'] ?> ?>" target="_blank">
+                                                                            <i class='bx bx-file icon_<?php if($contrat['estimation_contrat'] == ''){ echo "files2"; }else{ echo "files1"; } ?>'></i>
+                                                                        </a>
+                                                                        <a href="portefeuille-upload-contrat.php?num=<?= $contrat['id'] ?>">
+                                                                            <i class='bx bxs-send icon_send'></i>
+                                                                        </a>&nbsp&nbsp
+                                                                        <a href="php/delete_contrat.php?id=<?= $contrat['id'] ?>">
+                                                                            <i class='bx bxs-trash'></i>
+                                                                        </a>
+                                                                    </th>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
                     <div class="col">
                         <div class="form-group text-center" style="height: 108px;">
@@ -591,7 +692,14 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <th><?= $portefeuilles_encours['nom_diri'] ?></th>
                                                     <th class="text-bold-500"><?= $portefeuilles_encours['tel_diri'] ?></th>
                                                     <th><?= $portefeuilles_encours['estimation'] ?> €</th>
-                                                    <th><a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_encours['lettredemission'] ?>" target="_blank"><i class='bx bx-file icon_files'></i></a> <a href="portefeuille-upload.php?num=<?= $portefeuilles_encours['id'] ?>&type=encours&name_entreprise=<?= $portefeuilles_encours['name_entreprise'] ?>"><i class='bx bxs-send icon_send'></i></a></th>
+                                                    <th>
+                                                        <a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_encours['lettredemission'] ?>" target="_blank">
+                                                            <i class='bx bx-file icon_files'></i>
+                                                        </a>
+                                                        <a href="portefeuille-upload.php?num=<?= $portefeuilles_encours['id'] ?>&type=encours&name_entreprise=<?= $portefeuilles_encours['name_entreprise'] ?>">
+                                                            <i class='bx bxs-send icon_send'></i>
+                                                        </a>
+                                                    </th>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -636,7 +744,17 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <td class="text-bold-500"><?= $portefeuilles_actif['tel_diri'] ?></td>
                                                     <td style="color: red;"><?= $sum_dette ?> €</td>
                                                     <td><?= $portefeuilles_actif['date_crea'] ?></td>
-                                                    <td><a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_actif['lettredemission'] ?>" target="_blank"><i class='bx bx-file icon_files'></i></a>  <a href="../../../src/portefeuille/rib/<?= $portefeuilles_actif['rib'] ?>" target="_blank"><i class='bx bx-credit-card icon_card'></i></a>  <a href="portefeuille-leave.php?num=<?= $portefeuilles_actif['id'] ?>&name_entreprise=<?= $portefeuilles_actif['name_entreprise'] ?>"><i class='bx bx-x icon_x'></i></a></td>
+                                                    <td>
+                                                        <a href="../../../src/portefeuille/lettredemission/<?= $portefeuilles_actif['lettredemission'] ?>" target="_blank">
+                                                            <i class='bx bx-file icon_files'></i>
+                                                        </a>  &nbsp&nbsp
+                                                        <a href="../../../src/portefeuille/rib/<?= $portefeuilles_actif['rib'] ?>" target="_blank">
+                                                            <i class='bx bx-credit-card icon_card'></i>
+                                                        </a>  &nbsp
+                                                        <a href="portefeuille-leave.php?num=<?= $portefeuilles_actif['id'] ?>&name_entreprise=<?= $portefeuilles_actif['name_entreprise'] ?>">
+                                                            <i class='bx bx-x icon_x'></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -702,6 +820,17 @@ require_once 'php/verif_session_connect_admin.php';
             } else {
                 document.getElementById('div_encours').style.display = "block";
                 document.getElementById('div_actif').style.display = "none";
+            }
+        }
+
+        function action_switch2(){
+            let switchK = document.getElementById('doggo2');
+            if(switchK.checked){
+                document.getElementById('div_local').style.display = "none";
+                document.getElementById('div_enligne').style.display = "block";
+            } else {
+                document.getElementById('div_local').style.display = "block";
+                document.getElementById('div_enligne').style.display = "none";
             }
         }
 

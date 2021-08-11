@@ -11,7 +11,7 @@ if(!empty($_SESSION['id_admin']))
 else
 {  
    sleep(2);
-   header('Location: backend/auth-login-admin.html');
+   header('Location: backend/auth-login-admin.php');
    exit;
 }
 
@@ -22,13 +22,13 @@ else
 {  if (substr($_SESSION['role'],0,1) == '1' && in_array("comptable", $authorised_roles)){
       //le comptable a accès à cette page
    }  
-   elseif (substr($_SESSION['role'],1,2) == '1' && in_array("juriste", $authorised_roles)){
+   elseif (substr($_SESSION['role'],1,1) == '1' && in_array("juriste", $authorised_roles)){
       //le comptable a accès à cette page
    }  
-   elseif (substr($_SESSION['role'],2,3) == '1' && in_array("gestionnaire social", $authorised_roles)){
+   elseif (substr($_SESSION['role'],2,1) == '1' && in_array("gestionnaire social", $authorised_roles)){
       //le comptable a accès à cette page
    }  
-   elseif (substr($_SESSION['role'],3,4) == '1' && in_array("gestionnaire fiscal", $authorised_roles)){
+   elseif (substr($_SESSION['role'],3,1) == '1' && in_array("gestionnaire fiscal", $authorised_roles)){
       //le comptable a accès à cette page
    }  
    else {

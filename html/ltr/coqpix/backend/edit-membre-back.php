@@ -1,5 +1,21 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+require_once '../php/config.php';
+require_once '../php/verif_session_connect_admin.php';
+  
+    $pdoSt = $bdd->prepare('SELECT * FROM admin WHERE id=:num');
+    $pdoSt->bindValue(':num', $_GET['num']);
+    $pdoSt->execute();
+    $entreprise = $pdoSt->fetch();
+
+?>
+
+
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
+<html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
 
 <head>
@@ -9,7 +25,7 @@
     <meta name="description" content="Frest admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Frest admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Connexion - Admin</title>
+    <title>Modification membre back</title>
     <link rel="apple-touch-icon" href="../../../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../../../app-assets/images/ico/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,600%7CIBM+Plex+Sans:300,400,500,600,700" rel="stylesheet">
@@ -49,57 +65,57 @@
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <!-- login page start -->
-                <section id="auth-login" class="row flexbox-container">
-                    <div class="col-xl-8 col-11">
+                <!-- register section starts -->
+                <section class="row flexbox-container">
+                    <div class="col-xl-8 col-10">
                         <div class="card bg-authentication mb-0">
                             <div class="row m-0">
-                                <!-- left section-login -->
+                                <!-- register section left -->
                                 <div class="col-md-6 col-12 px-0">
                                     <div class="card disable-rounded-right mb-0 p-2 h-100 d-flex justify-content-center">
                                         <div class="card-header pb-1">
                                             <div class="card-title">
-                                                <h4 class="text-center mb-2">Bienvenue sur coqpix - Admin</h4>
+                                                <h4 class="text-center mb-2">Modification membre back</h4>
                                             </div>
                                         </div>
                                         <div class="card-content">
                                             <div class="card-body">
-                                                <form action="../php/verif-admin.php" method="GET">
-                                                    <div class="form-group mb-50">
-                                                        <label class="text-bold-600" for="exampleInputEmail1">E-mail :</label>
-                                                        <input name="emailentreprise" type="email" class="form-control" id="exampleInputEmail1" placeholder="Adresse email" required></div>
-                                                    <div class="form-group">
-                                                        <label class="text-bold-600" for="exampleInputPassword1">Mot de passe :</label>
-                                                        <input name="passwordentreprise" type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe" required>
-                                                    </div>
-                                                    <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
-                                                        <div class="text-left">
-                                                            <div class="checkbox checkbox-sm">
-                                                                <input name="checkbox" type="checkbox" class="form-check-input" id="exampleCheck1">
-                                                                <label class="checkboxsmall" for="exampleCheck1"><small>Rester connecté</small></label>
-                                                            </div>
+                                                <form action="../php/edit_membre_back.php" method="POST">
+                                                <input type="hidden" name="id" value="<?= $_GET['num'] ?>">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6 mb-50">
+                                                            <label for="inputfirstname4">Nom membre :</label>
+                                                            <input name="nom_diri" type="text" class="form-control" id="inputfirstname4" placeholder="Nom du membre" value="<?= $entreprise['nom_diri'] ?>" required>
+                                                        </div>
+                                                        <div class="form-group col-md-6 mb-50">
+                                                            <label for="inputlastname4">Prénom membre :</label>
+                                                            <input name="prenom_diri" type="text" class="form-control" id="inputlastname4" placeholder="Prénom du membre" value="<?= $entreprise['prenom_diri'] ?>" required>
                                                         </div>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary glow w-100 position-relative">Connexion<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                    <div class="form-group mb-50">
+                                                        <label class="text-bold-600" for="exampleInputUsername1">Nom général :</label>
+                                                        <input name="nameentreprise" type="text" class="form-control" id="exampleInputUsername1" placeholder="Nom entreprise" value="<?= $entreprise['nameentreprise'] ?>" required></div>
+                                                    <div class="form-group mb-50">
+                                                        <label class="text-bold-600" for="exampleInputEmail1">E-mail (Identifiant de connexion)</label>
+                                                        <input name="emailentreprise" type="email" class="form-control" id="exampleInputEmail1" placeholder="Adresse email" value="<?= $entreprise['emailentreprise'] ?>" required></div>
+                                                
+                                                    <button type="submit" class="btn btn-primary glow position-relative w-100">Modifier<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
                                                 </form>
                                                 <hr>
-                                                <div class="text-center"><small class="mr-25">Contactez contact@auditactionplus.com pour plus d'informations.</small></div>
+                                                <div class="text-center"><small class="mr-25">Crée par Audit Action Plus</small></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- right section image -->
+                                <!-- image section right -->
                                 <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
-                                    <div class="card-content">
-                                        <a href="../../../../"><img class="img-fluid" src="../../../../app-assets/images/pages/login.png" alt="branding logo"></a>
-                                    </div>
+                                    <img class="img-fluid" src="../../../../app-assets/images/pages/register.png" alt="branding logo">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                <!-- login page ends -->
-
+                <!-- register section endss -->
             </div>
         </div>
     </div>
