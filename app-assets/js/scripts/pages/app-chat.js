@@ -71,7 +71,7 @@ $(document).ready(function () {
     chatProfile.removeClass("show");
   });
   // Add class active on click of Chat users list
-  $(".chat-sidebar-list-wrapper ul li").on("click", function () {
+  $(document).on('click', '.chat-sidebar-list-wrapper ul li', function() {
     if ($(".chat-sidebar-list-wrapper ul li").hasClass("active")) {
       $(".chat-sidebar-list-wrapper ul li").removeClass("active");
     }

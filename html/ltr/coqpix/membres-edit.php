@@ -16,10 +16,10 @@ require_once 'php/config.php';
     $pdoSt->execute();
     $image = $pdoSt->fetchAll();
 
-    $pdo = $bdd->prepare('SELECT * FROM membres WHERE id = :num');
-    $pdo->bindValue(':num',$_GET['nummembre']);
-    $pdo->execute();
-    $membre = $pdo->fetchAll();
+    $select_membre = $bdd->prepare('SELECT * FROM membres WHERE id = :num');
+    $select_membre->bindValue(':num',$_GET['nummembre']);
+    $select_membre->execute();
+    $membre = $select_membre->fetch();
 
 ?>
 
@@ -42,9 +42,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/forms/validation/form-validation.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/select/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/pickers/pickadate/pickadate.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/tables/datatable/datatables.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -57,7 +55,7 @@ require_once 'php/config.php';
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-users.css">
     <!-- END: Page CSS-->
 
@@ -73,150 +71,12 @@ require_once 'php/config.php';
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
 
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-primary navbar-brand-center">
-        <div class="navbar-header d-xl-block d-none">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item"><a class="navbar-brand" href="dashboard-analytics.php">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png"></div>
-                    </a></li>
-            </ul>
-        </div>
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav bookmark-icons">
-                            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="Cloudpix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul>
-                    </div>
-                    <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us mr-50"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i> French</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i> German</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i> Portuguese</a></div>
-                        </li>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                        </li>
-                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up"></span></a>   <!--NOTIFICATION-->
-                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                                <li class="dropdown-menu-header">
-                                    <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">0 Notifications</span><span class="text-bold-400 cursor-pointer">Notification non lu</span></div>
-                                </li>
-                                <li class="scrollable-container media-list"><a class="d-flex justify-content-between" href="javascript:void(0)">
-                                                            <!-- CONTENUE ONE -->
-                                    </a>
-                                    <div class="d-flex justify-content-between cursor-pointer">
-                                        <div class="media d-flex align-items-center border-0">
-                                            <div class="media-left pr-0">
-                                                <div class="avatar mr-1 m-0"><img src="../../../app-assets/images/ico/astro1.gif" alt="avatar" height="39" width="39"></div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading"><span class="text-bold-500">Nouveaux compte</span> création du compte</h6><small class="notification-text">Aujourd'hui, 19h30</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Tout marquer comme lu</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                            <div class="user-nav d-sm-flex d-none"><span class="user-name"><?= $entreprise['nameentreprise']; ?></span><span class="user-status text-muted">En ligne</span></div><span><img class="round" src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="40" width="40"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <?php include('php/header_action.php') ?>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php $btnreturn = false;
+    include('php/menu_header_front.php'); ?>
     <!-- END: Header-->
 
-
     <!-- BEGIN: Main Menu-->
-    <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-sticky navbar-dark navbar-without-dd-arrow" role="navigation" data-menu="menu-wrapper">
-        <div class="navbar-header d-xl-none d-block">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html">
-                        <div class="brand-logo"><img class="logo" src="../../../app-assets/images/logo/coqpix1.png" /></div>
-                        <h2 class="brand-text mb-0">Coqpix</h2>
-                    </a></li>
-                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="bx bx-x d-block d-xl-none font-medium-4 primary toggle-icon"></i></a></li>
-            </ul>
-        </div>
-        <div class="shadow-bottom"></div>
-        <!-- Horizontal menu content-->
-        <div class="navbar-container main-menu-content" data-menu="menu-container">
-            <!-- include ../../../includes/mixins-->
-            <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
-                <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="index.html" data-toggle="dropdown"><i class="menu-livicon" data-icon="rocket"></i><span data-i18n="Dashboard">Dashboard</span></a>
-                    <ul class="dropdown-menu">
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="dashboard-analytics.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Analytique</a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#dashboard-ecommerce.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>eCommerce</a>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="file-manager.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>CloudPix</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="briefcase"></i><span>Fonctions</span></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item align-items-center dropdown-toggle" href="#" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="coins"></i>Ventes</a>
-                            <ul class="dropdown-menu">
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-devis-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Devis</a>
-                                </li>
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-invoice-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Factures</a>
-                                </li>
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-avoir-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Avoirs</a>
-                                </li>
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-bon-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Bon de livraison</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item align-items-center dropdown-toggle" href="#" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="us-dollar"></i>Achats</a>
-                            <ul class="dropdown-menu">
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-invoice-achat-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Facture</a>
-                                </li>
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-bon-achat-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Bulletin de commande</a>
-                                </li>
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="app-note-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Note de frais</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item align-items-center dropdown-toggle" href="#" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="users"></i>Projet</a>
-                            <ul class="dropdown-menu">
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="#projet.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Equipes&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                                </li>
-                                <li data-menu=""><a class="dropdown-item align-items-center" href="#task.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Taches&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#inventaire-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="box-add"></i>Inventaire&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="priority-low"></i><span>Données</span></a>
-                    <ul class="dropdown-menu">
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#client.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="user"></i>Clients</a>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="fournisseur-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="truck"></i>Fournisseurs</a>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#article-liste.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="tag"></i>Article</a>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#membres-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="grid"></i>Membres</a>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="shield"></i><span>Editions</span></a>
-                    <ul class="dropdown-menu">
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#Bilan.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="notebook"></i>Bilan&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#balance.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="balance"></i>Balance&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                    </ul>
-                </li>
-                <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="timer"></i><span>Déclarations</span></a>
-                    <ul class="dropdown-menu">
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#sociale.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="umbrella"></i>Sociale&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                        <li data-menu=""><a class="dropdown-item align-items-center" href="#fiscale.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i><i class="menu-livicon" data-icon="piggybank"></i>Fiscale&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- /horizontal menu content-->
+    <?php include('php/menu_front.php'); ?>
     </div>
     <!-- END: Main Menu-->
 
@@ -242,50 +102,27 @@ require_once 'php/config.php';
                                 <div class="tab-content">
                                     <div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 
-                                        <!-- <form action="php/insert_images_members_2.php" method="POST" enctype="multipart/form-data">
-                                        <div class="media mb-2">
-                                            <a class="mr-2" href="#">
-                                                <img src="../../../src/img/<?php foreach($membre as $membres): ?><?= $membres['img_membres'] ?><?php endforeach; ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="64" width="64">
-                                            </a>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">Image du membre</h4>
-                                                <input type="file" name="images" accept="image/png, image/jpg, image/jpeg" required ><br>
-                                                <input type="hidden" name="id" value="<?php foreach($membre as $membres): ?><?= $membres['id'] ?><?php endforeach; ?>">
-                                                <input type="hidden" name="nummembre" value="<?= ($_GET['nummembre']); ?>">
-                                                
-                                                <br>
-                                                <div class="col-12 px-0 d-flex">
-                                                    <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary mr-25">
-                                                    <a href="php/reset_images.php" class="btn btn-sm btn-light-secondary">Réinitialiser</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </form> -->
-
                                         <!-- users edit account form start -->
-                                        <form action="php/edit_membre.php" method="POST" novalidate>
-                                        <?php foreach($membre as $membres): ?>
-                                        <input type="hidden" name="img_membre" value="astro4.gif">
-                                        <input type="hidden" name="id" value="<?php foreach($membre as $membress): ?><?= $membress['id'] ?><?php endforeach; ?>">
+                                        <form action="php/edit_membre.php?id_membre=<?= $_GET['nummembre'] ?>" method="POST" novalidate>
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Nom :</label>
-                                                            <input name="nom" type="text" class="form-control" placeholder="Nom du membre" value="<?= $membres['nom'] ?>" required data-validation-required-message="Nom obligatoire">
+                                                            <input name="nom" type="text" class="form-control" placeholder="Nom du membre" value="<?= $membre['nom'] ?>" required data-validation-required-message="Nom obligatoire">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Prénom :</label>
-                                                            <input name="prenom" type="text" class="form-control" placeholder="Prénom du membre" value="<?= $membres['prenom'] ?>" required data-validation-required-message="Prénom obligatoire">
+                                                            <input name="prenom" type="text" class="form-control" placeholder="Prénom du membre" value="<?= $membre['prenom'] ?>" required data-validation-required-message="Prénom obligatoire">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Pays :</label>
                                                             <select name="pays" class="form-control invoice-item-select">
-                                                                <option value="<?= $membres['pays'] ?>"><?= $membres['pays'] ?></option>
+                                                                <option value="<?= $membre['pays'] ?>"><?= $membre['pays'] ?></option>
                                                                 <optgroup label="Europe">
                                                                 <option value="allemagne">Allemagne</option>
                                                                 <option value="albanie">Albanie</option>
@@ -497,7 +334,7 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Langue :</label>
-                                                            <input type="text" name="langue" langue class="form-control" placeholder="" value="<?= $membres['langue'] ?>" required data-validation-required-message="Langue obligatoire">
+                                                            <input type="text" name="langue" langue class="form-control" placeholder="" value="<?= $membre['langue'] ?>" required data-validation-required-message="Langue obligatoire">
                                                         </div>                                                  
                                                     </div>
                                                 </div>
@@ -505,25 +342,19 @@ require_once 'php/config.php';
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*Téléphone :</label>
-                                                            <input type="text" name="tel" class="form-control" placeholder="06.00.00.00.00" value="<?= $membres['tel'] ?>" required data-validation-required-message="Numéros de télephone obligatoire ">
+                                                            <input type="text" name="tel" class="form-control" placeholder="06.00.00.00.00" value="<?= $membre['tel'] ?>" required data-validation-required-message="Numéros de télephone obligatoire ">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>*E-mail :</label>
-                                                            <input type="email" name="email" class="form-control" placeholder="Membre@contact.fr" value="<?= $membres['email'] ?>" required data-validation-required-message="Email obligatoire">
+                                                            <input type="email" name="email" class="form-control" placeholder="Membre@contact.fr" value="<?= $membre['email'] ?>" required data-validation-required-message="Email obligatoire">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="controls">
                                                             <label>Date de naissance :</label>
-                                                            <input type="date" name="dtenaissance" class="form-control" placeholder="jj-mm-aa" value="<?= $membres['dtenaissance'] ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="controls">
-                                                            <label>*Nom de l'entreprise :</label>
-                                                            <input type="text" name="name_entreprise" class="form-control" value="<?= $membres['name_entreprise'] ?>" placeholder="Mon entreprise" required data-validation-required-message="Nom de l'entreprise obligatoire">
+                                                            <input type="date" name="dtenaissance" class="form-control" placeholder="jj-mm-aa" value="<?= $membre['dtenaissance'] ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -532,89 +363,90 @@ require_once 'php/config.php';
                                                         <table class="table mt-1">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Module de permission</th>
-                                                                    <th>Ventes</th>
-                                                                    <th>Achats</th>
-                                                                    <th>Projets</th>
-                                                                    <th>Inventaires</th>
+                                                                    <th>Permissions</th>
+                                                                    <th>Aucune</th>
+                                                                    <th>Level 1</th>
+                                                                    <th>Level 2</th>
+                                                                    <th>Level 3</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                            
                                                                 <tr>
-                                                                    <td>Lire</td>
+                                                                    <td>Ventes</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="view" type="checkbox" id="users-checkbox5" class="checkbox-input"<?php if($membres['perms_ventes'] == "view"){echo "checked";} ?>><label for="users-checkbox5"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="0" <?php if ($membre['perm_ventes'] == 0) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="view" type="checkbox" id="users-checkbox6" class="checkbox-input"<?php if($membres['perms_achats'] == "view"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox6"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="1" <?php if ($membre['perm_ventes'] == 1) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="view" type="checkbox" id="users-checkbox7" class="checkbox-input"<?php if($membres['perms_projets'] == "view"){echo "checked";} ?>><label for="users-checkbox7"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="2" <?php if ($membre['perm_ventes'] == 2) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="view" type="checkbox" id="users-checkbox8" class="checkbox-input"<?php if($membres['perms_inventaires'] == "view"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox8"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="3" <?php if ($membre['perm_ventes'] == 3) { echo "checked"; } ?> />
                                                                     </td>
                                                                 </tr>
+                                                            
                                                                 <tr>
-                                                                    <td>Ecrire</td>
+                                                                    <td>Achats</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="write" type="checkbox" id="users-checkbox9" class="checkbox-input" <?php if($membres['perms_ventes'] == "write"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox9"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="0" <?php if ($membre['perm_achats'] == 0) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="write" type="checkbox" id="users-checkbox10" class="checkbox-input"<?php if($membres['perms_achats'] == "write"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox10"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="1" <?php if ($membre['perm_achats'] == 1) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="write" type="checkbox" id="users-checkbox11" class="checkbox-input"<?php if($membres['perms_projets'] == "write"){echo "checked";} ?>><label for="users-checkbox11"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="2" <?php if ($membre['perm_achats'] == 2) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="write" type="checkbox" id="users-checkbox12" class="checkbox-input"<?php if($membres['perms_inventaires'] == "write"){echo "checked";} ?>><label for="users-checkbox12"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_achats" value="3" <?php if ($membre['perm_achats'] == 3) { echo "checked"; } ?> />
                                                                     </td>
                                                                 </tr>
+
                                                                 <tr>
-                                                                    <td>Tout</td>
+                                                                    <td>Projets</td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_ventes" value="all" type="checkbox" id="users-checkbox1" class="checkbox-input"<?php if($membres['perms_ventes'] == "all"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox1"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="0" <?php if ($membre['perm_projets'] == 0) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_achats" value="all" type="checkbox" id="users-checkbox2" class="checkbox-input"<?php if($membres['perms_achats'] == "all"){echo "checked";} ?>><label for="users-checkbox2"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="1" <?php if ($membre['perm_projets'] == 1) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_projets" value="all" type="checkbox" id="users-checkbox3" class="checkbox-input"<?php if($membres['perms_projets'] == "all"){echo "checked";} ?>><label for="users-checkbox3"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="2" <?php if ($membre['perm_projets'] == 2) { echo "checked"; } ?> />
                                                                     </td>
                                                                     <td>
-                                                                        <div class="checkbox"><input name="perms_inventaires" value="all" type="checkbox" id="users-checkbox4" class="checkbox-input"<?php if($membres['perms_inventaires'] == "all"){echo "checked";} ?>>
-                                                                            <label for="users-checkbox4"></label>
-                                                                        </div>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_projets" value="3" <?php if ($membre['perm_projets'] == 3) { echo "checked"; } ?> />
                                                                     </td>
                                                                 </tr>
+                                                            
+                                                                <tr>
+                                                                    <td>Membres</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="0" <?php if ($membre['perm_membres'] == 0) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="1" <?php if ($membre['perm_membres'] == 1) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="2" <?php if ($membre['perm_membres'] == 2) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_membres" value="3" <?php if ($membre['perm_membres'] == 3) { echo "checked"; } ?> />
+                                                                    </td>
+                                                                </tr>
+                                                                  
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                    <input type="hidden" name="role_membres" value="Employer">
                                                     <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Sauvegarder</button>
-                                                    <a href="membres-list.php"><button type="submit" class="btn btn-light">Annuler</button></a>
+                                                    <a href="membres-liste.php"><div class="btn btn-light">Annuler</div></a>
                                                 </div>
                                             </div>
-                            <?php endforeach; ?>
                                         </form>
+
                                         <!-- users edit account form ends -->
                                     </div>
                                 </div>

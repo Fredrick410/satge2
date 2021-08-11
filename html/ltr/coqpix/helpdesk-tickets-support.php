@@ -105,56 +105,72 @@ require_once 'php/config.php';
                         <!-- todo app menu -->
                         <div class="todo-app-menu">
                             <!-- sidebar list start -->
-                            <div class="sidebar-menu-list">
+                            <div class="sidebar-menu-list h-100">
                                 <div class="list-group">
-                                    <a href="javascript:void(0);" class="all-tickets list-group-item border-0 active">
+                                    <a href="javascript:void(0);" class="filtre-tickets list-group-item border-0 active">
+                                        <input type="hidden" value="all">
                                         <span class="fonticon-wrap mr-50">
                                             <i class="livicon-evo" data-options="name: list.svg; size: 24px; style: lines; strokeColor:#5A8DEE; eventOn:grandparent;"></i>
                                         </span>
-                                        <span> Tous</span>
+                                        <span>Tous</span>
                                     </a>
                                 </div>
-                                <label class="filter-label mt-2 mb-1 pt-25">Filters</label>
+                                <label class="filter-label mt-2 mb-1 pt-25">Filtres</label>
                                 <div class="list-group">
-                                    <a href="javascript:void(0);" class="filtre-non-lu list-group-item border-0">
+                                    <a href="javascript:void(0);" class="filtre-tickets list-group-item border-0">
+                                        <input type="hidden" value="non lu">
                                         <span class="fonticon-wrap mr-50">
                                             <i class="livicon-evo" data-options="name: bell.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent;"></i>
                                         </span>
-                                        <span> Non lu</span>
+                                        <span>Non lu</span>
                                         <span class="badge badge-light-primary badge-pill badge-round float-right mt-50"><?= $nb_tickets_non_lu ?></span>
                                     </a>
-                                    <a href="javascript:void(0);" class="filtre-ouvert list-group-item border-0">
+                                    <a href="javascript:void(0);" class="filtre-tickets list-group-item border-0">
+                                        <input type="hidden" value="urgent">
+                                        <span class="fonticon-wrap mr-50">
+                                            <i class="livicon-evo" data-options="name: warning-alt.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent;"></i>
+                                        </span>
+                                        <span>Urgent</span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="filtre-tickets list-group-item border-0">
+                                        <input type="hidden" value="ouvert">
                                         <span class="fonticon-wrap mr-50">
                                             <i class="livicon-evo" data-options="name: comments.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent;"></i>
                                         </span>
-                                        <span> Ouvert</span>
+                                        <span>Ouvert</span>
                                     </a>
-                                    <a href="javascript:void(0);" class=" filtre-fermé list-group-item border-0">
+                                    <a href="javascript:void(0);" class="filtre-tickets list-group-item border-0">
+                                        <input type="hidden" value="fermé">
                                         <span class="fonticon-wrap mr-50">
                                             <i class="livicon-evo" data-options="name: lock.svg; size: 24px; style: lines; strokeColor:#475f7b; eventOn:grandparent;"></i>
                                         </span>
-                                        <span> Fermé</span>
+                                        <span>Fermé</span>
                                     </a>
                                 </div>
-                                <label class="filter-label mt-2 mb-1 pt-25">Labels</label>
+                                <label class="filter-label mt-2 mb-1 pt-25">Thèmes</label>
                                 <div class="list-group">
-                                    <a href="#" class="list-group-item border-0 d-flex align-items-center justify-content-between">
+                                    <a href="javascript:void(0);" class="theme-tickets list-group-item border-0 d-flex align-items-center justify-content-between">
+                                        <input type="hidden" value="général">
                                         <span>Général</span>
                                         <span class="bullet bullet-sm bullet-light"></span>
                                     </a>
-                                    <a href="#" class="list-group-item border-0 d-flex align-items-center justify-content-between">
+                                    <a href="javascript:void(0);" class="theme-tickets list-group-item border-0 d-flex align-items-center justify-content-between">
+                                        <input type="hidden" value="compta">
                                         <span>Comptabilité</span>
                                         <span class="bullet bullet-sm" style="background-color: yellow;"></span>
                                     </a>
-                                    <a href="#" class="list-group-item border-0 d-flex align-items-center justify-content-between">
+                                    <a href="javascript:void(0);" class="theme-tickets list-group-item border-0 d-flex align-items-center justify-content-between">
+                                        <input type="hidden" value="juridique">
                                         <span>Juridique</span>
                                         <span class="bullet bullet-sm bullet-danger"></span>
                                     </a>
-                                    <a href="#" class="list-group-item border-0 d-flex align-items-center justify-content-between">
+                                    <a href="javascript:void(0);" class="theme-tickets list-group-item border-0 d-flex align-items-center justify-content-between">
+                                        <input type="hidden" value="fiscalité">
                                         <span>Fiscalité</span>
                                         <span class="bullet bullet-sm bullet-warning"></span>
                                     </a>
-                                    <a href="#" class="list-group-item border-0 d-flex align-items-center justify-content-between">
+                                    <a href="javascript:void(0);" class="theme-tickets list-group-item border-0 d-flex align-items-center justify-content-between">
+                                        <input type="hidden" value="social">
                                         <span>Social</span>
                                         <span class="bullet bullet-sm bullet-info"></span>
                                     </a>
@@ -195,7 +211,7 @@ require_once 'php/config.php';
                                         </ul>
                                         <!-- task list end -->
                                         <div class="no-results">
-                                        <i class="bx bx-error-circle font-large-2"></i>
+                                            <i class="bx bx-error-circle font-large-2"></i>
                                             <h5>Aucun résultat</h5>
                                         </div>
                                     </div>
