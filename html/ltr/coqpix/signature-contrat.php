@@ -92,18 +92,45 @@ require_once 'php/verif_session_crea.php';
             <div class="content-body">
                 <div class="row">
                     <div class="col" style="border-right: 1px solid grey;">
-                        <h4 class="m-1" style="font-weight: bold;">Signer le contrat</h5>
+                        <h4 class="m-1" style="font-weight: bold;">Lire et signer le contrat</h5>
                         <div class="form-group" style="width: 500px; margin: 50px auto; text-align: center;">
-                            <form action="generate-pdf-4.php" method="POST" >
-                              <div class="form-check my-3">
+                            <!-- Content -->
+	                        <div class="container">
+	                        	<div class="row">
+	                        		<div class="col-md-12">
+	                        			<h5>Signature :</h5>
+	                        		</div>
+	                        	</div>
+	                        	<div class="row">
+	                        		<div class="col-md-12">
+	                        	 		<canvas id="sig-canvas" width="400" height="150">
+	                        	 			Get a better browser, bro.
+	                        	 		</canvas>
+	                        	 	</div>
+	                        	</div>
+	                        	<div class="row">
+	                        		<div class="col-md-12">
+	                        			
+	                        			<button class="btn btn-default" id="sig-clearBtn">Effacer la signature</button>
+	                        		</div>
+	                        	</div>
+	                        	<br/>
+	                        	
+	                        	<br/>
+	                        	<div class="row">
+	                        		<div class="col-md-12">
+	                        			<img id="sig-image" width="200" height="75" src="" alt="Ta signature s'affichera ici !" hidden/>
+	                        		</div>
+	                        	</div>
+	                        </div>
+                            <form action="generate-pdf-4.php" id="form-signature" method="POST" enctype="multipart/form-data">
+                              <textarea id="sig-dataUrl" class="form-control" rows="5" name="signature" form="form-signature" hidden required></textarea>
+                              
+                              <div class="form-check my-1">
                                 <input type="checkbox" name="condition" class="form-check-input" id="condition"  required>
-                                <label for="condition" class="form-check-label" style="margin-left: 10px;">J'ai lu et j'accepte les conditions générales</label>
+                                <label for="condition" class="form-check-label" style="margin-left: 10px;">Je reconnais avoir lu et accepté les conditions générales de prestations du présent contrat</label>
                               </div>
-                              <h5 style="font-weight: bold;">Signature :</h6><br>
-                                <input type="text" name="signature" id="signature" class="w-100 mb-3 py-1" style="text-align: center;" placeholder="Nom et prénom" required  onkeyup="appercu.innerHTML=this.value">
-                                <label for="appercu" class="mr-2" style="color: #051441; font-family: mukta malar bold; font-size: 15px;">Aperçu :</label>
-                                <span id="appercu" readonly></span><br>
-                                <button class="btn btn-signature mt-3" type="submit" >Valider la signature</button>
+                              <button class="btn btn-signature" type="submit" >Valider</button>
                             </form>
                         </div>
                     </div>
@@ -138,7 +165,7 @@ require_once 'php/verif_session_crea.php';
   var canvas = document.getElementById("sig-canvas");
   var ctx = canvas.getContext("2d");
   ctx.strokeStyle = "#222222";
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 2;
 
   var drawing = false;
   var mousePos = {
@@ -250,7 +277,7 @@ require_once 'php/verif_session_crea.php';
     sigText.innerHTML = "Data URL for your signature will go here!";
     sigImage.setAttribute("src", "");
   }, false);
-  submitBtn.addEventListener("click", function(e) {
+  canvas.addEventListener("click", function(e) {
     var dataUrl = canvas.toDataURL();
     sigText.innerHTML = dataUrl;
     sigImage.setAttribute("src", dataUrl);

@@ -223,6 +223,17 @@ body{
     color: #29fe8c; 
 }
 
+.btn-primary2 {
+    border: none !important;
+    background-color: #29fe8c !important;
+    color: #051441; 
+}
+
+.btn-primary2:hover{
+    background-color: #051441 !important;
+    color: #29fe8c; 
+}
+
 .btn-primary1 {
     border: none;
     color: #051441; 
@@ -372,6 +383,10 @@ input[type="checkbox"].solu + label:hover{
     border: 2px dotted #CCCCCC;
     border-radius: 15px;
     cursor: crosshair;
+}
+
+#sig-clearBtn:hover{
+    text-decoration: underline;
 }
 
 @media screen and (max-width: 1310px) {

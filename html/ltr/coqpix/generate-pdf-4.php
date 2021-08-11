@@ -286,6 +286,11 @@ $left = '<span style="font-weight: bold;">Pour le Prestataire</span>';
 
 $right = '<span style="font-weight: bold;">Pour le Client</span>';
 
+$img_base64_encoded = $_POST['signature'];
+
+$img = '<img src="@' . preg_replace('#^data:image/[^;]+;base64,#', '', $img_base64_encoded) . '">';
+
+
 // get current vertical position
 $pdf->Ln(15);
 
@@ -297,8 +302,9 @@ $pdf->writeHTMLCell(90, '', '', $y, $left, 0, 0, 1, true, 'C', true);
 $pdf->writeHTMLCell(90, '', '', '', $right, 0, 1, 1, true, 'C', true);
 $y = $pdf->getY();
 $pdf->Image(K_PATH_IMAGES.'../../../app-assets/images/pages/sign.png', 30, $y+10, '', 20, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-$pdf->SetFont('holligate', '', 25);
-$pdf->writeHTMLCell(90, '', 110, '', $_POST['signature'], 0, 1, 1, true, 'C', true);
+$pdf->writeHTMLCell('', '', 110, $y+5, $img, 0, 1, 1, true, 'C', true);
+/*$pdf->SetFont('holligate', '', 25);
+$pdf->writeHTMLCell(90, '', 110, '', $_POST['signature'], 0, 1, 1, true, 'C', true);*/
 // reset pointer to the last page
 $pdf->lastPage();
 
