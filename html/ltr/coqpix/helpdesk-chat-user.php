@@ -167,7 +167,7 @@ require_once 'php/config.php';
                                 <?php } ?>
                             </ul>
                             <ul class="liste-membres chat-sidebar-list">
-                                
+         
                             </ul>
                             <h6 class="px-2 pt-2">SUPPORT</h6>
                             <div class="m-1">
@@ -223,19 +223,9 @@ require_once 'php/config.php';
                                             <h6 id="nom_chat" class="mb-0"></h6>
                                             <input id ="id_chat" type="hidden" value=""> 
                                         </div>
-                                        <div class="chat-header-icons">
-                                            <span class="chat-icon-favorite">
-                                                <i class="bx bx-star font-medium-5 cursor-pointer"></i>
-                                            </span>
-                                            <span class="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded font-medium-4 ml-25 cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu">
-                                                </i>
-                                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-pin mr-25"></i> Pin to top</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-trash mr-25"></i> Delete chat</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-block mr-25"></i> Block</a>
-                                                </span>
-                                            </span>
+                                        <div id="icons_channel" class="chat-header-icons" style="display: none;">
+                                            <i id="get_membres_not_in_channel" class="bx bx-user-plus font-medium-5 cursor-pointer mr-50"></i>
+                                            <i id="get_membres_channel" class="bx bxs-user-detail font-medium-5 cursor-pointer"></i>                
                                         </div>
                                     </header>
                                 </div>

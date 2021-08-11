@@ -51,25 +51,25 @@ function getMessages(id_source, id_destination, type_message) {
 
                 if (next_date.getDate() == date_auj.getDate() && next_date.getMonth() == date_auj.getMonth() && next_date.getFullYear() == date_auj.getFullYear()) {
                     html_date = `
-                        <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div>`
+                        <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div>`;
                 } else if (next_date.getDate() == date_hier.getDate() && next_date.getMonth() == date_hier.getMonth() && next_date.getFullYear() == date_hier.getFullYear()) {
                     html_date = `
-                        <div class="badge badge-pill badge-light-secondary my-1">Hier</div>`
+                        <div class="badge badge-pill badge-light-secondary my-1">Hier</div>`;
                 } else {
                     html_date = `
-                        <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`
+                        <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`;
                 }
 
             }
 
             last_date = next_date;
 
-            let html_auteur = `
+            html_auteur = `
                 <div class="mt-1 text-${auteur_a_droite}">
                     <small style="padding-${auteur_a_droite}: 60px;">${message.nom+' '+message.prenom}</small>
                 </div>`;
             
-            let html_message = `
+            html_message = `
                 <div class="chat ${message_a_droite}">
                     <div class="chat-avatar">
                         <a class="avatar m-0">
@@ -121,7 +121,7 @@ function getMembres(id_membre, id_entreprise) {
             bold_text = membre.nb_notifs == 0 ? '' : 'font-weight-bold';
             html_notifs = membre.nb_notifs == 0 ? '' : `<span class="avatar-status-offline bg-primary"></span>`;
 
-            let html_membre = `
+            html_membre = `
                 <li class="chat-privé">
                     <input type="hidden" value="${membre.id}">
                     <input type="hidden" value="${membre.nom + ' ' + membre.prenom}">
@@ -134,13 +134,128 @@ function getMembres(id_membre, id_entreprise) {
                             <h6 class="mb-0 ${bold_text}">${membre.nom + ' ' + membre.prenom}</h6><span class="text-muted ${bold_text}">${membre.role_membres}</span>
                         </div>
                     </div>
-                </li>`
+                </li>`;
 
             return html_membre;
 
         }).join('');
 
         const membres = document.querySelector('.liste-membres');
+
+        membres.innerHTML = html;
+        membres.scrollTop = membres.scrollHeight;
+
+    }
+
+    // 3. On envoie la requête
+    requeteAjax.send();
+
+}
+
+function getMembresChannel(id_membre, id_channel) {
+
+    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresChannel&id_membre="+id_membre+"&id_channel="+id_channel);
+
+    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
+    requeteAjax.onload = function() {
+
+        const resultat = JSON.parse(requeteAjax.responseText);
+        const html = resultat.reverse().map(function(membre) {
+
+            html_membre = `
+                <div class="col-12 d-flex justify-content-between mt-1">
+                    <div class="d-flex">
+                        <div class="avatar m-0 mr-50">
+                            <img src="../../../src/img/${membre.img_membres}" height="36" width="36" alt="loading">
+                        </div>
+                        <div class="chat-sidebar-name">
+                            <div class="text-left">
+                                <h6 class="mb-0">${membre.nom + ' ' + membre.prenom}</h6>
+                                <span class="text-muted">${membre.role_membres}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-delete-membre-channel">
+                        <input type="hidden" value="${membre.id}">
+                        <button type="button" class="btn btn-outline-danger">
+                            Supprimer
+                        </button>
+                    </div>
+                </div>`;
+
+            return html_membre;
+
+        }).join('');
+        
+        const membres = document.querySelector('.add-channel');
+
+        membres.innerHTML = html;
+        membres.scrollTop = membres.scrollHeight;
+
+    }
+
+    // 3. On envoie la requête
+    requeteAjax.send();
+
+}
+
+function getMembresNotInChannel(id_entreprise, id_channel) {
+
+    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresNotInChannel&id_entreprise="+id_entreprise+"&id_channel="+id_channel);
+
+    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
+    requeteAjax.onload = function() {
+
+        const resultat = JSON.parse(requeteAjax.responseText);
+        html = '';
+
+        if (resultat != '') {
+
+            html = resultat.reverse().map(function(membre) {
+    
+                html_membre = `
+                    <div class="col-12 d-flex justify-content-between mt-1">
+                        <div class="d-flex">
+                            <div class="avatar m-0 mr-50">
+                                <img src="../../../src/img/${membre.img_membres}" height="36" width="36" alt="loading">
+                            </div>
+                            <div class="chat-sidebar-name">
+                                <div class="text-left">
+                                    <h6 class="mb-0">${membre.nom + ' ' + membre.prenom}</h6>
+                                    <span class="text-muted">${membre.role_membres}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-add-membre-channel">
+                            <input type="hidden" value="${membre.id}">
+                            <button type="button" class="btn btn-outline-primary">
+                                Ajouter
+                            </button>
+                        </div>
+                    </div>`;
+    
+                return html_membre;
+    
+            }).join('');
+
+        } else {
+
+            html = `
+                <div class="col-12 d-flex justify-content-center mt-1">
+                    <div>
+                        <i class="bx bx-error-circle font-large-2"></i>
+                        <h5>Aucun membre</h5>
+                        <h5>disponible</h5>
+                    </div>
+                </div>`;
+
+        }
+        
+        const membres = document.querySelector('.add-channel');
 
         membres.innerHTML = html;
         membres.scrollTop = membres.scrollHeight;
@@ -186,14 +301,45 @@ function postMessage(event, id_source, id_destination, type_message) {
 
 }
 
+function addMembreChannel(id_membre, id_channel) {
+
+    const data = new FormData();
+    data.append('id_membre', id_membre);
+    data.append('id_channel', id_channel);
+
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=addMembreChannel');
+
+    requeteAjax.send(data);
+    return false;
+
+}
+
+function deleteMembreChannel(id_membre, id_channel) {
+
+    const data = new FormData();
+    data.append('id_membre', id_membre);
+    data.append('id_channel', id_channel);
+
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=deleteMembreChannel');
+
+    requeteAjax.send(data);
+    return false;
+
+}
+
+// ================================
+// ---------- EVENEMENTS ----------
+// ================================
+
 id_membre = document.getElementById("id_session").value;
 id_entreprise = document.getElementById("id").value;
 getMembres(id_membre, id_entreprise); 
 
 // S'execute lorsqu'on clique sur un contact dans "CHAT INTERNE"
-$(".chat-privé").click(function() {
+$(document).on('click', '.chat-privé', function() {
 
-    console.log("OK");
     let id_session = document.getElementById("id_session").value;
 
     let id = $(this).children('input:nth(0)').val();
@@ -207,6 +353,7 @@ $(".chat-privé").click(function() {
     getMessages(id_session, id, "privé");
 
     document.getElementById("type_chat").value = "privé";
+    document.getElementById("icons_channel").style.display = "none";
 
 });
 
@@ -226,6 +373,7 @@ $(".chat-channel").click(function() {
     getMessages(id_session, id, "channel");
 
     document.getElementById("type_chat").value = "channel";
+    document.getElementById("icons_channel").style.display = "block";
 
 });
 
@@ -247,35 +395,91 @@ $(".btn-envoyer-msg").click(function(event) {
 
 });
 
-// S'execute lorsqu'on clique sur "Envoyer une requête" dans Support
+// S'execute lorsqu'on veut créer un channel en cliquant sur la croix (à droite de "CHAT INTRA-ENTREPRISE")
 $('#creer_channel').on('click', function () {
+    let id_membre = document.getElementById("id_session").value;
+    let id_entreprise = document.getElementById("id").value;
     Swal.fire({
-        title: 'Créér un channel',
+        title: 'Créer un channel',
         html:
-            `<form method="post" action="php/insert_channel.php" class="form form-vertical">`+
-                '<div class="form-body">'+
-                    '<div class="row">'+
-                        '<div class="col-12">'+
-                            '<div class="form-group">'+
-                                '<label for="nom_channel">Nom du channel</label>'+
-                                '<input type="text" id="nom_channel" class="form-control" name="objet" placeholder="" required>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-12">'+
-                            '<div class="form-group">'+
-                                '<label for="description">Description</label>'+
-                                '<textarea rows="15" id="description" class="form-control" style="resize: none;" name="description" placeholder="Posez votre question ici.." required></textarea>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-12 d-flex justify-content-end">'+
-                            '<button id="btn_envoyer_req" name="btn_creer_channel" type="submit" class="btn btn-primary mr-1 mb-1">Valider</button>'+
-                            '<button type="reset" class="btn btn-light-secondary mr-1 mb-1">Reset</button>'+
-                        '</div>'+
-                    '</div>'+
-                '</div>'+
-            '</form>',
+            `<form method="post" action="php/insert_channel.php?id_membre=${id_membre}&id_entreprise=${id_entreprise}" class="form form-vertical">
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="nom_channel">Nom du channel</label>
+                                <input id="nom_channel" name="nom_channel" type="text" class="form-control" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="custom-control custom-switch custom-control-inline mb-1">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch" name="all_membres">
+                                <label class="custom-control-label mr-1" for="customSwitch">
+                                </label>
+                                <span>Ajouter tous les membres de l'entreprise</span>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end">
+                            <button id="btn_creer_channel" name="btn_creer_channel" type="submit" class="btn btn-primary mr-1 mb-1">Valider</button>
+                        </div>
+                    </div>
+                </div>
+            </form>`,
         showCloseButton: true,
         showConfirmButton: false,
         buttonsStyling: false,
-    })
+    })  
+});
+
+// S'execute lorsqu'on veut modifier la liste des membres du channel
+$('#get_membres_not_in_channel').on('click', function() {
+    let id_entreprise = document.getElementById("id").value;
+    let id_channel = document.getElementById("id_chat").value;
+    Swal.fire({
+        title: 'Ajouter des participants',
+        html:
+            `<div class="row add-channel mb-1">
+
+            </div>`,
+        showCloseButton: true,
+        showConfirmButton: false,
+        buttonsStyling: false,
+    }) 
+    getMembresNotInChannel(id_entreprise, id_channel);
+});
+
+// S'execute lorsqu'on veut modifier la liste des membres du channel
+$('#get_membres_channel').on('click', function() {
+    let id_membre = document.getElementById("id_session").value;
+    let id_channel = document.getElementById("id_chat").value;
+    Swal.fire({
+        title: 'Liste des participants',
+        html:
+            `<div class="row add-channel mb-1">
+
+            </div>`,
+        showCloseButton: true,
+        showConfirmButton: false,
+        buttonsStyling: false,
+    }) 
+    getMembresChannel(id_membre, id_channel);
+});
+
+$(document).on('click', '.btn-add-membre-channel', function() {
+    id_membre = $(this).children('input')[0].value;
+    id_entreprise = document.getElementById("id").value;
+    id_channel = document.getElementById("id_chat").value;
+    addMembreChannel(id_membre, id_channel);
+    $(this).html(
+        `<div class="btn btn-outline-white" style="width: 96.24px;">
+            Ajouté
+        </div>`);
+});
+
+$(document).on('click', '.btn-delete-membre-channel', function() {
+    id_membre = $(this).children('input')[0].value;
+    id_entreprise = document.getElementById("id").value;
+    id_channel = document.getElementById("id_chat").value;
+    deleteMembreChannel(id_membre, id_channel);
+    $(this).parent().remove();
 });

@@ -62,20 +62,20 @@ function getMessagesSupport(auteur, id_ticket) {
 
                 if (next_date.getDate() == date_auj.getDate() && next_date.getMonth() == date_auj.getMonth() && next_date.getFullYear() == date_auj.getFullYear()) {
                     html_date = `
-                        <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div>`
+                        <div class="badge badge-pill badge-light-secondary my-1">Aujourd'hui</div>`;
                 } else if (next_date.getDate() == date_hier.getDate() && next_date.getMonth() == date_hier.getMonth() && next_date.getFullYear() == date_hier.getFullYear()) {
                     html_date = `
-                        <div class="badge badge-pill badge-light-secondary my-1">Hier</div>`
+                        <div class="badge badge-pill badge-light-secondary my-1">Hier</div>`;
                 } else {
                     html_date = `
-                        <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`
+                        <div class="badge badge-pill badge-light-secondary my-1">${getDateEnLettres(message.date_message)}</div>`;
                 }
 
             }
 
             last_date = next_date;
             
-            let html_message = `
+            html_message = `
                 <div class="chat ${message_a_droite}">
                     <div class="chat-avatar">
                         <a class="avatar m-0">
@@ -88,7 +88,7 @@ function getMessagesSupport(auteur, id_ticket) {
                             <span class="chat-time">${message.heure.slice(0,5)}</span>
                         </div>
                     </div>
-                </div>`
+                </div>`;
 
             return html_date + html_message;
 
@@ -193,11 +193,12 @@ $(".chat-support").click(function() {
 
         document.getElementById("id_chat").value = id_ticket;
         document.getElementById("nom_chat").innerHTML = objet;
-        document.getElementById("image_chat").src = "../../../app-assets/images/ico/chatpix3.png";
+        document.getElementById("image_chat").innerHTML = '';
 
         getMessagesSupport(auteur, id_ticket);
 
         document.getElementById("type_chat").value = "support";
+        document.getElementById("icons_channel").style.display = "none";
     }
 
 });
@@ -272,13 +273,13 @@ $('#btn_demande_req').on('click', function () {
                         '<div class="col-12">'+
                             '<div class="form-group">'+
                                 '<label for="objet">Objet de la requête</label>'+
-                                '<input type="text" id="objet" class="form-control" name="objet" placeholder="" required>'+
+                                '<input id="objet" name="objet" type="text" class="form-control" placeholder="" required>'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-12">'+
                             '<div class="form-group">'+
                                 '<label for="description">Description</label>'+
-                                '<textarea rows="15" id="description" class="form-control" style="resize: none;" name="description" placeholder="Posez votre question ici.." required></textarea>'+
+                                '<textarea id="description" name="description" rows="15" class="form-control" style="resize: none;" placeholder="Posez votre question ici.." required></textarea>'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-12 d-flex justify-content-end">'+

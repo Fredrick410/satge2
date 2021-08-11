@@ -211,7 +211,7 @@ require_once 'php/config.php';
                                         </ul>
                                         <!-- task list end -->
                                         <div class="no-results">
-                                        <i class="bx bx-error-circle font-large-2"></i>
+                                            <i class="bx bx-error-circle font-large-2"></i>
                                             <h5>Aucun résultat</h5>
                                         </div>
                                     </div>

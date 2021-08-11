@@ -8,13 +8,26 @@ require_once 'config.php';
 //A - on analyse la requete via l'URL
 
 if (isset($_GET['method']) && $_GET['method'] === "post") {
+    // Poster un message
     postMessage();
+} else if (isset($_GET['method']) && $_GET['method'] === "getMembres") {
+    // Récupérer la liste des membres
+    getMembres();
+} else if (isset($_GET['method']) && $_GET['method'] === "getMembresChannel") {
+    // Récupérer la liste des participants du channel
+    getMembresChannel();
+} else if (isset($_GET['method']) && $_GET['method'] === "getMembresNotInChannel") {
+    // Récupérer la liste des membres de l'entreprise ne participant pas au channel
+    getMembresNotInChannel();
+} else if (isset($_GET['method']) && $_GET['method'] === "addMembreChannel") {
+    // Ajouter un membre à un channel
+    addMembreChannel();
+} else if (isset($_GET['method']) && $_GET['method'] === "deleteMembreChannel") {
+    // Ajouter un membre à un channel
+    deleteMembreChannel();
 } else {
-    if (isset($_GET['method']) && $_GET['method'] === "getMembres") {
-        getMembres();
-    } else {
-        getMessages();
-    }
+    // Récupérer les messages
+    getMessages();
 }
 
 //B- function qui va permettre de recupérer les messages.
@@ -86,6 +99,56 @@ function getMembres() {
 
 }
 
+function getMembresChannel() {
+
+    //on definit la variable bdd dans la fonction 
+    global $bdd;
+
+    //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de données
+
+    //$id_membre = htmlspecialchars($_GET['id_membre']);
+    $id_channel = htmlspecialchars($_GET['id_channel']);
+
+    $query = $bdd->prepare('SELECT M.id, upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres, M.role_membres FROM membres M, channel_membres C WHERE M.id = C.id_membre AND C.id_channel = :id_channel');
+    //$query->bindValue(':id_membre', $id_membre);
+    $query->bindValue(':id_channel', $id_channel);
+    $query->execute();
+
+    //2 - On va traiter les resultats
+
+    $membres = $query->fetchAll();
+
+    //3 - On affiche les données en JSON
+
+    echo json_encode($membres);
+
+}
+
+function getMembresNotInChannel() {
+
+    //on definit la variable bdd dans la fonction 
+    global $bdd;
+
+    //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de données
+
+    $id_entreprise = htmlspecialchars($_GET['id_entreprise']);
+    $id_channel = htmlspecialchars($_GET['id_channel']);
+
+    $query = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres FROM membres WHERE id_session = :id_entreprise AND NOT EXISTS (SELECT id_membre FROM channel_membres WHERE id_membre = id AND id_channel = :id_channel)');
+    $query->bindValue(':id_entreprise', $id_entreprise);
+    $query->bindValue(':id_channel', $id_channel);
+    $query->execute();
+
+    //2 - On va traiter les resultats
+
+    $membres = $query->fetchAll();
+
+    //3 - On affiche les données en JSON
+
+    echo json_encode($membres);
+
+}
+
 //C- function qui va permettre d'écrire et non de recupérer des informations pour le chat.
 
 function postMessage() {
@@ -118,6 +181,52 @@ function postMessage() {
             $query->bindValue(':texte', $texte);
             $query->execute();
         }
+    }
+
+}
+
+function addMembreChannel() {
+
+    global $bdd;
+
+    $id_membre = htmlspecialchars($_POST['id_membre']);
+    $id_channel = htmlspecialchars($_POST['id_channel']);
+
+    $query = $bdd->prepare('INSERT INTO channel_membres (id_membre, id_channel) VALUES (:id_membre, :id_channel)');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->bindValue(':id_channel', $id_channel);
+    $query->execute();
+
+}
+
+function deleteMembreChannel() {
+
+    global $bdd;
+
+    $id_membre = htmlspecialchars($_POST['id_membre']);
+    $id_channel = htmlspecialchars($_POST['id_channel']);
+
+    $query = $bdd->prepare('DELETE FROM channel_membres WHERE id_membre = :id_membre AND id_channel = :id_channel');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->bindValue(':id_channel', $id_channel);
+    $query->execute();
+
+    // Requete permettant de selectionner le nombre de participants du channel
+    $count_channel_membres = $bdd->prepare('SELECT count(*) AS nb FROM channel_membres WHERE id_channel = :id_channel');
+    $count_channel_membres->bindValue(':id_channel', $id_channel);
+    $count_channel_membres->execute();
+
+    // Si le channel n'a plus de participant, on supprime le channel et les messages du channel
+    if ($count_channel_membres->fetch()['nb'] == 0) {
+        // Suppression du channel
+        $query = $bdd->prepare('DELETE FROM channel WHERE id_channel = :id_channel');
+        $query->bindValue(':id_channel', $id_channel);
+        $query->execute();
+
+        // Suppression des messages du channel
+        $query = $bdd->prepare('DELETE FROM message_channel WHERE id_channel = :id_channel');
+        $query->bindValue(':id_channel', $id_channel);
+        $query->execute();
     }
 
 }
