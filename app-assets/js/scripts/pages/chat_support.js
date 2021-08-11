@@ -188,6 +188,9 @@ $(".chat-support").click(function() {
     // Si on dans le front
     if (auteur == "user") {
 
+        document.getElementById("type_chat").value = "support";
+        document.getElementById("icons_channel").style.display = "none";
+
         let id_ticket = $(this).children('input:nth(0)').val();
         let objet = $(this).children('input:nth(1)').val();
 
@@ -196,9 +199,12 @@ $(".chat-support").click(function() {
         document.getElementById("image_chat").innerHTML = '';
 
         getMessagesSupport(auteur, id_ticket);
+        // Met à jour les messages toutes les 5 secondes
+        if (typeof majMessages != 'undefined') {
+            clearInterval(majMessages);
+        }
+        majMessages = setInterval(function() { getMessagesSupport(auteur, id_ticket); }, 5000);
 
-        document.getElementById("type_chat").value = "support";
-        document.getElementById("icons_channel").style.display = "none";
     }
 
 });

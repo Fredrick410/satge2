@@ -335,10 +335,17 @@ function deleteMembreChannel(id_membre, id_channel) {
 
 id_membre = document.getElementById("id_session").value;
 id_entreprise = document.getElementById("id").value;
-getMembres(id_membre, id_entreprise); 
+getMembres(id_membre, id_entreprise);
+// if (typeof majMembres != 'undefined') {
+//     clearInterval(majMembres);
+// }
+// majMembres = setInterval(function() { getMembres(id_membre, id_entreprise); }, 5000); 
 
 // S'execute lorsqu'on clique sur un contact dans "CHAT INTERNE"
 $(document).on('click', '.chat-privé', function() {
+
+    document.getElementById("type_chat").value = "privé";
+    document.getElementById("icons_channel").style.display = "none";
 
     let id_session = document.getElementById("id_session").value;
 
@@ -351,16 +358,22 @@ $(document).on('click', '.chat-privé', function() {
     document.getElementById("image_chat").innerHTML = `<img src="../../../src/img/${img}" alt="avatar" height="36" width="36" />`;
 
     getMessages(id_session, id, "privé");
+    // Met à jour les messages toutes les 5 secondes
+    if (typeof majMessages != 'undefined') {
+        clearInterval(majMessages);
+    }
+    majMessages = setInterval(function() { getMessages(id_session, id, "privé"); }, 5000);
 
-    document.getElementById("type_chat").value = "privé";
-    document.getElementById("icons_channel").style.display = "none";
+    setTimeout(function() { getMembres(id_membre, id_entreprise); }, 100);
 
 });
 
 // S'execute lorsqu'on clique sur le chat global dans "CHAT INTERNE"
 $(".chat-channel").click(function() {
     
-    console.log("OK");
+    document.getElementById("type_chat").value = "channel";
+    document.getElementById("icons_channel").style.display = "block";
+
     let id_session = document.getElementById("id_session").value;
 
     let id = $(this).children('input:nth(0)').val();
@@ -371,9 +384,11 @@ $(".chat-channel").click(function() {
     document.getElementById("image_chat").innerHTML = '';
 
     getMessages(id_session, id, "channel");
-
-    document.getElementById("type_chat").value = "channel";
-    document.getElementById("icons_channel").style.display = "block";
+    // Met à jour les messages toutes les 5 secondes
+    if (typeof majMessages != 'undefined') {
+        clearInterval(majMessages);
+    }
+    majMessages = setInterval(function() { getMessages(id_session, id, "channel"); }, 5000);
 
 });
 

@@ -50,8 +50,9 @@ function getMessages() {
         $query->bindValue(':id_destination', $id_destination);
         $query->execute();
 
-        $desactiver_notifs = $bdd->prepare('UPDATE message SET lu = 1 WHERE id_membre_to = :id_membre');
-        $desactiver_notifs->bindValue(':id_membre', $id_source);
+        $desactiver_notifs = $bdd->prepare('UPDATE message SET lu = 1 WHERE id_membre_from = :id_membre_from AND id_membre_to = :id_membre_to');
+        $desactiver_notifs->bindValue(':id_membre_from', $id_destination);
+        $desactiver_notifs->bindValue(':id_membre_to', $id_source);
         $desactiver_notifs->execute();
 
     } 
