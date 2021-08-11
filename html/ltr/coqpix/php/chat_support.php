@@ -5,26 +5,37 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
-//A - on analyse la requete via l'URL
-
 if (isset($_GET['statut']) && ($_GET['statut'] === "urgent" || $_GET['statut'] === "fermé" || $_GET['statut'] === "ouvert")) {
     changerStatutTicket($_GET['statut']);
 } else if (isset($_GET['theme']) && ($_GET['theme'] === "général" || $_GET['theme'] === "compta" || $_GET['theme'] === "juridique" || $_GET['theme'] === "fiscalité" || $_GET['theme'] === "social")) { 
     changerThemeTicket($_GET['theme']);
+} else if (isset($_GET['method']) && $_GET['method'] === "getTickets") {
+    getTickets();
 } else if (isset($_GET['method']) && $_GET['method'] === "post") {
     postMessage();
-} else {
+}  else {
     getMessages();
 }
 
-//B- function qui va permettre de recupérer les messages.
+function getTickets() {
+
+    global $bdd;
+
+    $id_membre = htmlspecialchars($_GET['id_membre']);
+
+    $query = $bdd->prepare('SELECT ST.id_ticket, ST.objet, (SELECT count(*) FROM support_message SM WHERE SM.id_ticket = ST.id_ticket AND SM.id_membre = :id_membre AND auteur = "support" AND lu = 0) AS nb_notifs FROM support_ticket ST WHERE ST.id_membre = :id_membre AND upper(ST.statut) != "FERMÉ" ORDER BY (SELECT SM.id_message FROM support_message SM WHERE SM.id_ticket = ST.id_ticket AND SM.id_membre = :id_membre ORDER BY date_message DESC, heure DESC LIMIT 1)');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->execute();
+
+    $tickets = $query->fetchAll();
+
+    echo json_encode($tickets);
+
+}
 
 function getMessages() {
 
-    //on definit la variable bdd dans la fonction 
     global $bdd;
-
-    //1 - On fait une requete qui va permettre d'afficher les 30 dernieres message de la base de données
 
     $id_ticket = htmlspecialchars($_GET['id_ticket']);
     $auteur = htmlspecialchars($_GET['auteur']);
@@ -33,15 +44,10 @@ function getMessages() {
     $query->bindValue(':id_ticket', $id_ticket);
     $query->execute();
 
-    //2 - On va traiter les resultats
-
     $messages = $query->fetchAll();
-
-    //3 - On affiche les données en JSON
 
     echo json_encode($messages);
 
-    //4 - On désactive les notifications
     $query = $bdd->prepare('UPDATE support_message SET lu = 1 WHERE id_ticket = :id_ticket AND auteur != :auteur');
     $query->bindValue(':id_ticket', $id_ticket);
     $query->bindValue(':auteur', $auteur);
@@ -49,21 +55,14 @@ function getMessages() {
 
 }
 
-//C- function qui va permettre d'écrire et non de recupérer des informations pour le chat.
-
 function postMessage() {
 
-    //on definit la variable bdd dans la function 
     global $bdd;
-
-    //1- Analyer les parametres passés en POST (author, content)
 
     $id_membre = htmlspecialchars($_POST['id_membre']);
     $id_ticket = htmlspecialchars($_POST['id_ticket']);
     $texte = htmlspecialchars($_POST['texte']);
     $auteur = htmlspecialchars($_POST['auteur']);
-
-    //2- Crée une requete qui permettra l'insertion des informations dans la base de données
 
     if ($texte !== "") {
         $query = $bdd->prepare('INSERT INTO support_message (id_membre, id_ticket, date_message, heure, texte, auteur)
@@ -79,13 +78,10 @@ function postMessage() {
 
 function changerStatutTicket($statut) {
 
-    //on definit la variable bdd dans la function 
     global $bdd;
 
-    //1- Analyer les parametres passés en POST
     $id_ticket = htmlspecialchars($_POST['id_ticket']);
 
-    //2- Crée une requete qui permettra la suppression des messages dans la base de données
     $query = $bdd->prepare('UPDATE support_ticket SET statut = :statut WHERE id_ticket = :id_ticket');
     $query->bindValue(':statut', $statut);
     $query->bindValue(':id_ticket', $id_ticket);
@@ -95,13 +91,10 @@ function changerStatutTicket($statut) {
 
 function changerThemeTicket($theme) {
 
-    //on definit la variable bdd dans la function 
     global $bdd;
 
-    //1- Analyer les parametres passés en POST
     $id_ticket = htmlspecialchars($_POST['id_ticket']);
 
-    //2- Crée une requete qui permettra la suppression des messages dans la base de données
     $query = $bdd->prepare('UPDATE support_ticket SET theme = :theme WHERE id_ticket = :id_ticket');
     $query->bindValue(':theme', $theme);
     $query->bindValue(':id_ticket', $id_ticket);

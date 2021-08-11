@@ -2,29 +2,6 @@
 // ---------- FONCTIONS ----------
 // ===============================
 
-const auteur = document.getElementById("auteur").value
-
-$(document).ready(function() {
-
-    if (auteur == "user") {
-        if (document.getElementById("req").value != null) {
-            $(".liste-chat-support").children('li:last-child').trigger("click");
-        }
-    }
-
-    if (auteur == "support") {
-        if (document.getElementById("id_ticket").value != null) {
-            let id_ticket = document.getElementById("id_ticket").value;
-            getMessagesSupport(auteur, id_ticket);
-        }
-    }
-
-});
-
-/**
- * Il nous faut une fonction pour récupérer le JSON des
- * messages et les afficher correctement
- */
 function getDateEnLettres(date) {
 
     let varDate = new Date(date);
@@ -33,13 +10,53 @@ function getDateEnLettres(date) {
 
 }
 
+function getTickets(id_membre) {
+
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
+
+    requeteAjax.onload = function() {
+
+        const resultat = JSON.parse(requeteAjax.responseText);
+        const html = resultat.reverse().map(function(ticket) {
+
+            bold_text = ticket.nb_notifs == 0 ? '' : 'font-weight-bold';
+            html_notif = ticket.nb_notifs == 0 ? '' : `<span class="avatar-status-offline bg-primary"></span>`;
+
+            html_ticket = `
+                <li class="chat-support">
+                    <input type="hidden" value="${ticket.id_ticket}">
+                    <input type="hidden" value="${ticket.objet}">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">`
+                        + html_notif +
+                        `</div>
+                        <div class="chat-sidebar-name">
+                            <h6 class="mb-0 ${bold_text}">${ticket.objet}</h6>
+                        </div>
+                    </div>
+                </li>`;
+
+            return html_ticket;
+
+        }).join('');
+
+        const tickets = document.querySelector('.liste-tickets');
+
+        tickets.innerHTML = html;
+        tickets.scrollTop = tickets.scrollHeight;
+
+    }
+
+    requeteAjax.send();
+
+}
+
 function getMessagesSupport(auteur, id_ticket) {
 
-    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
 
-    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
         let last_date = new Date(0);
@@ -101,31 +118,22 @@ function getMessagesSupport(auteur, id_ticket) {
 
     }
 
-    // 3. On envoie la requête
     requeteAjax.send();
 
 }
 
-/**
- * Il nous faut une fonction pour envoyer le nouveau
- * message au serveur et rafraichir les messages
- */
 function postMessageSupport(event, auteur, id_membre, id_ticket) {
     
-    // 1. Elle doit stoper le submit du formulaire
     event.preventDefault();
 
-    // 2. Elle doit récupérer les données du formulaire
     const texte = document.querySelector('#texte');
 
-    // 3. Elle doit conditionner les données
     const data = new FormData();
     data.append('auteur', auteur);
     data.append('id_membre', id_membre);
     data.append('id_ticket', id_ticket);
     data.append('texte', texte.value);
 
-    // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
 
@@ -140,17 +148,11 @@ function postMessageSupport(event, auteur, id_membre, id_ticket) {
 
 }
 
-/**
- * Il nous faut une fonction qui permet de changer
- * le statut d'un ticket sans recharger la page
- */
 function changerStatutTicket(id_ticket, statut) {
 
-    // 3. Elle doit conditionner les données
     const data = new FormData();
     data.append('id_ticket', id_ticket);
 
-    // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
 
@@ -159,17 +161,11 @@ function changerStatutTicket(id_ticket, statut) {
 
 }
 
-/**
- * Il nous faut une fonction qui permet de changer
- * le theme d'un ticket sans recharger la page
- */
- function changerThemeTicket(id_ticket, theme) {
+function changerThemeTicket(id_ticket, theme) {
 
-    // 3. Elle doit conditionner les données
     const data = new FormData();
     data.append('id_ticket', id_ticket);
 
-    // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
 
@@ -182,8 +178,34 @@ function changerStatutTicket(id_ticket, statut) {
 // ---------- EVENEMENTS ----------
 // ================================
 
+auteur = document.getElementById("auteur").value
+id_membre = document.getElementById("id_session").value;
+
+$(document).ready(function() {
+
+    if (auteur == "user") {
+        if (document.getElementById("req").value != null) {
+            $(".tickets").children('li:last-child').trigger("click");
+        }
+    }
+
+    if (auteur == "support") {
+        if (document.getElementById("id_ticket").value != null) {
+            let id_ticket = document.getElementById("id_ticket").value;
+            getMessagesSupport(auteur, id_ticket);
+        }
+    }
+
+});
+
+getTickets(id_membre);
+if (typeof majTickets != 'undefined') {
+    clearInterval(majTickets);
+}
+majTickets = setInterval(function() { getTickets(id_membre); }, 10000);
+
 // S'execute lorsqu'on clique sur un contact dans "SUPPORT"
-$(".chat-support").click(function() {
+$(document).on('click', '.chat-support', function() {
 
     // Si on dans le front
     if (auteur == "user") {
@@ -204,6 +226,8 @@ $(".chat-support").click(function() {
             clearInterval(majMessages);
         }
         majMessages = setInterval(function() { getMessagesSupport(auteur, id_ticket); }, 5000);
+
+        setTimeout(function() { getTickets(id_membre); }, 100);
 
     }
 

@@ -2,10 +2,6 @@
 // ---------- FONCTIONS ----------
 // ===============================
 
-/**
- * Il nous faut une fonction pour récupérer le JSON des
- * messages et les afficher correctement
- */
 function getDateEnLettres(date) {
 
     let varDate = new Date(date);
@@ -16,11 +12,9 @@ function getDateEnLettres(date) {
 
 function getMessages(id_source, id_destination, type_message) {
 
-    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?type_message="+type_message+"&id_source="+id_source+"&id_destination="+id_destination);
 
-    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
         let last_date = new Date(0);
@@ -101,25 +95,56 @@ function getMessages(id_source, id_destination, type_message) {
 
     }
 
-    // 3. On envoie la requête
+    requeteAjax.send();
+
+}
+
+function getChannels(id_membre) {
+
+    const requeteAjax = new XMLHttpRequest();
+    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getChannels&id_membre="+id_membre);
+
+    requeteAjax.onload = function() {
+
+        const resultat = JSON.parse(requeteAjax.responseText);
+        const html = resultat.reverse().map(function(channel) {
+
+            bold_text = channel.nb_notifs == 0 ? '' : 'font-weight-bold';
+
+            html_channel = `
+                <li class="chat-channel">
+                    <input type="hidden" value="${channel.id_channel}">
+                    <input type="hidden" value="${channel.nom}">
+                    <h6 class="mb-0 ${bold_text}"># ${channel.nom}</h6>
+                </li>`;
+
+            return html_channel;
+
+        }).join('');
+
+        const channels = document.querySelector('.liste-channels');
+
+        channels.innerHTML = html;
+        channels.scrollTop = channels.scrollHeight;
+
+    }
+
     requeteAjax.send();
 
 }
 
 function getMembres(id_membre, id_entreprise) {
 
-    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembres&id_membre="+id_membre+"&id_entreprise="+id_entreprise);
 
-    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
         const resultat = JSON.parse(requeteAjax.responseText);
         const html = resultat.reverse().map(function(membre) {
 
             bold_text = membre.nb_notifs == 0 ? '' : 'font-weight-bold';
-            html_notifs = membre.nb_notifs == 0 ? '' : `<span class="avatar-status-offline bg-primary"></span>`;
+            html_notif = membre.nb_notifs == 0 ? '' : `<span class="avatar-status-offline bg-primary"></span>`;
 
             html_membre = `
                 <li class="chat-privé">
@@ -128,10 +153,11 @@ function getMembres(id_membre, id_entreprise) {
                     <input type="hidden" value="${membre.img_membres}">
                     <div class="d-flex align-items-center">
                         <div class="avatar m-0 mr-50"><img src="../../../src/img/${membre.img_membres}" height="36" width="36" alt="loading">`
-                        + html_notifs +
+                        + html_notif +
                         `</div>
                         <div class="chat-sidebar-name">
-                            <h6 class="mb-0 ${bold_text}">${membre.nom + ' ' + membre.prenom}</h6><span class="text-muted ${bold_text}">${membre.role_membres}</span>
+                            <h6 class="mb-0 ${bold_text}">${membre.nom + ' ' + membre.prenom}</h6>
+                            <span class="text-muted ${bold_text}">${membre.role_membres}</span>
                         </div>
                     </div>
                 </li>`;
@@ -147,18 +173,15 @@ function getMembres(id_membre, id_entreprise) {
 
     }
 
-    // 3. On envoie la requête
     requeteAjax.send();
 
 }
 
 function getMembresChannel(id_membre, id_channel) {
 
-    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresChannel&id_membre="+id_membre+"&id_channel="+id_channel);
 
-    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
         const resultat = JSON.parse(requeteAjax.responseText);
@@ -196,18 +219,15 @@ function getMembresChannel(id_membre, id_channel) {
 
     }
 
-    // 3. On envoie la requête
     requeteAjax.send();
 
 }
 
 function getMembresNotInChannel(id_entreprise, id_channel) {
 
-    // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresNotInChannel&id_entreprise="+id_entreprise+"&id_channel="+id_channel);
 
-    // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {
 
         const resultat = JSON.parse(requeteAjax.responseText);
@@ -262,31 +282,22 @@ function getMembresNotInChannel(id_entreprise, id_channel) {
 
     }
 
-    // 3. On envoie la requête
     requeteAjax.send();
 
 }
 
-/**
- * Il nous faut une fonction pour envoyer le nouveau
- * message au serveur et rafraichir les messages
- */
 function postMessage(event, id_source, id_destination, type_message) {
 
-    // 1. Elle doit stoper le submit du formulaire
     event.preventDefault();
 
-    // 2. Elle doit récupérer les données du formulaire
     const texte = document.querySelector('#texte');
 
-    // 3. Elle doit conditionner les données
     const data = new FormData();
     data.append('type_message', type_message);
     data.append('id_source', id_source);
     data.append('id_destination', id_destination);
     data.append('texte', texte.value);
 
-    // 4. Elle doit configurer une requête ajax en POST et envoyer les données
     const requeteAjax = new XMLHttpRequest();
     requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=post');
 
@@ -335,13 +346,46 @@ function deleteMembreChannel(id_membre, id_channel) {
 
 id_membre = document.getElementById("id_session").value;
 id_entreprise = document.getElementById("id").value;
-getMembres(id_membre, id_entreprise);
-// if (typeof majMembres != 'undefined') {
-//     clearInterval(majMembres);
-// }
-// majMembres = setInterval(function() { getMembres(id_membre, id_entreprise); }, 5000); 
 
-// S'execute lorsqu'on clique sur un contact dans "CHAT INTERNE"
+getChannels(id_membre);
+if (typeof majChannels != 'undefined') {
+    clearInterval(majChannels);
+}
+majChannels = setInterval(function() { getChannels(id_membre); }, 10000);
+
+getMembres(id_membre, id_entreprise);
+if (typeof majMembres != 'undefined') {
+    clearInterval(majMembres);
+}
+majMembres = setInterval(function() { getMembres(id_membre, id_entreprise); }, 10000);
+
+// S'execute lorsqu'on clique sur un channel dans "CHAT INTRA-ENTREPRISE"
+$(document).on('click', '.chat-channel', function() {
+    
+    document.getElementById("type_chat").value = "channel";
+    document.getElementById("icons_channel").style.display = "block";
+
+    let id_session = document.getElementById("id_session").value;
+
+    let id = $(this).children('input:nth(0)').val();
+    let nom = $(this).children('input:nth(1)').val();
+
+    document.getElementById("id_chat").value = id;
+    document.getElementById("nom_chat").innerHTML = nom;
+    document.getElementById("image_chat").innerHTML = '';
+
+    getMessages(id_session, id, "channel");
+    // Met à jour les messages toutes les 5 secondes
+    if (typeof majMessages != 'undefined') {
+        clearInterval(majMessages);
+    }
+    majMessages = setInterval(function() { getMessages(id_session, id, "channel"); }, 5000);
+
+    setTimeout(function() { getChannels(id_membre); }, 100);
+
+});
+
+// S'execute lorsqu'on clique sur un contact dans "CHAT INTRA-ENTREPRISE"
 $(document).on('click', '.chat-privé', function() {
 
     document.getElementById("type_chat").value = "privé";
@@ -365,30 +409,6 @@ $(document).on('click', '.chat-privé', function() {
     majMessages = setInterval(function() { getMessages(id_session, id, "privé"); }, 5000);
 
     setTimeout(function() { getMembres(id_membre, id_entreprise); }, 100);
-
-});
-
-// S'execute lorsqu'on clique sur le chat global dans "CHAT INTERNE"
-$(".chat-channel").click(function() {
-    
-    document.getElementById("type_chat").value = "channel";
-    document.getElementById("icons_channel").style.display = "block";
-
-    let id_session = document.getElementById("id_session").value;
-
-    let id = $(this).children('input:nth(0)').val();
-    let nom = $(this).children('input:nth(1)').val();
-
-    document.getElementById("id_chat").value = id;
-    document.getElementById("nom_chat").innerHTML = nom;
-    document.getElementById("image_chat").innerHTML = '';
-
-    getMessages(id_session, id, "channel");
-    // Met à jour les messages toutes les 5 secondes
-    if (typeof majMessages != 'undefined') {
-        clearInterval(majMessages);
-    }
-    majMessages = setInterval(function() { getMessages(id_session, id, "channel"); }, 5000);
 
 });
 

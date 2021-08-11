@@ -9,19 +9,6 @@ require_once 'php/config.php';
     $select_entreprise->bindValue(':num',$_SESSION['id']);
     $select_entreprise->execute();
     $entreprise = $select_entreprise->fetch();
-
-    // $select_membre = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :num ORDER BY (SELECT id_message FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre ORDER BY date_message DESC, heure_message DESC LIMIT 1)');
-    // $select_membre->bindValue(':num', $_SESSION['id']);
-    // $select_membre->bindValue(':id_membre', $_SESSION['id_membre']);
-    // $select_membre->execute();
-
-    $select_ticket = $bdd->prepare('SELECT * FROM support_ticket WHERE id_membre = :num AND statut != "fermé"');
-    $select_ticket->bindValue(':num',$_SESSION['id_membre']);
-    $select_ticket->execute();
-
-    $select_channel = $bdd->prepare('SELECT C.id_channel, concat(ucase(left(C.nom, 1)), lcase(substring(C.nom, 2))) AS nom FROM channel C, channel_membres CM WHERE C.id_channel = CM.id_channel AND CM.id_membre = :num');
-    $select_channel->bindValue(':num',$_SESSION['id_membre']);
-    $select_channel->execute();
     
 ?>
 <!DOCTYPE html>
@@ -154,17 +141,8 @@ require_once 'php/config.php';
                         </div>
                         <div class="chat-sidebar-list-wrapper">
                             <h6 class="px-2 pt-2">CHAT INTRA-ENTREPRISE<i id="creer_channel" class="bx bx-plus float-right cursor-pointer"></i></h6>
-                            <ul class="chat-sidebar-list">
-                                <!-- <li>
-                                    <h6 class="mb-0"># Everybody</h6>
-                                </li> -->
-                                <?php while ($channel = $select_channel->fetch()) { ?>
-                                    <li class="chat-channel">
-                                        <input type="hidden" value="<?= $channel['id_channel'] ?>">
-                                        <input type="hidden" value="<?= $channel['nom'] ?>">
-                                        <h6 class="mb-0"># <?= $channel['nom'] ?></h6>
-                                    </li>
-                                <?php } ?>
+                            <ul class="liste-channels chat-sidebar-list">
+                                
                             </ul>
                             <ul class="liste-membres chat-sidebar-list">
          
@@ -176,20 +154,8 @@ require_once 'php/config.php';
                                     Envoyer une requête
                                 </button>
                             </div>
-                            <ul class="liste-chat-support chat-sidebar-list">
-                                <?php while ($ticket = $select_ticket->fetch()) { ?>
-                                    <li class="chat-support">
-                                        <input type="hidden" value="<?= $ticket['id_ticket'] ?>">
-                                        <input type="hidden" value="<?= $ticket['objet'] ?>">
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
-                                            </div>
-                                            <div class="chat-sidebar-name">
-                                                <h6 class="mb-0"><?= $ticket['objet'] ?></h6>
-                                            </div>
-                                        </div>
-                                    </li>
-                                <?php } ?>
+                            <ul class="liste-tickets chat-sidebar-list">
+
                             </ul>
                         </div>
                     </div>
@@ -210,7 +176,8 @@ require_once 'php/config.php';
                                 <span class="bx bx-message chat-sidebar-toggle chat-start-icon font-large-3 p-3 mb-1"></span>
                                 <h4 class="d-none d-lg-block py-50 text-bold-500">Sélectionnez un contact pour démarrer un chat !</h4>
                                 <button class="btn btn-light-primary chat-start-text chat-sidebar-toggle d-block d-lg-none py-50 px-1">Start
-                                    Conversation!</button>
+                                    Conversation!
+                                </button>
                             </div>
                             <div class="chat-area d-none">
                                 <div class="chat-header" style="background-color: #FFFFFF;">

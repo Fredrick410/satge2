@@ -18,8 +18,7 @@ ini_set('display_startup_errors', TRUE);
 
             $query = $bdd->prepare('SELECT last_insert_id() AS id FROM channel');
             $query->execute();
-            $result = $query->fetch();
-            $id_channel = $result['id'];
+            $id_channel = $query->fetch()['id'];
 
             if (isset($_POST['all_membres'])) {
 

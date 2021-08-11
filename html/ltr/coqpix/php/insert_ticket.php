@@ -19,8 +19,7 @@ ini_set('display_startup_errors', TRUE);
 
             $query = $bdd->prepare('SELECT last_insert_id() AS id FROM support_ticket');
             $query->execute();
-            $result = $query->fetch();
-            $id_ticket = $result['id'];
+            $id_ticket = $query->fetch()['id'];
 
             $query = $bdd->prepare('SELECT date(date_creation) AS date_message, time(date_creation) AS heure_message FROM support_ticket WHERE id_ticket = :id_ticket');
             $query->bindValue(':id_ticket', $id_ticket);
