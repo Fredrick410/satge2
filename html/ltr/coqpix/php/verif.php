@@ -100,6 +100,7 @@ if ($count == 1) {
     header('Location:../page-not-authorized.html');
     die();
   }
+  
 } else {
   $query_c = $bdd->prepare("SELECT * FROM membres WHERE email = :pseudo AND password_membre = :pass");
   $query_c->bindValue(':pseudo', $pseudo);
@@ -113,7 +114,7 @@ if ($count == 1) {
     $pdopass->execute();
     $verife = $pdopass->fetch();
 
-    $non = "Active";
+    $non = "Activé";
     $oui = "Désactivé";
     $video = "New";
     $ban = "Bloqué";

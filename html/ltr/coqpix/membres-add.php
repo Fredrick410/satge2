@@ -5,6 +5,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['membres'] < 2) {
+        header('Location: membres-liste.php');
+        exit();
+    }
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
@@ -354,16 +360,24 @@ require_once 'php/config.php';
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-12 mt-2">
+                                                    <div class="custom-control custom-switch custom-control-inline mb-1">
+                                                        <input type="checkbox" class="custom-control-input" id="utilisateur_coqpix" name="utilisateur_coqpix">
+                                                        <label class="custom-control-label mr-1" for="utilisateur_coqpix">
+                                                        </label>
+                                                        <span>Créer un compte Coqpix pour ce membre</span>
+                                                    </div>
+                                                </div>
+                                                <div id="tableau_permissions" class="col-12 mt-2" style="display: none;">
                                                     <div class="table-responsive">
                                                         <table class="table mt-1">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Permissions</th>
                                                                     <th>Aucune</th>
-                                                                    <th>Level 1</th>
-                                                                    <th>Level 2</th>
-                                                                    <th>Level 3</th>
+                                                                    <th>Niveau 1</th>
+                                                                    <th>Niveau 2</th>
+                                                                    <th>Niveau 3</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -416,6 +430,70 @@ require_once 'php/config.php';
                                                                     </td>
                                                                 </tr>
                                                             
+                                                                <tr>
+                                                                    <td>Inventaire</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="0" checked/>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="1" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="2" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="3" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Clients</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="0" checked/>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="1" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="2" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="3" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Fournisseurs</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="0" checked/>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="1" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="2" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="3" />
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Articles</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="0" checked />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="1" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="2" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="3" />
+                                                                    </td>
+                                                                </tr>
+
                                                                 <tr>
                                                                     <td>Membres</td>
                                                                     <td>
@@ -483,9 +561,25 @@ require_once 'php/config.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
     <script src="../../../app-assets/js/scripts/navs/navs.js"></script>
+    <script type="text/javascript">
+
+        // Script permettant d'afficher ou de cacher le tableau des permissions en fonction de l'option "Créer un compte Coqpix pour ce membre"
+        $("#utilisateur_coqpix").click(function() {
+            // Si l'utilisateur a coché l'option "Créer un compte Coqpix pour ce membre" alors on affiche le tableau des permissions
+            if (document.getElementById("utilisateur_coqpix").checked == true) {
+                document.getElementById("tableau_permissions").style.display = "block";
+            // Sinon on le cache
+            } else {
+                document.getElementById("tableau_permissions").style.display = "none";
+            }
+        });
+
+    </script>
     <!-- END: Page JS-->
+
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
+
 </body>
 <!-- END: Body-->
 

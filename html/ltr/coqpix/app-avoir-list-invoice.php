@@ -3,8 +3,13 @@ require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 2) {
+        header('Location: app-avoir-list.php.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
@@ -92,17 +97,6 @@ require_once 'php/config.php';
                         <style>.line{text-decoration: underline;}</style>
                         <label class="line">Sélectionner une facture pour l'avoir</label>
                     </div>
-                    <!-- Options and filter dropdown button-->
-                    <div class="action-dropdown-btn d-none">
-                        <div class="dropdown invoice-options">
-                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
-                                <a class="dropdown-item" href="#">Supprimer</a>
-                            </div>
-                        </div>
-                    </div>
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
                             <thead>
@@ -144,7 +138,7 @@ require_once 'php/config.php';
                                     
                                     <td></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>">FAC-<?= $factures['numerosfacture'] ?></a>
+                                        <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=14986548">FAC-<?= $factures['numerosfacture'] ?></a>
                                     </td>
                                     <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
                                     <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>

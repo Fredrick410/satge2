@@ -3,8 +3,13 @@ require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM avoir WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
@@ -88,36 +93,42 @@ require_once 'php/config.php';
                 <!-- invoice list -->
                 <section class="invoice-list-wrapper">
                     <!-- create invoice button-->
-                    <div class="row">
+                    <div class="row mt-2">
                         <?php
                             if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $url = "https://"; else $url = "http://";$url .= $_SERVER['HTTP_HOST'];$url .= $_SERVER['REQUEST_URI'];
                         ?>
-                        <div class="col">
-                            <div class="invoice-create-btn mb-1">
-                                <a href="app-avoir-list-invoice.php" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un avoir</a>
+                        <?php // Permission de niveau 2 pour créer une facture et activer le mode auto-incrémentation
+                        if (permissions()['ventes'] >= 2) { ?>
+                            <div class="colr">
+                                <div class="invoice-create-btn">
+                                    <a href="app-avoir-list-invoice.php" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un avoir</a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col text-right">
-                            <div class="invoice-create-btn mb-1">
-                                <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
-                                   Auto-incrementation sous la forme FAC-(année)(numéro)<br>
-                                   <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
-                                   <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
-                                </p>
+                            <div class="col text-right">
+                                <div class="invoice-create-btn">
+                                    <p>Mode auto-incrementation : <label style="color: <?php if($entreprise['incrementation'] == "yes"){echo "green";}else{echo "red";} ?>;"><?php if($entreprise['incrementation'] == "yes"){echo "ON";}else{echo "OFF";} ?></label><br>
+                                    Auto-incrementation sous la forme FAC-(année)(numéro)<br>
+                                    <a class="<?php if($entreprise['incrementation'] == "no"){echo "none-validation";} ?>" style='color: red;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Désactiver le mode</a>
+                                    <a class="<?php if($entreprise['incrementation'] == "yes"){echo "none-validation";} ?>" style='color: green;' href="php/change_incrementation.php?url=<?= $url ?>&type=<?= $entreprise['incrementation'] ?>">> Activer le mode</a>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        <?php } ?>
                     </div>
                     <!-- Options and filter dropdown button-->
-                    <div class="action-dropdown-btn d-none">
-                        <div class="dropdown invoice-options">
-                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
-                                <a class="dropdown-item" href="#">Supprimer</a>
+                    <?php // Permission de niveau 3 pour supprimer un avoir
+                    if (permissions()['ventes'] >= 3) { ?>
+                        <div class="action-dropdown-btn d-none">
+                            <div class="dropdown invoice-options">
+                                <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Options
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
+                                    <a class="dropdown-item" href="#">Supprimer</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
                             <thead>
@@ -132,7 +143,7 @@ require_once 'php/config.php';
                                     <th>Client</th>
                                     <th>Etiquette</th>
                                     <th>Statut</th>
-                                    <th>Action</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,7 +172,7 @@ require_once 'php/config.php';
                                     <td>
                                         <a href="app-avoir-view.php?numavoir=<?= $factures['id'] ?>">AV-<?= $factures['numerosavoir'] ?></a>
                                     </td>
-                                    <td><span class="invoice-amount">&nbsp&nbsp<?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
+                                    <td><span class="invoice-amount"><?= $montant_t; ?> <?= $factures['monnaie'] ?></span></td>
                                     <td><small class="text-muted"><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($factures['dte'])); ?></small></td>
                                     <td><span class="invoice-customer"><?= $factures['avoirpour'] ?></span></td>
                                     <td>
@@ -170,13 +181,18 @@ require_once 'php/config.php';
                                     </td>
                                     <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_avoir'] ?></span></td>
                                     <td>
-                                        <div class="invoice-action"><br>
-                                            <a href="app-avoir-view.php?numavoir=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
-                                                <i class="bx bx-show-alt"></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_avoir.php?numavoir=<?= $factures['numerosavoir'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
-                                                <i class='bx bxs-trash'></i>
-                                            </a>                                
+                                        <div class="invoice-action">
+                                            <?php // Permission de niveau 1 pour visualiser un avoir
+                                            if (permissions()['ventes'] >= 1) { ?>
+                                                <a href="app-avoir-view.php?numavoir=<?= $factures['id'] ?>" class="invoice-action-view">
+                                                    <i class="bx bx-show-alt"></i>
+                                                </a>
+                                            <?php } // Permission de niveau 3 pour supprimer un avoir
+                                            if (permissions()['ventes'] >= 3) { ?>
+                                                <a href="php/delete_avoir.php?numavoir=<?= $factures['numerosavoir'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                                    <i class='bx bxs-trash'></i>
+                                                </a>
+                                            <?php } ?>                                
                                         </div>
                                     </td>
                                 </tr>

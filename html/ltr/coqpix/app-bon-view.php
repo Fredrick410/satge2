@@ -4,7 +4,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-// require_once 'php/verif_session_connect.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: app-bon-list.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM bon WHERE id = :num');
     $pdoStat->bindValue(':num',$_GET['numbon'], PDO::PARAM_INT);
