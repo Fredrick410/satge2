@@ -384,8 +384,11 @@ require_once 'php/permissions_front.php';
                                                             
                                                                 <tr>
                                                                     <td>Ventes</td>
-                                                                    <td>
-                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="0" checked />
+                                                                    <td> 
+                                                                        <input class=" form-check-input ml-1" type="radio" name="perm_ventes" value="0" checked />
+                                                                        <div class="ml-3 badge-circle badge-circle-light-warning mb-1" data-toggle="popover" data-placement="bottom" data-content="Visualiser les devis, les factures de vente, les avoirs et les bons de livraison" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="1" />
@@ -561,6 +564,7 @@ require_once 'php/permissions_front.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
     <script src="../../../app-assets/js/scripts/navs/navs.js"></script>
+    <script src="../../../app-assets/js/scripts/popover/popover.js"></script>
     <script type="text/javascript">
 
         // Script permettant d'afficher ou de cacher le tableau des permissions en fonction de l'option "Créer un compte Coqpix pour ce membre"

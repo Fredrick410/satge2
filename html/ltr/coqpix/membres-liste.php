@@ -126,8 +126,8 @@ require_once 'php/permissions_front.php';
                                             <?php foreach($membre as $membres): ?>
                                                 <tr>
                                                     <td><a class="mr-2" href="#">
-                                                <img src="../../../src/img/<?= $membres['img_membres'] ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="40" width="40">
-                                            </a></td>
+                                                        <img src="../../../src/img/<?= $membres['img_membres'] ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="40" width="40">
+                                                    </a></td>
                                                     <td>
                                                         <?php // Permission de niveau 1 pour voir le profil d'un membre
                                                         if (permissions()['membres'] >= 1) { ?>
