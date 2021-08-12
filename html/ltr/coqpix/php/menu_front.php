@@ -133,10 +133,10 @@
             <?php } ?>
 
             <!-- FOURNISSEURS -->
-            <?php if (permissions()['articles'] >= 1) { ?>
+            <?php if (permissions()['fournisseurs'] >= 1) { ?>
                 <li class=" nav-item"><a href="fournisseur-list.php"><i class="menu-livicon" data-icon="truck"></i><span class="menu-title" data-i18n="Fournisseurs">Fournisseurs</span></a></li>
             <?php } else { ?>
-                <li class="disabled nav-item"><a href="fournisseur-list.php"><i class="menu-livicon" data-icon="truck"></i><let class="menu-title" data-i18n="Fournisseurs">Fournisseurs</let></a></li>
+                <li class="disabled nav-item"><a href="fournisseur-list.php"><i class="menu-livicon" data-icon="truck"></i><del class="menu-title" data-i18n="Fournisseurs">Fournisseurs</del></a></li>
             <?php } ?>
 
             <!-- ARTICLES -->
@@ -147,7 +147,7 @@
             <?php } ?>
 
             <!-- MEMBRES -->
-            <?php if (permissions()['articles'] >= 1) { ?>
+            <?php if (permissions()['membres'] >= 1) { ?>
                 <li class=" nav-item"><a href="membres-liste.php"><i class="menu-livicon" data-icon="grid"></i><span class="menu-title" data-i18n="Membres">Membres</span></a></li>
             <?php } else { ?>
                 <li class="disabled nav-item"><a href="membres-liste.php"><i class="menu-livicon" data-icon="grid"></i><del class="menu-title" data-i18n="Membres">Membres</del></a></li>

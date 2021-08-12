@@ -6,7 +6,7 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 require_once 'php/permissions_front.php';
 
-    if (permissions()['ventes'] < 2) {
+    if (permissions()['ventes'] < 1) {
         header('Location: app-avoir-list.php');
         exit();
     }

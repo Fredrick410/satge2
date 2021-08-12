@@ -485,12 +485,15 @@ require_once 'php/permissions_front.php';
                                             <span>Enregister ou Imprimer</span>
                                         </button>
                                     </div>
-                                    <div class="invoice-action-btn">        
-                                      <form action="app-devis-edit.php" method="GET">
-                                        <input type="hidden" name="numdevis" value="<?= $facture['id']?>">
-                                        <input value="Modifier le devis" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
-                                      </form>      
-                                    </div>
+                                    <?php // Permission de niveau 2 pour modifier un devis
+                                    if (permissions()['ventes'] >= 2) { ?>
+                                        <div class="invoice-action-btn">        
+                                        <form action="app-devis-edit.php" method="GET">
+                                            <input type="hidden" name="numdevis" value="<?= $facture['id']?>">
+                                            <input value="Modifier le devis" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
+                                        </form>      
+                                        </div>
+                                    <?php } ?>
                                     <div class="invoice-action-btn">        
                                         <form action="app-devis-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>               
                                     </div>

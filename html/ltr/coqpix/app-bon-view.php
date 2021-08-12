@@ -485,13 +485,15 @@ require_once 'php/permissions_front.php';
                                             <span>Enregister ou Imprimer</span>
                                         </button>
                                     </div>
+                                    <?php // Permission de niveau 2 pour modifier un bon
+                                    if (permissions()['ventes'] >= 2) { ?>
                                     <div class="invoice-action-btn">   
-                                    <!-- pour modifier le bon      -->
-                                      <form action="app-bon-edit.php" method="GET">
-                                        <input type="hidden" name="numbon" value="<?= $facture['id']?>">
-                                        <input value="Modifier le bon" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
-                                      </form>      
+                                        <form action="app-bon-edit.php" method="GET">
+                                            <input type="hidden" name="numbon" value="<?= $facture['id']?>">
+                                            <input value="Modifier le bon" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
+                                        </form>      
                                     </div>
+                                    <?php } ?>
                                     <div class="invoice-action-btn">        
                                         <form action="app-bon-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>               
                                     </div>
