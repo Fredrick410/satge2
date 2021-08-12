@@ -227,8 +227,7 @@ $teams = $pdoS->fetchAll();
                                                             <button class="ql-italic"></button>
                                                             <button class="ql-underline"></button>
                                                             <button class="ql-link"></button>
-                                                            <button class="ql-image"></button>
-                                                            <button class="btn btn-sm btn-primary btn-comment ml-25">Commenter</button>
+                                                            <button id="comment" class="btn btn-sm btn-primary btn-comment ml-25">Commenter</button>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -877,7 +876,6 @@ $teams = $pdoS->fetchAll();
                 var dateecheance_task = $('#dateecheance_task').siblings('input[type=hidden]').val();
                 var etiquette_task = $("#etiquette_task").val();
                 var color_etiq = $("#color_etiq").val();
-                console.log(color_etiq);
                 var selected_membres = [];
                 var selected_teams = [];
                 var membres = $('#membres').select2('data');
@@ -892,8 +890,6 @@ $teams = $pdoS->fetchAll();
                         selected_teams.push(element.id);
                     });
                 }
-                console.log(date_task);
-                console.log(dateecheance_task);
                 if (selected_membres.length != 0 || selected_teams.length != 0) {
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
@@ -945,12 +941,32 @@ $teams = $pdoS->fetchAll();
 
             // Kanban Quill Editor
             // -------------------
-            var composeMailEditor = new Quill(".snow-container .compose-editor", {
+            var composeCommentEditor = new Quill(".snow-container .compose-editor", {
                 modules: {
                     toolbar: ".compose-quill-toolbar"
                 },
                 placeholder: "Ecrire un commentaire... ",
                 theme: "snow"
+            });
+
+            $('#comment').on('click', function(e) {
+                e.preventDefault();
+                var comment = composeCommentEditor.root.innerHTML;
+                var id_task = document.getElementById('id_task').value;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_comment.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        content: comment,
+                        num: id_task
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        }
+                    }
+                });
             });
 
             // Making Title of Board editable
