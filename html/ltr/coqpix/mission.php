@@ -1,10 +1,19 @@
 <?php
-
 include 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+
+// Convert a date or timestamp into French.
+function dateToFrench($date, $format) 
+{
+    $english_days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+    $french_days = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
+    $english_months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    $french_months = array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+    return str_replace($english_months, $french_months, str_replace($english_days, $french_days, date($format, strtotime($date) ) ) );
+}
 
 $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
@@ -24,6 +33,30 @@ foreach ($missions as $mission) {
     $pdoS->execute();
     $tasks[] = $pdoS->fetchAll();
 }
+
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_comment FROM task_commentaire WHERE task_num = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_comment_number[] = $pdoS->fetch();
+    }
+    $mission_task_comment_number[] = $task_comment_number;
+    unset($task_comment_number);
+}
+
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_doc FROM task_doc WHERE task_num = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_doc_number[] = $pdoS->fetch();
+    }
+    $mission_task_doc_number[] = $task_doc_number;
+    unset($task_doc_number);
+}
+//print("<pre>". print_r($mission_task_comment_number,true)."</pre>");
+
 
 //On recupere la liste des membres de cette entreprise
 $pdoSttt = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
@@ -379,8 +412,11 @@ $teams = $pdoS->fetchAll();
                                     for ($j = 0; $j < count($tasks[$i]); $j++) {
                                         if ($j != count($tasks[$i]) - 1) {
                                 ?> {
-                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
                                                     var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
                                                     var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
@@ -403,8 +439,11 @@ $teams = $pdoS->fetchAll();
                                         <?php
                                         } else {
                                         ?> {
-                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
                                                     var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
                                                     var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
@@ -448,8 +487,11 @@ $teams = $pdoS->fetchAll();
                                     for ($j = 0; $j < count($tasks[$i]); $j++) {
                                         if ($j != count($tasks[$i]) - 1) {
                                 ?> {
-                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
                                                     var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
                                                     var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
@@ -472,8 +514,11 @@ $teams = $pdoS->fetchAll();
                                         <?php
                                         } else {
                                         ?> {
-                                                "id": "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
-                                                "title": "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
                                                     var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
                                                     var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
@@ -663,7 +708,7 @@ $teams = $pdoS->fetchAll();
                             "</span>" +
                             "</div>";
                     }
-                    /*// check if comment is defined or not
+                    // check if comment is defined or not
                     if (typeof $(board_item_el).attr("data-comment") !== "undefined") {
                         board_item_comment =
                             '<div class="kanban-comment d-flex align-items-center mr-50">' +
@@ -672,7 +717,7 @@ $teams = $pdoS->fetchAll();
                             $(board_item_el).attr("data-comment") +
                             "</span>" +
                             "</div>";
-                    }*/
+                    }
                     // check if attachment is defined or not
                     if (typeof $(board_item_el).attr("data-attachment") !== "undefined") {
                         board_item_attachment =
