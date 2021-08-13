@@ -10,8 +10,7 @@ require_once 'php/config.php';
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
     $true = $pdoS->execute();
     $entreprise = $pdoS->fetch();
-
-    
+   
     $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
     $pdoStat->execute();
@@ -110,6 +109,13 @@ require_once 'php/config.php';
                                             <div class="dashboard-content-right">
                                                 <img src="../../../app-assets/images/icon/cup.png" height="220" width="220" class="img-fluid" alt="Dashboard Ecommerce" />
                                             </div>
+                                            <?php
+                                                var_dump($_SESSION['email']);
+                                                var_dump($_SESSION['id']);
+                                                var_dump($_SESSION['id_session']);
+                                                var_dump($_SESSION['id_membre']);
+                                                var_dump($_SESSION['role']);
+                                            ?>
                                         </div>
                                     </div>
                                 </div>

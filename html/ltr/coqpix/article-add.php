@@ -225,7 +225,10 @@ require_once 'php/permissions_front.php';
                                                             <option value="Pas de fournisseur">Autres</options>
                                                         </select>
 													</div>
-                                                    <button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popupF">Créer un fournisseur</button>
+													<?php // Permission de niveau 2 pour créer un fournisseur
+													if (permissions()['fournisseurs'] >= 2) { ?>
+                                                    	<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popupF">Créer un fournisseur</button>
+													<?php } ?>
                                                     <!-- <hr> -->
 							    					<!-- <label for="adress">*Adresse :</label>
 								    				<fieldset class="invoice-address form-group">

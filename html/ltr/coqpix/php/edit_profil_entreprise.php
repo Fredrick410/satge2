@@ -28,16 +28,8 @@ ini_set('display_startup_errors', TRUE);
         $update_entreprise->bindValue(':datecreation', htmlspecialchars($_POST['datecreation']));
         $update_entreprise->bindValue(':datecloture', htmlspecialchars($_POST['datedecloture']));
         $update_entreprise->bindValue(':iban', htmlspecialchars($_POST['iban_entreprise']));
-        $update_entreprise->bindValue(':id_entreprise', htmlspecialchars($_POST['numentreprise']));
+        $update_entreprise->bindValue(':id_entreprise', htmlspecialchars($_GET['id_entreprise']));
         $update_entreprise->execute();
-
-        $update_membre = $bdd->prepare('UPDATE membres SET nom = :nom, prenom = :prenom, tel = :tel, email = :email WHERE id = :id_membre');
-        $update_membre->bindValue(':nom', htmlspecialchars($_POST['nom_membre']));
-        $update_membre->bindValue(':prenom', htmlspecialchars($_POST['prenom_membre']));
-        $update_membre->bindValue(':tel', htmlspecialchars($_POST['tel_membre']));
-        $update_membre->bindValue(':email', htmlspecialchars($_POST['email_membre']));
-        $update_membre->bindValue(':id_membre', htmlspecialchars($_POST['id_membre']));
-        $update_membre->execute();
 
 sleep(1);
 header('Location: ../page-user-profile.php');

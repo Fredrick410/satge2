@@ -136,11 +136,11 @@ require_once 'php/permissions_front.php';
                                             <table class="table mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th>Module Permission</th>
-                                                        <th>Ventes</th>
-                                                        <th>Achats</th>
-                                                        <th>Projets</th>
-                                                        <th>Inventaires</th>
+                                                        <th>Permissions</th>
+                                                        <th>Aucune</th>
+                                                        <th>Niveau 1</th>
+                                                        <th>Niveau 2</th>
+                                                        <th>Niveau 3</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
