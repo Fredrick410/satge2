@@ -5,6 +5,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['membres'] < 2) {
+        header('Location: membres-liste.php');
+        exit();
+    }
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
@@ -354,33 +360,51 @@ require_once 'php/config.php';
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-12 mt-2">
+                                                    <div class="custom-control custom-switch custom-control-inline mb-1">
+                                                        <input type="checkbox" class="custom-control-input" id="utilisateur_coqpix" name="utilisateur_coqpix">
+                                                        <label class="custom-control-label mr-1" for="utilisateur_coqpix">
+                                                        </label>
+                                                        <span>Créer un compte Coqpix pour ce membre</span>
+                                                    </div>
+                                                </div>
+                                                <div id="tableau_permissions" class="col-12 mt-2" style="display: none;">
                                                     <div class="table-responsive">
                                                         <table class="table mt-1">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Permissions</th>
                                                                     <th>Aucune</th>
-                                                                    <th>Level 1</th>
-                                                                    <th>Level 2</th>
-                                                                    <th>Level 3</th>
+                                                                    <th>Niveau 1</th>
+                                                                    <th>Niveau 2</th>
+                                                                    <th>Niveau 3</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                             
                                                                 <tr>
                                                                     <td>Ventes</td>
-                                                                    <td>
-                                                                        <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="0" checked />
+                                                                    <td> 
+                                                                        <input class=" form-check-input ml-1" type="radio" name="perm_ventes" value="0" checked />
+                                                                        <i class="bx bx-info-circle text-white"></i>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-success" data-toggle="popover" data-placement="bottom" data-content="Visualiser les devis, les factures de vente, les avoirs et les bons de livraison" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-warning" data-toggle="popover" data-placement="bottom" data-content="Visualiser, créer et modifier un devis, une facturs de vente, un avoir ou un bon de livraison" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_ventes" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-danger" data-toggle="popover" data-placement="bottom" data-content="Visualiser, créer, modifier et supprimer un devis, une facture de vente, un avoir ou un bon de livraison" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             
@@ -388,15 +412,25 @@ require_once 'php/config.php';
                                                                     <td>Achats</td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_achats" value="0" checked/>
+                                                                        <i class="bx bx-info-circle text-white"></i>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_achats" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-success" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_achats" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-warning" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_achats" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-danger" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
 
@@ -404,31 +438,155 @@ require_once 'php/config.php';
                                                                     <td>Projets</td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_projets" value="0" checked/>
+                                                                        <i class="bx bx-info-circle text-white"></i>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_projets" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-success" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_projets" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-warning" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_projets" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-danger" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             
                                                                 <tr>
+                                                                    <td>Inventaire</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="0" checked/>
+                                                                        <i class="bx bx-info-circle text-white"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-success" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-warning" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_inventaire" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm bg-danger" data-toggle="popover" data-placement="bottom" data-content="" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Clients</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="0" checked/>
+                                                                        <i class="bx bx-info-circle text-white"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-success" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des clients" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-warning" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des clients, ajouter un nouveau client professionnel ou particulier et modifier client" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_clients" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-danger" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des clients, ajouter un nouveau client professionnel ou particulier, modifier et supprimer un client" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Fournisseurs</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="0" checked/>
+                                                                        <i class="bx bx-info-circle text-white"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-success" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des fournisseurs" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-warning" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des fournisseur, créer et modifier un fournisseur" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_fournisseurs" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-danger" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des fournisseur, créer, modifier et supprimer un fournisseur" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Articles</td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="0" checked />
+                                                                        <i class="bx bx-info-circle text-white"></i>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-success" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des fournisseur" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-warning" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des fournisseur, créer et modifier un fournisseur" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-check-input ml-1" type="radio" name="perm_articles" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-danger" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des fournisseur, créer, modifier et supprimer un fournisseur" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
                                                                     <td>Membres</td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_membres" value="0" checked/>
+                                                                        <i class="bx bx-info-circle text-white"></i>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_membres" value="1" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-success" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des membres et visualiser un profil" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_membres" value="2" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-warning" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des membres, visualiser un profil, créer un nouveau membre (et en option un compte coqpix) et modifier un profil" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input class="form-check-input ml-1" type="radio" name="perm_membres" value="3" />
+                                                                        <div class="ml-3 badge-circle badge-circle-sm badge-circle-light-danger" data-toggle="popover" data-placement="bottom" data-content="Voir la liste des membres, visualiser un profil, créer un nouveau membre (et en option un compte coqpix), modifier un profil et supprimer un membre" data-trigger="hover">
+                                                                            <i class="bx bx-info-circle font-large-1"></i>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                                   
@@ -483,9 +641,26 @@ require_once 'php/config.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
     <script src="../../../app-assets/js/scripts/navs/navs.js"></script>
+    <script src="../../../app-assets/js/scripts/popover/popover.js"></script>
+    <script type="text/javascript">
+
+        // Script permettant d'afficher ou de cacher le tableau des permissions en fonction de l'option "Créer un compte Coqpix pour ce membre"
+        $("#utilisateur_coqpix").click(function() {
+            // Si l'utilisateur a coché l'option "Créer un compte Coqpix pour ce membre" alors on affiche le tableau des permissions
+            if (document.getElementById("utilisateur_coqpix").checked == true) {
+                document.getElementById("tableau_permissions").style.display = "block";
+            // Sinon on le cache
+            } else {
+                document.getElementById("tableau_permissions").style.display = "none";
+            }
+        });
+
+    </script>
     <!-- END: Page JS-->
+
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
+
 </body>
 <!-- END: Body-->
 

@@ -87,18 +87,71 @@ require_once 'php/config.php';
                             <div class="card-body">
                                 <ul class="nav nav-tabs mb-2" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link d-flex align-items-center active" id="account-tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="true">
-                                            <i class="bx bx-user mr-25"></i><span class="d-none d-sm-block">Info Société</span>
+                                        <a class="nav-link d-flex align-items-center active" id="information-tab" data-toggle="tab" href="#information" aria-controls="information" role="tab" aria-selected="true">
+                                            <i class="bx bx-user mr-25"></i><span class="d-none d-sm-block">Mes informations</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link d-flex align-items-center" id="information-tab" data-toggle="tab" href="#information" aria-controls="information" role="tab" aria-selected="false">
-                                            <i class="bx bx-info-circle mr-25"></i><span class="d-none d-sm-block">Mes informations</span>
-                                        </a>
-                                    </li>
+                                    <?php if ($_SESSION['role'] === "Manager") { ?>
+                                        <li class="nav-item">
+                                            <a class="nav-link d-flex align-items-center" id="tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="false">
+                                                <i class="bx bx-info-circle mr-25"></i><span class="d-none d-sm-block">Info Société</span>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
+                                    <div class="tab-pane active fade show" id="information" aria-labelledby="information-tab" role="tabpanel">
+                                        <!-- users edit Info form start -->
+                                            <div class="row">
+                                                <div class="col-12 col-sm-6">
+                                                    <h5 class="mb-1"><i class="bx bx-link mr-25"></i>Mes informations</h5>
+
+                                                    <form action="php/insert_image_membre.php" method="POST" enctype="multipart/form-data">
+                                                        <div class="media mb-2">
+                                                            <a class="mr-2" href="#">
+                                                                <img src="../../../src/img/<?= $membre['img_membres'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64">
+                                                            </a>
+                                                            <div class="media-body">
+                                                                <h4 class="media-heading">Mon image de profil</h4>
+                                                                <div class="col-12 px-0 d-flex">
+                                                                    <input type="file" accept="image/png, image/jpg, image/jpeg" name="FILES" required>                                                   
+                                                                </div><br>
+                                                                <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    
+                                                    <form action="php/edit_profil.php?id_membre=<?= $_SESSION['id_membre'] ?>" method = "POST" enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label>Nom :</label>
+                                                        <input name="nom_membre" class="form-control" type="text" placeholder="Nom" value="<?= $membre['nom']; ?>">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Prénom :</label>
+                                                        <input name="prenom_membre" class="form-control" type="text" placeholder="Prénom" value="<?= $membre['prenom']; ?>">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Téléphone :</label>
+                                                        <input name="tel_membre" class="form-control" type="text" placeholder="Téléphone" value="<?= $membre['tel']; ?>">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>E-mail :</label>
+                                                        <input name="email_membre" class="form-control" type="text" placeholder="E-mail" value="<?= $membre['email']; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-6 mt-1 mt-sm-0">
+
+                                                                    <!-- PUBLICITER -->
+                                                    
+                                                </div>
+                                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
+                                                    <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Enregistrer<i class='bx bx-right-arrow-alt'></i></button>
+                                                </div>
+                                                <label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Pensez à compléter les champs obligatoires*</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
                                         <!-- users edit media object start -->
                                         <form action="php/insert_image.php" method="POST" enctype="multipart/form-data">
                                             <div class="media mb-2">
@@ -116,7 +169,7 @@ require_once 'php/config.php';
                                         </form>
                                         <!-- users edit media object ends -->
                                         <!-- users edit account form start -->
-                                        <form action="php/edit_profile_1.php" method="POST">
+                                        <form action="php/edit_profil_entreprise.php?id_entreprise=<?= $_SESSION['id'] ?>" method="POST">
                                             <div class="row">
                                                 <div class="col-12 col-sm-6">
                                                     <div class="form-group">
@@ -199,62 +252,12 @@ require_once 'php/config.php';
                                                     </div>
                                                 </div>
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                    <label>Compléter les Infos Dirigeants</label>&nbsp&nbsp<i class='bx bx-right-arrow-alt'></i>
+                                                    <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Enregistrer<i class='bx bx-right-arrow-alt'></i></button>
                                                 </div>
-                                            </div>
-                                        <!-- users edit account form ends -->
-                                    </div>
-                                    <div class="tab-pane fade show" id="information" aria-labelledby="information-tab" role="tabpanel">
-                                        <!-- users edit Info form start -->
-                                            <div class="row">
-                                                <div class="col-12 col-sm-6">
-                                                    <h5 class="mb-1"><i class="bx bx-link mr-25"></i>Mes informations</h5>
-
-                                                    <!-- <form action="php/insert_image_membre.php" method="POST" enctype="multipart/form-data">
-                                                        <div class="media mb-2">
-                                                            <a class="mr-2" href="#">
-                                                                <img src="../../../src/img/<?= $membre['img_membres'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64">
-                                                            </a>
-                                                            <div class="media-body">
-                                                                <h4 class="media-heading">Mon image de profil</h4>
-                                                                <div class="col-12 px-0 d-flex">
-                                                                    <input type="file" accept="image/png, image/jpg, image/jpeg" name="FILES" required>                                                   
-                                                                </div><br>
-                                                                <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary">
-                                                            </div>
-                                                        </div>
-                                                    </form> -->
-
-                                                    <div class="form-group">
-                                                        <label>Nom :</label>
-                                                        <input name="nom_membre" class="form-control" type="text" placeholder="Nom" value="<?= $membre['nom']; ?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Prénom :</label>
-                                                        <input name="prenom_membre" class="form-control" type="text" placeholder="Prénom" value="<?= $membre['prenom']; ?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Téléphone :</label>
-                                                        <input name="tel_membre" class="form-control" type="text" placeholder="Téléphone" value="<?= $membre['tel']; ?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>E-mail :</label>
-                                                        <input name="email_membre" class="form-control" type="text" placeholder="E-mail" value="<?= $membre['email']; ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 col-sm-6 mt-1 mt-sm-0">
-
-                                                                    <!-- PUBLICITER -->
-                                                    
-                                                </div>
-                                                <input name="numentreprise" type="hidden" value="<?= $entreprise['id'] ?>">
-                                                <input name="id_membre" type="hidden" value="<?= $_SESSION['id_membre'] ?>">
-                                                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-                                                    <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Valider<i class='bx bx-right-arrow-alt'></i></button>
-                                                </div>
-                                                <label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
+                                                <label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Pensez à compléter les champs obligatoires*</label>
                                             </div>
                                         </form>
+                                        <!-- users edit account form ends -->
                                     </div>
                                 </div>
                             </div>

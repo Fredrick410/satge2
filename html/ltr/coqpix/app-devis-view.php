@@ -4,7 +4,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-// require_once 'php/verif_session_connect.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: app-devis-list.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM devis WHERE id = :num');
     $pdoStat->bindValue(':num',$_GET['numdevis'], PDO::PARAM_INT);
@@ -480,12 +485,15 @@ require_once 'php/config.php';
                                             <span>Enregister ou Imprimer</span>
                                         </button>
                                     </div>
-                                    <div class="invoice-action-btn">        
-                                      <form action="app-devis-edit.php" method="GET">
-                                        <input type="hidden" name="numdevis" value="<?= $facture['id']?>">
-                                        <input value="Modifier le devis" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
-                                      </form>      
-                                    </div>
+                                    <?php // Permission de niveau 2 pour modifier un devis
+                                    if (permissions()['ventes'] >= 2) { ?>
+                                        <div class="invoice-action-btn">        
+                                        <form action="app-devis-edit.php" method="GET">
+                                            <input type="hidden" name="numdevis" value="<?= $facture['id']?>">
+                                            <input value="Modifier le devis" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
+                                        </form>      
+                                        </div>
+                                    <?php } ?>
                                     <div class="invoice-action-btn">        
                                         <form action="app-devis-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>               
                                     </div>

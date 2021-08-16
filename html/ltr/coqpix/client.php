@@ -5,6 +5,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['clients'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
@@ -83,36 +89,39 @@ require_once 'php/config.php';
             <div class="content-body">
                 <!-- users list start -->
                 <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <div class="row rounded py-2 mb-2">
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                <div class="dropdown invoice-options">
-                                    <style>
-                                        .bleu {
-                                            background-color: #475F7B;
-                                        }
+                    <?php // Permission de niveau 2 pour ajouter un client
+                    if (permissions()['clients'] >= 2) { ?>
+                        <div class="users-list-filter px-1 pt-2">
+                            <div class="row rounded">
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
+                                    <div class="dropdown invoice-options">
+                                        <style>
+                                            .bleu {
+                                                background-color: #475F7B;
+                                            }
 
-                                        .white{
-                                            color: white;
-                                        }
+                                            .white{
+                                                color: white;
+                                            }
 
-                                        .bleu:hover{
-                                            transition-duration: 1s;
-                                            background-color: #394C62;
-                                        }
-                                    </style>
-                                    <button class="btn border mr-2 bleu white" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un client
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
-                                        <a type="submit" class="dropdown-item" href="client-add-societe.php">Professionnel</a>
-                                        <a type="submit" class="dropdown-item" href="client-add-particulier.php">Particulier</a>
+                                            .bleu:hover{
+                                                transition-duration: 1s;
+                                                background-color: #394C62;
+                                            }
+                                        </style>
+                                        <button class="btn border bleu white" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un client
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
+                                            <a type="submit" class="dropdown-item" href="client-add-societe.php">Professionnel</a>
+                                            <a type="submit" class="dropdown-item" href="client-add-particulier.php">Particulier</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="users-list-table">
+                    <?php } ?>
+                    <div class="users-list-table mt-2">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
@@ -126,19 +135,32 @@ require_once 'php/config.php';
                                                     <th>email</th>
                                                     <th>téléphone</th>
                                                     <th>secteur</th>
-                                                    <th>Options</th>
+                                                    <?php if (permissions()['clients'] >= 2) { ?>
+                                                        <th>Options</th>
+                                                    <?php } ?>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php foreach($client as $clients): ?>
                                                 <tr>
-                                                    <td>&nbsp&nbsp<a><?= $clients['cat'] ?></a>
+                                                    <td><a><?= $clients['cat'] ?></a>
                                                     </td>
                                                     <td><?= $clients['name_client'] ?></td>
-                                                    <td>&nbsp&nbsp<?= $clients['email'] ?></td>
-                                                    <td>&nbsp&nbsp&nbsp<?= $clients['tel'] ?></td>
-                                                    <td>&nbsp&nbsp&nbsp<?= $clients['secteur'] ?></td>
-                                                    <td>&nbsp&nbsp&nbsp<a href="client-edit-<?php if($clients['cat'] == "Professionnel"){echo "prof";}else{echo "Particulier";} ?>.php?num=<?= $clients['id'] ?>"><i class="bx bx-edit-alt"></i>&nbsp&nbsp&nbsp&nbsp&nbsp</a><a href="php/delete_client.php?num=<?= $clients['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>
+                                                    <td><?= $clients['email'] ?></td>
+                                                    <td><?= $clients['tel'] ?></td>
+                                                    <td><?= $clients['secteur'] ?></td>
+                                                    <?php if (permissions()['clients'] >= 2) { ?>
+                                                        <td>
+                                                            <?php // Permission de niveau 2 pour modifier un client
+                                                            if (permissions()['clients'] >= 2) { ?>
+                                                                <a href="client-edit-<?php if($clients['cat'] == "Professionnel"){echo "prof";}else{echo "Particulier";} ?>.php?num=<?= $clients['id'] ?>"><i class="bx bx-edit-alt"></i></a>
+                                                            <?php }
+                                                            // Permission de niveau 3 pour supprimer un client 
+                                                            if (permissions()['clients'] >= 3) { ?>
+                                                                <a href="php/delete_client.php?num=<?= $clients['id'] ?>"><i class="bx bx-trash-alt"></i></a>
+                                                            <?php } ?>
+                                                        </td>
+                                                    <?php } ?>
                                                     
                                                 </tr>
                                             <?php endforeach; ?>

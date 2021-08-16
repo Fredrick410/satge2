@@ -5,6 +5,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['membres'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
@@ -84,16 +90,19 @@ require_once 'php/config.php';
             <div class="content-body">
                 <!-- users list start -->
                 <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <form>
-                            <div class="row rounded py-2">
-                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                    <a href="membres-add.php" class=""><button type="button" class="btn btn-primary btn-block glow users-list-clear mb-0">Ajouter un membre</button></a>
+                    <?php // Permission de niveau 2 pour ajouter un membre
+                    if (permissions()['membres'] >= 2) { ?>
+                        <div class="users-list-filter px-1">
+                            <form>
+                                <div class="row rounded pt-1">
+                                    <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
+                                        <a href="membres-add.php" class=""><button type="button" class="btn btn-primary btn-block glow users-list-clear mb-0">Ajouter un membre</button></a>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="users-list-table">
+                            </form>
+                        </div>
+                    <?php } ?>
+                    <div class="users-list-table pt-1">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
@@ -106,24 +115,43 @@ require_once 'php/config.php';
                                                     <th>Nom</th>
                                                     <th>Prénom</th>
                                                     <th>Début d'activité</th>
-                                                    <th>role</th>
-                                                    <th>status</th>
-                                                    <th>Options</th>
+                                                    <th>Rôle</th>
+                                                    <th>Coqpix</th>
+                                                    <?php if (permissions()['membres'] >= 2) { ?>
+                                                        <th>Options</th>
+                                                    <?php } ?>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <?php foreach($membre as $membres): ?>
                                                 <tr>
                                                     <td><a class="mr-2" href="#">
-                                                <img src="../../../src/img/<?= $membres['img_membres'] ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="40" width="40">
-                                            </a></td>
-                                                    <td><a href="membres-view.php?nummembres=<?= $membres['id'] ?>"><?= $membres['nom'] ?></a>
+                                                        <img src="../../../src/img/<?= $membres['img_membres'] ?>" alt="users avatar" class="users-avatar-shadow rounded-circle" height="40" width="40">
+                                                    </a></td>
+                                                    <td>
+                                                        <?php // Permission de niveau 1 pour voir le profil d'un membre
+                                                        if (permissions()['membres'] >= 1) { ?>
+                                                            <a href="membres-view.php?nummembre=<?= $membres['id'] ?>"><?= $membres['nom'] ?></a>
+                                                        <?php } else {
+                                                            echo $membres['nom'];
+                                                        } ?>
                                                     </td>
                                                     <td><?= $membres['prenom'] ?></td>
                                                     <td><?= $membres['startdte'] ?></td>
                                                     <td><?= $membres['role_membres'] ?></td>
-                                                    <td><span class="badge badge-light-<?php if ($membres['status_membres'] === "Active") { echo "success"; } else { echo "danger"; } ?>"><?= $membres['status_membres'] ?></span></td>
-                                                    <td><a href="membres-edit.php?nummembre=<?= $membres['id'] ?>"><i class="bx bx-edit-alt"></i>&nbsp&nbsp&nbsp&nbsp&nbsp</a><a href="php/delete_membres.php?nummembres=<?= $membres['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>
+                                                    <td><span class="badge badge-light-<?php if ($membres['status_membres'] === "New" || $membres['status_membres'] === "Activé") { echo "success"; } else { echo "danger"; } ?>"><?= $membres['status_membres'] ?></span></td>
+                                                    <?php if (permissions()['membres'] >= 2) { ?>
+                                                        <td>
+                                                            <?php // Permission de niveau 2 pour modifier un membre
+                                                            if (permissions()['membres'] >= 2) { ?>
+                                                                <a href="membres-edit.php?nummembre=<?= $membres['id'] ?>"><i class="bx bx-edit-alt"></i></a>
+                                                            <?php }
+                                                            // Permission de niveau 3 pour supprimer un membre
+                                                            if (permissions()['membres'] >= 3) { ?>
+                                                                <a href="php/delete_membres.php?nummembres=<?= $membres['id'] ?>"><i class="bx bx-trash-alt"></i></a>
+                                                            <?php } ?>
+                                                        </td>
+                                                    <?php } ?>
                                                     
                                                 </tr>
                                             <?php endforeach; ?>

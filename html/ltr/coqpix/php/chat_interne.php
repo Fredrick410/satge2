@@ -97,7 +97,7 @@ function getMembres() {
     $id_membre = htmlspecialchars($_GET['id_membre']);
     $id_entreprise = htmlspecialchars($_GET['id_entreprise']);
 
-    $query = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :id_entreprise ORDER BY (SELECT id_message FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre ORDER BY date_message DESC, heure_message DESC LIMIT 1)');
+    $query = $bdd->prepare('SELECT id, upper(nom) AS nom, concat(ucase(left(prenom, 1)), lcase(substring(prenom, 2))) AS prenom, img_membres, role_membres, (SELECT count(*) FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre AND lu = 0) AS nb_notifs FROM membres WHERE id_session = :id_entreprise AND id != :id_membre ORDER BY (SELECT id_message FROM message WHERE id_membre_from = id AND id_membre_to = :id_membre ORDER BY date_message DESC, heure_message DESC LIMIT 1)');
     $query->bindValue(':id_membre', $id_membre);
     $query->bindValue(':id_entreprise', $id_entreprise);
     $query->execute();
