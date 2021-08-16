@@ -39,6 +39,11 @@ if($crea['cp_diri'] == ""){
 }else{
     $cp_diri = "1";
 }
+if($crea['adresse_entreprise'] == ""){
+    $cp_diri = "0";
+}else{
+    $cp_diri = "1";
+}
 if($crea['status_crea'] == ""){
     $status_crea = "0";
 }else{
