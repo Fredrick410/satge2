@@ -33,7 +33,7 @@ require_once 'config.php';
     $notification_crea = "0";
     $notification_admin = "1";
     
-    $insert = $bdd->prepare('INSERT INTO crea_societe (name_crea, email_crea, password_crea, img_crea, date_crea, date_crea_j, date_crea_j_lettre, date_crea_d, date_crea_a, date_crea_h, date_crea_m, nom_diri, prenom_diri, tel_diri, email_diri, adresse_diri, ville_diri, cp_diri, adresse_entreprise, status_crea, secteur_dactivite, favorite_crea, new_user, message_crea, note_crea, notification_crea, notification_admin, doc_domiciliation, doc_contrat, estimation_contrat, portefeuille_contrat, doc_statuts, doc_nomination, doc_depot, doc_pouvoir, doc_pieceid, doc_cerfaM0, doc_annonce, doc_cerfaMBE, doc_attestation, doc_justificatifss, doc_justificatifd, doc_xp, doc_peirl, doc_affectation, frais, honoraire, depo_greffe, depo_cfe, depo_domi, article_three) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO crea_societe (name_crea, email_crea, password_crea, img_crea, date_crea, date_crea_j, date_crea_j_lettre, date_crea_d, date_crea_a, date_crea_h, date_crea_m, nom_diri, prenom_diri, tel_diri, email_diri, adresse_diri, ville_diri, cp_diri, adresse_entreprise, ville_entreprise, cp_entreprise, status_crea, secteur_dactivite, favorite_crea, new_user, message_crea, note_crea, notification_crea, notification_admin, doc_domiciliation, doc_contrat, estimation_contrat, portefeuille_contrat, doc_statuts, doc_nomination, doc_depot, doc_pouvoir, doc_pieceid, doc_cerfaM0, doc_annonce, doc_cerfaMBE, doc_attestation, doc_justificatifss, doc_justificatifd, doc_xp, doc_peirl, doc_affectation, frais, honoraire, depo_greffe, depo_cfe, depo_domi, article_three) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($name_crea),
         htmlspecialchars($email_crea),
@@ -50,6 +50,8 @@ require_once 'config.php';
         htmlspecialchars($prenom_diri),
         htmlspecialchars($tel_diri),
         htmlspecialchars($email_diri),
+        htmlspecialchars(""),
+        htmlspecialchars(""),
         htmlspecialchars(""),
         htmlspecialchars(""),
         htmlspecialchars(""),
