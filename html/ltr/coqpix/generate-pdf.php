@@ -271,6 +271,16 @@ require_once 'php/config.php';
     $update = $bdd->prepare('UPDATE crea_societe SET ville_entreprise = ? WHERE id = ?');
     $update->execute(array( ($ville), $id_crea  ));
 
+    $date_notif = date("d/m/Y");
+
+    $insert = $bdd->prepare('INSERT INTO notif_back (type_demande, date_demande, name_entreprise, id_session) VALUES(?,?,?,?)');
+    $insert->execute(array(
+        htmlspecialchars("domiciliation"),
+        htmlspecialchars($date_notif),
+        htmlspecialchars($raisonsociale),
+        htmlspecialchars($id_crea)
+    ));
+
     header('Location: page-creation');
 
 ?>

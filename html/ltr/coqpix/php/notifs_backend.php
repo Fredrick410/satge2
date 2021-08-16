@@ -78,25 +78,41 @@
                     <a href="bilan-view.php?num=<?= $result['id_session'] ?>">
                         <?php
 
+        // si c'est une domiciliation
+		} else if ($result['type_demande'] === "domiciliation"){
+        
+            $notif = "Vous avez une demande de domiciliation de " .$result['name_entreprise']. " en attente de traitement";
+            
+            ?>
+                    <a href="creation-list-domiciliation.php?id=<?= $result['id_session'] ?>">
+                        <?php
+
 		}
         
-
-        
 		// affichage de la notification
-
-        $pdoSt = $bdd->prepare('SELECT img_entreprise FROM entreprise WHERE id = :id');
-        $pdoSt->bindValue(':id', $result['id_session']);
-        $pdoSt->execute();
-        $img_entreprise = $pdoSt->fetch();
-               
+    
+        if ($result['type_demande'] != "domiciliation") {
+            $pdoSt = $bdd->prepare('SELECT img_entreprise FROM entreprise WHERE id = :id');
+            $pdoSt->bindValue(':id', $result['id_session']);
+            $pdoSt->execute();
+            $img_entreprise = $pdoSt->fetch();
+    }
         ?>
 
                         <div class="d-flex justify-content-between cursor-pointer">
                             <div class="media d-flex align-items-center border-0">
                                 <div class="media-left pr-0">
-                                    <div class="avatar mr-1 m-0"><img
-                                            src="../../../src/img/<?= $img_entreprise['img_entreprise'] ?>" alt="avatar"
-                                            height="39" width="39"></div>
+                                    <?php if ($result['type_demande'] != "domiciliation") { ?>
+                                        <div class="avatar mr-1 m-0">  <img
+                                                src="../../../src/img/<?= $img_entreprise['img_entreprise'] ?>" alt="avatar"
+                                                height="39" width="39">
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class="avatar mr-1 m-0">  <img
+                                                src="../../../app-assets/images/ico/astro1.gif" alt="avatar"
+                                                height="39" width="39">
+                                        </div>
+                                    <?php } ?>
                                 </div>
                                 <div class="media-body">
                                     <h6 class="media-heading"><span class="text-bold-500"><?php echo $notif; ?></span>

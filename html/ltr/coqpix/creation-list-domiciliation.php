@@ -19,6 +19,11 @@ $crea = $pdoSta->fetch();
 
 $dateee = substr($crea['depo_domi'], 0, 10);
 
+//désactive la notif générale et la supprime
+$pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE type_demande=:type_demande AND id_session=:num');
+     $pdoSta->bindValue(':num', $_GET['id']);
+     $pdoSta->bindValue(':type_demande', "domiciliation");
+     $pdoSta->execute();
 }
 ?>
 
