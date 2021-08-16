@@ -7,9 +7,13 @@ require_once 'php/config.php';
 $authorised_roles = array('admin', 'juriste');   
 require_once 'php/verif_session_connect_admin.php'; 
 
-$SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE ""');
+$SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE "" AND depo_domi = ""');
 $SQL2->execute();
 $list_doc = $SQL2->fetchAll();
+
+$SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE "" AND depo_domi NOT LIKE "" ORDER BY depo_domi');
+$SQL2->execute();
+$list_transmis = $SQL2->fetchAll();
 
 if(isset($_GET['id'])){
 $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE id=:num');
@@ -254,10 +258,44 @@ $pdoSta = $bdd->prepare('DELETE FROM notif_back WHERE type_demande=:type_demande
                                     </script>
                                         <div class="email-user-list col-4" style="overflow-y:scroll;" id="list-users">
                                             <ul class="users-list-wrapper media-list" id="list">
-                                               
+                                               <h4 class="m-1">Non transmis</h4>
                                                 <?php 
                                                 $j=0;
                                                 foreach($list_doc as $doc): 
+                                                    $contrat = $bdd->prepare('SELECT depo_domi FROM crea_societe WHERE id=:num');
+                                                    $contrat->bindValue(':num',$doc['id']);
+                                                    $contrat->execute();
+                                                    $contrat = $contrat->fetch();
+
+                                                    $r_valeur = Array();
+                                                ?>
+                                                             
+                                                    <li class="media rounded" id='<?= $doc['id']?>' style='' onclick="document.location.href='creation-list-domiciliation.php?id=<?= $doc['id'] ?>'">
+                                                        <div class="media-body">
+                                                            <div class="user-details">
+                                                                <div class="mail-items">
+                                                                    <div class="avatar mr-75">
+                                                                        <img src="../../../app-assets/images/ico/<?=$doc['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
+                                                                    </div>
+                                                                    <a><span class="list-group-item-text text-truncate line namecolor" ><?= $doc['name_crea'] ?></span></a>
+                                                                    <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if($contrat['depo_domi'] == ""){echo "d-none";} ?>" style="display:inline-block; top:3px; left:10px;">
+                                                                                                <span><i class="bx bx-check"></i></span>
+                                                                    </div>
+                                                                    <input type="hidden" name="entreprise" id="entreprise" value="<?= $doc['status_crea'] ?>">
+                                                                    <input type="hidden" name="img" id="img" value="<?= $doc['img_crea'] ?>">
+                                                                </div>
+                                                            </div>                                                           
+                                                        </div>
+                                                    </li>                                                        
+                                                    
+                                                <?php endforeach; ?>                                            
+                                            </ul>
+
+                                            <ul class="users-list-wrapper media-list" id="list">
+                                               <h4 class="m-1">Transmis</h4>
+                                                <?php 
+                                                $j=0;
+                                                foreach($list_transmis as $doc): 
                                                     $contrat = $bdd->prepare('SELECT depo_domi FROM crea_societe WHERE id=:num');
                                                     $contrat->bindValue(':num',$doc['id']);
                                                     $contrat->execute();
