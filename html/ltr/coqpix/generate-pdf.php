@@ -71,6 +71,7 @@ $pdf->AddPage();
 $id_crea = $_POST['id_crea'];
 $raisonsociale = $_POST['raisonsociale'];
 $adressess = $_POST['adressess'];
+$ville = $_POST['ville_ss'];
 $formejuridique = $_POST['formejuridique'];
 $capital = $_POST['capital'];
 $tva = $_POST['tva'];
@@ -263,6 +264,13 @@ require_once 'php/config.php';
 
     $update = $bdd->prepare('UPDATE crea_societe SET doc_domiciliation = ? WHERE id = ?');
     $update->execute(array( ($file_name), $id_crea  ));
+
+    $update = $bdd->prepare('UPDATE crea_societe SET adresse_entreprise = ? WHERE id = ?');
+    $update->execute(array( ($adressess), $id_crea  ));
+
+    $update = $bdd->prepare('UPDATE crea_societe SET ville_entreprise = ? WHERE id = ?');
+    $update->execute(array( ($ville), $id_crea  ));
+
     header('Location: page-creation');
 
 ?>
