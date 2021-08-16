@@ -7,7 +7,7 @@ require_once 'php/config.php';
 $authorised_roles = array('admin', 'juriste');   
 require_once 'php/verif_session_connect_admin.php'; 
 
-$SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE "" AND depo_domi = ""');
+$SQL2 = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE "" AND depo_domi = "" ORDER BY depo_fiche');
 $SQL2->execute();
 $list_doc = $SQL2->fetchAll();
 
