@@ -13,6 +13,14 @@
     $list_msg_nonlu = $pdoState->fetchAll();
     $count_msg = count($list_msg_nonlu);
 
+
+    $pdoStatee = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_domiciliation NOT LIKE "" AND depo_domi = ""');
+    
+    $pdoStatee->execute();
+    $list_domi = $pdoStatee->fetchAll();
+    $count_domi = count($list_domi);
+
+
     $url = $_SERVER['REQUEST_URI'];
 ?>
 <style>
@@ -36,6 +44,7 @@
                                             </i>
                                         </div>
                                         Domiciliation
+                                        <span class="badge badge-light-danger badge-pill badge-round float-right mt-50"><?= $count_domi ?></span>
                                     </a>
                                     <hr>
                                     <a href="creation-list.php" class="list-group-item <?php if(strpos($url, "creation-list.php") !== false){echo "active";} ?>" id="inbox-menu">
