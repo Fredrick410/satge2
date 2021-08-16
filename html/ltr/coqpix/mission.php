@@ -6,13 +6,13 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
 // Convert a date or timestamp into French.
-function dateToFrench($date, $format) 
+function dateToFrench($date, $format)
 {
     $english_days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
     $french_days = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
     $english_months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
     $french_months = array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
-    return str_replace($english_months, $french_months, str_replace($english_days, $french_days, date($format, strtotime($date) ) ) );
+    return str_replace($english_months, $french_months, str_replace($english_days, $french_days, date($format, strtotime($date))));
 }
 
 $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
@@ -235,37 +235,6 @@ $teams = $pdoS->fetchAll();
                                             }
                                             ?>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Pièce jointe</label>
-                                            <div id="dpz-multiple-files" class="dropzone">
-                                                <div class="dz-message">Télécharger un fichier</div>
-                                                <input type="hidden" id="id_task">
-                                                <div class="fallback">
-                                                    <div class="custom-file">
-                                                        <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
-                                                        <input name="fichier" class="custom-file-input" id="fichier" type="file" multiple />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Compose mail Quill editor -->
-                                        <div class="form-group">
-                                            <label>Commentaire</label>
-                                            <div class="snow-container border rounded p-1">
-                                                <div class="compose-editor"></div>
-                                                <div class="d-flex justify-content-end">
-                                                    <div class="compose-quill-toolbar">
-                                                        <span class="ql-formats mr-0">
-                                                            <button class="ql-bold"></button>
-                                                            <button class="ql-italic"></button>
-                                                            <button class="ql-underline"></button>
-                                                            <button class="ql-link"></button>
-                                                            <button id="comment" class="btn btn-sm btn-primary btn-comment ml-25">Commenter</button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-end">
@@ -285,6 +254,80 @@ $teams = $pdoS->fetchAll();
                     <!--/ User Chat profile right area -->
                 </section>
                 <!--/ Sample Project kanban -->
+
+                <div class="modal fade" id="comment" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Commentaires</h5>
+                                <button type="button" class="close cancel" data-dismiss="modal" aria-label="Close">
+                                    <i class="bx bx-x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Compose mail Quill editor -->
+                                <div class="form-group">
+                                    <label>Ajouter un commentaire</label>
+                                    <div class="snow-container border rounded p-1">
+                                        <div class="compose-editor"></div>
+                                        <div class="d-flex justify-content-end">
+                                            <div class="compose-quill-toolbar">
+                                                <span class="ql-formats mr-0">
+                                                    <button class="ql-bold"></button>
+                                                    <button class="ql-italic"></button>
+                                                    <button class="ql-underline"></button>
+                                                    <button class="ql-link"></button>
+                                                    <button id="submit_comment" class="btn btn-sm btn-primary btn-comment ml-25">Commenter</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="create">Créer</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block cancel">Annuler</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="attachement" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Pièces jointes</h5>
+                                <button type="button" class="close cancel" data-dismiss="modal" aria-label="Close">
+                                    <i class="bx bx-x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div id="dpz-multiple-files" class="dropzone">
+                                        <div class="dz-message">Télécharger un fichier</div>
+                                        <input type="hidden" id="id_task">
+                                        <div class="fallback">
+                                            <div class="custom-file">
+                                                <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
+                                                <input name="fichier" class="custom-file-input" id="fichier" type="file" multiple />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block cancel">Fermer</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
@@ -322,6 +365,8 @@ $teams = $pdoS->fetchAll();
     <!-- END: Page JS-->
 
     <script>
+        var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_data, kanban_item, kanban_users;
+
         function addAlert(message, type) {
             if (type == "success") {
                 $('#message').html(
@@ -365,6 +410,9 @@ $teams = $pdoS->fetchAll();
                             addAlert(data.message);
                         }
                         file.previewElement.remove();
+                        var nb_attachment = $(kanban_curr_el).contents()[1].innerHTML;
+                        nb_attachment--;
+                        $(kanban_curr_el).contents()[1].innerHTML = nb_attachment;
                     }
                 });
             },
@@ -389,6 +437,9 @@ $teams = $pdoS->fetchAll();
                     file.previewTemplate.appendChild(a);
                     var fileuploded = file.previewElement.querySelector("[data-dz-name]");
                     fileuploded.innerHTML = responseText.trim();
+                    var nb_attachment = $(kanban_curr_el).contents()[1].innerHTML;
+                    nb_attachment++;
+                    $(kanban_curr_el).contents()[1].innerHTML = nb_attachment;
                 });
             }
         });
@@ -396,7 +447,6 @@ $teams = $pdoS->fetchAll();
 
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
-            var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_data, kanban_item, kanban_users;
             // Kanban Board and Item Data passed by json
             var kanban_board_data = [
                 <?php
@@ -560,82 +610,6 @@ $teams = $pdoS->fetchAll();
             var KanbanExample = new jKanban({
                 element: "#kanban-wrapper", // selector of the kanban container
                 buttonContent: "+ Add New Item", // text or html content of the board button
-
-                // click on current kanban-item
-                click: function(el) {
-                    // kanban-overlay and sidebar display block on click of kanban-item
-                    $(".kanban-overlay").addClass("show");
-                    $(".kanban-sidebar").addClass("show");
-
-                    // Set el to var kanban_curr_el, use this variable when updating title
-                    kanban_curr_el = el;
-                    // Extract  the kan ban item & id and set it to respective vars
-                    kanban_curr_item_title = $(el).contents()[0].data;
-                    kanban_curr_item_id = $(el).attr("data-eid");
-                    var id_task = kanban_curr_item_id.replaceAll('kanban-item-', '');
-                    $.ajax({
-                        url: "../../../html/ltr/coqpix/php/get_tache.php", //new path, save your work first before u try
-                        type: "POST",
-                        data: {
-                            id_task: id_task
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.status == 'success') {
-                                $("#description_task").val(data.task.description_task);
-
-                                var date_task = $('#date_task').pickadate('picker');
-                                moment.locale('fr');
-                                date_task.set('select', moment(data.task.date_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
-
-                                var dateecheance_task = $('#dateecheance_task').pickadate('picker');
-                                dateecheance_task.set('select', moment(data.task.dateecheance_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
-
-                                $("#etiquette_task").val(data.task.etiquette_task);
-                                $("#color_etiq").val(data.task.color_etiq);
-                                var selected_membres = [];
-                                var selected_teams = [];
-                                if (data.membres.length != 0) {
-                                    data.membres.forEach(element => {
-                                        selected_membres.push(element['id_membre']);
-                                    });
-                                }
-                                $("#membres").val(selected_membres);
-                                $('#membres').trigger('change');
-                                if (data.teams) {
-                                    data.teams.forEach(element => {
-                                        selected_teams.push(element['id_team']);
-                                    });
-                                }
-                                $("#teams").val(selected_teams);
-                                $('#teams').trigger('change');
-                                $("#id_task").val(id_task);
-
-                                myDropzone.removeAllFiles(true);
-
-                                $.each(data.docs, function(key, value) {
-                                    var mockFile = {
-                                        name: value.name,
-                                        size: value.size,
-                                        status: 'success'
-                                    };
-                                    myDropzone.options.addedfile.call(myDropzone, mockFile);
-                                    myDropzone.files.push(mockFile);
-                                    var a = document.createElement('a');
-                                    a.setAttribute('href', "../../../src/task/document/" + mockFile.name);
-                                    a.setAttribute('target', "_blank");
-                                    a.setAttribute('class', "btn btn-outline-primary");
-                                    a.innerHTML = "Download";
-                                    myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
-                                });
-                            } else {
-                                addAlert(data.message);
-                            }
-                        }
-                    });
-                    // set edit title
-                    $("#name_task").val(kanban_curr_item_title);
-                },
 
                 buttonClick: function(el, boardId) {
                     // create a form to add add new element
@@ -984,6 +958,8 @@ $teams = $pdoS->fetchAll();
                 });
             });
 
+
+
             // Kanban Quill Editor
             // -------------------
             var composeCommentEditor = new Quill(".snow-container .compose-editor", {
@@ -994,7 +970,7 @@ $teams = $pdoS->fetchAll();
                 theme: "snow"
             });
 
-            $('#comment').on('click', function(e) {
+            $('#submit_comment').on('click', function(e) {
                 e.preventDefault();
                 var comment = composeCommentEditor.root.innerHTML;
                 var id_task = document.getElementById('id_task').value;
@@ -1019,6 +995,145 @@ $teams = $pdoS->fetchAll();
             $(".kanban-title-board").on("mouseenter", function() {
                 $(this).attr("contenteditable", "true");
                 $(this).addClass("line-ellipsis");
+            });
+
+            // Show comment popup
+            // ------------------------------
+            $(".kanban-item").on("click", function(el) {
+                if ($(el.target.parentElement).hasClass('kanban-drag')) {
+                    // kanban-overlay and sidebar display block on click of kanban-item
+                    $(".kanban-overlay").addClass("show");
+                    $(".kanban-sidebar").addClass("show");
+                    // Set el to var kanban_curr_el, use this variable when updating title
+                    kanban_curr_el = $(el.target);
+                    // Extract  the kan ban item & id and set it to respective vars
+                    kanban_curr_item_title = $(el.target).contents()[0].data;
+                    kanban_curr_item_id = $(el.target).attr("data-eid");
+                    var id_task = kanban_curr_item_id.replaceAll('kanban-item-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/get_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status == 'success') {
+                                $("#description_task").val(data.task.description_task);
+
+                                var date_task = $('#date_task').pickadate('picker');
+                                moment.locale('fr');
+                                date_task.set('select', moment(data.task.date_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
+
+                                var dateecheance_task = $('#dateecheance_task').pickadate('picker');
+                                dateecheance_task.set('select', moment(data.task.dateecheance_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
+
+                                $("#etiquette_task").val(data.task.etiquette_task);
+                                $("#color_etiq").val(data.task.color_etiq);
+                                var selected_membres = [];
+                                var selected_teams = [];
+                                if (data.membres.length != 0) {
+                                    data.membres.forEach(element => {
+                                        selected_membres.push(element['id_membre']);
+                                    });
+                                }
+                                $("#membres").val(selected_membres);
+                                $('#membres').trigger('change');
+                                if (data.teams) {
+                                    data.teams.forEach(element => {
+                                        selected_teams.push(element['id_team']);
+                                    });
+                                }
+                                $("#teams").val(selected_teams);
+                                $('#teams').trigger('change');
+                            } else {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
+                    // set edit title
+                    $("#name_task").val(kanban_curr_item_title);
+                }
+            });
+
+            // Show comment popup
+            // ------------------------------
+            $(".kanban-comment").on("click", function() {
+                var id_task = $(this).closest(".kanban-item").attr("data-eid").replaceAll('kanban-item-', '');
+                kanban_curr_el = $(this);
+                $('#comment').modal('show');
+
+                /* $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_attachments_task.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_task: id_task
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {
+                            $.each(data.docs, function(key, value) {
+                                var mockFile = {
+                                    name: value.name,
+                                    size: value.size,
+                                    status: 'success'
+                                };
+                                myDropzone.options.addedfile.call(myDropzone, mockFile);
+                                myDropzone.files.push(mockFile);
+                                var a = document.createElement('a');
+                                a.setAttribute('href', "../../../src/task/document/" + mockFile.name);
+                                a.setAttribute('target', "_blank");
+                                a.setAttribute('class', "btn btn-outline-primary");
+                                a.innerHTML = "Download";
+                                myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
+                            });
+                            $('#attachement').modal('show');
+                        }
+                    }
+                }); */
+            });
+
+            // Show attachment popup
+            // ------------------------------
+            $(".kanban-attachment").on("click", function() {
+                var id_task = $(this).closest(".kanban-item").attr("data-eid").replaceAll('kanban-item-', '');
+                kanban_curr_el = $(this);
+                $("#id_task").removeAttr('value');
+                myDropzone.removeAllFiles(true);
+
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_attachments_task.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_task: id_task
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {
+                            $.each(data.docs, function(key, value) {
+                                var mockFile = {
+                                    name: value.name,
+                                    size: value.size,
+                                    status: 'success'
+                                };
+                                myDropzone.options.addedfile.call(myDropzone, mockFile);
+                                myDropzone.files.push(mockFile);
+                                var a = document.createElement('a');
+                                a.setAttribute('href', "../../../src/task/document/" + mockFile.name);
+                                a.setAttribute('target', "_blank");
+                                a.setAttribute('class', "btn btn-outline-primary");
+                                a.innerHTML = "Download";
+                                myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
+                            });
+                            $("#id_task").val(id_task);
+                            $('#attachement').modal('show');
+                        }
+                    }
+                });
             });
 
             $(".kanban-title-board").on("mouseleave", function() {

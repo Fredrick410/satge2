@@ -15,7 +15,7 @@ if (isset($_POST['id_task']) and isset($_POST['namedoc_task'])) {
         if (!empty($_POST['id_task'])) {
             $id_task = htmlspecialchars($_POST['id_task']);
         } else {
-            $response_array['status'] = 'error';
+            $response_array['status'] = 'success';
             $response_array['message'] = "Identifiant de tache vide";
             echo json_encode($response_array);
             exit();
