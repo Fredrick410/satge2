@@ -85,20 +85,40 @@ if (isset($_POST['id_mission'])) {
         exit();
     }
 
-    if (isset($_POST['etiquette_task']) and !empty($_POST['etiquette_task'])) {
+    if (isset($_POST['new_etiq']) and !empty($_POST['new_etiq']) and isset($_POST['new_etiq_color']) and !empty($_POST['new_etiq_color'])) {
+        $new_etiq = htmlspecialchars($_POST['new_etiq']);
+        $new_etiq_color = htmlspecialchars($_POST['new_etiq_color']);
+        $pdoSt = $bdd->prepare('SELECT * FROM etiquette WHERE color = :color and id_session = :id_session');
+        $pdoSt->bindValue(':color', $new_etiq_color);
+        $pdoSt->bindValue(':id_session', $_SESSION['id_session']);
+        $pdoSt->execute();
+        $nb_etiquette = $pdoSt->rowCount();
+        if ($nb_etiquette == 0) {
+            $insert = $bdd->prepare('INSERT INTO etiquette (name_etiq, color, id_session) VALUES(?,?,?)');
+            $insert->execute(array(
+                htmlspecialchars($new_etiq),
+                htmlspecialchars($new_etiq_color),
+                htmlspecialchars($_SESSION['id_session'])
+            ));
+            $response_array['color'] = $new_etiq_color;
+        } else {
+            $response_array['status'] = 'error';
+            $response_array['message'] = "Etiquette de couleur existante";
+            echo json_encode($response_array);
+            exit();
+        }
+    } else if (isset($_POST['etiquette_task']) and !empty($_POST['etiquette_task'])) {
         $etiquette_task = htmlspecialchars($_POST['etiquette_task']);
+        //Recuperation de l'etiquette selectionnee
+        $pdoSt = $bdd->prepare('SELECT * FROM etiquette WHERE color = :color');
+        $pdoSt->bindValue(':color', $etiquette_task);
+        $pdoSt->execute();
+        $etiquette = $pdoSt->fetch();
+        $new_etiq = $etiquette['name_etiq'];
+        $new_etiq_color = $etiquette['color'];
     } else {
         $response_array['status'] = 'error';
         $response_array['message'] = "Etiquette non definie";
-        echo json_encode($response_array);
-        exit();
-    }
-
-    if (isset($_POST['color_etiq']) and !empty($_POST['color_etiq'])) {
-        $color_etiq = htmlspecialchars($_POST['color_etiq']);
-    } else {
-        $response_array['status'] = 'error';
-        $response_array['message'] = "Couleur d'etiquette non definie";
         echo json_encode($response_array);
         exit();
     }
@@ -115,7 +135,7 @@ if (isset($_POST['id_mission'])) {
         $selected_teams = array();
     }
 
-    if (isset($selected_membres) or isset($selected_teams)) {
+    if (!empty($selected_membres) or !empty($selected_teams)) {
         // Mise a jour des infos sur la taches
         try {
             $insert = $bdd->prepare('UPDATE task SET name_task = ?, date_task = ?, dateecheance_task = ?, description_task = ?, etiquette_task = ?, color_etiq = ? WHERE id = ?');
@@ -124,8 +144,8 @@ if (isset($_POST['id_mission'])) {
                 $date_task,
                 $dateecheance_task,
                 $description_task,
-                $etiquette_task,
-                $color_etiq,
+                $new_etiq,
+                $new_etiq_color,
                 $id_task
             ));
         } catch (Exception $e) {
@@ -182,7 +202,6 @@ if (isset($_POST['id_mission'])) {
         }
 
         if (!empty($selected_teams)) {
-            echo $selected_teams[0];
             foreach ($selected_teams as $team) {
                 try {
                     $insert = $bdd->prepare('INSERT INTO tasks_teams VALUES (:id_task, :id_team)');

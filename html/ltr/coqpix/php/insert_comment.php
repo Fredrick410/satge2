@@ -7,7 +7,7 @@ require_once 'verif_session_connect.php';
 
 try {
     $par = $_SESSION['id_membre'];
-    $date_jm = date("d/m");
+    $date = date("Y-m-d");
     $date_j = date("d");
     $date_m = date("m");
     $date_a = date("Y");
@@ -23,10 +23,10 @@ try {
     $bdd->setAttribute(PDO::ATTR_AUTOCOMMIT, 0);
     $bdd->beginTransaction();
 
-    $insert = $bdd->prepare('INSERT INTO task_commentaire (par, date_jm, date_hmin, content, task_num, id_session) VALUES((SELECT CONCAT(nom, " ", prenom) AS name_membre FROM membres WHERE id = ?),?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO task_commentaire (par, date, date_hmin, content, task_num, id_session) VALUES((SELECT CONCAT(nom, " ", prenom) AS name_membre FROM membres WHERE id = ?),?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($par),
-        htmlspecialchars($date_jm),
+        htmlspecialchars($date),
         htmlspecialchars($date_hmin),
         htmlspecialchars($content),
         htmlspecialchars($task_num),

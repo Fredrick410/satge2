@@ -41,8 +41,10 @@ foreach ($tasks as $task) {
         $pdoS->execute();
         $task_comment_number[] = $pdoS->fetch();
     }
-    $mission_task_comment_number[] = $task_comment_number;
-    unset($task_comment_number);
+    if (isset($task_comment_number)) {
+        $mission_task_comment_number[] = $task_comment_number;
+        unset($task_comment_number);
+    }
 }
 
 foreach ($tasks as $task) {
@@ -52,8 +54,10 @@ foreach ($tasks as $task) {
         $pdoS->execute();
         $task_doc_number[] = $pdoS->fetch();
     }
-    $mission_task_doc_number[] = $task_doc_number;
-    unset($task_doc_number);
+    if (isset($task_doc_number)) {
+        $mission_task_doc_number[] = $task_doc_number;
+        unset($task_doc_number);
+    }
 }
 //print("<pre>". print_r($mission_task_comment_number,true)."</pre>");
 
@@ -70,6 +74,12 @@ $pdoS = $bdd->prepare('SELECT * FROM teams WHERE id_session = :num');
 $pdoS->bindValue(':num', $_SESSION['id_session']);
 $pdoS->execute();
 $teams = $pdoS->fetchAll();
+
+//Recuperation de la liste des etiquettes crees par cette entreprise
+$pdoSt = $bdd->prepare('SELECT * FROM etiquette WHERE id_session = :id_session');
+$pdoSt->bindValue(':id_session', $_SESSION['id_session']);
+$pdoSt->execute();
+$etiq = $pdoSt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -114,6 +124,25 @@ $teams = $pdoS->fetchAll();
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
+    <style>
+        .no-comments {
+            list-style: none;
+        }
+
+        .none-validation {
+            display: none;
+        }
+
+        <?php
+        foreach ($etiq as $etiquette) {
+        ?>.kanban-container .kanban-board .kanban-item[data-border="<?= $etiquette['color'] ?>"]:before {
+            background-color: <?= $etiquette['color'] ?>;
+        }
+
+        <?php
+        }
+        ?>
+    </style>
 
 </head>
 <!-- END: Head-->
@@ -121,11 +150,6 @@ $teams = $pdoS->fetchAll();
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern <?php if ($entreprise['theme_web'] == 'light') echo "semi-"; ?>dark-layout 2-columns  navbar-sticky footer-static menu-collapsed " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if ($entreprise['theme_web'] == 'light') echo "semi-"; ?>dark-layout">
-    <style>
-        .none-validation {
-            display: none;
-        }
-    </style>
     <!-- BEGIN: Header-->
     <?php $btnreturn = false;
     include('php/menu_header_front.php'); ?>
@@ -186,10 +210,22 @@ $teams = $pdoS->fetchAll();
                                             <label>Date de fin</label>
                                             <input type="text" class="form-control edit-kanban-item-date" id="dateecheance_task" placeholder="Ex: Mercredi 21 Août 2019">
                                         </div>
-                                        <div class="form-group">
-                                            <label>Etiquette</label>
-                                            <input type="text" class="form-control" id="etiquette_task" placeholder="Nom de l'etiquette">
-                                            <input type="color" class="form-control" id="color_etiq">
+                                        <div id="div_etiq">
+                                            <label style="color: #bac0c7;">Etiquette</label>
+                                            <div class="flex-grow-1 d-flex align-items-center form-group">
+                                                <i class="bx bx-tag align-middle mr-25"></i>
+                                                <select id="etiquette_task" class="form-control">
+                                                    <?php foreach ($etiq as $etiquette) : ?>
+                                                        <option value="<?= $etiquette['color'] ?>"><?= $etiquette['name_etiq'] ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <i onclick="newetiq()" class="bx bx-plus-circle cursor-pointer"></i>
+                                            </div>
+                                        </div>
+                                        <div id="div_color" class="form-group" style="display: none;">
+                                            <label for="etiq">Nouvelle etiquette :</label>
+                                            <input type="text" class="form-control" id="etiq" name="new_etiq" placeholder="Nom de l'étiquette" disabled>
+                                            <input class="form-control" id="etiq_color" type="color" name="new_color" value="#ffc874" class="form-control" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="membres">Membres</label>
@@ -236,6 +272,7 @@ $teams = $pdoS->fetchAll();
                                             ?>
                                         </div>
                                     </div>
+                                    <input type="hidden" id="tache">
                                 </div>
                                 <div class="card-footer d-flex justify-content-end">
                                     <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
@@ -265,11 +302,15 @@ $teams = $pdoS->fetchAll();
                                 </button>
                             </div>
                             <div class="modal-body">
+                                <ul id="posts-list">
+
+                                </ul>
                                 <!-- Compose mail Quill editor -->
                                 <div class="form-group">
                                     <label>Ajouter un commentaire</label>
                                     <div class="snow-container border rounded p-1">
                                         <div class="compose-editor"></div>
+                                        <input type="hidden" id="id_tache">
                                         <div class="d-flex justify-content-end">
                                             <div class="compose-quill-toolbar">
                                                 <span class="ql-formats mr-0">
@@ -365,7 +406,47 @@ $teams = $pdoS->fetchAll();
     <!-- END: Page JS-->
 
     <script>
-        var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_data, kanban_item, kanban_users;
+        // Fonction de creation des commentaires
+        function createComment(data) {
+            var html = '<li><article id="' + data.id + '" class="hentry">' +
+                '<footer class="post-info">' +
+                '<abbr class="published" title="' + data.date + '">' +
+                parseDisplayDate(data.date) +
+                '</abbr>' +
+                '<address class="vcard author">' +
+                'By <a class="url fn" href="#">' + data.comment_author + '</a>' +
+                '</address>' +
+                '</footer>' +
+                '<div class="entry-content">' +
+                '<p>' + data.comment + '</p>' +
+                '</div>' +
+                '</article></li>';
+
+            return html;
+        }
+
+        function parseDisplayDate(date) {
+            date = (date instanceof Date ? date : new Date(Date.parse(date)));
+            var display = date.getDate() + ' ' + ['Janvier', 'Février', 'Mars',
+                    'Avril', 'Mai', 'Juin', 'Juillet',
+                    'Août', 'Septembre', 'Octobre',
+                    'Novembre', 'Décembre'
+                ][date.getMonth()] + ' ' +
+                date.getFullYear();
+            return display;
+        }
+
+        function newetiq() {
+            document.getElementById('div_color').style.display = "block";
+            document.getElementById('etiq').disabled = false;
+            document.getElementById('etiq_color').disabled = false;
+            $('#div_etiq').hide();
+            document.getElementById('etiquette_task').disabled = true;
+        }
+    </script>
+
+    <script>
+        var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_curr_item_due_date, kanban_data, kanban_item, kanban_users;
 
         function addAlert(message, type) {
             if (type == "success") {
@@ -408,11 +489,12 @@ $teams = $pdoS->fetchAll();
                     success: function(data) {
                         if (data.status != 'success') {
                             addAlert(data.message);
+                        } else if (data.message == null) {
+                            var nb_attachment = $(kanban_curr_el).contents()[1].innerHTML;
+                            nb_attachment--;
+                            $(kanban_curr_el).contents()[1].innerHTML = nb_attachment;
                         }
                         file.previewElement.remove();
-                        var nb_attachment = $(kanban_curr_el).contents()[1].innerHTML;
-                        nb_attachment--;
-                        $(kanban_curr_el).contents()[1].innerHTML = nb_attachment;
                     }
                 });
             },
@@ -444,7 +526,6 @@ $teams = $pdoS->fetchAll();
             }
         });
 
-
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
             // Kanban Board and Item Data passed by json
@@ -465,6 +546,7 @@ $teams = $pdoS->fetchAll();
                                                 id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -492,6 +574,7 @@ $teams = $pdoS->fetchAll();
                                                 id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -540,6 +623,7 @@ $teams = $pdoS->fetchAll();
                                                 id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -567,6 +651,7 @@ $teams = $pdoS->fetchAll();
                                                 id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -888,13 +973,14 @@ $teams = $pdoS->fetchAll();
             // -------------------------------
             $(".update-kanban-item").on("click", function(e) {
                 e.preventDefault();
-                var id_task = $("#id_task").val();
+                var id_task = $("#tache").val();
                 var $edit_title = $("#name_task").val();
                 var description_task = $('#description_task').val();
                 var date_task = $('#date_task').siblings('input[type=hidden]').val();
                 var dateecheance_task = $('#dateecheance_task').siblings('input[type=hidden]').val();
                 var etiquette_task = $("#etiquette_task").val();
-                var color_etiq = $("#color_etiq").val();
+                var new_etiq = $("#etiq").val();
+                var new_etiq_color = $("#etiq_color").val();
                 var selected_membres = [];
                 var selected_teams = [];
                 var membres = $('#membres').select2('data');
@@ -920,7 +1006,8 @@ $teams = $pdoS->fetchAll();
                             date_task: date_task,
                             dateecheance_task: dateecheance_task,
                             etiquette_task: etiquette_task,
-                            color_etiq: color_etiq,
+                            new_etiq: new_etiq,
+                            new_etiq_color: new_etiq_color,
                             selected_membres: selected_membres,
                             selected_teams: selected_teams
                         },
@@ -928,11 +1015,29 @@ $teams = $pdoS->fetchAll();
                         success: function(data) {
                             if (data.status != 'success') {
                                 addAlert(data.message);
+                            } else {
+                                $(kanban_curr_item_due_date).contents()[0].data = $('#dateecheance_task').val();
+                                $(kanban_curr_el).txt = $edit_title;
+                                $("#etiquette_task").val("");
+                                $("#etiq").val("");
+                                $("#etiq_color").val("#000000");
+                                $('#div_color').hide();
+                                $('#etiq').prop('disabled', true);
+                                $('#etiq_color').prop('disabled', true);
+                                $('#div_etiq').show();
+                                $('#etiquette_task').prop('disabled', false);
+                                $("#etiquette_task").append(new Option(new_etiq, new_etiq_color));
+                                if(typeof(data.color) !== "undefined"){
+                                    $("head > style").append('.kanban-container .kanban-board .kanban-item[data-border="'+data.color+'"]:before {background-color:'+data.color+';}');
+                                    $("[data-eid='kanban-item-"+id_task+"']").attr('data-border', data.color);
+                                }
+                                else{
+                                    $("[data-eid='kanban-item-"+id_task+"']").attr('data-border', etiquette_task);
+                                }
                             }
                         }
                     });
                 }
-                $(kanban_curr_el).txt = $edit_title;
             });
 
             // Delete Kanban Item
@@ -997,7 +1102,7 @@ $teams = $pdoS->fetchAll();
                 $(this).addClass("line-ellipsis");
             });
 
-            // Show comment popup
+            // Show task popup
             // ------------------------------
             $(".kanban-item").on("click", function(el) {
                 if ($(el.target.parentElement).hasClass('kanban-drag')) {
@@ -1006,6 +1111,7 @@ $teams = $pdoS->fetchAll();
                     $(".kanban-sidebar").addClass("show");
                     // Set el to var kanban_curr_el, use this variable when updating title
                     kanban_curr_el = $(el.target);
+                    kanban_curr_item_due_date = $(el.target).find(".kanban-due-date").contents()[1];
                     // Extract  the kan ban item & id and set it to respective vars
                     kanban_curr_item_title = $(el.target).contents()[0].data;
                     kanban_curr_item_id = $(el.target).attr("data-eid");
@@ -1019,6 +1125,7 @@ $teams = $pdoS->fetchAll();
                         dataType: 'json',
                         success: function(data) {
                             if (data.status == 'success') {
+                                $("#tache").val(id_task);
                                 $("#description_task").val(data.task.description_task);
 
                                 var date_task = $('#date_task').pickadate('picker');
@@ -1028,7 +1135,7 @@ $teams = $pdoS->fetchAll();
                                 var dateecheance_task = $('#dateecheance_task').pickadate('picker');
                                 dateecheance_task.set('select', moment(data.task.dateecheance_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
 
-                                $("#etiquette_task").val(data.task.etiquette_task);
+                                $("#etiquette_task").val(data.task.color_etiq);
                                 $("#color_etiq").val(data.task.color_etiq);
                                 var selected_membres = [];
                                 var selected_teams = [];
@@ -1046,13 +1153,14 @@ $teams = $pdoS->fetchAll();
                                 }
                                 $("#teams").val(selected_teams);
                                 $('#teams').trigger('change');
+
+                                // set edit title
+                                $("#name_task").val(kanban_curr_item_title);
                             } else {
                                 addAlert(data.message);
                             }
                         }
                     });
-                    // set edit title
-                    $("#name_task").val(kanban_curr_item_title);
                 }
             });
 
@@ -1061,10 +1169,10 @@ $teams = $pdoS->fetchAll();
             $(".kanban-comment").on("click", function() {
                 var id_task = $(this).closest(".kanban-item").attr("data-eid").replaceAll('kanban-item-', '');
                 kanban_curr_el = $(this);
-                $('#comment').modal('show');
+                $("#id_task").removeAttr('value');
 
-                /* $.ajax({
-                    url: "../../../html/ltr/coqpix/php/get_attachments_task.php", //new path, save your work first before u try
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
                         id_task: id_task
@@ -1074,25 +1182,22 @@ $teams = $pdoS->fetchAll();
                         if (data.status != 'success') {
                             addAlert(data.message);
                         } else {
-                            $.each(data.docs, function(key, value) {
-                                var mockFile = {
-                                    name: value.name,
-                                    size: value.size,
-                                    status: 'success'
-                                };
-                                myDropzone.options.addedfile.call(myDropzone, mockFile);
-                                myDropzone.files.push(mockFile);
-                                var a = document.createElement('a');
-                                a.setAttribute('href', "../../../src/task/document/" + mockFile.name);
-                                a.setAttribute('target', "_blank");
-                                a.setAttribute('class', "btn btn-outline-primary");
-                                a.innerHTML = "Download";
-                                myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
+                            if (data.comments.length == 0) {
+                                //<li class = "no-comments" > Soyez le premier à commenter < /li>
+                            }
+                            $.each(data.comments, function(key, value) {
+                                var commentHtml = createComment(data);
+                                var commentEl = $(commentHtml);
+                                commentEl.hide();
+                                var postsList = $('#posts-list');
+                                postsList.addClass('has-comments');
+                                postsList.prepend(commentEl);
+                                commentEl.slideDown();
                             });
-                            $('#attachement').modal('show');
+                            $('#comment').modal('show');
                         }
                     }
-                }); */
+                });
             });
 
             // Show attachment popup
@@ -1165,7 +1270,7 @@ $teams = $pdoS->fetchAll();
                 labelMonthSelect: 'Selectionner le mois',
                 labelYearSelect: 'Selectionner une année',
                 monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-                monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+                monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jui', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
                 weekdaysFull: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
                 weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
                 weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
