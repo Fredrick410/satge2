@@ -59,7 +59,35 @@ foreach ($tasks as $task) {
         unset($task_doc_number);
     }
 }
-//print("<pre>". print_r($mission_task_comment_number,true)."</pre>");
+//print("<pre>". print_r($mission_task_membres,true)."</pre>");
+
+
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT * FROM tasks_teams INNER JOIN teams ON(tasks_teams.id_team = teams.id)  WHERE id_task = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_teams[] = $pdoS->fetchAll();
+    }
+    if (isset($task_teams)) {
+        $mission_task_teams[] = $task_teams;
+        unset($task_teams);
+    }
+}
+
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT * FROM tasks_membres INNER JOIN membres ON(tasks_membres.id_membre = membres.id)  WHERE id_task = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_membres[] = $pdoS->fetchAll();
+    }
+    if (isset($task_membres)) {
+        $mission_task_membres[] = $task_membres;
+        unset($task_membres);
+    }
+}
+//print("<pre>". print_r($mission_task_membres,true)."</pre>");
 
 
 //On recupere la liste des membres de cette entreprise
@@ -547,6 +575,38 @@ $etiq = $pdoSt->fetchAll();
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
                                                 border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -575,6 +635,38 @@ $etiq = $pdoSt->fetchAll();
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
                                                 border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -624,6 +716,38 @@ $etiq = $pdoSt->fetchAll();
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
                                                 border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -652,6 +776,38 @@ $etiq = $pdoSt->fetchAll();
                                                 title: "<?= $tasks[$i][$j]['name_task'] ?>",
                                                 dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
                                                 border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
                                                 comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
                                                 attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
                                                 drop: function(el, target, source, sibling) {
@@ -757,6 +913,19 @@ $etiq = $pdoSt->fetchAll();
                     (board_item_users = board_item_dueDate = board_item_comment = board_item_attachment = board_item_image = board_item_badge =
                         " ");
 
+                    // check if users are defined or not and loop it for getting value from user's array
+                    if (typeof $(board_item_el).attr("data-users") !== "undefined") {
+                        for (kanban_users in kanban_board_data[kanban_data].item[kanban_item].users) {
+                            board_item_users +=
+                                '<li class="kanban-badge">' +
+                                '<div class="badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: #' +
+                                Math.floor(Math.random() * 16777215).toString(16) +
+                                ' ;">' +
+                                kanban_board_data[kanban_data].item[kanban_item].users[kanban_users] +
+                                "</div>" +
+                                "</li>";
+                        }
+                    }
                     // check if dueDate is defined or not
                     if (typeof $(board_item_el).attr("data-dueDate") !== "undefined") {
                         board_item_dueDate =
@@ -787,26 +956,7 @@ $etiq = $pdoSt->fetchAll();
                             "</span>" +
                             "</div>";
                     }
-                    // check if Image is defined or not
-                    if (typeof $(board_item_el).attr("data-image") !== "undefined") {
-                        board_item_image =
-                            '<div class="kanban-image mb-1">' +
-                            '<img class="img-fluid" src=" ' +
-                            kanban_board_data[kanban_data].item[kanban_item].image +
-                            '" alt="kanban-image">';
-                        ("</div>");
-                    }
-                    // check if Badge is defined or not
-                    if (typeof $(board_item_el).attr("data-badgeContent") !== "undefined") {
-                        board_item_badge =
-                            '<div class="kanban-badge">' +
-                            '<div class="badge-circle badge-circle-sm badge-circle-light-' +
-                            kanban_board_data[kanban_data].item[kanban_item].badgeColor +
-                            ' font-size-small font-weight-bold">' +
-                            kanban_board_data[kanban_data].item[kanban_item].badgeContent +
-                            "</div>";
-                        ("</div>");
-                    }
+
                     // add custom 'kanban-footer'
                     if (
                         typeof(
@@ -826,7 +976,7 @@ $etiq = $pdoSt->fetchAll();
                             '<div class="kanban-footer-right">' +
                             '<div class="kanban-users">' +
                             board_item_badge +
-                            '<ul class="list-unstyled users-list m-0 d-flex align-items-center">' +
+                            '<ul class="list-unstyled m-0 d-flex align-items-center">' +
                             board_item_users +
                             "</ul>" +
                             "</div>" +
@@ -1027,12 +1177,11 @@ $etiq = $pdoSt->fetchAll();
                                 $('#div_etiq').show();
                                 $('#etiquette_task').prop('disabled', false);
                                 $("#etiquette_task").append(new Option(new_etiq, new_etiq_color));
-                                if(typeof(data.color) !== "undefined"){
-                                    $("head > style").append('.kanban-container .kanban-board .kanban-item[data-border="'+data.color+'"]:before {background-color:'+data.color+';}');
-                                    $("[data-eid='kanban-item-"+id_task+"']").attr('data-border', data.color);
-                                }
-                                else{
-                                    $("[data-eid='kanban-item-"+id_task+"']").attr('data-border', etiquette_task);
+                                if (typeof(data.color) !== "undefined") {
+                                    $("head > style").append('.kanban-container .kanban-board .kanban-item[data-border="' + data.color + '"]:before {background-color:' + data.color + ';}');
+                                    $("[data-eid='kanban-item-" + id_task + "']").attr('data-border', data.color);
+                                } else {
+                                    $("[data-eid='kanban-item-" + id_task + "']").attr('data-border', etiquette_task);
                                 }
                             }
                         }
