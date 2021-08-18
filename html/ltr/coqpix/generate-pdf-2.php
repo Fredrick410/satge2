@@ -104,8 +104,8 @@ Ci-après dénommée <span style="font-weight: bold;">« Le prestataire »</span
 <br>
 <br>
 '.$info['name_crea'].'<br>
-Ayant son siège social sis '.$info['adresse_diri'].', '.$info['ville_diri'].' '.$info['cp_diri'].'<br>
-Immatriculée au RCS de '.$info['ville_diri'].' au numéro en cours d’immatriculation<br>
+Ayant son siège social sis '.$info['adresse_entreprise'].', '.$info['ville_entreprise'].' '.$info['cp_entreprise'].'<br>
+Immatriculée au RCS de '.$info['ville_entreprise'].' au numéro en cours d’immatriculation<br>
 Représentée par '.$info['nom_diri'].' '.$info['prenom_diri'].', dûment habilité(e) à l\'effet des présentes,<br>
 <br>
 <br>

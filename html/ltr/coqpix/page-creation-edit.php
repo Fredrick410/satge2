@@ -307,11 +307,36 @@ require_once 'php/verif_session_crea.php';
                                                                 <div class="col-12">
                                                                     <div class="form-group">
                                                                         <div class="controls">
+                                                                            <label>Adresse de l'entreprise</label>
+                                                                            <input type="text" name="adresse_entreprise" id="adresse_entreprise" class="form-control border rounded-pill border-dark" placeholder="Ex: 2 rue de Rivoli" value="<?= $crea['adresse_entreprise'] ?>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Ville</label>
+                                                                            <input type="text" name="ville_entreprise" class="form-control border rounded-pill border-dark" placeholder="Ex: Paris" value="<?= $crea['ville_entreprise'] ?>" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
+                                                                            <label>Code Postal</label>
+                                                                            <input type="text" name="cp_entreprise" class="form-control border rounded-pill border-dark" placeholder="Ex: 75004" value="<?= $crea['cp_entreprise'] ?>" required>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <div class="controls">
                                                                             <label>Secteur d'activité</label>
                                                                             <input type="text" name="secteur_dactivite" id="secteur_dactivite" class="form-control border rounded-pill border-dark" placeholder="" value="<?= $crea['secteur_dactivite'] ?>">
                                                                         </div>
                                                                     </div>
                                                                 </div> 
+                                                                
                                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
                                                                     <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1 border rounded-pill border-dark">Sauvegarder</button>
                                                                 </div>

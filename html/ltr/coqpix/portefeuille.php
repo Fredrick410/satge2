@@ -12,6 +12,11 @@ require_once 'php/verif_session_connect_admin.php';
     $portefeuille_prospect = $pdoSta->fetchAll();
     $count_prospect = count($portefeuille_prospect);
 
+    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_contrat NOT LIKE "" AND portefeuille_contrat="false"');
+    $pdoSta->execute();
+    $liste_contrat = $pdoSta->fetchAll();
+    $count_enligne = count($liste_contrat);
+
     $pdoSta = $bdd->prepare('SELECT * FROM portefeuille WHERE statut = "actif"');
     $pdoSta->execute();
     $portefeuille_actif = $pdoSta->fetchAll();
@@ -176,9 +181,6 @@ require_once 'php/verif_session_connect_admin.php';
     $sum_dece = $pdoSta->fetch();
     if($sum_dece['somme'] == ""){$somme_dece= "0";}else{$somme_dece = $sum_dece['somme'];}
 
-    $pdoSta = $bdd->prepare('SELECT * FROM crea_societe WHERE doc_contrat NOT LIKE "" AND portefeuille_contrat="false"');
-    $pdoSta->execute();
-    $liste_contrat = $pdoSta->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -384,7 +386,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <i class="bx bx-grid-small icon_size"></i>
                                             </div>
                                             <p class="text-muted mb-0 line-ellipsis">Total</p>
-                                            <h2 class="mb-0"><?= $count_actif + $count_encours + $count_passif + $count_prospect ?></h2>
+                                            <h2 class="mb-0"><?= $count_actif + $count_encours + $count_passif + $count_prospect + $count_enligne ?></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -396,8 +398,9 @@ require_once 'php/verif_session_connect_admin.php';
                                             <div class="badge-circle badge-circle-lg badge-circle-light-primary mx-auto my-1">
                                                 <i class='bx bxs-save icon_size'></i>
                                             </div>
-                                            <p class="text-muted mb-0 line-ellipsis">Prospect</p>
-                                            <h2 class="mb-0"><?= $count_prospect ?></h2>
+                                            <p class="text-muted mb-0 line-ellipsis">Prospect (local) + Prospect (en ligne)</p>
+                                            <h2 class="mb-0"><?= $count_prospect ?> + <?= $count_enligne ?></h2>
+                                            <h2 class="mb-0"></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -854,7 +857,7 @@ require_once 'php/verif_session_connect_admin.php';
             $info = '#00CFDD',
             $label_color_light = '#E6EAEE';
 
-          var themeColors = [$primary, $warning, $danger, $success, $info];
+          var themeColors = [$primary, $info, $warning, $danger, $success];
 
           // Line Chart
           // ----------------------------------
@@ -908,8 +911,8 @@ require_once 'php/verif_session_connect_admin.php';
               height: 320
             },
             colors: themeColors,
-            labels: ['Prospect', 'En cours', 'Passif', 'Actif'],
-            series: [<?= $count_prospect ?>, <?= $count_encours ?>, <?= $count_passif ?>, <?= $count_actif ?>],
+            labels: ['Prospect (local)', 'Prospect (en ligne)', 'En cours', 'Passif', 'Actif'],
+            series: [<?= $count_prospect ?>, <?= $count_enligne ?>, <?= $count_encours ?>, <?= $count_passif ?>, <?= $count_actif ?>],
             legend: {
               itemMargin: {
                 horizontal: 2
@@ -956,14 +959,14 @@ require_once 'php/verif_session_connect_admin.php';
                     // color: $label_color,
                     formatter: function (w) {
                       // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                      return <?= $count_actif + $count_encours + $count_passif + $count_prospect ?>
+                      return <?= $count_actif + $count_encours + $count_passif + $count_prospect + $count_enligne ?>
                     }
                   }
                 }
               }
             },
-            series: [<?= $count_prospect ?>, <?= $count_actif ?>, <?= $count_encours ?>, <?= $count_passif ?>],
-            labels: ['Prospect', 'Actif', 'En cours', 'Passif'],
+            series: [<?= $count_prospect ?>, <?= $count_enligne ?>, <?= $count_actif ?>, <?= $count_encours ?>, <?= $count_passif ?>],
+            labels: ['Prospect (local)', 'Prospect (en ligne)', 'Actif', 'En cours', 'Passif'],
           }
           const radialBarChart = new ApexCharts(
             document.querySelector("#radial-bar-chart"),
