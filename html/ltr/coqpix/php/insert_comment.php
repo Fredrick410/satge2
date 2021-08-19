@@ -51,6 +51,11 @@ try {
         htmlspecialchars($task_num),
         htmlspecialchars($_SESSION['id_session'])
     ));
+
+    $pdo = $bdd->prepare('SELECT * FROM membres WHERE id=:num');
+    $pdo->bindValue(':num', $par);
+    $pdo->execute();
+    $membre = $pdo->fetch();
 } catch (Exception $e) {
     $bdd->rollBack();
     $response_array['status'] = 'error';
@@ -61,5 +66,9 @@ try {
 $bdd->commit();
 $bdd->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
 $response_array['status'] = 'success';
+$response_array['par'] = $membre['nom'] . ' ' . $membre['prenom'];
+$response_array['date'] = $date;
+$response_array['date_hmin'] = $date_hmin;
+$response_array['content'] = htmlspecialchars($content);
 echo json_encode($response_array);
 exit();

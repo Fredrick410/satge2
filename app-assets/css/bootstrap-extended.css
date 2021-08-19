@@ -1694,6 +1694,113 @@ _:-ms-lang(x) {
 /*   Pagination css  */
 /*------------------*/
 
+.pagination .page-item.previous .page-link, .pagination .page-item.next .page-link, .pagination .page-item.first .page-link, .pagination .page-item.last .page-link {
+  color: #5A8DEE;
+  padding: 0.435rem 0.5rem;
+}
+
+.pagination .page-item.previous.disabled .page-link, .pagination .page-item.next.disabled .page-link, .pagination .page-item.first.disabled .page-link, .pagination .page-item.last.disabled .page-link {
+  background-color: #F2F4F4;
+}
+
+.pagination .page-item:first-child .page-link {
+  border-left: 1px solid #DFE3E7;
+}
+
+.pagination .page-item:last-child .page-link {
+  border-right: 1px solid #DFE3E7;
+}
+
+.pagination .page-item .page-link {
+  /* page link customization */
+  border: 1px solid #DFE3E7;
+  border-right: 0;
+  border-left: 0;
+  color: #324356;
+  background-color: transparent;
+  font-weight: 600;
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: none;
+}
+
+.pagination .page-item .page-link:hover {
+  border-radius: 0.267rem;
+  background-color: rgba(90, 141, 238, 0.2);
+}
+
+.pagination .page-item .page-link i {
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.pagination .page-item.active {
+  border-radius: 0;
+}
+
+.pagination .page-item.active .page-link, .pagination .page-item.active .page-link:hover {
+  border-radius: 0.267rem;
+  background-color: #5A8DEE !important;
+  color: #FFFFFF;
+}
+
+.pagination .page-item.previous {
+  margin-right: .3571rem;
+}
+
+.pagination .page-item.previous .page-link {
+  border: 1px solid #DFE3E7;
+  border-radius: 0.267rem;
+}
+
+.pagination .page-item.previous ~ .page-item:nth-child(2) .page-link {
+  /* 1st page-item after "prev" button */
+  border-left: 1px solid #DFE3E7;
+  border-top-left-radius: 0.267rem;
+  border-bottom-left-radius: 0.267rem;
+}
+
+.pagination .page-item.previous ~ .page-item:nth-last-child(-n+2) .page-link {
+  /* last page-item previous of "Next" button */
+  border-right: 1px solid #DFE3E7;
+  border-top-right-radius: 0.267rem;
+  border-bottom-right-radius: 0.267rem;
+}
+
+.pagination .page-item.next {
+  margin-left: .3571rem;
+}
+
+.pagination .page-item.next .page-link {
+  border: 1px solid #DFE3E7;
+  border-radius: 0.267rem;
+}
+
+.pagination.pagination-borderless .page-item .page-link {
+  /* Borderless Pagination */
+  border: none !important;
+}
+
+.pagination.pagination-borderless .page-item.previous .page-link, .pagination.pagination-borderless .page-item.next .page-link {
+  background-color: #DFE3E7;
+}
+
+.pagination.pagination-borderless .page-item.previous .page-link:hover, .pagination.pagination-borderless .page-item.next .page-link:hover {
+  background-color: rgba(90, 141, 238, 0.2);
+}
+
+.pagination.pagination-lg .page-item:first-child .page-link {
+  border-top-left-radius: 0.267rem;
+  border-bottom-left-radius: 0.267rem;
+}
+
+.pagination.pagination-lg .page-item:last-child .page-link {
+  border-top-right-radius: 0.267rem;
+  border-bottom-right-radius: 0.267rem;
+}
+
+
 /*   spinner css   */
 /*----------------*/
 

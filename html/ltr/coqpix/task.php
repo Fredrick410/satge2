@@ -1,4 +1,4 @@
-<?php 
+    <?php 
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -20,10 +20,24 @@ require_once 'php/config.php';
     $pdoSttt->execute();
     $membre = $pdoSttt->fetchAll();
 
+    //Recuperation des missions
+    $pdoS = $bdd->prepare('SELECT * FROM mission WHERE id_session = :num ORDER BY id');
+    $pdoS->bindValue(':num', $_SESSION['id_session']);
+    $pdoS->execute();
+    $missions = $pdoS->fetchAll();
+
     $pdoStttt = $bdd->prepare('SELECT * FROM task WHERE id_session = :num');
     $pdoStttt->bindValue(':num',$_SESSION['id_session']);
     $pdoStttt->execute();
     $tache = $pdoStttt->fetchAll();
+    $pourc = "0";
+
+    $pdoSttt = $bdd->prepare('SELECT * FROM teams WHERE id_session= :num');
+    $pdoSttt->bindValue(':num',$_SESSION['id_session']);
+    $pdoSttt->execute();
+    $team = $pdoSttt->fetchAll();
+
+   // print("<pre>". print_r($team,true)."</pre>");
 
 ?>
 
@@ -48,6 +62,7 @@ require_once 'php/config.php';
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/select/select2.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/editors/quill/quill.snow.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/dragula.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/select/select2.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -67,7 +82,7 @@ require_once 'php/config.php';
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
-
+   
 </head>
 <!-- END: Head-->
 
@@ -164,10 +179,17 @@ require_once 'php/config.php';
                                             <span style="background-color: <?= $etiquette['color'] ?>;" class="etiq"></span>
                                         </a>
                                     <?php endforeach; ?>
-                                </div>
+                                </div>s
                                 <div class="from-group">
                                     <hr>
                                 </div>
+                                    <div class="chat-sidebar-list-wrapper pt-2">
+                                         <label>mission :</label>
+                                              <div class="chat-sidebar-name">
+                                            <span class="text-muted"><?= $missions[''] ?></span>
+                                        </div>            
+                                            </div>
+
                                 <div class="list-group none-validation" id="etiq_div">
                                     <form action="php/insert_etiq.php" method="POST">
                                         <label class="invoice-number mr-75">Nouvelle etiquette :</label>
@@ -183,7 +205,12 @@ require_once 'php/config.php';
                                             <br>
                                             <button type="submit" class="btn btn-outline-secondary"><i class='bx bx-plus-medical'></i></button>
                                         </div>
+
+                                        
+
                                     </form>
+                                      
+
                                 </div>
                             </div>
                             <!-- sidebar list end -->
@@ -214,13 +241,43 @@ require_once 'php/config.php';
                                 </button>
                             </div>
                             <!-- form start -->
-                            <form action="php/insert_task.php" id="compose-form" class="mt-1">
+                            <form  id="compose-form" class="mt-1">
                                 <div class="card-content">
                                     <div class="card-body py-0 border-bottom">
                                         <div class="form-group">
                                             <!-- text area for task title -->
-                                            <textarea name="name_task" class="form-control task-title" cols="1" rows="2" placeholder="Nom de la tache" required></textarea>
+                                            <textarea name="name_task" class="form-control task-title" cols="1" rows="2" placeholder="Nom de la tache" required id="id_tache"></textarea>
                                         </div>
+
+
+                                        <div class="select-box mr-3">
+                                            <div class="form-group d-flex align-items-center mr-1">
+                                                <!-- users avatar -->
+                                                <div class="avatar">
+                                                    <img src="#" class="avatar-user-image d-none" alt="#" width="38" height="38">
+                                                    <div class="avatar-content">
+                                                        <i class='bx bx-user font-medium-4'></i>
+                                                    </div>
+                                                </div>
+                                                <div class="select-box mr-2">
+                                                <label>équipe</label>
+                                                    <select class="js-example-basic-multiple form-control"  multiple name="name_team" id="id_team"> 
+                                                         <?php foreach($team as $teams): ?> 
+
+                                                                <option value="<?= $teams['id']?>"><?= $teams['name_team'] ?></option>
+                                                            <?php endforeach; ?> 
+                                                    </select>
+
+                                                    </div>
+                                            </div>
+                                                   <div class="modal-body" id="name_membre">
+                                                       
+
+                                                   </div>
+                                                
+
+                                        </div>
+                                        
                                         <div class="assigned d-flex justify-content-between">
                                             <div class="form-group d-flex align-items-center mr-1">
                                                 <!-- users avatar -->
@@ -232,14 +289,20 @@ require_once 'php/config.php';
                                                 </div>
                                                 <!-- select2  for user name  -->
                                                 <div class="select-box mr-1">
-                                                    <select class="select2-users-name form-control" id="select2-users-name" name="assignation_task">
+                                                    <label> membres</label>
+                                                    <select class="js-example-basic-multiple" multiple name="assignation_task" id="id_membre">
                                                             <?php foreach($membre as $membres): ?>
-                                                                <option value="<?= $membres['nom'] ?> <?= $membres['prenom'] ?>"><?= $membres['nom'] ?> <?= $membres['prenom'] ?></option>
+                                                               
+                                                                <option value="<?= $membres['id']?>"><?= $membres['nom'] ?> <?= $membres['prenom'] ?></option>
                                                             <?php endforeach; ?>
-                                                        </optgroup>
+                                                        
                                                     </select>
                                                 </div>
-                                            </div>
+                                              </div>
+                                         </div>
+
+                                                
+
                                             <div class="form-group d-flex align-items-center position-relative">
                                                 <!-- date picker -->
                                                 <div class="date-icon mr-50">
@@ -251,22 +314,25 @@ require_once 'php/config.php';
                                             <div class="form-group">
                                                 <div class="date-picker">
                                                     <label>Début</label>
-                                                    <input type="text" name="date_task" value="<?php  ?>" class="pickadate form-control px-0" placeholder="00/00/00" required>
+                                                    <input type="text" name="date_task" value="<?php  ?>" class="pickadate form-control px-0" placeholder="00/00/00" required id="id_date">
                                                 </div>
                                                 <div class="date-picker">
                                                     <label>Fin</label>
-                                                    <input type="text" name="dateecheance_task" value="31/12/<?php $dateY = date("Y"); $dateYy = substr($dateY, -2); echo $dateYy; ?>" class="pickadate form-control px-0" placeholder="00/00/00" required>
+                                                    <input type="text" name="dateecheance_task" value="31/12/<?php $dateY = date("Y");  echo $dateY; ?>" class="pickadate form-control px-0" placeholder="00/00/00" required id="id_dateecheance">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div id="div_etiq" class="card-body border-bottom task-description">
                                         <!--  Quill editor for task description -->
                                         <div class="snow-container border rounded p-50">
                                             <div class="d-flex justify-content-end">  
-                                                <textarea name="description_task" class="form-control task-title compose-quill-toolbar pb-0" cols="1" rows="2" placeholder="Description de la tache" required></textarea>
+                                                <textarea name="description_task" class="form-control task-title compose-quill-toolbar pb-0" cols="1" rows="2" placeholder="Description de la tache"  required id="description_taches"></textarea>
                                             </div>
                                         </div>
+
+
                                         <div class="tag d-flex justify-content-between align-items-center pt-1">
                                             <div class="flex-grow-1 d-flex align-items-center">
                                                 <i class="bx bx-tag align-middle mr-25"></i>
@@ -298,7 +364,7 @@ require_once 'php/config.php';
                                         <!-- quill editor for comment -->
                                         <div class="snow-container rounded p-50">
                                             <label>Commentaire :</label>
-                                            <input name="commentaire_task" class="form-control task-title compose-quill-toolbar pb-0" cols="1" rows="2" placeholder="Ecrire un commentaire ..." required>
+                                            <input name="commentaire_task" class="form-control task-title compose-quill-toolbar pb-0" cols="1" rows="2" placeholder="Ecrire un commentaire ..." id="id_commentaire" required>
                                         </div>
                                         <div class="mt-1 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary add-todo">Ajouter la tache</button>
@@ -352,6 +418,7 @@ require_once 'php/config.php';
                                                 <div class="todo-title-wrapper d-flex justify-content-sm-between justify-content-end align-items-center">
                                                     <div class="todo-title-area d-flex">
                                                         <i class='bx bx-grid-vertical handle'></i>
+                                                 
                                                         <div class="checkbox">
                                                             <input type="checkbox" class="checkbox-input" id="checkbox10">
                                                             <label for="checkbox10"></label>
@@ -376,6 +443,8 @@ require_once 'php/config.php';
                                                             }
 
                                                         ?>
+
+
                                                         <div class="todo-badge-wrapper d-flex">
                                                             <span class="badge badge-pill ml-50" style="margin-right: 10px; background-color: <?= $list_explode_color[0] ?>;"><?= $list_explode[$taille_etiq]; ?></span>
                                                         </div>
@@ -391,11 +460,25 @@ require_once 'php/config.php';
                                                         ?>
                                                         <span class="badge badge-circle badge-light-<?= $result_color_rand; ?>"><?= substr($task['assignation_task'], 0, 2); ?></span>
                                                         <a href="php/favo_task.php?num=<?= $task['id'] ?>&page=task" class='todo-item-favorite ml-75'><i class="<?php if($task['favorite'] == "1"){echo "bx bx-star bxs-star warning hoverfav";}else{echo "bx bx-star hoverfav";} ?>"></i></a>
-                                                        <a href="php/status_task.php?num=<?= $task['id'] ?>&page=task" class='todo-item-delete ml-75'><i class="bx bx-check-circle <?php if($task['status_task'] == "encour"){echo "orange_task";}else{echo "green_task";} ?> checkhover"></i></a>
+                                                        <a href="php/status_ta sk.php?num=<?= $task['id'] ?>&page=task" class='todo-item-delete ml-75'><i class="bx bx-check-circle <?php if($task['status_task'] == "encour"){echo "orange_task";}else{echo "green_task";} ?> checkhover"></i></a>
                                                         <a href="php/corbeille_task.php?num=<?= $task['id'] ?>&page=task" class='todo-item-delete ml-75'><i class="bx bx-trash checkhover"></i></a>
                                                     </div>
-                                                </div>
+
+                                         
+
+                                                          </div>
                                             </li>
+
+                                         <section id="progress-sizes">
+                                            <div class="row">
+                                            <div class="col-12">
+                                                <div class="progress progress-bar-success mb-2 ">
+                                                    <meter min="0" value=<?= $pourc?> max="100" high="180"></meter>       
+                                            </div>
+                                         </div>
+                                            </div>
+                                        </div>
+                             </section> 
                                             <script>
                                                 function RedirectionJavascript(){
                                                     document.location.href="task-view.php?num=<?= $task['id'] ?>";
@@ -416,7 +499,142 @@ require_once 'php/config.php';
             </div>
         </div>
     </div>
+    
+    
+       
+   
 
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
+    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="../../../app-assets/vendors/js/pickers/daterange/moment.min.js"></script>
+    <script src="../../../app-assets/vendors/js/pickers/daterange/daterangepicker.js"></script>
+    <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="../../../app-assets/vendors/js/editors/quill/quill.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/dragula.min.js"></script>
+
+    <!-- END: Page Vendor JS-->s
+
+    <!-- BEGIN: Theme JS-->
+    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
+    <script src="../../../app-assets/js/core/app-menu.js"></script>
+    <script src="../../../app-assets/js/core/app.js"></script>
+    <script src="../../../app-assets/js/scripts/components.js"></script>
+    <script src="../../../app-assets/js/scripts/footer.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+     <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+     <script src="../../../app-assets/js/scripts/forms/select/form-select2.js"></script>
+
+    <script src="../../../app-assets/js/scripts/pages/app-todo.js"></script>
+
+    <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.js"></script>
+    <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
+
+    <!-- END: Page JS-->
+
+
+
+                                           <script>
+                                                    $( "#id_team" )
+                                                      .change(function () {
+                                                        var str = document.getElementById("id_team").value;
+                                                        $.ajax({
+                                                                url: "../../../html/ltr/coqpix/php/teak_traite.php", //new path, save your work first before u try
+                                                                type: "POST",
+                                                                data: {
+                                                                    id: str
+                                                                   
+                                                                },
+                                                                dataType: 'json',
+                                                                success: function(data) {
+                                                                    if (data.status == 'success') {
+                                                                        var team=document.getElementById('name_membre');
+                                                                        var ul=document.createElement('ul');
+                                                                        team.appendChild(ul);
+
+                                                                         data.team_membre.forEach(function(item){
+                                                                             var li=document.createElement('li');
+
+                                                                                ul.appendChild(li);
+                                                                                li.innerHTML=item['name_membre'];
+                                                                      
+                                                                    });
+                                                                    } else {
+                                                                        addAlert(data.message);
+                                                                    }
+
+
+                                                                }
+
+
+                                                            });
+                                                                                               
+                                                            });
+                                                     
+                                             </script>
+     
+
+    <script>
+        
+                 $(".add-todo").on("click", function(e){
+                    e.preventDefault();
+
+                var membres = $('#id_membre').select2('data');
+                var $teams = $('#id_team').select2('data');
+                var name_task= $('#id_task').val();
+                var description_task = $('#description_taches').val();
+                var date_task=$('#id_date').val();
+                var dateecheance_task=$('#id_dateecheance').val();
+                var etiquette_task=$('#etiq_last').val();
+                var new_etiq=$('#etiq').val();
+                var new_color=$('etiq_color').val(); 
+
+                date_task = moment(date_task, 'DD/MM/YY').format('YYYY-MM-DD');
+                dateecheance_task = moment(dateecheance_task, 'DD/MM/YY').format('YYYY-MM-DD');
+
+                
+                console.log($teams);
+                console.log(dateecheance_task);
+                if ($teams.length != 0 || membres.length != 0) {
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/insert_task.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task,
+                            name_task: $edit_title,
+                            description_task: description_task,
+                            date_task: date_task,
+                            dateecheance_task: dateecheance_task,
+                            etiquette_task: etiquette_task,
+                            color_etiq: color_etiq,
+                            new_color: new_color,
+                            new_etiq: new_etiq,
+                            membres: membres,
+                            teams: teams
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
+                }
+                 
+            });
+
+               
+
+    </script>
     <script>
 
     function block_add_etiquette(){
@@ -438,33 +656,12 @@ require_once 'php/config.php';
         document.getElementById('div_etiq').style.display = "none";
         document.getElementById('etiq_last').disabled = true;
     }
+
+     $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+       });
+     
     </script>
-    <!-- BEGIN: Vendor JS-->
-    <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
-    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
-    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
-    <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/pickers/daterange/moment.min.js"></script>
-    <script src="../../../app-assets/vendors/js/pickers/daterange/daterangepicker.js"></script>
-    <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-    <script src="../../../app-assets/vendors/js/editors/quill/quill.js"></script>
-    <script src="../../../app-assets/vendors/js/extensions/dragula.min.js"></script>
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
-    <script src="../../../app-assets/js/core/app-menu.js"></script>
-    <script src="../../../app-assets/js/core/app.js"></script>
-    <script src="../../../app-assets/js/scripts/components.js"></script>
-    <script src="../../../app-assets/js/scripts/footer.js"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/app-todo.js"></script>
-    <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
 </body>

@@ -330,9 +330,13 @@ $etiq = $pdoSt->fetchAll();
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <ul id="posts-list">
+                                <div id="posts-list">
 
-                                </ul>
+                                </div>
+                                <nav>
+                                    <ul class="pagination" id="pagination">
+                                    </ul>
+                                </nav>
                                 <!-- Compose mail Quill editor -->
                                 <div class="form-group">
                                     <label>Ajouter un commentaire</label>
@@ -346,7 +350,7 @@ $etiq = $pdoSt->fetchAll();
                                                     <button class="ql-italic"></button>
                                                     <button class="ql-underline"></button>
                                                     <button class="ql-link"></button>
-                                                    <button id="submit_comment" class="btn btn-sm btn-primary btn-comment ml-25">Commenter</button>
+                                                    <button id="submit_comment" class="btn btn-sm btn-primary btn-comment ml-25" style="width: auto;">Commenter</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -354,17 +358,16 @@ $etiq = $pdoSt->fetchAll();
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" id="create">Créer</button>
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">
                                     <i class="bx bx-x d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block cancel">Annuler</span>
+                                    <span class="d-none d-sm-block cancel">Fermer</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal fade" id="attachement" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                <div class="modal fade" id="attachment" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -436,32 +439,18 @@ $etiq = $pdoSt->fetchAll();
     <script>
         // Fonction de creation des commentaires
         function createComment(data) {
-            var html = '<li><article id="' + data.id + '" class="hentry">' +
-                '<footer class="post-info">' +
-                '<abbr class="published" title="' + data.date + '">' +
-                parseDisplayDate(data.date) +
-                '</abbr>' +
-                '<address class="vcard author">' +
-                'By <a class="url fn" href="#">' + data.comment_author + '</a>' +
-                '</address>' +
-                '</footer>' +
-                '<div class="entry-content">' +
-                '<p>' + data.comment + '</p>' +
+            var content = document.createElement('textarea');
+            content.innerHTML = data.content;
+            content.classList.add('form-control');
+            content.style = 'style="overflow:auto;resize:none"';
+            var html = '<div class="card">' +
+                '<div class="card-body">' +
+                '<h5>' + data.par + '</h5>' +
+                content.childNodes[0].nodeValue +
                 '</div>' +
-                '</article></li>';
-
+                '<div class="card-footer text-muted text-right"><small>Le ' + moment(data.date, 'YYYY-MM-DD').format("DD-MM-YYYY") + ' à ' + data.date_hmin + '</small></div>' +
+                '</div>';
             return html;
-        }
-
-        function parseDisplayDate(date) {
-            date = (date instanceof Date ? date : new Date(Date.parse(date)));
-            var display = date.getDate() + ' ' + ['Janvier', 'Février', 'Mars',
-                    'Avril', 'Mai', 'Juin', 'Juillet',
-                    'Août', 'Septembre', 'Octobre',
-                    'Novembre', 'Décembre'
-                ][date.getMonth()] + ' ' +
-                date.getFullYear();
-            return display;
         }
 
         function newetiq() {
@@ -595,7 +584,7 @@ $etiq = $pdoSt->fetchAll();
                                                             }
                                                             $list_acronyme[] = $acronyme;
                                                         }
-                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
                                                             if ($k != count($list_acronyme) - 1) {
                                                     ?> '<?= $list_acronyme[$k] ?>',
                                                             <?php
@@ -655,7 +644,7 @@ $etiq = $pdoSt->fetchAll();
                                                             }
                                                             $list_acronyme[] = $acronyme;
                                                         }
-                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
                                                             if ($k != count($list_acronyme) - 1) {
                                                     ?> '<?= $list_acronyme[$k] ?>',
                                                             <?php
@@ -736,7 +725,7 @@ $etiq = $pdoSt->fetchAll();
                                                             }
                                                             $list_acronyme[] = $acronyme;
                                                         }
-                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
                                                             if ($k != count($list_acronyme) - 1) {
                                                     ?> '<?= $list_acronyme[$k] ?>',
                                                             <?php
@@ -796,7 +785,7 @@ $etiq = $pdoSt->fetchAll();
                                                             }
                                                             $list_acronyme[] = $acronyme;
                                                         }
-                                                        for($k = 0; $k < count($list_acronyme); $k++) {
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
                                                             if ($k != count($list_acronyme) - 1) {
                                                     ?> '<?= $list_acronyme[$k] ?>',
                                                             <?php
@@ -1220,14 +1209,14 @@ $etiq = $pdoSt->fetchAll();
                 modules: {
                     toolbar: ".compose-quill-toolbar"
                 },
-                placeholder: "Ecrire un commentaire... ",
+                placeholder: "Ecrire un commentaire...",
                 theme: "snow"
             });
 
             $('#submit_comment').on('click', function(e) {
                 e.preventDefault();
                 var comment = composeCommentEditor.root.innerHTML;
-                var id_task = document.getElementById('id_task').value;
+                var id_task = document.getElementById('id_tache').value;
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/insert_comment.php", //new path, save your work first before u try
                     type: "POST",
@@ -1239,6 +1228,13 @@ $etiq = $pdoSt->fetchAll();
                     success: function(data) {
                         if (data.status != 'success') {
                             addAlert(data.message);
+                        } else {
+                            var comment = createComment(data);
+                            $('#posts-list').append(comment);
+                            var nb_comment = $(kanban_curr_el).contents()[1].innerHTML;
+                            nb_comment++;
+                            $(kanban_curr_el).contents()[1].innerHTML = nb_comment;
+                            composeCommentEditor.setText('');
                         }
                     }
                 });
@@ -1331,18 +1327,27 @@ $etiq = $pdoSt->fetchAll();
                         if (data.status != 'success') {
                             addAlert(data.message);
                         } else {
-                            if (data.comments.length == 0) {
-                                //<li class = "no-comments" > Soyez le premier à commenter < /li>
-                            }
                             $.each(data.comments, function(key, value) {
-                                var commentHtml = createComment(data);
-                                var commentEl = $(commentHtml);
-                                commentEl.hide();
-                                var postsList = $('#posts-list');
-                                postsList.addClass('has-comments');
-                                postsList.prepend(commentEl);
-                                commentEl.slideDown();
+                                var commentHtml = createComment(value);
+                                $('#posts-list').append(commentHtml);
                             });
+                            $.ajax({
+                                url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
+                                type: "POST",
+                                data: {
+                                    id_task: id_task,
+                                    current_page: 1
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status != 'success') {
+                                        addAlert(data.message);
+                                    } else {
+                                        $('#pagination').html(data.pagination);
+                                    }
+                                }
+                            });
+                            $('#id_tache').val(id_task);
                             $('#comment').modal('show');
                         }
                     }
@@ -1384,7 +1389,7 @@ $etiq = $pdoSt->fetchAll();
                                 myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
                             });
                             $("#id_task").val(id_task);
-                            $('#attachement').modal('show');
+                            $('#attachment').modal('show');
                         }
                     }
                 });
