@@ -31,7 +31,7 @@ require_once 'php/permissions_front.php';
 
     try{
   
-    $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
+    $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
@@ -47,7 +47,7 @@ require_once 'php/permissions_front.php';
 
     try{
   
-    $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) R ";
+    $sq = "SELECT ROUND(SUM(R.TOTA), 2) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) R ";
   
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
@@ -62,7 +62,7 @@ require_once 'php/permissions_front.php';
 
     try{
   
-    $sql = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) V ";
+    $sql = "SELECT ROUND(SUM(V.TOTAL), 2) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) V ";
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
