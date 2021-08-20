@@ -5,6 +5,11 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/verif_session_connect.php';
 require_once 'php/config.php';
 
+if (permissions()['ventes'] < 2) {
+        header('Location: app-invoice-list.php');
+        exit();
+    }
+
 $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
 $pdoSta->bindValue(':num', $_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
 $pdoSta->execute();
