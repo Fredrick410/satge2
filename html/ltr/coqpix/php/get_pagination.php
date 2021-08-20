@@ -39,10 +39,10 @@ $response_array['pagination'] = "";
 
 if ($nbPages <= 5) {
 	if ($current_page != 1) {
-		$response_array['pagination'] .= "<!-- Lien vers la page précédente desactive si on n'est pas sur la première -->"
-			. "<li class=\"page-item previous\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
+		$response_array['pagination'] .= "<!-- Lien vers la page précédente -->"
+			. "<li class=\"page-item previous\"><a href=\"" . ($current_page - 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
 	} else {
-		$response_array['pagination'] .= "<!-- Lien vers la page précédente si on n'est pas sur la première -->"
+		$response_array['pagination'] .= "<!-- Lien vers la page précédente desactive si on n'est pas sur la première -->"
 			. "<li class=\"page-item previous disabled\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
 	}
 	for ($aPage = 1; $aPage <= $nbPages; $aPage++) {
@@ -51,22 +51,22 @@ if ($nbPages <= 5) {
 				. "<li class=\"page-item active\"><a class=\"page-link\" href=\"#\">$aPage</a></li>";
 		} else {
 			$response_array['pagination'] .= "<!-- Lien vers les autres pages -->"
-				. "<li class=\"page-item\"><a class=\"page-link\" href=\"#\">$aPage</a></li>";
+				. "<li class=\"page-item\"><a class=\"page-link\" href=\"$aPage\">$aPage</a></li>";
 		}
 	}
 	if ($current_page != $nbPages) {
 		$response_array['pagination'] .= "<!-- Lien vers la page suivante si on n'est pas sur la dernière -->"
-			. "<li class=\"page-item next\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
+			. "<li class=\"page-item next\"><a href=\"" . ($current_page + 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
 	} else {
 		$response_array['pagination'] .= "<!-- Lien vers la page suivante desactive si on n'est pas sur la dernière -->"
 			. "<li class=\"page-item next disabled\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
 	}
 } else if ($current_page < 5) {
 	if ($current_page != 1) {
-		$response_array['pagination'] .= "<!-- Lien vers la page précédente desactive si on n'est pas sur la première -->"
-			. "<li class=\"page-item previous\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
-	} else {
 		$response_array['pagination'] .= "<!-- Lien vers la page précédente si on n'est pas sur la première -->"
+			. "<li class=\"page-item previous\"><a href=\"" . ($current_page - 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
+	} else {
+		$response_array['pagination'] .= "<!-- Lien vers la page précédente desactive si on n'est pas sur la première -->"
 			. "<li class=\"page-item previous disabled\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
 	}
 	for ($aPage = 1; $aPage <= 5; $aPage++) {
@@ -75,44 +75,44 @@ if ($nbPages <= 5) {
 				. "<li class=\"page-item active\"><a href=\"#\" class=\"page-link\">$aPage</a></li>";
 		} else {
 			$response_array['pagination'] .= "<!-- Lien vers les autres pages -->"
-				. "<li class=\"page-item\"><a href=\"#\" class=\"page-link\">$aPage</a></li>";
+				. "<li class=\"page-item\"><a href=\"$aPage\" class=\"page-link\">$aPage</a></li>";
 		}
 	}
 	$response_array['pagination'] .= "<!-- Lien vers la page suivante -->"
-		. "<li class=\"page-item next\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
+		. "<li class=\"page-item next\"><a href=\"" . ($current_page + 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
 } else if ($current_page > $nbPages - 5) {
 	$response_array['pagination'] .= "<!-- Lien vers la page précédente -->"
-		. "<li class=\"page-item previous\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
+		. "<li class=\"page-item previous\"><a href=\"" . ($current_page - 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
 	for ($aPage = $nbPages - 5; $aPage <= $nbPages; $aPage++) {
 		if ($current_page == $aPage) {
 			$response_array['pagination'] .= "<!-- Lien vers la page actuelle désactivé -->"
 				. "<li class=\"page-item active\"><a href=\"#\" class=\"page-link\">$aPage</a></li>";
 		} else {
 			$response_array['pagination'] .= "<!-- Lien vers les autres pages -->"
-				. "<li class=\"page-item\"><a href=\"#\" class=\"page-link\">$aPage</a></li>";
+				. "<li class=\"page-item\"><a href=\"$aPage\" class=\"page-link\">$aPage</a></li>";
 		}
 	}
 	if ($current_page != $nbPages) {
 		$response_array['pagination'] .= "<!-- Lien vers la page suivante si on n'est pas sur la dernière -->"
-			. "<li class=\"page-item next\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
+			. "<li class=\"page-item next\"><a href=\"" . ($current_page + 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
 	} else {
 		$response_array['pagination'] .= "<!-- Lien vers la page suivante desactive si on n'est pas sur la dernière -->"
 			. "<li class=\"page-item next disabled\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
 	}
 } else {
 	$response_array['pagination'] .= "<!-- Lien vers la page précédente -->"
-		. "<li class=\"page-item previous\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
+		. "<li class=\"page-item previous\"><a href=\"" . ($current_page - 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";
 	for ($aPage = $current_page - 2; $aPage <= $current_page + 2; $aPage++) {
 		if ($current_page == $aPage) {
 			$response_array['pagination'] .= "<!-- Lien vers la page actuelle désactivé -->"
 				+ "<li class=\"page-item active\"><a href=\"#\" class=\"page-link\">$aPage</a></li>";
 		} else {
 			$response_array['pagination'] .= "<!-- Lien vers les autres pages -->"
-				. "<li class=\"page-item\"><a href=\"#\" class=\"page-link\">$aPage</a></li>";
+				. "<li class=\"page-item\"><a href=\"$aPage\" class=\"page-link\">$aPage</a></li>";
 		}
 	}
 	$response_array['pagination'] .= "<!-- Lien vers la page suivante -->"
-		. "<li class=\"page-item next\"><a href=\"#\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
+		. "<li class=\"page-item next\"><a href=\"" . ($current_page + 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-right\"></i></a></li>";
 }
 $response_array['status'] = 'success';
 echo json_encode($response_array);

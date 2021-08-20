@@ -113,6 +113,7 @@ $etiq = $pdoSt->fetchAll();
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -1228,12 +1229,90 @@ $etiq = $pdoSt->fetchAll();
                         if (data.status != 'success') {
                             addAlert(data.message);
                         } else {
-                            var comment = createComment(data);
-                            $('#posts-list').append(comment);
                             var nb_comment = $(kanban_curr_el).contents()[1].innerHTML;
                             nb_comment++;
                             $(kanban_curr_el).contents()[1].innerHTML = nb_comment;
                             composeCommentEditor.setText('');
+                            var id_task = document.getElementById('id_tache').value;
+                            var current_page = data.last_page;
+                            $.ajax({
+                                url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
+                                type: "POST",
+                                data: {
+                                    id_task: id_task,
+                                    current_page: current_page
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status != 'success') {
+                                        addAlert(data.message);
+                                    } else {
+                                        $('#posts-list').empty()
+                                        $.each(data.comments, function(key, value) {
+                                            var commentHtml = createComment(value);
+                                            $('#posts-list').append(commentHtml);
+                                        });
+                                        $.ajax({
+                                            url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
+                                            type: "POST",
+                                            data: {
+                                                id_task: id_task,
+                                                current_page: current_page
+                                            },
+                                            dataType: 'json',
+                                            success: function(data) {
+                                                if (data.status != 'success') {
+                                                    addAlert(data.message);
+                                                } else {
+                                                    $('#pagination').html(data.pagination);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.page-link', function(e) {
+                e.preventDefault();
+                var id_task = document.getElementById('id_tache').value;
+                var current_page = $(this).attr('href');
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_task: id_task,
+                        current_page: current_page
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {
+                            $('#posts-list').empty()
+                            $.each(data.comments, function(key, value) {
+                                var commentHtml = createComment(value);
+                                $('#posts-list').append(commentHtml);
+                            });
+                            $.ajax({
+                                url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
+                                type: "POST",
+                                data: {
+                                    id_task: id_task,
+                                    current_page: current_page
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status != 'success') {
+                                        addAlert(data.message);
+                                    } else {
+                                        $('#pagination').html(data.pagination);
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -1314,7 +1393,6 @@ $etiq = $pdoSt->fetchAll();
                 var id_task = $(this).closest(".kanban-item").attr("data-eid").replaceAll('kanban-item-', '');
                 kanban_curr_el = $(this);
                 $("#id_task").removeAttr('value');
-
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
                     type: "POST",

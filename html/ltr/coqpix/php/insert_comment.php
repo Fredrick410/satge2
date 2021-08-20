@@ -65,10 +65,26 @@ try {
 }
 $bdd->commit();
 $bdd->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
+try {
+    //On recupere le nombre de commentaires associes a la tache
+    $pdoS = $bdd->prepare('SELECT COUNT(*) AS nb_comments FROM task_commentaire WHERE task_num = :num');
+    $pdoS->bindValue(':num', $task_num);
+    $pdoS->execute();
+    $nb_comments = $pdoS->fetch();
+} catch (Exception $e) {
+    $response_array['status'] = 'error';
+    $response_array['message'] = $e->getMessage();
+    echo json_encode($response_array);
+    exit();
+}
+
+// On determine le nombre de page en prenant 5 commentaires par page
+$nbPages = (int)ceil($nb_comments['nb_comments'] / 5);
 $response_array['status'] = 'success';
 $response_array['par'] = $membre['nom'] . ' ' . $membre['prenom'];
 $response_array['date'] = $date;
 $response_array['date_hmin'] = $date_hmin;
+$response_array['last_page'] = $nbPages;
 $response_array['content'] = htmlspecialchars($content);
 echo json_encode($response_array);
 exit();
