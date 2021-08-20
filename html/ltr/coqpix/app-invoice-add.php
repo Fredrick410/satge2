@@ -4,6 +4,7 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/verif_session_connect.php';
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
 
 if (permissions()['ventes'] < 2) {
         header('Location: app-invoice-list.php');
@@ -489,10 +490,13 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 																			<strong id="demo" class="text-primary align-middle">00.00 €</strong>
 																		</div>
-																		<div class="col-md-4 col-12 form-group">
-																			<button id="btnClient5" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
-																			<!-- popup article déplacé -->
-																		</div>
+																		<?php // Permission de niveau 2 pour créer un client
+                        															if (permissions()['articles'] >= 2) { ?>
+																			<div class="col-md-4 col-12 form-group">
+																				<button id="btnClient5" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
+																				<!-- popup article déplacé -->
+																			</div>
+																		<?php } ?>
 																	</div>
 																	<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
 																		<input name="referencearticle" id="referencearticle" type="text" class="form-control" placeholder="Référence">
