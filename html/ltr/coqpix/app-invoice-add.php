@@ -1051,10 +1051,10 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																	<div class="col-1 invoice-item-title">
 																		Prix HT
 																	</div>
-																	<<<<<<< HEAD <div class="col-1 invoice-item-title">
+																	<div class="col-1 invoice-item-title">
 																		Référence
 																</div>
-																=======
+																
 																<?php // Permission de niveau 2 pour créer un client
 																if (permissions()['articles'] >= 2) { ?>
 																	<div class="col-md-4 col-12 form-group">
@@ -1062,7 +1062,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																		<!-- popup article déplacé -->
 																	</div>
 																<?php } ?>
-																>>>>>>> 86d69ce426754e5a331811a24c1a561df6d91d18
+																
 															</div>
 															<div class="invoice-item d-flex border rounded mb-1">
 																<div class="invoice-item-filed row pt-1 px-1">
