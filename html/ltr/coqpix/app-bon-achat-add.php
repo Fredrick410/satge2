@@ -23,13 +23,6 @@ require_once 'php/config.php';
 	$pdiSt = $bdd->prepare('SELECT * FROM articles INNER JOIN bon_commande ON articles.id_fac = bon_commande.id');
 	$pdoSt->execute();
 
-	// $pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-	// $pdaSt->bindValue(':num', $_SESSION['id_session']);
-	// $pdaSt->execute();
-	// $cliet = $pdaSt->fetch();
-
-	// $total = $cliet['cout']*$cliet['quantite'];
-
 	$incre = $bdd->prepare('SELECT MAX(id_bon_commande) FROM bon_commande ');
 	$incre->execute();
 	$test = $incre->fetch();
@@ -1038,7 +1031,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_bon.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_fournisseur.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
