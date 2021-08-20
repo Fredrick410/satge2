@@ -113,7 +113,6 @@ $etiq = $pdoSt->fetchAll();
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
 <!-- BEGIN: Head-->
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -334,7 +333,7 @@ $etiq = $pdoSt->fetchAll();
 
                                 </div>
                                 <nav>
-                                    <ul class="pagination" id="pagination">
+                                    <ul class="pagination justify-content-center" id="pagination">
                                     </ul>
                                 </nav>
                                 <!-- Compose mail Quill editor -->
