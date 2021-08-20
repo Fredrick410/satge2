@@ -161,6 +161,18 @@ html body.bg-full-screen-image {
   background-size: cover;
 }
 
+html body.bg-auth-image {
+  background: url(../../app-assets/images/pages/connexion.jpg) no-repeat center center;
+  background-size: cover;
+}
+
+html body.bg-password-image {
+  background-image: url(../../app-assets/images/pages/changement_mdp_l.png),url(../../app-assets/images/pages/changement_mdp_r.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: left center, right center;
+}
+
 html body.blank-page .content {
   margin-left: 0;
 }

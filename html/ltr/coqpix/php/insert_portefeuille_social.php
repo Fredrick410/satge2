@@ -4,11 +4,11 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
-    $name_entreprise = $_POST['name_entreprise'];
-    $nom_diri = $_POST['nom_diri'];
-    $prenom_diri = $_POST['prenom_diri'];
-    $tel_diri = $_POST['tel_diri'];
-    $email_diri = $_POST['email_diri'];
+    $name_entreprise = htmlspecialchars($_POST['name_entreprise']);
+    $nom_diri = htmlspecialchars($_POST['nom_diri']);
+    $prenom_diri = htmlspecialchars($_POST['prenom_diri']);
+    $tel_diri = htmlspecialchars($_POST['tel_diri']);
+    $email_diri = htmlspecialchars($_POST['email_diri']);
     $rib = "no";
     $date_crea = date('d/m/Y');
     $date_crea_d = date('d');

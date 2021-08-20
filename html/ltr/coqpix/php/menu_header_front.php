@@ -1,5 +1,12 @@
+    <?php
+        $query = $bdd->prepare('SELECT upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres, E.nameentreprise FROM membres M, entreprise E WHERE M.id_session = E.id AND M.id = :id_membre');
+        $query->bindValue(':id_membre', $_SESSION['id_membre']);
+        $query->execute();
+        $infos_user = $query->fetch();
+    ?>
+    
     <div class="header-navbar-shadow"></div>
-    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
+    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top w-auto">
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
@@ -31,7 +38,7 @@
                             <?php include('php/notifs_frontend.php'); ?>
                         <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="bx bx-chat"></i><span class="badge badge-pill badge-danger badge-up"></span></a>
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                            <div class="user-nav d-sm-flex d-none"><span class="user-name"><?= $entreprise['nameentreprise']; ?></span><span class="user-status text-muted">En ligne</span></div><span><img class="round" src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="avatar" height="40" width="40"></span>
+                            <div class="user-nav d-sm-flex d-none"><span class="user-name"><?= $infos_user['nom'].' '.$infos_user['prenom'] ?></span><span class="user-status text-muted"><?= $infos_user['nameentreprise'] ?></span></div><span><img class="round" src="../../../src/img/<?= $infos_user['img_membres'] ?>" alt="avatar" height="40" width="40"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right pb-0">
                                 <?php include('php/header_action.php')  ?>

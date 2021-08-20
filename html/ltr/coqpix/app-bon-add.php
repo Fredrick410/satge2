@@ -4,6 +4,12 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/verif_session_connect.php';
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 2) {
+        header('Location: app-bon-list.php');
+        exit();
+    }
    
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
@@ -324,8 +330,11 @@ require_once 'php/config.php';
 																	<?php endforeach; ?>
 																</select>
 															</div>
-															<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup">Créer un client particulier</button>
-															<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup2" id="#2">Créer un client professionnel</button>
+															<?php // Permission de niveau 2 pour créer un client
+                        									if (permissions()['clients'] >= 2) { ?>
+																<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup">Créer un client particulier</button>
+																<button type="button" class="btn btn-primary col-lg-4 col-md-12 mt-25" style="margin-left: 15px" data-toggle="modal" data-target="#popup2" id="#2">Créer un client professionnel</button>
+															<?php } ?>
 															<hr>
 															<label for="adress">*Adresse :</label>
 															<fieldset class="invoice-address form-group">
@@ -426,10 +435,13 @@ require_once 'php/config.php';
 																				<!-- prix de quantité*prix en js -->
 																				<strong id="demo" class="text-primary align-middle">00.00 €</strong>
 																			</div>
-																			<div class="col-md-4 col-12 form-group">
-																				<button type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
-																				<!-- popup article déplacé -->
-																			</div>
+																			<?php // Permission de niveau 2 pour créer un article
+                        													if (permissions()['articles'] >= 2) { ?>
+																				<div class="col-md-4 col-12 form-group">
+																					<button type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
+																					<!-- popup article déplacé -->
+																				</div>
+																			<?php } ?>
 																		</div>
 																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
 																			<!-- 

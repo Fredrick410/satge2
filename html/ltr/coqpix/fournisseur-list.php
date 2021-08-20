@@ -5,6 +5,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['fournisseurs'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
@@ -83,16 +89,19 @@ require_once 'php/config.php';
             <div class="content-body">
                 <!-- users list start -->
                 <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <form>
-                            <div class="row rounded py-2 mb-2">
-                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                    <a href="fournisseur-add.php" class=""><button type="button" class="btn btn-primary btn-block glow users-list-clear mb-0">Ajouter un fournisseur</button></a>
+                    <?php // Permission de niveau 2 pour ajouter un fournisseur
+                    if (permissions()['fournisseurs'] >= 2) { ?>
+                        <div class="users-list-filter px-1 mt-2">
+                            <form>
+                                <div class="row rounded">
+                                    <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
+                                        <a href="fournisseur-add.php" class=""><button type="button" class="btn btn-primary btn-block glow users-list-clear mb-0">Ajouter un fournisseur</button></a>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="users-list-table">
+                            </form>
+                        </div>
+                    <?php } ?>
+                    <div class="users-list-table mt-2">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
@@ -107,7 +116,10 @@ require_once 'php/config.php';
                                                     <th>email</th>
                                                     <th>téléphone</th>
                                                     <th>secteur</th>
-                                                    <th>Options</th>
+                                                    <?php // Permission de niveau 2 pour modifier ou supprimer un fournisseur
+                                                    if (permissions()['fournisseurs'] >= 2) { ?>
+                                                        <th>Options</th>
+                                                    <?php } ?>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -116,14 +128,24 @@ require_once 'php/config.php';
                                                     <td><a class="mr-2" href="#">
                                                 <img src="../../../src/img/astro2.gif" alt="users avatar" class="users-avatar-shadow rounded-circle" height="60" width="80">
                                             </a></td>
-                                                    <td>&nbsp&nbsp<a><?= $fournisseurr['name_fournisseur'] ?></a>
+                                                    <td><a><?= $fournisseurr['name_fournisseur'] ?></a>
                                                     </td>
                                                     <td><?= $fournisseurr['nom'] ?></td>
-                                                    <td>&nbsp&nbsp<?= $fournisseurr['email'] ?></td>
-                                                    <td>&nbsp&nbsp&nbsp<?= $fournisseurr['tel'] ?></td>
-                                                    <td>&nbsp&nbsp&nbsp<?= $fournisseurr['secteur'] ?></td>
-                                                    <td>&nbsp&nbsp&nbsp<a href="fournisseur-edit.php?numfour=<?= $fournisseurr['id'] ?>"><i class="bx bx-edit-alt"></i>&nbsp&nbsp&nbsp&nbsp&nbsp</a><a href="php/delete_fournisseur.php?num=<?= $fournisseurr['id'] ?>"><i class="bx bx-trash-alt"></i></a></td>
-                                                    
+                                                    <td><?= $fournisseurr['email'] ?></td>
+                                                    <td><?= $fournisseurr['tel'] ?></td>
+                                                    <td><?= $fournisseurr['secteur'] ?></td>
+                                                    <?php // Permission de niveau 2 pour modifier ou supprimer un fournisseur
+                                                    if (permissions()['fournisseurs'] >= 2) { ?>
+                                                        <td>
+                                                            <?php // Permission de niveau 2 pour modifier un fournisseur
+                                                            if (permissions()['fournisseurs'] >= 2) { ?>
+                                                                <a href="fournisseur-edit.php?numfour=<?= $fournisseurr['id'] ?>"><i class="bx bx-edit-alt"></i></a>
+                                                            <?php } // Permission de niveau 3 pour supprimer un fournisseur
+                                                            if (permissions()['fournisseurs'] >= 3) { ?>
+                                                                <a href="php/delete_fournisseur.php?num=<?= $fournisseurr['id'] ?>"><i class="bx bx-trash-alt"></i></a>
+                                                            <?php } ?>
+                                                        </td>
+                                                    <?php } ?>       
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>

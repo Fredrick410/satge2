@@ -5,7 +5,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
 
+    if (permissions()['clients'] < 2) {
+        header('Location: client.php');
+        exit();
+    }
+    
     $pdoStat = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoStat->bindValue(':numentreprise',$_SESSION['id']);
     $true = $pdoStat->execute();

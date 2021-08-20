@@ -11,7 +11,7 @@ if(!empty($_SESSION['id_admin']))
 else
 {  
    sleep(2);
-   header('Location: backend/auth-login-admin.html');
+   header('Location: backend/auth-login-admin.php');
    exit;
 }
 
@@ -19,13 +19,21 @@ if (!isset($authorised_roles)){
    //pas de contrainte de rôle définie
 }
 else
-{  
-   if (in_array($_SESSION['role'], $authorised_roles)){
-      //le role est bien dans la liste des roles authorisés
-   }
+{  if (substr($_SESSION['role'],0,1) == '1' && in_array("comptable", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
+   elseif (substr($_SESSION['role'],1,1) == '1' && in_array("juriste", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
+   elseif (substr($_SESSION['role'],2,1) == '1' && in_array("gestionnaire social", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
+   elseif (substr($_SESSION['role'],3,1) == '1' && in_array("gestionnaire fiscal", $authorised_roles)){
+      //le comptable a accès à cette page
+   }  
    else {
    sleep(2);
-   header('Location: ../page-not-authorized.html');
+   header('Location: page-not-authorized.html');
    exit;
    }
 }

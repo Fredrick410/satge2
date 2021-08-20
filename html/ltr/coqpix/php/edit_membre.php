@@ -1,55 +1,132 @@
 <?php
+    session_start();
+    require_once 'config.php';
+    error_reporting(E_ALL);
+    ini_set('display_errors', TRUE);
+    ini_set('display_startup_errors', TRUE);
 
-require_once 'config.php';    
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
+    $id_membre = htmlspecialchars($_GET['id_membre']);
 
-    if(empty($_POST['perms_ventes'])){
-        $perms_ventes = "";
-    }else{
-        $perms_ventes = $_POST['perms_ventes'];
+    $update_membre = $bdd->prepare('UPDATE membres SET nom = :nom,
+                                                       prenom = :prenom,
+                                                       email = :email,
+                                                       tel = :tel,
+                                                       dtenaissance = :dtenaissance,
+                                                       pays = :pays,
+                                                       langue = :langue
+                                                       WHERE id = :id');
+                                            
+    $update_membre->bindValue(':nom', htmlspecialchars($_POST['nom']));
+    $update_membre->bindValue(':prenom', htmlspecialchars($_POST['prenom']));
+    $update_membre->bindValue(':email', htmlspecialchars($_POST['email']));
+    $update_membre->bindValue(':tel', htmlspecialchars($_POST['tel']));
+    $update_membre->bindValue(':dtenaissance', htmlspecialchars($_POST['dtenaissance']));
+    $update_membre->bindValue(':pays', htmlspecialchars($_POST['pays']));
+    $update_membre->bindValue(':langue', htmlspecialchars($_POST['langue']));
+    $update_membre->bindValue(':id', $id_membre);
+    $update_membre->execute();
+
+    // Si l'option de compte Coqpix a été cochée
+    if (isset($_POST['utilisateur_coqpix'])) {
+
+        $query = $bdd->prepare('UPDATE membres SET status_membres = "New" WHERE id = :id');
+        $query->bindValue(':id', $id_membre);
+        $query->execute();
+
+        // Requetes permettant d'inserer les permissions
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "ventes");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_ventes']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "achats");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_achats']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "projets");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_projets']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "inventaire");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_inventaire']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "clients");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_clients']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "fournisseurs");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_fournisseurs']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "articles");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_articles']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "membres");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_membres']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+    } else {
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "VENTES" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_ventes']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "ACHATS" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_achats']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "PROJETS" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_projets']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "INVENTAIRE" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_inventaire']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "CLIENTS" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_clients']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "FOURNISSEURS" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_fournisseurs']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "ARTICLES" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_articles']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('UPDATE permissions_front SET niveau = :niveau WHERE upper(module) = "MEMBRES" AND id_membre = :id_membre');
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_membres']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
     }
 
-    if(empty($_POST['perms_achats'])){
-        $perms_achats = "";
-    }else{
-        $perms_achats = $_POST['perms_achats'];
-    }
-
-    if(empty($_POST['perms_projets'])){
-        $perms_projets = "";
-    }else{
-        $perms_projets = $_POST['perms_projets'];
-    }
-
-    if(empty($_POST['perms_inventaires'])){
-        $perms_inventaires = "";
-    }else{
-        $perms_inventaires = $_POST['perms_inventaires'];
-    }
-
-    $pdo = $bdd->prepare('UPDATE membres SET  nom=:nom, prenom=:prenom, pays=:pays, langue=:langue, tel=:tel, email=:email, dtenaissance=:dtenaissance, name_entreprise=:name_entreprise, role_membres=:role_membres, perms_ventes=:perms_ventes, perms_achats=:perms_achats, perms_projets=:perms_projets, perms_inventaires=:perms_inventaires WHERE id=:num LIMIT 1');
-    $pdo->bindValue(':num', $_POST['id']);
-    $pdo->bindValue(':nom', $_POST['nom']);
-    $pdo->bindValue(':prenom', $_POST['prenom']);
-    $pdo->bindValue(':pays', $_POST['pays']);
-    $pdo->bindValue(':langue', $_POST['langue']);
-    $pdo->bindValue(':tel', $_POST['tel']);
-    $pdo->bindValue(':email', $_POST['email']);
-    $pdo->bindValue(':dtenaissance', $_POST['dtenaissance']);
-    $pdo->bindValue(':name_entreprise', $_POST['name_entreprise']);
-    $pdo->bindValue(':role_membres', $_POST['role_membres']);
-    $pdo->bindValue(':perms_ventes', $perms_ventes);
-    $pdo->bindValue(':perms_achats', $perms_achats);
-    $pdo->bindValue(':perms_projets', $perms_projets);
-    $pdo->bindValue(':perms_inventaires', $perms_inventaires);
-    
-    $pdo->execute();
-        
-        sleep(2);
-        header('Location: ../membres-liste.php');
-        
-    
-
+    header('Location: ../membres-liste.php');
+    exit();
+   
 ?>

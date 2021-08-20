@@ -5,6 +5,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['articles'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
@@ -135,39 +141,42 @@ require_once 'php/config.php';
             <div class="content-body">
                 <!-- users list start -->
                 <section class="users-list-wrapper">
-                    <div class="users-list-filter px-1">
-                        <div class="row rounded py-2 mb-2">
-                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
-                                <div class="dropdown invoice-options">
-                                    <style>
-                                        .bleu {
-                                            background-color: #475F7B;
-                                        }
+                    <?php // Permission de niveau 2 pour ajouter un article
+                    if (permissions()['articles'] >= 2) { ?> 
+                        <div class="users-list-filter px-1 mt-2">
+                            <div class="row rounded">
+                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center">
+                                    <div class="dropdown invoice-options">
+                                        <style>
+                                            .bleu {
+                                                background-color: #475F7B;
+                                            }
 
-                                        .white{
-                                            color: white;
-                                        }
+                                            .white{
+                                                color: white;
+                                            }
 
-                                        .bleu:hover{
-                                            transition-duration: 1s;
-                                            background-color: #394C62;
-                                        }
-                                    </style>
-                                    <a href="article-add.php" class="btn border mr-2 bleu white">
-                                    <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un article
-                                    </a>
+                                            .bleu:hover{
+                                                transition-duration: 1s;
+                                                background-color: #394C62;
+                                            }
+                                        </style>
+                                        <a href="article-add.php" class="btn border mr-2 bleu white">
+                                        <i class="bx bx-plus"></i>&nbsp&nbsp Ajouter un article
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="users-list-table">
+                    <?php } ?>
+                    <div class="users-list-table mt-2">
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
                                     <!-- datatable start -->
                                     <div class="table-responsive">
                                         <table id="users-list-datatable" class="table">
-                                            <thead class="text-center">
+                                            <thead>
                                                 <tr>
                                                     <th>Image</th>
                                                     <th>Article</th>
@@ -175,10 +184,12 @@ require_once 'php/config.php';
                                                     <th>Prix ou Cout U</th>
                                                     <th>Tva</th>
                                                     <th>Fonction</th>
-                                                    <th>Options</th>
+                                                    <?php if (permissions()['articles'] >= 2) { ?>
+                                                        <th>Options</th>
+                                                    <?php } ?>
                                                 </tr>
                                             </thead>
-                                            <tbody class="text-center">
+                                            <tbody>
                                             <?php foreach($article as $articlee): ?>
                                             <?php
 
@@ -197,7 +208,19 @@ require_once 'php/config.php';
                                                     <td><?= $typ ?></td>
                                                     <td><?= $articlee['tvavente'] ?>%</td>
                                                     <td><?= $articlee['typ'] ?></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlee['id_article'] ?>&numfournisseur=<?= $articlee['id_fournisseur'] ?>"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlee['id_article'] ?>"><i class="bx bx-trash-alt"></i></a></td>   
+                                                    <?php if (permissions()['articles'] >= 2) { ?>
+                                                        <td>
+                                                            <?php
+                                                            // Permission de niveau 2 pour modifier un article
+                                                            if (permissions()['articles'] >= 2) { ?>
+                                                                <a href="article-edit.php?numarticle=<?= $articlee['id_article'] ?>&numfournisseur=<?= $articlee['id_fournisseur'] ?>"><i class='bx bxs-edit'></i></a>
+                                                            <?php }
+                                                            // Permission de niveau 3 pour supprimer un article
+                                                            if (permissions()['articles'] >= 3) { ?>
+                                                                <a href="php/delete_article.php?num=<?= $articlee['id_article'] ?>"><i class="bx bx-trash-alt"></i></a>
+                                                            <?php } ?>
+                                                        </td>
+                                                    <?php } ?>  
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>

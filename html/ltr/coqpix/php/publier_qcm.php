@@ -1,9 +1,9 @@
 <?php
-require_once 'verif_session_connect.php';
-require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+require_once 'php/config.php';
+require_once 'php/verif_session_connect.php';
 
     if(!empty($_GET['id'] != "")) {
         $id = htmlspecialchars($_GET['id']);

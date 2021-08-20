@@ -5,103 +5,101 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'config.php';
 
-//A - on analyse la requete via l'URL
-
-$task = "list";
-
-if(array_key_exists("task", $_GET)){
-    $task = $_GET['task'];
-}
-
-if($task == "write"){
+if (isset($_GET['statut']) && ($_GET['statut'] === "urgent" || $_GET['statut'] === "fermé" || $_GET['statut'] === "ouvert")) {
+    changerStatutTicket($_GET['statut']);
+} else if (isset($_GET['theme']) && ($_GET['theme'] === "général" || $_GET['theme'] === "compta" || $_GET['theme'] === "juridique" || $_GET['theme'] === "fiscalité" || $_GET['theme'] === "social")) { 
+    changerThemeTicket($_GET['theme']);
+} else if (isset($_GET['method']) && $_GET['method'] === "getTickets") {
+    getTickets();
+} else if (isset($_GET['method']) && $_GET['method'] === "post") {
     postMessage();
-}else{
-    getMessage();
+}  else {
+    getMessages();
 }
 
-//B- function qui va permettre de recupérer les messages.
+function getTickets() {
 
-
-function getMessage(){
-    //on definit la variable bdd dans la fonction 
     global $bdd;
-    session_start();
 
-        //1 - On fait une requete qui va permettre d'afficher les 20 dernieres message de la base de donnée
+    $id_membre = htmlspecialchars($_GET['id_membre']);
 
-        $destination = 'support'.$_GET['destination'];
+    $query = $bdd->prepare('SELECT ST.id_ticket, ST.objet, (SELECT count(*) FROM support_message SM WHERE SM.id_ticket = ST.id_ticket AND SM.id_membre = :id_membre AND auteur = "support" AND lu = 0) AS nb_notifs FROM support_ticket ST WHERE ST.id_membre = :id_membre AND upper(ST.statut) != "FERMÉ" ORDER BY (SELECT SM.id_message FROM support_message SM WHERE SM.id_ticket = ST.id_ticket AND SM.id_membre = :id_membre ORDER BY date_message DESC, heure DESC LIMIT 1)');
+    $query->bindValue(':id_membre', $id_membre);
+    $query->execute();
 
-        $resultats = $bdd->prepare("SELECT * FROM support_message WHERE destination = :destination ORDER BY id DESC LIMIT 30");
-        $resultats->bindValue(':destination',$destination);
-        $resultats->execute();
+    $tickets = $query->fetchAll();
 
-        //2 - On va traiter les resultats
+    echo json_encode($tickets);
 
-        $messages = $resultats->fetchAll();
-
-        //3 - On affcihe les données en JSON
-
-        echo json_encode($messages);
 }
 
-//C- function qui va permettre d'écrire et non de recupérer des informations pour le chat.
+function getMessages() {
 
-function postMessage(){
-    //on definit la variable bdd dans la function 
     global $bdd;
-    session_start();
 
-    //status error si il y a une erreur
+    $id_ticket = htmlspecialchars($_GET['id_ticket']);
+    $auteur = htmlspecialchars($_GET['auteur']);
 
-    if(!array_key_exists('author', $_POST) || !array_key_exists('content', $_POST)){
-        echo json_encode(["status" => "error", "message" => "One field or many not been sent"]);
-        return;
-    }
+    $query = $bdd->prepare('SELECT S.date_message, S.heure, S.texte, S.auteur, M.img_membres FROM support_message S, membres M WHERE S.id_membre = M.id AND S.id_ticket = :id_ticket ORDER BY date_message DESC, heure DESC LIMIT 30');
+    $query->bindValue(':id_ticket', $id_ticket);
+    $query->execute();
 
-    //1- Analyer les parametres passés en POST (author, content)
+    $messages = $query->fetchAll();
 
-    $destination = 'support'.$_POST['author'];
-    $date_crea = date("d-m-Y");
-    $date_h = date("H") + "2";
-    if($date_h == "24"){
-        $date_h = "00";
-    }
-    $date_m = date("i");
-    $content = $_POST['content'];
-    $you = $_POST['author'];
-    $id_client = $_SESSION['id_session'];
+    echo json_encode($messages);
 
-    //2- Crée une requete qui permettra l'insertion des informations dans la base de donnée
+    $query = $bdd->prepare('UPDATE support_message SET lu = 1 WHERE id_ticket = :id_ticket AND auteur != :auteur');
+    $query->bindValue(':id_ticket', $id_ticket);
+    $query->bindValue(':auteur', $auteur);
+    $query->execute();
 
-    if($content !== ""){
-        $query = $bdd->prepare('INSERT INTO support_message (destination, date_message, date_h, date_m, message_support, you) VALUES(?,?,?,?,?,?)');
-        $query->execute(array(
-            htmlspecialchars($destination),
-            htmlspecialchars($date_crea),
-            htmlspecialchars($date_h),
-            htmlspecialchars($date_m),
-            htmlspecialchars($content),
-            htmlspecialchars($you)
-        ));
-
-        $pdoSta = $bdd->prepare('SELECT support_notif, helpdesk_notif FROM entreprise WHERE id = :num');
-        $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-        $pdoSta->execute(); 
-        $entreprise = $pdoSta->fetch();
-
-        $notification = $entreprise['support_notif'] + 1;
-
-        $pdo = $bdd->prepare('UPDATE entreprise SET support_notif=:support_notif WHERE id=:num LIMIT 1');
-        $pdo->bindValue(':support_notif', $notification);
-        $pdo->bindValue(':num', $_SESSION['id_session']);    
-        $pdo->execute();
-
-    }
-    //3- Donner un statut de succes ou d'erreur au format JSON
-
-    echo json_encode(["status" => "sucess"]);
 }
 
+function postMessage() {
 
+    global $bdd;
+
+    $id_membre = htmlspecialchars($_POST['id_membre']);
+    $id_ticket = htmlspecialchars($_POST['id_ticket']);
+    $texte = htmlspecialchars($_POST['texte']);
+    $auteur = htmlspecialchars($_POST['auteur']);
+
+    if ($texte !== "") {
+        $query = $bdd->prepare('INSERT INTO support_message (id_membre, id_ticket, date_message, heure, texte, auteur)
+                                VALUES (:id_membre, :id_ticket, curdate(), curtime(), :texte, :auteur)');
+        $query->bindValue('id_membre', $id_membre);
+        $query->bindValue('id_ticket', $id_ticket);
+        $query->bindValue('texte', $texte);
+        $query->bindValue('auteur', $auteur);
+        $query->execute();
+    }
+
+}
+
+function changerStatutTicket($statut) {
+
+    global $bdd;
+
+    $id_ticket = htmlspecialchars($_POST['id_ticket']);
+
+    $query = $bdd->prepare('UPDATE support_ticket SET statut = :statut WHERE id_ticket = :id_ticket');
+    $query->bindValue(':statut', $statut);
+    $query->bindValue(':id_ticket', $id_ticket);
+    $query->execute();
+
+}
+
+function changerThemeTicket($theme) {
+
+    global $bdd;
+
+    $id_ticket = htmlspecialchars($_POST['id_ticket']);
+
+    $query = $bdd->prepare('UPDATE support_ticket SET theme = :theme WHERE id_ticket = :id_ticket');
+    $query->bindValue(':theme', $theme);
+    $query->bindValue(':id_ticket', $id_ticket);
+    $query->execute();
+
+}
 
 ?>

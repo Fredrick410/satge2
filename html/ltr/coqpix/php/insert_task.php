@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
-        $name_task = $_GET['name_task'];
-        $date_task = $_GET['date_task'];
+        $name_task = htmlspecialchars($_GET['name_task']);
+        $date_task = htmlspecialchars($_GET['date_task']);
 
         $dateecheance_task = $_GET['dateecheance_task'];
         //Jour de la date ex : Sun
@@ -30,8 +30,8 @@ ini_set('display_startup_errors', TRUE);
 
         $status_task = "encour";
         $favorite = "0";
-        $assignation_task = $_GET['assignation_task'];
-        $description_task = $_GET['description_task'];
+        $assignation_task = htmlspecialchars($_GET['assignation_task']);
+        $description_task = htmlspecialchars($_GET['description_task']);
 
 
         if(!empty($_GET['new_etiq'])){

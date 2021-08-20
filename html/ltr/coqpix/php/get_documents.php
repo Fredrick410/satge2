@@ -64,4 +64,14 @@ if($crea['doc_annonce'] == ""){
 }else{
     $doc_annonce = "1";
 }
+if($crea['doc_domiciliation'] == ""){
+    $doc_domiciliation = "0";
+}else{
+    $doc_domiciliation = "1";
+}
+if($crea['doc_contrat'] == ""){
+    $doc_contrat = "0";
+}else{
+    $doc_contrat = "1";
+}
 ?>
