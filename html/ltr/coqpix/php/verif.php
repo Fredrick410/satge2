@@ -10,7 +10,7 @@ ini_set('display_startup_errors', TRUE);
 //On met le résultat pseudo du formulaire dans $pseudo
 $pseudo = htmlspecialchars($_GET["emailentreprise"]);
 $pass = htmlspecialchars($_GET["passwordentreprise"]);
-$pass_hash = crypt($pass, '5c725a26307c3b5170634a7e2b');
+$pass_hash = crypt($_GET["passwordentreprise"], '5c725a26307c3b5170634a7e2b');
 
 //On sélectionne dans la table 'utilisateurs' les pseudo qui sont les mêmes que le pseudo tapé dans le formulaire
 
