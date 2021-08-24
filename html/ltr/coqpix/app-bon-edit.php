@@ -4,47 +4,50 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+
+
 require_once 'php/permissions_front.php';
 
     if (permissions()['ventes'] < 2) {
         header('Location: app-bon-list.php');
         exit();
     }
-   
+
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-    $pdoSta->execute(); 
+    $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $article = $pdoSt->fetchAll();
 
     $pdoS = $bdd->prepare('SELECT * FROM bon WHERE id = :num');
     $pdoS->bindValue(':num',$_GET['numbon']);
-    $pdoS->execute(); 
+    $pdoS->execute();
     $facture = $pdoS->fetch();
-    
+
 
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="bonvente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
     $pdo->bindValue(':numeros',$_GET['numbon']);
-    $pdo->execute(); 
+    $pdo->execute();
     $articles = $pdo->fetchAll();
 
     $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
     try{
-  
+
     $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$_GET['numbon']); 
+    $req->bindValue(':numeros',$_GET['numbon']);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -55,12 +58,12 @@ require_once 'php/permissions_front.php';
 
 
     try{
-  
+
     $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) R ";
-  
+
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$_GET['numbon']); 
+    $re->bindValue(':numeros',$_GET['numbon']);
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -70,12 +73,12 @@ require_once 'php/permissions_front.php';
     $montant_r = !empty($rer) ? $rer['MONTANT_R'] : 0;
 
     try{
-  
+
     $sql = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) V ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$_GET['numbon']); 
+    $req->bindValue(':numeros',$_GET['numbon']);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -171,7 +174,7 @@ require_once 'php/permissions_front.php';
                                 <form autocomplete="off" action="php/edit_bon.php" method="POST">
                                     <input type="hidden" name="numbon" value="<?= $facture['id'] ?>">
                                         <div class="row mx-0">
-                                        
+
                                             <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
@@ -183,12 +186,12 @@ require_once 'php/permissions_front.php';
                                                             </h6>
                                                             <input name="refbon" id="refbon" type="text" value="<?= $facture['refbon'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
                                                             <p style='position: relative; top: 7px;'>
-                                                                &nbsp&nbsp&nbsp 
+                                                                &nbsp&nbsp&nbsp
                                                             </p>
                                                 <h6 class="invoice-number mr-75">bon N°</h6>
                                                 <!-- auto incrémentation du numéro qui peut aussi etre choisi -->
-                                                <input name="numerosbon"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosbon'] ?>" >
-                                               
+                                                <input name="numerosbon"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosbon'] ?>">
+
                                             </div>
                                             <div class="col-xl-6 col-md-12 px-0 pt-xl-0 pt-1">
                                                 <div class="invoice-date-picker d-flex align-items-center justify-content-xl-end flex-wrap">
@@ -208,17 +211,17 @@ require_once 'php/permissions_front.php';
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <hr>
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
                                             <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
                                                 <h4 class="text-primary">bon</h4>
-                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du bon" value="<?= $facture['nomproduit'] ?>"> 
+                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du bon" value="<?= $facture['nomproduit'] ?>">
                                                 <div class="form-group">
                                                             <label for="exampleFormControlTextarea1">Description</label>
                                                             <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $facture['descrip']?></textarea>
-                                                        </div>  
+                                                        </div>
                                             </div>
                                             <!-- LOGO -->
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
@@ -243,15 +246,15 @@ require_once 'php/permissions_front.php';
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>
                                                 </div>
-                                               
+
                                                 <label for="adress">*Adresse :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="adresse" id="adresse" class="form-control" rows="4" value="<?= $facture['adresse'] ?>">
                                                 </fieldset>
-                                             
+
                                             </div>
 											 <div class="col-lg-6 col-md-12 mt-25">
-                                                
+
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
@@ -271,7 +274,7 @@ require_once 'php/permissions_front.php';
                                     <div class="card-body pt-50">
                                         <!-- product details table-->
                                         <div class="invoice-product-details ">
-                                            
+
                                                 <div data-repeater-list="group-a">
                                                     <div data-repeater-item>
                                                     <!-- affiche les articles deja présents -->
@@ -287,7 +290,7 @@ require_once 'php/permissions_front.php';
                                                                     <input name="cout" type="number" class="form-control" placeholder="0" value="<?= $articless['cout'] ?>" readonly >
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <label>Quantite :</label>    
+                                                                    <label>Quantite :</label>
                                                                     <input name="quantite" type="number" class="form-control" placeholder="0" value="<?= $articless['quantite'] ?>" readonly>
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
@@ -308,7 +311,7 @@ require_once 'php/permissions_front.php';
                                                             </div>
                                                             <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
                                                                 <div class="dropdown">
-                                                                    <a href="php/delete_article_bon.php?num=<?= $articless['id'] ?>&numbon=<?= $facture['id'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>                                            
+                                                                    <a href="php/delete_article_bon.php?num=<?= $articless['id'] ?>&numbon=<?= $facture['id'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -345,10 +348,10 @@ require_once 'php/permissions_front.php';
                                                                 <div class="col-md-2 col-12 form-group">
                                                                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                                                                     <!-- prix de quantité*prix en js -->
-                                                                    <strong 
+                                                                    <strong
                                                                     id="demo" class="text-primary align-middle">00.00 €</strong>
                                                                 </div>
-                                                                
+
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label for="ref">REF :</label>
                                                                     <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">

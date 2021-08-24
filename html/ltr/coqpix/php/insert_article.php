@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once 'verif_session_connect.php';
 error_reporting(E_ALL);
@@ -21,7 +21,7 @@ $maxid = $test['MAX(id_article)'] + 1;
         if($_POST['coutachat'] == ""){
 
                 $typ = "Ventes";
-            
+
         }else{
 
             if($_POST['prixvente'] == "" ){
@@ -32,7 +32,7 @@ $maxid = $test['MAX(id_article)'] + 1;
                 $typ = "Ventes et Achats";
 
             }
-            
+
         }
 
     }
@@ -47,7 +47,7 @@ $maxid = $test['MAX(id_article)'] + 1;
               $resultat = move_uploaded_file($_FILES['img']['tmp_name'], $chemin);
               if($resultat) {
                  $path = $maxid.".".$extensionUpload;
-                 $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, img, id_session, stock, nom_fournisseur, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)');
+                 $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, img, id_session, stock, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
                 $insert->execute(array(
                     htmlspecialchars($_POST['article']),
                     htmlspecialchars($_POST['referencearticle']),
@@ -60,7 +60,6 @@ $maxid = $test['MAX(id_article)'] + 1;
                     htmlspecialchars($path),
                     htmlspecialchars($_SESSION['id_session']),
                     htmlspecialchars($_POST['stock']),
-                    htmlspecialchars($_POST['nom_fournisseur']),
                     htmlspecialchars($_POST['id_fournisseur'])
                     // htmlspecialchars($_POST['adresse']),
                     // htmlspecialchars($_POST['codepostal']),
@@ -68,8 +67,8 @@ $maxid = $test['MAX(id_article)'] + 1;
                     // htmlspecialchars($_POST['email']),
                     // htmlspecialchars($_POST['tel'])
                 ));
-               
-                    
+
+
               } else {
                  $msg = "Erreur durant l'importation de votre photo";
               }
@@ -80,8 +79,8 @@ $maxid = $test['MAX(id_article)'] + 1;
            $msg = "Votre photo ne doit pas dépasser 2Mo";
         }
     }elseif(empty($_FILES['img']['name'])){
-        $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session, stock, nom_fournisseur, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
-        $insert->execute(array(
+        $insert = $bdd->prepare('INSERT INTO article(article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session, stock, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?)');
+        $insert->execute(
             htmlspecialchars($_POST['article']),
             htmlspecialchars($_POST['referencearticle']),
             htmlspecialchars($_POST['prixvente']),
@@ -92,14 +91,13 @@ $maxid = $test['MAX(id_article)'] + 1;
             htmlspecialchars($typ),
             htmlspecialchars($_SESSION['id_session']),
             htmlspecialchars($_POST['stock']),
-            htmlspecialchars($_POST['nom_fournisseur']),
             htmlspecialchars($_POST['id_fournisseur'])
             // htmlspecialchars($_POST['adresse']),
             // htmlspecialchars($_POST['codepostal']),
             // htmlspecialchars($_POST['departement']),
             // htmlspecialchars($_POST['email']),
             // htmlspecialchars($_POST['tel'])
-        ));
+        );
     }
 
 
@@ -107,6 +105,6 @@ $maxid = $test['MAX(id_article)'] + 1;
 
 
 
-    
+
 
 ?>

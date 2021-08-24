@@ -19,19 +19,13 @@ ini_set('display_startup_errors', TRUE);
         $dte = $_POST['dte'];
     }
 
-    if($_POST['commande'] == ""){
-        $commande = "Commande en cours de traitement";
-    }else{
-        $commande = $_POST['commande'];
-    }
-
     if($_POST['note'] == ""){
         $note = "Pas de commentaire";
     }else{
         $note = $_POST['note'];
     }
 
-    // end vide 
+    // end vide
 
     if($_POST['statut'] == "NON PAYE"){
         $color = "badge badge-light-danger badge-pill";
@@ -39,13 +33,12 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, commande, refbon, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, numerosfournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, refbon, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, numerosfournisseur,bonpour) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($numerosbon),
         htmlspecialchars($dte),
         htmlspecialchars($_POST['dateecheance']),
         htmlspecialchars($_POST['nom_bon']),
-        htmlspecialchars($commande),
         htmlspecialchars($_POST['refbon']),
         // htmlspecialchars($adresse),
         // htmlspecialchars($email),
@@ -60,13 +53,15 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($_SESSION['id_session']), //$_SESSION
         htmlspecialchars($_POST['descrip']),
         // htmlspecialchars($_POST['nom_fournisseur']),
-        htmlspecialchars($_POST['numerosfournisseur'])
+        htmlspecialchars($_POST['numerosfournisseur']),
+        htmlspecialchars($bonpour)
     ));
 
-        $pdoA = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
+        $pdoA = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdoA->bindValue(':numeros', $numerosarticle);
         $pdoA->execute();
+
 
         //calculs
 
@@ -76,12 +71,12 @@ ini_set('display_startup_errors', TRUE);
         $calculs = $pdoS->fetch();
 
     try{
-  
+
         $sql = "SELECT SUM(ROUND(T.TOTAL, 2)) as MONTANT_T FROM ( SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
-            
+
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numeroarticle']); 
+        $req->bindValue(':numeros',$_POST['numeroarticle']);
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
@@ -89,7 +84,7 @@ ini_set('display_startup_errors', TRUE);
         }
 
     // delete tout les articles en plus
-        
+
     $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
     $pdoDel->execute();
 
@@ -97,5 +92,5 @@ ini_set('display_startup_errors', TRUE);
     exit();
 
 
-    
+
 ?>

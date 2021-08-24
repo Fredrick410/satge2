@@ -1,21 +1,10 @@
-<?php 
+<?php
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 // include 'php/verif_session_connect.php';
 require_once 'php/config.php';
-
-    // $pdoStat = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
-    // $pdoStat->bindValue(':num',$_SESSION['id_session']);
-    // $pdoStat->execute();
-    // $bon_commande = $pdoStat->fetchAll();
-
-    // $pdoStatr = $bdd->prepare('SELECT * FROM bon_commande WHERE id_session = :num');
-    // $pdoStatr->bindValue(':num',$_SESSION['id_session']);
-    // $pdoStatr->execute();
-    // $bons = $pdoStatr->fetch();
-    // $numeros = $bons['numerosbon'];
 
     $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
@@ -27,15 +16,11 @@ require_once 'php/config.php';
     $pdoSt->execute();
     $fournisseur = $pdoSt->fetch();
 
-    $pdoSttr = $bdd->prepare('SELECT * FROM bon_commande INNER JOIN fournisseur ON fournisseur.id = bon_commande.numerosfournisseur WHERE bon_commande.id_session = :num');
+    $pdoSttr = $bdd->prepare('SELECT * FROM bon_commande INNER JOIN fournisseur ON fournisseur.id = bon_commande.numerosfournisseur WHERE bon_commande.id_session = :num and bon_commande.commande = "Commande en cours de traitement" or bon_commande.commande = "Commande refusé"');
     $pdoSttr->bindValue(':num',$_SESSION['id_session']);
     $pdoSttr->execute();
     $bons_four = $pdoSttr->fetchAll();
 
-    $pdaStt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-    $pdaStt->bindValue(':num',$_SESSION['id_session']);
-    $pdaStt->execute();
-    $article = $pdaStt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -102,7 +87,7 @@ require_once 'php/config.php';
                             function retourn() {
                                 window.history.back();
                             }
-                        </script> 
+                        </script>
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
                         </ul>
@@ -196,7 +181,7 @@ require_once 'php/config.php';
                                     <th>Fournisseur</th>
                                     <th>Article</th>
                                     <th>Quantité</th>
-                                    <th title="Article commandé : 
+                                    <th title="Article commandé :
 En cours de traitement
 Commande Validé/Livraison en cours
 Commande annulé"                    >Commandé</th>
@@ -206,13 +191,13 @@ Commande annulé"                    >Commandé</th>
                             <tbody>
                             <?php foreach ($bons_four as $bons):
                                 $numeros = $bons['id_bon_commande'];
-                               
+
                                 try{
                                     // Somme du prix HT
                                 $sql = "SELECT SUM(ROUND(T.TOTAL, 2)) as MONTANT_T FROM (SELECT cout * quantite as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonachat') T";
-  
+
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT);
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
@@ -221,17 +206,10 @@ Commande annulé"                    >Commandé</th>
 
                                 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
 
-                                $sqll = "SELECT numeros, article, quantite FROM articles WHERE typ='bonachat' AND numeros=(SELECT id_bon_commande FROM bon_commande WHERE id_bon_commande=:numeros)";
-  
-                                $reqs = $bdd->prepare($sqll);
-                                $reqs->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
-                                $reqs->execute();
-                                $resq = $reqs->fetch();
-
                                 $count = "SELECT COUNT(article) as countarticle FROM articles WHERE numeros=(SELECT id_bon_commande FROM bon_commande WHERE id_bon_commande=:numeros)";
 
                                 $reqss = $bdd->prepare($count);
-                                $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
+                                $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT);
                                 $reqss->execute();
                                 $resqq = $reqss->fetch();
                             ?>
@@ -239,25 +217,71 @@ Commande annulé"                    >Commandé</th>
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <a href="app-invoice-view.php?numbon=<?= $bons['id_bon_commande'] ?>">BC-<?= $bons['id_bon_commande'] ?></a>
+                                        <a href="app-bon-achat-view.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>">BC-<?= $bons['id_bon_commande'] ?></a>
                                     </td>
                                     <td><?= $montant_t; ?> <?= $bons['monnaie'] ?></td>
                                     <td><?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($bons['dte'])); ?></td>
                                     <td><a href="fournisseur-edit.php?numfour=<?= $bons['numerosfournisseur'] ?>"><?= $bons['name_fournisseur'] ?></a></td>
                                     <td title="Article commandé - Nombre total d'articles">
-                                        <!-- <?php foreach ($article as $articlee): ?>
-                                            <?php
-                                                if($resq['numeros'] == $bons['id_bon_commande']) { 
-                                                    $resq['article'];
-                                                    if($i++ == $bons['id_bon_commande']) break;
-                                                }
-                                            ?> 
-                                        <?php endforeach ?> -->
-                                         <?= $articlee['article'] ?>
-                                        (<?= $resqq['countarticle'] ?>)
+                                      Nombres d'articles:
+                                      <?= $resqq['countarticle'] ?><!-- indiquer le nb d'article present dans la commande -->
+                                      </br>
+                                      <?php
+                                      $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="bonachat"');
+                                      $pdo->bindValue(':num',$_SESSION['id_session']);
+                                      $pdo->bindValue(':numeros',$numeros);
+                                      $pdo->execute();
+                                      $articles = $pdo->fetchAll();?>
+                                      <!-- afficher seulement les 2 premiers articles puis mettre des "..." s'il y a plus d'articles -->
+                                      <table>
+                                        <?php
+                                        if (count($articles)<=2) {
+                                          foreach($articles as $articless): ?>
+                                            <tr>
+                                              <td><?= $articless['article']; ?></td>
+                                            </tr>
+                                          <?php endforeach;
+                                        }else {
+                                          for ($i=0; $i < 2; $i++) {?>
+                                            <tr>
+                                              <td><?= $articles[$i]['article']; ?></td>
+                                            </tr>
+                                        <?php  } ?>
+                                          <tr>
+                                            <td>...</td>
+                                          </tr>
+                                        <?php  } ?>
+                                      </table>
                                     </td>
-                                    <td><?= $resq['quantite'] ?></td>
-                                    <td><?= $bons['commande'] ?></td>
+                                  <td>
+                                    <!-- afficher la quantite qui correspond a chaque article -->
+                                    <table>
+                                      <?php
+                                      if (count($articles)<=2) {
+                                        foreach($articles as $articless): ?>
+                                          <tr>
+                                            <td><?= $articless['quantite']; ?></td>
+                                          </tr>
+                                        <?php endforeach;
+                                      }else {
+                                        for ($i=0; $i < 2; $i++) {?>
+                                          <tr>
+                                            <td><?= $articles[$i]['quantite']; ?></td>
+                                          </tr>
+                                      <?php  } ?>
+                                        <tr>
+                                          <td>...</td>
+                                        </tr>
+                                      <?php  } ?>
+                                    </table>
+                                  </td>
+                                    <td><?php //status de la commande pour CSS
+                                    if($bons['commande']=='Commande en cours de traitement'){
+                                      $stts ='badge badge-light-warning badge-pill';
+                                    }elseif ($bons['commande']=='Commande refusé') {
+                                      $stts ='badge badge-light-danger badge-pill';
+                                    }?>
+                                    <span class="<?= $stts ?>"><?= $bons['commande'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
                                             <a href="app-bon-achat-view.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>" class="invoice-action-view mr-1" title="Voir le bon de commande">
@@ -269,14 +293,23 @@ Commande annulé"                    >Commandé</th>
                                             <a href="php/delete_bon_achat.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1" title="Supprimer le bon de commande">
                                                 <i class='bx bxs-trash'></i>
                                             </a>
-                                            <a href="#" class="invoice-action-view mr-1" title="Valider le bon de commande">
-                                                <i class='bx bxs-check-circle'></i>
-                                            </a>
-                                            <a href="#" class="invoice-action-view mr-1" title="Annuler le bon de commande">
-                                                <i class='bx bxs-x-circle'></i>
-                                            </a>                                 
+                                            <?php /*boutton à afficher seulement si on a les permissions */
+                                            $q = $bdd -> prepare('SELECT * from admin where perm_comptable = 1 and id = :id');
+                                            $q ->bindValue('id',$_SESSION['id_session']);
+                                            $q -> execute();
+                                            $auth = $q->fetch();
+                                            if (isset($auth) and !empty($auth) and $bons['commande'] === "Commande en cours de traitement"): ?>
+                                              <!-- valider le bon -->
+                                              <a href="php/validate_bon_achat.php?id=<?= $bons['id_bon_commande'] ?>&typ=confirm" class="invoice-action-view mr-1" title="Valider le bon de commande">
+                                                  <i class='bx bxs-check-circle'></i>
+                                              </a>
+                                              <!-- refuser le bon -->
+                                              <a href="php/refute_bon_achat.php?id=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1" title="Annuler le bon de commande">
+                                                  <i class='bx bxs-x-circle'></i>
+                                              </a>
+                                            <?php endif; ?>
                                         </div>
-                                    </td> 
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>

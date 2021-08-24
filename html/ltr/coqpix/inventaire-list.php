@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -15,25 +15,19 @@ require_once 'php/config.php';
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
     $pdoStatr->execute();
     $facturer = $pdoStatr->fetch();
-    
-    
+
+
     $pdoStatr = $bdd->prepare('SELECT reffacture,numerosfacture FROM facture WHERE id_session = :num');
     $pdoStatr->bindValue(':num',$_SESSION['id_session']);
     $pdoStatr->execute();
     $fu = $pdoStatr->fetch();
     $nom = $fu['reffacture'];
-    
+
 
     $pdoStt = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
     $pdoStt->bindValue(':numentreprise',$_SESSION['id_session']);
     $pdoStt->execute();
     $entreprise = $pdoStt->fetch();
-    
-    
-    // $p = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-    // $p->bindValue(':num',$_SESSION['id_session']);
-    // $p->execute();
-    // $test = $p->fetch();
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -209,7 +203,7 @@ require_once 'php/config.php';
                                     <div class="card kb-hover-4">
                                         <div class="card-content">
                                             <div class="card-body text-center">
-                                                <a href="#">
+                                                <a href="inventaire-reception-commande.php">
                                                     <div class=" mb-1">
                                                         <i class="livicon-evo" data-options="name: paper-plane.svg; size: 50px; strokeColorAlt: #FDAC41; strokeColor: #5A8DEE; style: lines-alt; eventOn: .kb-hover-4;"></i>
                                                     </div>
@@ -236,7 +230,7 @@ require_once 'php/config.php';
         </div>
     </div>
     <!-- END: Content-->
- 
+
 <script type="text/javascript">
     function checkbox(){
         if(document.getElementById('checkbox').checked){

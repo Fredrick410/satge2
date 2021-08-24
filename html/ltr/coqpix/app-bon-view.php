@@ -16,7 +16,7 @@ require_once 'php/permissions_front.php';
     $pdoStat->execute();
     $facture = $pdoStat->fetch();
     $numeros = $facture['id'];
-    
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
     $pdoSta->execute();
@@ -25,17 +25,17 @@ require_once 'php/permissions_front.php';
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ = "bonvente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
     $pdo->bindValue(':numeros',$numeros);
-    $pdo->execute(); 
+    $pdo->execute();
     $articles = $pdo->fetchAll();
 
 
     try{
-  
+
     $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$numeros); 
+    $req->bindValue(':numeros',$numeros);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -46,12 +46,12 @@ require_once 'php/permissions_front.php';
 
 
     try{
-  
+
     $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) R ";
-  
+
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$numeros); 
+    $re->bindValue(':numeros',$numeros);
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -61,12 +61,12 @@ require_once 'php/permissions_front.php';
     $montant_r = !empty($rer) ? $rer['MONTANT_R'] : 0;
 
     try{
-  
+
     $sql = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) V ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$numeros); 
+    $req->bindValue(':numeros',$numeros);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -79,12 +79,12 @@ require_once 'php/permissions_front.php';
     // TVA 20%
 
     try{
-  
+
     $sqlt20 = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva = '20 %' ) V ";
-  
+
     $reqt20 = $bdd->prepare($sqlt20);
     $reqt20->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqt20->bindValue(':numeros',$numeros); 
+    $reqt20->bindValue(':numeros',$numeros);
     $reqt20->execute();
     $rest20 = $reqt20->fetch();
     }catch(Exception $e){
@@ -94,12 +94,12 @@ require_once 'php/permissions_front.php';
     $montant_tva_20 = !empty($rest20) ? $rest20['MONTANT_V'] : 0;
 
     try{
-  
+
     $sqlm20 = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva='20 %' ) T ";
-  
+
     $reqm20 = $bdd->prepare($sqlm20);
     $reqm20->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqm20->bindValue(':numeros',$numeros); 
+    $reqm20->bindValue(':numeros',$numeros);
     $reqm20->execute();
     $resm20 = $reqm20->fetch();
     }catch(Exception $e){
@@ -111,12 +111,12 @@ require_once 'php/permissions_front.php';
     // TVA 10%
 
     try{
-  
+
     $sqlt10 = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva = '10 %' ) V ";
-  
+
     $reqt10 = $bdd->prepare($sqlt10);
     $reqt10->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqt10->bindValue(':numeros',$numeros); 
+    $reqt10->bindValue(':numeros',$numeros);
     $reqt10->execute();
     $rest10 = $reqt10->fetch();
     }catch(Exception $e){
@@ -126,12 +126,12 @@ require_once 'php/permissions_front.php';
     $montant_tva_10 = !empty($rest10) ? $rest10['MONTANT_V'] : 0;
 
     try{
-  
+
     $sqlm10 = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva='10 %' ) T ";
-  
+
     $reqm10 = $bdd->prepare($sqlm10);
     $reqm10->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqm10->bindValue(':numeros',$numeros); 
+    $reqm10->bindValue(':numeros',$numeros);
     $reqm10->execute();
     $resm10 = $reqm10->fetch();
     }catch(Exception $e){
@@ -143,12 +143,12 @@ require_once 'php/permissions_front.php';
     // TVA 5,5%
 
     try{
-  
+
     $sqlt55 = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva = '5,5 %' ) V ";
-  
+
     $reqt55 = $bdd->prepare($sqlt55);
     $reqt55->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqt55->bindValue(':numeros',$numeros); 
+    $reqt55->bindValue(':numeros',$numeros);
     $reqt55->execute();
     $rest55 = $reqt10->fetch();
     }catch(Exception $e){
@@ -158,12 +158,12 @@ require_once 'php/permissions_front.php';
     $montant_tva_55 = !empty($rest55) ? $rest55['MONTANT_V'] : 0;
 
     try{
-  
+
     $sqlm55 = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva='5,5 %' ) T ";
-  
+
     $reqm55 = $bdd->prepare($sqlm55);
     $reqm55->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqm55->bindValue(':numeros',$numeros); 
+    $reqm55->bindValue(':numeros',$numeros);
     $reqm55->execute();
     $resm55 = $reqm55->fetch();
     }catch(Exception $e){
@@ -175,12 +175,12 @@ require_once 'php/permissions_front.php';
     // TVA 2,1%
 
     try{
-  
+
     $sqlt21 = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva = '2,1 %' ) V ";
-  
+
     $reqt21 = $bdd->prepare($sqlt55);
     $reqt21->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqt21->bindValue(':numeros',$numeros); 
+    $reqt21->bindValue(':numeros',$numeros);
     $reqt21->execute();
     $rest21 = $reqt10->fetch();
     }catch(Exception $e){
@@ -190,12 +190,12 @@ require_once 'php/permissions_front.php';
     $montant_tva_21 = !empty($rest21) ? $rest21['MONTANT_V'] : 0;
 
     try{
-  
+
     $sqlm21 = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' AND tva='2,1 %' ) T ";
-  
+
     $reqm21 = $bdd->prepare($sqlm21);
     $reqm21->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $reqm21->bindValue(':numeros',$numeros); 
+    $reqm21->bindValue(':numeros',$numeros);
     $reqm21->execute();
     $resm21 = $reqm21->fetch();
     }catch(Exception $e){
@@ -203,7 +203,7 @@ require_once 'php/permissions_front.php';
     }
 
     $montant_t_21 = !empty($resm21) ? $resm21['MONTANT_T'] : 0;
-    
+
 ?>
 
 <!DOCTYPE html>
@@ -247,15 +247,15 @@ require_once 'php/permissions_front.php';
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
-
-
-<body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
-
-
 <body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
 <style>
     .none-validation{display: none;}
 </style>
+
+<!-- BEGIN: Header-->
+<?php $btnreturn = true;
+include('php/menu_header_front.php'); ?>
+<!-- END: Header-->
 
     <!-- BEGIN: Content-->
     <div class="app-content content">
@@ -275,7 +275,7 @@ require_once 'php/permissions_front.php';
                                         <!-- header section -->
                                         <div class="row">
                                             <div class="col-xl-4 col-md-12">
-                                           
+
                                                 <span class="invoice-number mr-50">Référence :</span>
                                                 <span><?= $facture['refbon'],$facture['numerosbon']; ?></span>
                                             </div>
@@ -283,7 +283,7 @@ require_once 'php/permissions_front.php';
                                                 <span class="invoice-number mr-50">bon N°</span>
                                                 <span><?= $facture['id']; ?></span>
                                             </div>
-                                            
+
                                             <div class="col-xl-4 col-md-12">
                                                 <div class="d-flex align-items-center justify-content-xl-end flex-wrap">
                                                     <div class="mr-3">
@@ -317,30 +317,38 @@ require_once 'php/permissions_front.php';
                                             <div class="col-6 mt-1">
                                                 <h5 class="invoice-from">bon de</h5>
                                                 <div class="mb-1">
+                                                    <label>Nom de l'entreprise :</label><br>
                                                     <span><?= $entreprise['nameentreprise']; ?></span>
                                                 </div>
                                                 <div class="mb-1">
+                                                  <label>Addresse de l'entreprise :</label><br>
                                                     <span><?= $entreprise['adresseentreprise']; ?></span>
                                                 </div>
                                                 <div class="mb-1">
+                                                    <label>Email de l'entreprise :</label><br>
                                                     <span><?= $entreprise['emailentreprise']; ?></span>
                                                 </div>
                                                 <div class="mb-1">
+                                                    <label>Numéro de téléphone de l'entreprise :</label><br>
                                                     <span><?= $entreprise['telentreprise']; ?></span>
                                                 </div>
                                             </div>
                                             <div class="col-6 mt-1">
                                                 <h5 class="invoice-to">bon pour</h5>
                                                 <div class="mb-1">
+                                                    <label>Nom du client :</label><br>
                                                     <span><?= $facture['bonpour']; ?></span>
                                                 </div>
                                                 <div class="mb-1">
+                                                    <label>Adresse de livraison :</label><br>
                                                     <span><?= $facture['adresse']; ?></span>
                                                 </div>
                                                 <div class="mb-1">
+                                                    <label>Email du client :</label><br>
                                                     <span><?= $facture['email']; ?></span>
                                                 </div>
                                                 <div class="mb-1">
+                                                    <label>Numéro de téléphone du client :</label><br>
                                                     <span><?= $facture['tel']; ?></span>
                                                 </div>
                                             </div>
@@ -375,8 +383,8 @@ require_once 'php/permissions_front.php';
                                             </tbody>
                                         </table>
                                     </div>
-                                    
-                                    <style>.tvadis{display: none;}</style> 
+
+                                    <style>.tvadis{display: none;}</style>
                                     <?php
 
                                         $tva = ($montant_t-$montant_tva);
@@ -391,11 +399,11 @@ require_once 'php/permissions_front.php';
                                         <hr>
                                         <div class="row">
                                             <div class="col-4 col-sm-6 mt-75">
-                                                <div class="form-group">    
+                                                <div class="form-group">
                                                 <!-- commentaire -->
                                                     <span class="invoice-title"><?php if($facture['note'] == "Pas de commentaire"){$noteresult = "";}else{$noteresult = $facture['note'];} ?><?= $noteresult ?></span>
                                                 </div><br>
-                                                <div class="form-group"><style>.size{font-size: 12px;}  .display{display: none;} .aucun{text-transform:none;} .greyy{color:#aeaeae;} .bluee{color: #aed8ff;}</style>  
+                                                <div class="form-group"><style>.size{font-size: 12px;}  .display{display: none;} .aucun{text-transform:none;} .greyy{color:#aeaeae;} .bluee{color: #aed8ff;}</style>
                                                     <label></label><br><br><br><br>
                                                     <div class="<?php if(empty($displaytva)){echo "tvadis";} ?>" id="d1"><span class="invoice-title size">Autoliquidation de la TVA.</span></div> <!-- id=1 -->
                                                 </div>
@@ -417,10 +425,10 @@ require_once 'php/permissions_front.php';
                                                     </div>
                                                     <hr>
                                                     <div class="<?php if(empty($displaytva)){echo "";}else{echo $displaytva;} ?>">
-                                                    
+
 
                                                     <style>
-                                                    
+
                                                     .sizetva{
                                                         font-size: 13px;
                                                     }
@@ -430,11 +438,11 @@ require_once 'php/permissions_front.php';
                                                     <div class="<?php if(($montant_t_20 - $montant_tva_20) == "0"){echo "display";} ?> sizetva"><div class="invoice-calc d-flex justify-content-between">
                                                         <span class="invoice-subtotal-title">Total 20% :</span>
                                                         <h6 class="invoice-subtotal-value mb-0 sizetva"> <?= $montant_t_20 - $montant_tva_20 ?> <?= $facture['monnaie']; ?></h6>
-                                                    </div></div>  
+                                                    </div></div>
                                                     <div class="<?php if(($montant_t_10 - $montant_tva_10) == "0"){echo "display";} ?> sizetva"><div class="invoice-calc d-flex justify-content-between">
                                                         <span class="invoice-subtotal-title">Total 10% :</span>
                                                         <h6 class="invoice-subtotal-value mb-0 sizetva"><?= $montant_t_10 - $montant_tva_10 ?><?= $facture['monnaie']; ?></h6>
-                                                    </div></div>                                   
+                                                    </div></div>
                                                     <div class="<?php if(($montant_t_55 - $montant_tva_55) == "0"){echo "display";} ?> sizetva"><div class="invoice-calc d-flex justify-content-between">
                                                         <span class="invoice-subtotal-title">Total 5,5% :</span>
                                                         <h6 class="invoice-subtotal-value mb-0 sizetva"><?= $montant_t_55 - $montant_tva_55 ?><?= $facture['monnaie']; ?></h6>
@@ -463,7 +471,7 @@ require_once 'php/permissions_front.php';
                                         </div>
                                     </div>
                                     <style>
-                                    
+
                                     .sizeview{font-size: 13px;}
 
                                     </style>
@@ -485,17 +493,28 @@ require_once 'php/permissions_front.php';
                                             <span>Enregister ou Imprimer</span>
                                         </button>
                                     </div>
+
+                                    <div class="invoice-action-btn">
+                                    <!-- pour modifier le bon      -->
+                                      <form action="app-bon-edit.php" method="GET">
+                                        <input type="hidden" name="numbon" value="<?= $facture['id']?>">
+                                        <input value="Modifier le bon" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
+                                      </form>
+                                    </div>
+                                    <div class="invoice-action-btn">
+                                        <form action="app-bon-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>
                                     <?php // Permission de niveau 2 pour modifier un bon
                                     if (permissions()['ventes'] >= 2) { ?>
-                                    <div class="invoice-action-btn">   
+                                    <div class="invoice-action-btn">
                                         <form action="app-bon-edit.php" method="GET">
                                             <input type="hidden" name="numbon" value="<?= $facture['id']?>">
                                             <input value="Modifier le bon" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
-                                        </form>      
+                                        </form>
                                     </div>
                                     <?php } ?>
-                                    <div class="invoice-action-btn">        
-                                        <form action="app-bon-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>               
+                                    <div class="invoice-action-btn">
+                                        <form action="app-bon-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>
+
                                     </div>
                                     <hr>
                                     <div class="form-group"><style>.line{text-decoration: underline;}</style>
@@ -572,7 +591,7 @@ require_once 'php/permissions_front.php';
             </div>
         </div>
     </div>
-    <!-- END: Content-->                                                  
+    <!-- END: Content-->
 
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
