@@ -62,11 +62,14 @@ ini_set('display_startup_errors', TRUE);
         $pdoA->bindValue(':numeros', $numerosarticle);
         $pdoA->execute();
 
+<<<<<<< HEAD
         $pdoF = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');
         $pdoF->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdoF->bindValue(':numeros', $numerosarticle);
         $pdoF->execute();
 
+=======
+>>>>>>> a501eced47c7dd3f1c5fed425cdad5e79160ae93
         //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');

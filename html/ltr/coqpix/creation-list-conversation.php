@@ -7,6 +7,10 @@ require_once 'php/config.php';
 $authorised_roles = array('admin', 'juriste');
 require_once 'php/verif_session_connect_admin.php';
 
+$SQL2 = $bdd->prepare('SELECT * FROM chat_crea WHERE you NOT LIKE "coqpix"');
+$SQL2->execute();
+$list_msg = $SQL2->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +99,7 @@ require_once 'php/verif_session_connect_admin.php';
                                     Nouveau
                                 </button>
                             </div>
-                            <div class="sidebar-menu-list">
+                            <div class="sidebar-menu-list" >
                                 <!-- sidebar menu  -->
                                 <?php include('php/sidebar_crea.php'); ?>
                                 <!-- sidebar menu  end-->
@@ -211,15 +215,30 @@ require_once 'php/verif_session_connect_admin.php';
                                         <!-- action left end here -->
 
                                         <!-- action right start here -->
-                                        <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
                                         
+                                        <div class="action-right d-flex flex-grow-1 align-items-center justify-content-around">
+                                            <!--<select onclick="affiche_conv();" id="type_conv" class="form-select border-1 form-control" aria-label="Default select example" style="width:20%;">
+                                                <option value="1">Conversation(s) non lue(s)</option>
+                                                <option value="2">Conversation(s) archivée(s)</option>
+                                                <option value="3" selected>Toutes les conversations</option>
+                                            </select>-->
+                                            <div class="dropdown nav-item"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><span>Filtre des conversations</span></a>
+                                                <ul class="dropdown-menu">
+                                                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation-nonlu.php" data-toggle="dropdown">Conversation(s) non lue(s)</a>
+                                                    </li>
+                                                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation-lu.php" data-toggle="dropdown">Conversation(s) archivée(s)</a>
+                                                    </li>
+                                                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation.php" data-toggle="dropdown">Toutes les conversations</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                             <!-- search bar  -->
                                             <div class="email-fixed-search flex-grow-1">
                                                 <div class="sidebar-toggle d-block d-lg-none">
                                                     <i class="bx bx-menu"></i>
                                                 </div>
                                                 <fieldset class="form-group position-relative has-icon-left m-0">
-                                                    <input type="text" class="form-control" id="email-search" placeholder="Rechercher une conversation">
+                                                    <input type="text" class="form-control" id="conv-search" placeholder="Rechercher une conversation">
                                                     <div class="form-control-position">
                                                         <i class="bx bx-search"></i>
                                                     </div>
@@ -227,14 +246,18 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                             <!-- pagination and page count -->
                                             
+                                        
                                         </div>
                                     </div>
                                     <!-- / action right -->
                                     <div class="row" >
                                     <!-- email user list start -->
+                                    <script>
+                                                var compte=new Array();
+                                    </script>
                                         <div class="email-user-list col-4" style="overflow-y:scroll;" id="list-users">
-                                            <ul class="users-list-wrapper media-list">
-                                                <script>var compte=new Array();</script>
+                                            <ul class="users-list-wrapper media-list" id="list">
+                                               
                                                 <?php 
                                                 $expediteur = array();
                                                 $j=0;
@@ -282,14 +305,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                      <img src="../../../app-assets/images/ico/<?=$id_crea['img_crea']?>" alt="avtar images" width="32" height="32" class="rounded-circle">
                                                                 </div>
                                                                     <a><span class="list-group-item-text text-truncate line namecolor" ><?= $msg['you'] ?></span></a>
-                                                                    <!--Bouton d'archivage-->
-                                                                    <button type="button" class="btn btn-icon action-icon border-0" id="save"  onclick='archiver("<?=$msg['destination']?>");'>
-                                                                        <span class="fonticon-wrap">
-                                                                            <i id="img_save" class="livicon-evo" data-options="name: save.svg; size: 20px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
-                                                                            </i>
-                                                                        </span>
-                                                                    </button>
-                                                                    <!--FIN archivage-->
+                                                                   
                                                                     <input type="hidden" name="entreprise" id="entreprise" value="<?= $id_crea['status_crea'] ?>">
                                                                     <input type="hidden" name="img" id="img" value="<?= $id_crea['img_crea'] ?>">
                                                                 </div>
@@ -343,17 +359,18 @@ require_once 'php/verif_session_connect_admin.php';
                                                 </div>
                                             </div>
                                             
-                                            <div class="historique p-3" id="historique">
+                                            <div class="historique p-3" id="historique" style="height:400px;">
                                                 <div class="chat-content">
-        
+                                            
+                        
                                                 </div>
                                             </div>
 
-                                            <div class="message">
+                                            <div class="position-absolute" style="width:95%;top:500px;">
                                                 <input type="hidden" name="id" id="id_client" value="">
                                                 <input type="hidden" name="author" id="author" value="">
                                                 
-                                                <div class="card-footer border-top p-1 d-flex">
+                                                <div class="card-footer border-top p-1 d-flex ">
                                                    
                                                         <input type="text" id="content" class="form-control chat-message-demo mr-75" placeholder="Envoyer un message">
                                                         <button type="button" class="btn btn-primary glow px-1" id="btn_submit"><i class="bx bx-paper-plane"></i></button>
@@ -402,6 +419,7 @@ require_once 'php/verif_session_connect_admin.php';
     <script src="../../../app-assets/js/scripts/pages/get_conv.js"></script>
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_crea.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-email.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

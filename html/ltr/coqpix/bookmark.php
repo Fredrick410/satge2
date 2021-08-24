@@ -58,6 +58,7 @@ $bookmark_favo = $pdoSt->fetchAll();
   <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/fontawesome.css">
+
   <!-- ico-font-->
   <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/vendors/icofont.css">
   <!-- Themify icon-->
@@ -73,13 +74,44 @@ $bookmark_favo = $pdoSt->fetchAll();
   <!-- Bootstrap css-->
   <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/vendors/bootstrap.css">
   <!-- App css-->
-  <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/style.css">
+
   <link id="color" rel="stylesheet" href="../../../cuba/assets/css/color-1.css" media="screen">
   <!-- Responsive css-->
   <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/responsive.css">
+  <!-- BEGIN: Page CSS-->
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/page-knowledge-base.css">
+  <!-- END: Page CSS-->
+  <!-- BEGIN: Custom CSS-->
+  
+  <!-- END: Custom CSS--> 
+  <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../../../cuba/assets/css/style.css">
+  <!-- link mise en forme nav gauche et haut -->
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/dark-layout.css">
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/semi-dark-layout.css">
+
+
+  <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+
+
 </head>
 
-<body>
+<body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout 2-columns  navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if($entreprise["theme_web"] == "light"){echo "semi-";} ?>dark-layout">
+
+  <!-- BEGIN: Main Menu-->  
+  <?php include('php/menu_front.php'); ?>
+  <!-- END: Main Menu-->
+
+  <!-- BEGIN: Header-->
+  <?php $btnreturn = false;
+  include('php/menu_header_front.php'); ?>
+  <!-- END: Header-->
+
   <style>
     .page-body {
       background-color: #f8f8f8;
@@ -104,8 +136,6 @@ $bookmark_favo = $pdoSt->fetchAll();
       display: none;
     }
     
-    
-
     .icon_trash:hover {
       opacity: 0.5;
     }
@@ -125,43 +155,54 @@ $bookmark_favo = $pdoSt->fetchAll();
     .media {
       padding-top: 50px;
     }
-  </style>
-  <!-- tap on top starts-->
-  <div class="tap-top"><i data-feather="chevrons-up"></i></div>
-  <!-- tap on tap ends-->
-  <!-- page-wrapper Start-->
-  <div class="page-wrapper compact-wrapper" id="pageWrapper" style="margin-top: 10px;">
-    <!-- Page Body Start-->
-    <div class="page-body-wrapper" style="text-align:center">
 
-      <div class="page-body" style="margin-top: 0px">
+    .bookmark-tabcontent .details-bookmark.list-bookmark .bookmark-card img {
+      width: 80px;
+    }
+
+    .bookmark-tabcontent .details-bookmark .bookmark-card img {
+      width: 80px;
+    }
+  </style>
+
+  <div class="app-content content" style="margin-top: 50px;">
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper" style="">
+      <div class="page-body" style="margin-top: 30px">
         <!-- Container-fluid starts-->
         <div class="container-fluid">
           <div class="email-wrap bookmark-wrap">
             <div class="row">
-              <div class="col-xl-3 box-col-6">
+              <!-- partie gauche-->
+              <div class="col-sm-4 box-col-6">
                 <div class="email-left-aside">
-                  <div class="card">
+                  <div class="card text-center">
                     <div class="card-body">
-                      <div class="navbar-header">
+                      <div class="container-fluid navbar-header">
                         <ul class="nav navbar-nav flex-row">
-
-                          <li class="nav-item mr-auto modern-nav-toggle text-center">
+                          <li class="nav-item mx-auto modern-nav-toggle">
                             <a href="dashboard-analytics.php"><img class="logocoq" src="../../../app-assets/images/logo/coqpix2.png" /></a>
                           </li>
                         </ul>
                       </div>
-                      <div class="email-app-sidebar left-bookmark">
-                        <div class="media">
-                          <div class="media-size-email"><img class="me-3 rounded-circle" src="../../../cuba/assets/images/user/user.png" alt=""></div>
-                          <div class="media-body">
+                      <!--<div class="email-app-sidebar left-bookmark">-->
+                      <div class="left-bookmark">
+                        <br><br>
+                        <div>
+                          <div class="mx-auto">
+                            <img class="w-30 rounded-circle" src="../../../cuba/assets/images/user/user.png" alt="">
+                          </div>
+                          <div class="mx-auto">
                             <h6 class="f-w-600"><?= $entreprise['nameentreprise'] ?></h6>
                             <p><?= $entreprise['emailentreprise'] ?></p>
                           </div>
                         </div>
-                        <ul class="nav main-menu" role="tablist">
+                        <br>
+                        <button type="button" class="btn btn-primary w-70" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="me-8" data-feather="bookmark"></i>Ajouter une recherche</button>
+                        <br><br>
+                        <ul class="nav flex-column text-left">
                           <li class="nav-item">
-                            <button class="badge-light-primary btn-block btn-mail w-100" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="me-2" data-feather="bookmark"></i> Ajouter une recherche</button>
+                            <br>
                             <div class="modal fade modal-bookmark" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
@@ -197,32 +238,32 @@ $bookmark_favo = $pdoSt->fetchAll();
                                         <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Annuler </button>
                                     </form>
                                   </div>
+                                  <!--end popup-->
+
                                 </div>
                               </div>
                             </div>
                           </li>
-                          <li class="nav-item"><span class="main-title"> Tous</span></li>
-                          <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><span class="title"> Mes recherches</span></a></li>
-                          <li><a class="show" id="pills-favourites-tab" data-bs-toggle="pill" href="#pills-favourites" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title"> Mes favoris</span></a></li>
-                          <li><a class="show" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" aria-controls="pills-shared" aria-selected="false"><span class="title"> Partagé avec moi (SOON)</span></a></li>
-                          <li>
-                            <hr>
-                          </li>
-                          <li><span class="main-title"> Theme de recherche<span class="pull-right"><a href="#" data-bs-toggle="modal" data-bs-target="#createtag"><i data-feather="plus-circle"></i></a></span></span></li>
+                          <li class="nav-item"><span class="main-title text-dark font-weight-bolder"> Tous</span></li>
+                          <br>
+                          <li><a class="show" id="pills-list-tab" data-bs-toggle="pill" href="#pills-list" role="tab" aria-controls="pills-list" aria-selected="false"><span class="title text-dark">Ma liste de lecture</span></a></li>
+                          <li><a id="pills-created-tab" data-bs-toggle="pill" href="#pills-created" role="tab" aria-controls="pills-created" aria-selected="true"><span class="title text-dark"> Mes recherches</span></a></li>
+                          <li><a class="show" id="pills-favourites-tab" data-bs-toggle="pill" href="#pills-favourites" role="tab" aria-controls="pills-favourites" aria-selected="false"><span class="title text-dark"> Mes favoris</span></a></li>
+                          <li><a class="show" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" aria-controls="pills-shared" aria-selected="false"><span class="title text-dark"> Partagé avec moi<span class="badge badge-light-primary badge-pill badge-round">SOON</span></span></a></li>
+                          <br><br>
+                          <li><span class="text-dark font-weight-bolder">Theme de recherche</span><span class="pull-right"><a class="text-dark" href="#" data-bs-toggle="modal" data-bs-target="#createtag"><i data-feather="plus-circle"></i></a></span></span></li>
+                          <br>
                           <?php foreach ($etiq as $etiquette) : ?>
-                            <li>
-                              <a class="show trash_etiq" data-bs-toggle="pill" role="tab" aria-selected="false">
-                                <span class="bullet bullet-sm" style='background-color: red;'></span>
-                                <a href="php/delete_etiq_bookmark.php?num=<?= $etiquette['id'] ?>" class="fa fa-trash icon_trash" style ="display:inline; justify-content: space-between;"></a>
-                                <a href="etiquette_edit_book.php?num=<?= $etiquette['id'] ?>" class="fa fa-edit icon_edit" style ="display:inline; justify-content: space-between;" ></a>                                
-                          
-                                <span class="title"> <?= $etiquette['name_etiq'] ?><?= $etiquette['id'] ?>
-
-                                                          
-                          
-                                </span>
+                            <ul class="">  
+                              <li class="navbar-expand" style="list-style: disc; color: <?= $etiquette['color_etiq']; ?>;">
+                              <a href="">
+                                <label class="title text-dark pull-left" style="font-size: 16px"> <?= $etiquette['name_etiq']?><?= $etiquette['id']?></label>
+                                  <a href="php/delete_etiq_bookmark.php?num=<?= $etiquette['id']?>" class="fa fa-trash pull-right" style ="display:inline; justify-content: space-between; color: red;"></a>
+                                  <a href="etiquette_edit_book.php?num=<?= $etiquette['id'] ?>" class="fa fa-edit pull-right" style ="display:inline; justify-content: space-between; color: blue;" ></a>
+                                  <a class="show trash_etiq" data-bs-toggle="pill" role="tab" aria-selected="false"></a>
                               </a>
-                            </li>
+                              </li>
+                            </ul>
                           <?php endforeach; ?>
                         </ul>
                       </div>
@@ -230,49 +271,73 @@ $bookmark_favo = $pdoSt->fetchAll();
                   </div>
                 </div>
               </div>
-              <div class="col-xl-9 col-md-12 box-col-12">
+              <!--card-right-->
+              <div class="col-md-8 box-col-8">
                 <div class="email-right-aside bookmark-tabcontent">
                   <div class="card email-body radius-left">
                     <div class="ps-0">
                       <div class="tab-content">
-                        <div class="tab-pane fade active show" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
+
+                        <!--Ma liste de lecture-->
+                        <div class="fade tab-pane" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab">
                           <div class="card mb-0">
-                            <div class="card-header d-flex" style="padding-left: 500px;padding-right: 40px;">
-                              <h6 class="mb-0">Mes recherches</h6>
+                            <div class="card-header d-flex">
+                              <h6 class="mb-0">Ma liste de lecture(SOON)</h6>
+                              <ul>
+                                <li><a class="grid-bookmark-view" href="#"><i data-feather="grid"></i></a></li>
+                                <li><a class="list-layout-view" href="#"><i data-feather="list"></i></a></li>
+                              </ul>
+                            </div>
+                            <div class="card-body">
+                              <div class="details-bookmark text-center"><span>No Bookmarks Found.</span></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Mes recherches -->
+                        <div class="tab-pane fade active show" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
+                          <div class="card">
+                            <div class="card-header d-flex">
+                              <h6>Mes recherches</h6>
                               <ul>
                                 <li><a class="grid-bookmark-view" href="#"><i data-feather="grid"></i></a></li>
                                 <li><a class="list-layout-view" href="#"><i data-feather="list"></i></a></li>
                               </ul>
                             </div>
                             <div class="card-body pb-0">
-                              <div class="details-bookmark text-center">
+                              <div class="details-bookmark">
                                 <div class="row" id="bookmarkData">
                                   <?php foreach ($bookmark as $bookmarks) : $ma = $bookmarks['etiquette_search']?>
                                     <div class="col-xl-3 col-md-4 xl-50">
-                                      <div class="card card-with-border bookmark-card o-hidden" >
+                                      <a href="<?= $bookmarks['url_search'] ?>"><div class="card card-with-border bookmark-card o-hidden">
                                         <div class="details-website">
-                                       
-                                          <img class="img-fluid" src="<?= get_favicon($bookmarks['url_search'])  ?>" alt="" height="144" width="144">
+                                          <img class="img-fluid" src="<?= get_favicon($bookmarks['url_search'])  ?>" alt="" >
                                           <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks['id'] ?>&favo=<?= $bookmarks['favorite_search'] ?>"><i style="color: <?php if ($bookmarks['favorite_search'] !== "no") {echo "yellow";} ?>;" class="fa fa-star"></i></a></div>
                                           <div class="desciption-data">
-                                            <div class="title-bookmark" style="background-color:<?= $ma ?>;">
+                                            <div class="title-bookmark" >
                                               <h6 class="title_0"><?= $bookmarks['name_search'] ?></h6>
-                                              <p class="weburl_0"><?= substr($bookmarks['url_search'], 0, 30) ?>...</p>
-                                              <div class="hover-block">
-                                                <ul  style="color:blue;">
-                                                  <!-- <li><a href="#"><i data-feather="link"></i></a></li>
-                                                    <li><a href="#"><i data-feather="share-2"></i></a></li> -->
-                                                  <li><a href="php/delete_bookmark.php?num=<?= $bookmarks['id'] ?>"><i data-feather="trash-2"></i></a></li>
-                                                  <li  class="pull-right text-end"><a href="#" title="<?= $bookmarks['etiquette_search'] ?>"><i data-feather="tag"></i></a></li>
-                                                </ul>
+                                              <p class="weburl_0"><?= substr($bookmarks['url_search'], 0, 20) ?>...</p>
+                                              <div class="">
+                                                <!--<p class="collection_0 text-dark"><.?= $bookmarks['etiquette_search'] ?></p>-->
+                                                <p class="text-dark desc_0"><?= $bookmarks['description_search'] ?></p>
                                               </div>
                                               <div class="content-general">
-                                                <p   class="desc_0"><?= $bookmarks['description_search'] ?></p><span class="collection_0"><?= $bookmarks['etiquette_search'] ?></span>
+                                                <p class="desc_0"><?= $bookmarks['description_search'] ?></p>
+                                                <span class="collection_0"></span><!--<.?= $bookmarks['etiquette_search'] ?>-->
+                                              </div>
+                                              <div class="hover-block">
+                                                <ul  style="color:blue;">
+                                                  <li><a href="#"><i data-feather="link"></i></a></li>
+                                                  <li><a href="#"><i data-feather="share-2"></i></a></li>
+                                                  <li><a href="php/delete_bookmark.php?num=<?= $bookmarks['id'] ?>"><i data-feather="trash-2"></i></a></li>
+                                                  <li  class="pull-right text-end"><a href="#" title="<?= $bookmarks['etiquette_search'] ?>"><i class="bx bxs-purchase-tag" style="font-size: 1.2rem; margin: 3px; color:<?= $ma ?>;"></i></a></li>
+                                                </ul>
                                               </div>
                                             </div>
                                           </div>
                                         </div>                
                                       </div>
+                                      </a>
                                     </div>
                                   <?php endforeach; ?>
                                 </div>
@@ -280,6 +345,8 @@ $bookmark_favo = $pdoSt->fetchAll();
                             </div>
                           </div>
                         </div>
+
+                        <!--Mes favoris-->
                         <div class="fade tab-pane" id="pills-favourites" role="tabpanel" aria-labelledby="pills-favourites-tab">
                           <div class="card mb-0">
                             <div class="card-header d-flex">
@@ -290,26 +357,25 @@ $bookmark_favo = $pdoSt->fetchAll();
                               </ul>
                             </div>
                             <div class="card-body">
-                              <div class="details-bookmark text-center">
+                              <div class="details-bookmark">
                                 <div class="row" id="favouriteData">
-                                  <?php foreach ($bookmark_favo as $bookmarks_favo) : ?>
+                                  <?php foreach ($bookmark_favo as $bookmarks_favo) : $ma = $bookmarks_favo['etiquette_search'] ?>
                                     <div class="col-xl-3 col-md-4 xl-50">
                                       <div class="card card-with-border bookmark-card o-hidden">
                                         <div class="details-website">
-                                          <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="144" width="144">
+                                          <a href="<?= $bookmarks_favo['url_search']?>"> <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="80" width="80"><a>
                                           <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks_favo['id'] ?>&favo=<?= $bookmarks_favo['favorite_search'] ?>"><i style="color: <?php if ($bookmarks_favo['favorite_search'] !== "no") {
-                                                                                                                                                                                                                      echo "yellow";
-                                                                                                                                                                                                                    } ?>;" class="fa fa-star"></i></a></div>
+                                                                                                                                                                                                                  } ?>;" class="fa fa-star"></i></a></div>
                                           <div class="desciption-data">
                                             <div class="title-bookmark">
                                               <h6  class="title_0"><?= $bookmarks_favo['name_search'] ?></h6>
                                               <p class="weburl_0"><?= substr($bookmarks_favo['url_search'], 0, 30) ?>...</p>
                                               <div class="hover-block">
                                                 <ul>
-                                                  <!-- <li><a href="#"><i data-feather="link"></i></a></li>
-                                                    <li><a href="#"><i data-feather="share-2"></i></a></li> -->
+                                                  <li><a href="#"><i data-feather="link"></i></a></li>
+                                                  <li><a href="#"><i data-feather="share-2"></i></a></li>
                                                   <li><a href="php/delete_bookmark.php?num=<?= $bookmarks_favo['id'] ?>"><i data-feather="trash-2"></i></a></li>
-                                                  <li class="pull-right text-end"><a href="#" title="<?= $bookmarks_favo['etiquette_search'] ?>"><i data-feather="tag"></i></a></li>
+                                                  <li  class="pull-right text-end"><a href="#" title="<?= $bookmarks['etiquette_search'] ?>"><i class="bx bxs-purchase-tag" style="font-size: 1.2rem; margin: 3px; color: <?= $ma ?>;"></i></a></li>
                                                 </ul>
                                               </div>
                                               <div class="content-general">
@@ -326,6 +392,8 @@ $bookmark_favo = $pdoSt->fetchAll();
                             </div>
                           </div>
                         </div>
+
+                        <!--partager avec moi-->
                         <div class="fade tab-pane" id="pills-shared" role="tabpanel" aria-labelledby="pills-shared-tab">
                           <div class="card mb-0">
                             <div class="card-header d-flex">
@@ -356,6 +424,56 @@ $bookmark_favo = $pdoSt->fetchAll();
                             </div>
                           </div>
                         <?php endforeach; ?>
+
+                        <!--affichage par theme de recherche-->
+                        <div class="fade tab-pane" id="" role="tabpanel" aria-labelledby="-tab">
+                          <div class="card mb-0">
+                            <div class="card-header d-flex">
+                              <h6 class="mb-0">Mes favoris</h6>
+                              <ul>
+                                <li><a class="grid-bookmark-view" href="#"><i data-feather="grid"></i></a></li>
+                                <li><a class="list-layout-view" href="#"><i data-feather="list"></i></a></li>
+                              </ul>
+                            </div>
+                            <div class="card-body">
+                              <div class="details-bookmark">
+                                <div class="row" id="favouriteData">
+                                  <?php foreach ($bookmark_favo as $bookmarks_favo) : ?>
+                                    <div class="col-xl-3 col-md-4 xl-50">
+                                      <div class="card card-with-border bookmark-card o-hidden">
+                                        <div class="details-website">
+                                          <a href="<?= $bookmarks_favo['url_search']?>"> <img class="img-fluid" src="<?= get_favicon($bookmarks_favo['url_search'])  ?>" alt="" height="80" width="80"><a>
+                                          <div class="favourite-icon favourite_0"><a href="php/favo_bookmark.php?num=<?= $bookmarks_favo['id'] ?>&favo=<?= $bookmarks_favo['favorite_search'] ?>"><i style="color: <?php if ($bookmarks_favo['favorite_search'] !== "no") {
+                                                                                                                                                                                                                  } ?>;" class="fa fa-star"></i></a></div>
+                                          <div class="desciption-data">
+                                            <div class="title-bookmark">
+                                              <h6  class="title_0"><?= $bookmarks_favo['name_search'] ?></h6>
+                                              <p class="weburl_0"><?= substr($bookmarks_favo['url_search'], 0, 30) ?>...</p>
+                                              <div class="hover-block">
+                                                <ul>
+                                                  <li><a href="#"><i data-feather="link"></i></a></li>
+                                                  <li><a href="#"><i data-feather="share-2"></i></a></li>
+                                                  <li><a href="php/delete_bookmark.php?num=<?= $bookmarks_favo['id'] ?>"><i data-feather="trash-2"></i></a></li>
+                                                  <li class="pull-right text-end"><a href="#" title="<?= $bookmarks_favo['etiquette_search'] ?>"><i data-feather="tag"></i></a></li>
+                                                </ul>
+                                              </div>
+                                              <div class="content-general">
+                                                <p class="desc_0"><?= $bookmarks_favo['description_search'] ?></p><span class="collection_0"><?= $bookmarks_favo['etiquette_search'] ?></span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <?php endforeach; ?>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--end affichage-->
+
+                        <!--popup theme de recherche-->
                         <div class="modal fade modal-bookmark" id="createtag" tabindex="-1" role="dialog" aria-hidden="true">
                           <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -382,6 +500,8 @@ $bookmark_favo = $pdoSt->fetchAll();
                             </div>
                           </div>
                         </div>
+                        <!--end popup theme de recherche -->
+
                       </div>
                     </div>
                   </div>
@@ -395,6 +515,8 @@ $bookmark_favo = $pdoSt->fetchAll();
       <!-- footer start-->
     </div>
   </div>
+
+
   <!-- latest jquery-->
   <script src="../../../cuba/assets/js/jquery-3.5.1.min.js"></script>
   <!-- Bootstrap js-->
@@ -405,7 +527,7 @@ $bookmark_favo = $pdoSt->fetchAll();
   <!-- scrollbar js-->
   <script src="../../../cuba/assets/js/scrollbar/simplebar.js"></script>
   <script src="../../../cuba/assets/js/scrollbar/custom.js"></script>
-  <!-- Sidebar jquery-->
+  <!--Sidebar jquery-->
   <script src="../../../cuba/assets/js/config.js"></script>
   <!-- Plugins JS start-->
   <script src="../../../cuba/assets/js/sidebar-menu.js"></script>
@@ -416,12 +538,32 @@ $bookmark_favo = $pdoSt->fetchAll();
   <script src="../../../cuba/assets/js/form-validation-custom.js"></script>
   <script src="../../../cuba/assets/js/tooltip-init.js"></script>
   <!-- Plugins JS Ends-->
-  <!-- Theme js-->
-  <script src="../../../cuba/assets/js/script.js"></script>
-  <!-- login js-->
-  <!-- Plugin used-->
-      <!-- TIMEOUT -->
-      <?php include('timeout.php'); ?>
-</body>
 
+
+  <!--- new -->
+  <!-- BEGIN: Vendor JS-->
+  <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+  <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
+  <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+  <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+  <!-- BEGIN Vendor JS-->
+
+  <!-- BEGIN: Page Vendor JS-->
+  <!-- END: Page Vendor JS-->
+
+  <!-- BEGIN: Theme JS-->
+  <script src="../../../app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
+  <script src="../../../app-assets/js/core/app-menu.js"></script>
+  <script src="../../../app-assets/js/core/app.js"></script>
+  <script src="../../../app-assets/js/scripts/components.js"></script>
+  <script src="../../../app-assets/js/scripts/footer.js"></script>
+  <!-- END: Theme JS-->
+
+  <!-- BEGIN: Page JS-->
+  <script src="../../../app-assets/js/scripts/pages/page-knowledge-base.js"></script>
+  <!-- END: Page JS-->
+  <!-- TIMEOUT -->
+  <?php include('timeout.php'); ?>
+
+</body>
 </html>

@@ -4,7 +4,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-// require_once 'php/verif_session_connect.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: app-bon-list.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM bon WHERE id = :num');
     $pdoStat->bindValue(':num',$_GET['numbon'], PDO::PARAM_INT);
@@ -488,6 +493,7 @@ include('php/menu_header_front.php'); ?>
                                             <span>Enregister ou Imprimer</span>
                                         </button>
                                     </div>
+<<<<<<< HEAD
                                     <div class="invoice-action-btn">
                                     <!-- pour modifier le bon      -->
                                       <form action="app-bon-edit.php" method="GET">
@@ -497,6 +503,19 @@ include('php/menu_header_front.php'); ?>
                                     </div>
                                     <div class="invoice-action-btn">
                                         <form action="app-bon-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>
+=======
+                                    <?php // Permission de niveau 2 pour modifier un bon
+                                    if (permissions()['ventes'] >= 2) { ?>
+                                    <div class="invoice-action-btn">   
+                                        <form action="app-bon-edit.php" method="GET">
+                                            <input type="hidden" name="numbon" value="<?= $facture['id']?>">
+                                            <input value="Modifier le bon" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
+                                        </form>      
+                                    </div>
+                                    <?php } ?>
+                                    <div class="invoice-action-btn">        
+                                        <form action="app-bon-list.php"><input value="Retour" type="submit" class="btn btn-success btn-block"></form>               
+>>>>>>> a501eced47c7dd3f1c5fed425cdad5e79160ae93
                                     </div>
                                     <hr>
                                     <div class="form-group"><style>.line{text-decoration: underline;}</style>

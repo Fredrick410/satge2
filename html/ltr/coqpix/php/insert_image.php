@@ -21,7 +21,7 @@ ini_set('display_startup_errors', TRUE);
             
     ));
 
-        header('Location: ../auth-update-first.php');
+        header('Location: ../page-users-edit.php');
         die();
     
     }else{

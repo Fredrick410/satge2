@@ -3,8 +3,13 @@ require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
@@ -153,28 +158,33 @@ require_once 'php/config.php';
                 <!-- invoice list -->
                 <section class="invoice-list-wrapper">
                     <!-- create invoice button-->
-                    <div class="row">
+                    <div class="row mt-2">
                         <?php
                             if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $url = "https://"; else $url = "http://";$url .= $_SERVER['HTTP_HOST'];$url .= $_SERVER['REQUEST_URI'];
                         ?>
-                        <div class="col">
-                            <div class="invoice-create-btn mb-1">
-                                <a href="app-invoice-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer une facture</a>
+                        <?php // Permission de niveau 2 pour créer une facture
+                        if (permissions()['ventes'] >= 2) { ?>
+                            <div class="col">
+                                <div class="invoice-create-btn mb-1">
+                                    <a href="app-invoice-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer une facture</a>
+                                </div>
                             </div>
-                        </div>
-                        
+                        <?php } ?>
                     </div>
                     <!-- Options and filter dropdown button-->
-                    <div class="action-dropdown-btn d-none">
-                        <div class="dropdown invoice-options">
-                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
-                                <a class="dropdown-item" href="#">Supprimer</a>
+                    <?php // Permission de niveau 2 pour supprimer une facture
+                    if (permissions()['ventes'] >= 3) { ?>
+                        <div class="action-dropdown-btn d-none">
+                            <div class="dropdown invoice-options">
+                                <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Options
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
+                                    <a class="dropdown-item" href="#">Supprimer</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
                             <thead>
@@ -192,7 +202,7 @@ require_once 'php/config.php';
                                     <th>Client</th>
                                     <th>Etiquette</th>
                                     <th>Statut</th>
-                                    <th>Action</th>
+                                    <th>Actions</th>
                                  
                                 </tr>
                             </thead>
@@ -204,7 +214,7 @@ require_once 'php/config.php';
                                
                                 try{
                                     // Somme du prix HT
-                                $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM (SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente') T";
+                                $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM (SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE numeros=:numeros AND typ='facturevente') T";
   
                                 $req = $bdd->prepare($sql);
                                 $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
@@ -239,24 +249,43 @@ require_once 'php/config.php';
                                     <td><span class="<?= $factures['status_color'] ?>"><?= $factures['status_facture'] ?></span></td>
                                    <td> <!-- Element sur le coté droit poubelle fleche etc ... -->
                                         <div class="invoice-action"><br>
-                                            <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=<?=$numbre?>" class="invoice-action-view mr-1">
-                                                <i class="bx bx-show-alt"></i>
-                                            </a>
-                                            <a href="app-invoice-edit.php?numfacture=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
-                                                <i class="bx bx-edit"></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp<br>
-                                            <a href="php/inv-dev.php?id=<?= $factures['id'] ?>&idfac=<?= $factures['id'] ?>"
-                                            class="invoice-action-edit cursor-pointer">
-                                                <i class='bx bxs-send'></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp
+                                            <?php // Permission de niveau 1 pour visualiser une facture
+                        					if (permissions()['ventes'] >= 1) { ?>
+                                                <a href="app-invoice-view.php?numfacture=<?= $factures['id'] ?>&st=<?=$numbre?>" class="invoice-action-view">
+                                                    <i class="bx bx-show-alt"></i>
+                                                </a>
+                                            <?php } ?>
+
+                                            <?php // Permission de niveau 2 pour modifier une facture
+                        					if (permissions()['ventes'] >= 2) { ?>
+                                                <a href="app-invoice-edit.php?numfacture=<?= $factures['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                                    <i class="bx bx-edit"></i>
+                                                </a>
+                                            <?php } ?>
+
+                                            <?php // Permission de niveau 1 pour voir les bons
+                        					if (permissions()['ventes'] >= 1) { ?>
+                                                <a href="php/inv-dev.php?id=<?= $factures['id'] ?>&idfac=<?= $factures['id'] ?>"
+                                                    class="invoice-action-edit cursor-pointer">
+                                                    <i class='bx bxs-send'></i>
+                                                </a>
+                                            <?php } ?>
                                             
-                                            <a href="php/inv-annuler.php?statusfac=Facture_Annulée&id=<?= $factures['id'] ?>"
-                                            class="invoice-action-edit cursor-pointer">
-                                                <i class='bx bxs-x-square'></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_facture.php?numfacture=<?= $factures['id'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
-                                                <i class='bx bxs-trash'></i>
-                                            </a>                                
+                                            <?php // Permission de niveau 2 pour annuler une facture
+                        					if (permissions()['ventes'] >= 2) { ?>
+                                                <a href="php/inv-annuler.php?statusfac=Facture_Annulée&id=<?= $factures['id'] ?>"
+                                                    class="invoice-action-edit cursor-pointer">
+                                                    <i class='bx bxs-x-square'></i>
+                                                </a>
+                                            <?php } ?>
+
+                                            <?php // Permission de niveau 3 pour supprimer une facture
+                        					if (permissions()['ventes'] >= 3) { ?>
+                                                <a href="php/delete_facture.php?numfacture=<?= $factures['id'] ?>&id=<?= $factures['id'] ?>" class="invoice-action-view mr-1">
+                                                    <i class='bx bxs-trash'></i>
+                                                </a>
+                                            <?php } ?>
+
                                         </div>
                                     </td>
                                 </tr>

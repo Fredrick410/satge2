@@ -4,7 +4,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-// require_once 'php/verif_session_connect.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: app-invoice-list.php.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id = :num');
     $pdoStat->bindValue(':num',$_GET['numfacture'], PDO::PARAM_INT);
@@ -26,7 +31,7 @@ require_once 'php/config.php';
 
     try{
   
-    $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
+    $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
@@ -42,7 +47,7 @@ require_once 'php/config.php';
 
     try{
   
-    $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) R ";
+    $sq = "SELECT ROUND(SUM(R.TOTA), 2) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) R ";
   
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
@@ -57,7 +62,7 @@ require_once 'php/config.php';
 
     try{
   
-    $sql = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) V ";
+    $sql = "SELECT ROUND(SUM(V.TOTAL), 2) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) V ";
   
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
@@ -313,22 +318,22 @@ require_once 'php/config.php';
                         </div>
                         <!-- invoice action  -->
                         <div class="col-xl-3 col-md-4 col-12">
-                            <div class="card invoice-action-wrapper shadow-none border">
+                            <div class="card shadow-none border">
                                 <div class="card-body">
                                     <div class="invoice-action-btn">
                                         <button class="btn btn-light-primary btn-block invoice-print" onClick="window.print()">
                                             <span>Enregister ou Imprimer</span>
                                         </button>
                                     </div>
-                                    <div class="invoice-action-btn">
-                                        
-                                      <form action="app-invoice-edit.php" method="GET">
-                                        <input type="hidden" name="numfacture" value="<?= $facture['id']?>">
-                                        <input value="Modifier la facture" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
-                                      </form>    
-                                      
-                                        </a>
-                                    </div>
+                                    <?php // Permission de niveau 2 pour modifier une facture
+                                    if (permissions()['ventes'] >= 2) { ?>
+                                        <div class="invoice-action-btn mt-1">
+                                            <form action="app-invoice-edit.php" method="GET">
+                                            <input type="hidden" name="numfacture" value="<?= $facture['id']?>">
+                                            <input value="Modifier la facture" type="submit" href="app-invoice-edit.html" class="btn btn-light-primary btn-block">
+                                            </form>   
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

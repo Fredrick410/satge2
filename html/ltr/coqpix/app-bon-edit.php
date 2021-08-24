@@ -4,7 +4,17 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
+<<<<<<< HEAD
 
+=======
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 2) {
+        header('Location: app-bon-list.php');
+        exit();
+    }
+   
+>>>>>>> a501eced47c7dd3f1c5fed425cdad5e79160ae93
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
     $pdoSta->execute();

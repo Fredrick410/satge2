@@ -1,9 +1,10 @@
 <?php
-require_once 'verif_session_connect.php';
-require_once 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+require_once 'php/config.php';
+require_once 'php/verif_session_connect.php';
+
 $id = htmlspecialchars($_POST['idquestion']);
 if (isset($_POST['critere'])) {
     $critere = array("paramA", "paramB", "paramC", "paramD", "paramE");

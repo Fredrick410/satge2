@@ -10,8 +10,7 @@ require_once 'php/config.php';
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
     $true = $pdoS->execute();
     $entreprise = $pdoS->fetch();
-
-    
+   
     $pdoStat = $bdd->prepare('SELECT * FROM facture WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
     $pdoStat->execute();
@@ -93,11 +92,11 @@ require_once 'php/config.php';
                 <section id="dashboard-ecommerce">
                     <div class="row">
                         <!-- Greetings Content Starts -->
-                        <div class="col-xl-4 col-md-6 col-12 dashboard-greetings">
+                        <div class="col-xl-6 col-md-8 col-12 dashboard-greetings">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="greeting-text"><?= $entreprise['nameentreprise'] ?></h3>
-                                    <p class="mb-0">Suivi de votre gain total</p>
+                                    <a href="teste.php"><p class="mb-0">Suivi de votre gain total</p></a>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
@@ -110,6 +109,13 @@ require_once 'php/config.php';
                                             <div class="dashboard-content-right">
                                                 <img src="../../../app-assets/images/icon/cup.png" height="220" width="220" class="img-fluid" alt="Dashboard Ecommerce" />
                                             </div>
+                                            <?php
+                                                var_dump($_SESSION['email']);
+                                                var_dump($_SESSION['id']);
+                                                var_dump($_SESSION['id_session']);
+                                                var_dump($_SESSION['id_membre']);
+                                                var_dump($_SESSION['role']);
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -117,21 +123,21 @@ require_once 'php/config.php';
                         </div>
                         <!-- Multi Radial Chart Starts -->
                         
-                        <div class="col-xl-4 col-md-6 col-12 dashboard-visit">
+                        <!--<div class="col-xl-4 col-md-6 col-12 dashboard-visit">
                                     <!-- <div class="card">
                                         <div class="card-content">
                                             <div class="card-body text-center pb-0">
                                                 <div id="success-line-chart"><div id="clock"><img src="../../../src/logo/astro.gif" class="img_one"><div id="secondes"></div><div id="minutes"></div><div id="heures"></div></div><br><br><br><br></div>
                                             </div>
                                         </div>
-                                    </div> -->
-                                </div>
-                        <div class="col-xl-4 col-12 dashboard-users">
+                                    </div>
+                        </div> -->
+                        <div class="col-xl-6 dashboard-users">
                             <div class="row  ">
                                 <!-- Statistics Cards Starts -->
                                 <div class="col-12">
                                     <div class="row">
-                                        <div class="col-sm-6 col-12 dashboard-users-success">
+                                        <div class="col-sm-6 col-10 dashboard-users-success">
                                             <div class="card text-center">
                                                 <div class="card-content">
                                                     <div class="card-body py-1">
@@ -157,7 +163,7 @@ require_once 'php/config.php';
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-12 col-lg-6 col-12 dashboard-revenue-growth">
+                                        <div class="col-xl-12 col-lg-1 col-12 dashboard-revenue-growth">
                                             <div class="card">
                                                 <div class="card-header d-flex justify-content-between align-items-center pb-0">
                                                     <h4 class="card-title">Hausse des revenus</h4>
@@ -193,7 +199,7 @@ require_once 'php/config.php';
                                                     <div class="list-icon mr-1">
                                                         <div class="avatar bg-rgba-primary m-0">
                                                             <div class="avatar-content">
-                                                                <i class="bx bxs-zap text-primary font-size-base"></i>
+                                                                <i class="bx bxs-truck text-primary font-size-base"></i>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -209,7 +215,7 @@ require_once 'php/config.php';
                                                     <div class="list-icon mr-1">
                                                         <div class="avatar bg-rgba-info m-0">
                                                             <div class="avatar-content">
-                                                                <i class="bx bx-stats text-info font-size-base"></i>
+                                                                <i class="bx bxs-cart text-info font-size-base"></i>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -241,7 +247,7 @@ require_once 'php/config.php';
                                                     <div class="list-icon mr-1">
                                                         <div class="avatar bg-rgba-primary m-0">
                                                             <div class="avatar-content">
-                                                                <i class="bx bx-user text-primary font-size-base"></i>
+                                                                <i class="bx bxs-dollar-circle text-primary font-size-base"></i>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -343,7 +343,7 @@ require_once 'php/get_documents.php';
                                     <input type="hidden" name="id_doc" value="<?= $_SESSION['id_crea'] ?>">
 	                                <input class="input-file" id="my-file" onchange="this.form.submit();" type="file"  name="justificatifss" size="30" accept="image/png, image/jpg, image/jpeg, application/pdf">
 	                                <label for="my-file" class="input-file-trigger rounded-pill" tabindex="0">
-		                                Sélectionner un fichier ...
+		                                Sélectionner le bail ou l'attestation de domiciliation ...
 	                                </label>
                                 </form>
                             </div>

@@ -1,3 +1,7 @@
+<?php
+    require_once 'php/permissions_front.php';
+?>
+
 <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="navbar-header">
@@ -32,42 +36,69 @@
             </li>
             <li class=" navigation-header"><span>Fonctions</span>
             </li>
-            <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="coins"></i><span class="menu-title" data-i18n="Ventes">Ventes</span></a>
-                <ul class="menu-content">
-                    <li><a href="app-devis-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Devis">Devis</span></a>
-                    </li>
-                    <li><a href="app-invoice-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Facture">Factures</span></a>
-                    </li>
-                    <li><a href="app-avoir-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Avoir">Avoirs</span></a>
-                    </li>
-                    <li><a href="app-bon-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Bon de livraison">Bons de livraison</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="us-dollar"></i><span class="menu-title" data-i18n="Achats">Achats</span></a>
-                <ul class="menu-content">
-                    <li><a href="app-invoice-achat-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Factures">Factures</span></a>
-                    </li>
-                    <li><a href="app-bon-achat-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Bulletin de commande">Bulletins de commande</span></a>
-                    </li>
-                    <li><a href="app-note-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Note de frais">Note de frais</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="users"></i><span class="menu-title" data-i18n="Projet">Projets</span></a>
-                <ul class="menu-content">
-                    <li><a href="page-coming-soon.html#mission.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Mission">Missions &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></span></a>
-                    </li>
-                    <li><a href="teams-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Equipes">Teams</a>
-                    </li>
-                    <li><a href="task.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Taches">Taches</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li class=" nav-item"><a href="inventaire-list.php"><i class="menu-livicon" data-icon="box-add"></i><span class="menu-title" data-i18n="Stockage">Inventaire</span><span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
-            </li>
+
+            <!-- VENTES -->
+            <?php if (permissions()['ventes'] >= 1) { ?>
+                <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="coins"></i><span class="menu-title" data-i18n="Ventes">Ventes</span></a>
+                    <ul class="menu-content">
+                        <li><a href="app-devis-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Devis">Devis</span></a>
+                        </li>
+                        <li><a href="app-invoice-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Facture">Factures</span></a>
+                        </li>
+                        <li><a href="app-avoir-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Avoir">Avoirs</span></a>
+                        </li>
+                        <li><a href="app-bon-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Bon de livraison">Bons de livraison</span></a>
+                        </li>
+                    </ul>
+                </li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="#"><i class="menu-livicon" data-icon="coins"></i><del class="menu-title" data-i18n="Ventes">Ventes</del></a></li>
+            <?php } ?>
+
+            <!-- ACHATS -->
+            <?php if (permissions()['achats'] >= 1) { ?>
+                <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="us-dollar"></i><span class="menu-title" data-i18n="Achats">Achats</span></a>
+                    <ul class="menu-content">
+                        <li><a href="app-invoice-achat-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Factures">Factures</span></a>
+                        </li>
+                        <li><a href="app-bon-achat-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Bulletin de commande">Bulletins de commande</span></a>
+                        </li>
+                        <li><a href="app-note-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Note de frais">Note de frais</span></a>
+                        </li>
+                    </ul>
+                </li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="#"><i class="menu-livicon" data-icon="us-dollar"></i><del class="menu-title" data-i18n="Achats">Achats</del></a></li>
+            <?php } ?>
+
+            <!-- PROJETS -->
+            <?php if (permissions()['projets'] >= 1) { ?>
+                <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="users"></i><span class="menu-title" data-i18n="Projet">Projets</span></a>
+                    <ul class="menu-content">
+                        <li><a href="page-coming-soon.html#mission.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Mission">Missions &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></span></a>
+                        </li>
+                        <li><a href="teams-list.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Equipes">Teams</a>
+                        </li>
+                        <li><a href="task.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Taches">Taches</span></a>
+                        </li>
+                    </ul>
+                </li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="#"><i class="menu-livicon" data-icon="users"></i><del class="menu-title" data-i18n="Projet">Projets</del></a></li>
+            <?php } ?>
+
+            <!-- INVENTAIRE -->
+            <?php if (permissions()['inventaire'] >= 1) { ?>
+                <li class=" nav-item"><a href="inventaire-list.php"><i class="menu-livicon" data-icon="box-add"></i><span class="menu-title" data-i18n="Stockage">Inventaire</span><span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a></li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="inventaire-list.php"><i class="menu-livicon" data-icon="box-add"></i><del class="menu-title" data-i18n="Stockage">Inventaire</del><span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a></li>
+            <?php } ?>
+            
+            <!-- BUSINESS -->
             <li class=" nav-item"><a href="opportunite.php"><i class="menu-livicon" data-icon="trophy"></i><span class="menu-title" data-i18n="Buisness">Business</span><span class="badge badge-light-warning badge-pill badge-round float-right">VIP</span></a>
             </li>
+
+            <!-- FORMATIONS -->
             <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="briefcase"></i><span class="menu-title" data-i18n="Formation">Formations</span></a>
                 <ul class="menu-content">
                     <li><a href="page-coming-soon.html#academy.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="Academy">Pix'Academy</span>&nbsp&nbsp<span class="badge badge-light-primary badge-pill badge-round float-right">SOON</span></a>
@@ -76,8 +107,12 @@
                     </li>
                 </ul>
             </li>
+            
+            <!-- RH -->
             <li class=" nav-item"><a href="rh-home.php"><i class="menu-livicon" data-icon="diagram"></i><span class="menu-title" data-i18n="Stockage">RH</span><span class="badge badge-light-warning badge-pill badge-round float-right">VIP</span></a>
             </li>
+
+            <!-- Veille -->
             <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="sky-dish"></i><span class="menu-title" data-i18n="Veille">Veille</span></a>
                 <ul class="menu-content">
                     <li><a href="bookmark.php"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="bookmarks">BookMarks</span></a>
@@ -86,16 +121,38 @@
                     </li>
                 </ul>
             </li>
+
             <li class=" navigation-header"><span>Données</span>
             </li>
-            <li class=" nav-item"><a href="client.php"><i class="menu-livicon" data-icon="user"></i><span class="menu-title" data-i18n="Clients">Clients</span></a>
-            </li>
-            <li class=" nav-item"><a href="fournisseur-list.php"><i class="menu-livicon" data-icon="truck"></i><span class="menu-title" data-i18n="Fournisseurs">Fournisseurs</span></a>
-            </li>
-            <li class=" nav-item"><a href="article-list.php"><i class="menu-livicon" data-icon="tag"></i><span class="menu-title" data-i18n="Articles">Articles</span></a>
-            </li>
-            <li class=" nav-item"><a href="membres-liste.php"><i class="menu-livicon" data-icon="grid"></i><span class="menu-title" data-i18n="Membres">Membres</span></a>
-            </li>  
+
+            <!-- CLIENTS -->
+            <?php if (permissions()['clients'] >= 1) { ?>
+                <li class=" nav-item"><a href="client.php"><i class="menu-livicon" data-icon="user"></i><span class="menu-title" data-i18n="Clients">Clients</span></a></li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="client.php"><i class="menu-livicon" data-icon="user"></i><del class="menu-title" data-i18n="Clients">Clients</del></a></li>
+            <?php } ?>
+
+            <!-- FOURNISSEURS -->
+            <?php if (permissions()['fournisseurs'] >= 1) { ?>
+                <li class=" nav-item"><a href="fournisseur-list.php"><i class="menu-livicon" data-icon="truck"></i><span class="menu-title" data-i18n="Fournisseurs">Fournisseurs</span></a></li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="fournisseur-list.php"><i class="menu-livicon" data-icon="truck"></i><del class="menu-title" data-i18n="Fournisseurs">Fournisseurs</del></a></li>
+            <?php } ?>
+
+            <!-- ARTICLES -->
+            <?php if (permissions()['articles'] >= 1) { ?>
+                <li class=" nav-item"><a href="article-list.php"><i class="menu-livicon" data-icon="tag"></i><span class="menu-title" data-i18n="Articles">Articles</span></a></li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="article-list.php"><i class="menu-livicon" data-icon="tag"></i><del class="menu-title" data-i18n="Articles">Articles</del></a></li>
+            <?php } ?>
+
+            <!-- MEMBRES -->
+            <?php if (permissions()['membres'] >= 1) { ?>
+                <li class=" nav-item"><a href="membres-liste.php"><i class="menu-livicon" data-icon="grid"></i><span class="menu-title" data-i18n="Membres">Membres</span></a></li>
+            <?php } else { ?>
+                <li class="disabled nav-item"><a href="membres-liste.php"><i class="menu-livicon" data-icon="grid"></i><del class="menu-title" data-i18n="Membres">Membres</del></a></li>
+            <?php } ?>
+
             <li class=" navigation-header"><span>Déclarations</span>
             </li>
             <li class=" nav-item"><a href="social.php"><i class="menu-livicon" data-icon="umbrella"></i><span class="menu-title" data-i18n="Charts">Sociales</span></span></a>

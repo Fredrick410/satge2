@@ -11,7 +11,7 @@
             $notification = "hidden"; 
         }
     ?>
-    <div class="open-button">
+    <div class="">
         <div class="notification" id="notif" <?php echo $notification ?>><?php echo $numero ?></div>
         <img class="open-button" id="icon_chat" src="../../../app-assets/images/ico/chat_icon.png" onclick="openForm(), updateScroll()">
     </div>

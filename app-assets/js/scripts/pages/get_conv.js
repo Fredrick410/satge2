@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#list-users ul li").click(function(){ 
+    $("#list-users ul li").click(function(){
         var entreprise = $(this).find("#entreprise").val();
         var img = $(this).find("#img").val();
         $("#id_client").val($(this).attr('id'));
@@ -22,18 +22,26 @@ $(document).ready(function(){
         else if(entreprise == "Micro-entreprise")
             $("#badge").attr('class','bullet bullet-black bullet-sm');
 
+        
     });
 
 
 
  });
 
+
 function archiver(destination){
     $.ajax({
         type: "POST",
         url: "php/archiver_conv.php",
         data:'destination='+destination,
-        success: function(){
-        }
+        });
+}
+
+function retablir(destination){
+    $.ajax({
+        type: "POST",
+        url: "php/retablir_conv.php",
+        data:'destination='+destination,
         });
 }

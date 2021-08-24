@@ -16,45 +16,34 @@ require_once 'php/verif_session_crea.php';
     $pdoSta->execute();
     $crea = $pdoSta->fetch();
 
-    if($crea['doc_pieceid'] == ""){
-        $doc_pieceid = "0";
-    }else{
-        $doc_pieceid = "1";
-    }
-    if($crea['doc_cerfaM0'] == ""){
-        $doc_cerfaM0 = "0";
-    }else{
-        $doc_cerfaM0 = "1";
-    }
-    if($crea['doc_justificatifd'] == ""){
-        $doc_justificatifd = "0";
-    }else{
-        $doc_justificatifd = "1";
-    }
-    if($crea['doc_affectation'] == ""){
-        $doc_affectation = "0";
-    }else{
-        $doc_affectation = "1";
-    }
-    if($crea['doc_pouvoir'] == ""){
-        $doc_pouvoir = "0";
-    }else{
-        $doc_pouvoir = "1";
-    }
-    if($crea['doc_attestation'] == ""){
-        $doc_attestation = "0";
-    }else{
-        $doc_attestation = "1";
-    }
-    if($crea['doc_xp'] == ""){
-        $doc_xp = "0";
-    }else{
-        $doc_xp = "1";
-    }
-    if($crea['doc_peirl'] == ""){
-        $doc_peirl = "0";
-    }else{
-        $doc_peirl = "1";
+    if($crea['status_crea'] == "EURL"){
+        $linkview = "morale";
+    }else{        
+        if($crea['status_crea'] == "SARL"){
+            $linkview = "morale";
+        }else{
+            if($crea['status_crea'] == "SAS"){
+                $linkview = "morale";
+            }else{
+                if($crea['status_crea'] == "SASU"){
+                    $linkview = "morale";
+                }else{
+                    if($crea['status_crea'] == "SCI"){
+                        $linkview = "morale";
+                    }else{
+                        if($crea['status_crea'] == "EIRL"){
+                            $linkview = "physique";
+                        }else{
+                            if($crea['status_crea'] == "Micro-entreprise"){
+                                $linkview = "physique";
+                            }else{
+                                $linkview = "physique";
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //selection des infos selon l'id
@@ -99,6 +88,7 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/domiciliation-offre.css">
     <!-- END: Custom CSS-->
 
@@ -116,82 +106,245 @@ require_once 'php/verif_session_crea.php';
 
     <!-- BEGIN: Content-->
 <div class="container-fluid">
-    <h2 id="titre-contrat">Création du contrat</h2>
-    <h5 id="sous-titre-contrat">Domiciliation à </h5>
-            
-    <div class="row card-body bg-white" id="contrat">
-        <form class="col-12" action="generate-pdf.php" method="POST">
-            <!--<h6>
-              <i class="step-icon"></i>
-              <span class="fonticon-wrap">
-                <i class="livicon-evo"
-                  data-options="name:user.svg; size: 50px; style:lines; strokeColor:#adb5bd;"></i>
-              </span>
-              <span>Basic Details</span>
-            </h6>-->
-            <?php $today = date("d/m/y"); ?>            
-            <input type="text" name="date" id="date" readonly hidden value="<?= $today ?>">
-            <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $result['adresse'] ?>">
-            <!--<input type="text" name="duree" id="duree" readonly hidden value="<?= $result[''] ?>">
-            <input type="text" name="prix" id="prix" readonly hidden value="<?= $result[''] ?>">
-            <input type="text" name="prixtotechht" id="prixtotechht" readonly hidden value="<?= $result[''] ?>">-->
-        <div class="row">
-        <div class="col-6" id="contrat-gauche" >
-            <ul>
-                <li>
-                    <label for="RaisonSociale">Nom de l'entreprise</label>
-                    <input type="text" name="raisonsociale" id="raisonsociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
-                </li>
-                <li>
-                    <label for="FormeJuridique">Forme Juridique</label>
-                    <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" required readonly value="<?= $crea['status_crea'] ?>">
-                </li>
-                <li>
-                    <label for="Capital">Capital</label>
-                    <input type="text" name="capital" id="capital" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Representant">Représenté par</label>
-                    <input type="text" name="representant" id="representant" class="border-dark rounded-pill" required value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
-                </li>
-                <li>
-                    <label for="RepresentantQualite">En sa qualite de</label>
-                    <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" required value="Dirigeant">
-                </li>             
-            </ul>
-        </div>
-        <div class="col-6" id="contrat-droite">
-            <ul>
-                <li>
-                    <label for="CodePostal">Code Postal</label>
-                    <input type="text" name="codepostal" id="codepostal" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Ville">Ville</label>
-                    <input type="text" name="ville" id="ville" class="border-dark rounded-pill" required>
-                </li>
-                <li>
-                    <label for="Pays">Pays</label>
-                    <input type="text" name="pays" id="pays" class="border-dark rounded-pill" required value="FRANCE">
-                </li>
-                <li>
-                    <label for="Telephone">Téléphone</label>
-                    <input type="text" name="telephone" id="telephone" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
-                </li>
-                <li>
-                    <label for="Email">Email</label>
-                    <input type="text" name="email" id="email" class="border-dark rounded-pill" required value="<?= $crea['email_diri'] ?>">
-                </li>
-            </ul>
-        </div>
-        <div id="btn" class="col-12 text-center mt-2">
-            <button type="submit" class="border rounded-pill">
-                Valider les informations
-            </button>
-        </div>
-        </div>
-        </form>
+    <br>
+    <div class="form-group">
+         <div class="livicon-evo" onclick="retourn()" data-options=" name: arrow-left.svg; size: 30px " style="color: #051441; cursor: pointer; display:inline-block; top: 6px;"></div>
+                <script>
+                    function retourn() {
+                        document.location.href="domiciliation-offre.php?id=<?= $id ?>";
+                    }
+                </script>
+        <label class="" style="color: #051441;">Retour à offre domiciliation</label>
     </div>
+
+    <h2 id="titre-contrat">Domiciliation d'entreprise : fiche de renseignement</h2>
+    <h5 id="sous-titre-contrat">Domiciliation à <?php echo $result['titre'] ?></h5>
+            
+    <form class="col-12" action="generate-pdf.php" target="_blank" method="POST">
+        <div class="row card-body bg-white" id="contrat">
+            <h3>Informations sur votre société</h3>
+            <div class="col-12">
+                <?php $today = date("d/m/y"); 
+                $cd = $result['titre']; 
+                $codepostal = substr($cd, -5, 5); ?>        
+                <input type="text" name="id_crea" id="id_crea" readonly hidden value="<?= $_SESSION['id_crea'] ?>">
+                <input type="text" name="status_crea" id="status_crea" readonly hidden value="<?= $linkview ?>">
+                <input type="text" name="adresse" id="adresse" readonly hidden value="<?= $crea['adresse_diri'] ?>">
+                <input type="text" name="ville_ss" id="ville_ss" readonly hidden value="<?= $result['ville'] ?>">
+                <div class="row">
+                    <div class="col-6" id="contrat-gauche" >
+                        <ul>
+                            <li>
+                                <label for="raisonSociale">Nom de la société</label>
+                                <input type="text" name="raisonsociale" id="raisonsociale" class="border-dark rounded-pill" required readonly value="<?= $crea['name_crea'] ?>">
+                            </li>
+                            <li>
+                                <label for="adressess">Adresse du siège social</label>
+                                <input type="text" name="adressess" id="adressess" class="border-dark rounded-pill" placeholder="entrez une adresse" required value="<?= $result['adresse'] ?>">
+                            </li>
+                            <li>
+                                <label for="formeJuridique">Forme Juridique</label>
+                                <input type="text" name="formejuridique" id="formejuridique" class="border-dark rounded-pill" placeholder="entrez la forme juridique" required readonly value="<?= $crea['status_crea'] ?>">
+                            </li>          
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <label for="capital">Capital</label>
+                                <input type="text" name="capital" id="capital" class="border-dark rounded-pill" placeholder="entrez le capital" required>
+                            </li>
+                            <li>
+                                <label for="tva">TVA intra-communautaire</label>
+                                <input type="text" name="tva" id="tva" class="border-dark rounded-pill" placeholder="entrez la TVA" required>
+                            </li>
+                            <li>
+                                <label for="activite">Activité de la société</label>
+                                <input type="text" name="activite" id="activite" class="border-dark rounded-pill" placeholder="entrez l'activité" required>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row card-body bg-white" id="contrat">
+            <h3>Informations sur votre contrat</h3>
+            <div class="col-12">
+                <div class="row" id="">
+                    <div class="col-6" id="contrat-gauche">
+                        <ul>
+                            <li>
+                                <label for="datedebut">Date de début du contrat</label>
+                                <input type="text" name="datedebut" id="datedebut" class="border-dark rounded-pill" placeholder="entrez une date" required value="<?= $today ?>">
+                            </li>
+                            <li>
+                                <label for="servicechoisi">Service choisi</label>
+                                <input type="text" name="servicechoisi" id="servicechoisi" class="border-dark rounded-pill" placeholder="entrez le service" required value="Domiciliation Adresse">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <label for="dureecontrat">Durée du contrat</label>
+                                <input type="text" name="dureecontrat" id="dureecontrat" class="border-dark rounded-pill" placeholder="en mois" required value="">
+                            </li>
+                            <li>
+                                <label for="centremultiburo">Centre Multiburo</label>
+                                <input type="text" name="centremultiburo" id="centremultiburo" class="border-dark rounded-pill" placeholder="entrez le centre" required value="">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Réexpédition du courrier</label>
+                            </li>
+                        </ul>
+                        <div class="row px-3">
+                            <div class="col-3" id="contrat-gauche">
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="Non"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">Non</label>
+                            </div>
+                            <div class="col-3" id="contrat-droite">
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="1 fois par semaine (9,50 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">1 fois/sem (9,50 €)</label>
+                            </div>
+                            <div class="col-3" id="contrat-droite">
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="2 fois par semaine (14 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">2 fois/sem (14 €)</label>
+                            </div>
+                            <div class="col-3" id="contrat-droite">
+                                <input type="radio" name="reexpedition" id="reexpedition" required value="Tous les jours (33 €)"><label for="reexpedition" style="text-transform: lowercase; margin-left: 20px;">Tous les jours (33 €)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Scan courrier</label>
+                            </li>
+                        </ul>
+                        <div class="row px-3">
+                            <div class="col-6" id="contrat-gauche">
+                                <input type="radio" name="scancourrier" id="scancourrier" required value="Oui"><label for="scancourrier" style="text-transform: lowercase; margin-left: 30px;">Oui</label><br>
+                                <input type="radio" name="scancourrier" id="scancourrier" required value="Non"><label for="scancourrier" style="text-transform: lowercase; margin-left: 30px;">Non</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 px-2" id="">
+                        <div class="row px-3">
+                            <label for="adresse_factures">Adresse de facturation</label>
+                            <input type="text" name="adresse_factures" id="adresse_factures" class="border-dark rounded-pill" placeholder="entrez une adresse" required value="">
+                        </div>
+                    </div><br><br>
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label>Envoi factures</label>
+                            </li>
+                        </ul>
+                        <div class="row px-3">
+                            <div class="col-6" id="contrat-gauche">
+                                <input type="radio" name="choixenvoi" id="choixenvoi" required value="mail"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 20px;">Par mail :</label><input type="text" name="envoi_factures" id="envoi_factures" class="border-dark rounded-pill" style="margin-bottom: 10px;" placeholder="entrez un email" value=""><br>
+                                <input type="radio" name="choixenvoi" id="choixenvoi" required value="courrier"><label for="choixenvoi" style="text-transform: lowercase; margin-left: 20px;">Par courrier :</label><input type="text" name="envoi_factures1" id="envoi_factures1" class="border-dark rounded-pill" placeholder="entrez une adresse" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6" id="contrat-gauche">
+                        <ul>
+                            <li>
+                                <label for="representant">Société représenté par</label>
+                                <input type="text" name="representant" id="representant" class="border-dark rounded-pill" placeholder="Nom et Prénom" required readonly value="<?= $crea['nom_diri'] ?> <?= $crea['prenom_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="nationalite">Nationalité</label>
+                                <input type="text" name="nationalite" id="nationalite" class="border-dark rounded-pill" placeholder="entrez la nationalité" required value="Français">
+                            </li>
+                            <li>
+                                <label id="tel1" for="telephoneds">Téléphone du signataire</label>
+                                <input onchange='processds(event)' type="text" name="telephoneds_temp" id="telephoneds_temp" class="border-dark rounded-pill" required value="<?= $crea['tel_diri'] ?>">
+                                <input type="text" name="telephoneds" id="telephoneds" hidden required value="<?= $crea['tel_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="contactfacture">Contact facturation</label>
+                                <input type="text" name="contactfacture" id="contactfacture" class="border-dark rounded-pill" required placeholder="Nom et Prénom" value="">
+                            </li>
+                            <li>
+                                <label for="email">Email</label>
+                                <input type="text" name="email" id="email" class="border-dark rounded-pill" placeholder="entrez un email" required value="">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6" id="contrat-droite">
+                        <ul>
+                            <li>
+                                <label for="representantqualite">En sa qualité de</label>
+                                <input type="text" name="representantqualite" id="representantqualite" class="border-dark rounded-pill" placeholder="entrez la fonction" required value="Dirigeant">
+                            </li>
+                            <li>
+                                <label for="adresseds">Adresse du signataire</label>
+                                <input type="text" name="adresseds" id="adresseds" class="border-dark rounded-pill" placeholder="entrez une adresse" required value="<?= $crea['adresse_diri'] ?>">
+                            </li>
+                            <li>
+                                <label for="emailds">Email du signataire</label>
+                                <input type="text" name="emailds" id="emailds" class="border-dark rounded-pill" placeholder="entrez un email" required value="<?= $crea['email_diri'] ?>">
+                            </li>
+                            <li>
+                                <label id="tel2" for="telephone">Téléphone</label>
+                                <input onchange='process(event)' type="text" name="telephone_temp" id="telephone_temp" class="border-dark rounded-pill" required>
+                                <input type="text" name="telephone" id="telephone" hidden required>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row card-body bg-white" id="contrat">
+            <h3>Coordonnées Bancaires</h3>
+            <div class="col-12">
+                <div class="row px-3" id="">
+                    <div class="col-12">
+                        <label>Mode de règlement</label>
+                    </div>
+                    <div class="row px-2">
+                        <div class="col-12" id="contrat-gauche">
+                            <input type="radio" name="reglement" id="reglement" value="Virement bancaire (Hors Europe)"><label for="reglement" style="text-transform: lowercase; margin-left: 20px;">Virement bancaire (Hors Europe)</label><br>
+                            <input type="radio" name="reglement" id="reglement" value="Prélèvement automatique (Union Européene)"><label for="reglement" style="text-transform: lowercase; margin-left: 20px;">Prélèvement automatique (Union Européene)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="">
+                    <div class="col-12">
+                        <ul>
+                            <li>
+                                <label for="nombanque">Nom de la banque</label>
+                                <input type="text" name="nombanque" id="nombanque" class="border-dark rounded-pill w-50" placeholder="entrez le nom de la banque" value="">
+                            </li>
+                            <li>
+                                <label for="adressebanque">Adresse de la banque</label>
+                                <input type="text" name="adressebanque" id="adressebanque" class="border-dark rounded-pill w-50" placeholder="entrez l'adresse de la banque" value="">
+                            </li>
+                            <li>
+                                <label for="iban">IBAN</label>
+                                <input type="text" name="iban" id="iban" class="border-dark rounded-pill w-50" placeholder="entrez un IBAN" pattern="^FR\d{12}[0-9A-Z]{11}\d{2}$" value="">
+                            </li>
+                            <li>
+                                <label for="bic">BIC</label>
+                                <input type="text" name="bic" id="bic" class="border-dark rounded-pill w-50" placeholder="entrez un BIC" pattern="^[A-Z]{4}[F]{1}[R]{1}[A-Z0-9]{2}[A-Z0-9]{0,3}$" value="">
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="btn" class="col-12 text-center mt-2">
+                        <button type="submit" class="border rounded-pill">
+                            Valider les informations
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <div class="row">
         
@@ -209,6 +362,47 @@ require_once 'php/verif_session_crea.php';
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
+
+    <!-- script telephone -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+        //telephone du signataire
+        const phonedsInputField = document.querySelector("#telephoneds_temp");
+        const phonedsInput = window.intlTelInput(phonedsInputField, {
+            preferredCountries: ["fr"],
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function processds(event) {
+            event.preventDefault();
+
+            const phonedsNumber = phonedsInput.getNumber();
+
+           
+            document.getElementById("telephoneds").value=`${phonedsNumber}`;
+        }
+
+        //telephone entreprise
+        const phoneInputField = document.querySelector("#telephone_temp");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            preferredCountries: ["fr"],
+            utilsScript: 
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        function process(event) {
+            event.preventDefault();
+
+            const phoneNumber = phoneInput.getNumber();
+
+           
+            document.getElementById("telephone").value=`${phoneNumber}`;
+        }
+  
+    </script>
 
 
     <!-- BEGIN: Vendor JS-->

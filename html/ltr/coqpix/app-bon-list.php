@@ -3,8 +3,13 @@ require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-// include 'php/verif_session_connect.php';
 require_once 'php/config.php';
+require_once 'php/permissions_front.php';
+
+    if (permissions()['ventes'] < 1) {
+        header('Location: dashboard-analytics.php');
+        exit();
+    }
 
     $pdoStat = $bdd->prepare('SELECT * FROM bon WHERE id_session = :num');
     $pdoStat->bindValue(':num',$_SESSION['id_session']);
@@ -95,29 +100,34 @@ require_once 'php/config.php';
                 <!-- invoice list -->
                 <section class="invoice-list-wrapper">
                     <!-- create invoice button-->
-                    <div class="row">
+                    <div class="row mt-2">
                         <?php
                             if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $url = "https://"; else $url = "http://";$url .= $_SERVER['HTTP_HOST'];$url .= $_SERVER['REQUEST_URI'];
                         ?>
-                        <div class="col">
-                            <div class="invoice-create-btn mb-1">
-                                <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
+                        <?php // Permission de niveau 2 pour créer un bon
+                        if (permissions()['ventes'] >= 2) { ?>
+                            <div class="col">
+                                <div class="invoice-create-btn mb-1">
+                                    <a href="app-bon-add.php?jXN955CbHqqbQ463u5Uq=<?php if($entreprise['incrementation'] == "yes"){echo "1";}else{echo "1";} ?>" class="btn btn-primary glow invoice-create" role="button" aria-pressed="true"><i class="bx bx-plus"></i>Créer un bon</a>
+                                </div>
                             </div>
-                        </div>
-
+                        <?php } ?>
                     </div>
 
                     <!-- Options and filter dropdown button-->
-                    <div class="action-dropdown-btn d-none">
-                        <div class="dropdown invoice-options">
-                            <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Options
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
-                                <a class="dropdown-item" href="#">Supprimer</a>
+                    <?php // Permission de niveau 3 pour supprimer un bon
+                    if (permissions()['ventes'] >= 3) { ?>
+                        <div class="action-dropdown-btn d-none">
+                            <div class="dropdown invoice-options">
+                                <button class="btn border dropdown-toggle mr-2" type="button" id="invoice-options-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Options
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="invoice-options-btn">
+                                    <a class="dropdown-item" href="#">Supprimer</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
                     <div class="table-responsive">
                         <table class="table invoice-data-table dt-responsive nowrap" style="width:100%">
                             <thead>
@@ -135,7 +145,7 @@ require_once 'php/config.php';
                                     <th>Client</th>
                                     <th>Etiquette</th>
                                     <th>Statut</th>
-                                    <th>Action</th>
+                                    <th>Actions</th>
 
                                 </tr>
                             </thead>
@@ -181,21 +191,32 @@ require_once 'php/config.php';
                                     <td><span class="<?= $bons['status_color'] ?>"><?= $bons['status_bon'] ?></span></td>
                                     <td>
                                         <div class="invoice-action"><br>
-                                            <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
-                                                <i class="bx bx-show-alt"></i>
-                                            </a>
-                                            <!-- pour edit le bon -->
-                                            <a href="app-bon-edit.php?numbon=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
-                                                <i class="bx bx-edit"></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp<br>
+
+                                            <?php // Permission de niveau 1 pour visualiser un bon
+                                            if (permissions()['ventes'] >= 1) { ?>
+                                                <a href="app-bon-view.php?numbon=<?= $bons['id'] ?>" class="invoice-action-view">
+                                                    <i class="bx bx-show-alt"></i>
+                                                </a>
+                                            <?php } ?>
+
+                                            <?php // Permission de niveau 2 pour modifier un bon
+                                            if (permissions()['ventes'] >= 2) { ?>
+                                                <a href="app-bon-edit.php?numbon=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer">
+                                                    <i class="bx bx-edit"></i>
+                                                </a>
+                                            <?php } ?>
+
                                             <!-- <a href="php/envoie_dev.php?id=<?= $bons['id'] ?>"
                                             class="invoice-action-edit cursor-pointer">
                                                 <i class='bx bxs-send'></i>
-                                            </a>&nbsp&nbsp&nbsp&nbsp -->
-                                            <!-- pour delete -->
-                                            <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
-                                                <i class='bx bxs-trash'></i>
-                                            </a>
+                                            </a> -->
+
+                                            <?php // Permission de niveau 3 pour supprimer un bon
+                                            if (permissions()['ventes'] >= 3) { ?>
+                                                <a href="php/delete_bon.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id'] ?>" class="invoice-action-view mr-1">
+                                                    <i class='bx bxs-trash'></i>
+                                                </a>
+                                            <?php } ?>
                                         </div>
                                     </td>
                                 </tr>

@@ -10,6 +10,6 @@ session_destroy ();
 
 // On redirige le visiteur vers la page d'accueil
 sleep(1);
-header ('location: ../backend/auth-login-admin.html');
+header ('location: ../backend/auth-login-admin.php');
 exit();
 ?>

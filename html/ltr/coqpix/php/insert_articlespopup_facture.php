@@ -47,7 +47,7 @@ $maxid = $test['MAX(id_article)'] + 1;
               $resultat = move_uploaded_file($_FILES['img']['tmp_name'], $chemin);
               if($resultat) {
                  $path = $maxid.".".$extensionUpload;
-                 $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, img, id_session, stock, nom_fournisseur, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)');
+                 $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, img, id_session, stock, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
                 $insert->execute(array(
                     htmlspecialchars($_POST['article']),
                     htmlspecialchars($_POST['referencearticle']),
@@ -60,7 +60,6 @@ $maxid = $test['MAX(id_article)'] + 1;
                     htmlspecialchars($path),
                     htmlspecialchars($_SESSION['id_session']),
                     htmlspecialchars($_POST['stock']),
-                    htmlspecialchars($_POST['nom_fournisseur']),
                     htmlspecialchars($_POST['id_fournisseur'])
                 ));
                
@@ -76,7 +75,7 @@ $maxid = $test['MAX(id_article)'] + 1;
         }
 
     }elseif(empty($_FILES['img']['name'])){
-        $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session, stock, nom_fournisseur, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
+        $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session, stock, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?)');
         $insert->execute(array(
             htmlspecialchars($_POST['article']),
             htmlspecialchars($_POST['referencearticle']),
@@ -88,7 +87,6 @@ $maxid = $test['MAX(id_article)'] + 1;
             htmlspecialchars($typ),
             htmlspecialchars($_SESSION['id_session']),
             htmlspecialchars($_POST['stock']),
-            htmlspecialchars($_POST['nom_fournisseur']),
             htmlspecialchars($_POST['id_fournisseur'])
         ));
     }

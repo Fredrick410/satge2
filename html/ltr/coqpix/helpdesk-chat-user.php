@@ -5,10 +5,10 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
-    $pdoS->bindValue(':num',$_SESSION['id']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+    $select_entreprise = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
+    $select_entreprise->bindValue(':num',$_SESSION['id']);
+    $select_entreprise->execute();
+    $entreprise = $select_entreprise->fetch();
     
 ?>
 <!DOCTYPE html>
@@ -54,8 +54,7 @@ require_once 'php/config.php';
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
-
-<body class="horizontal-layout horizontal-menu navbar-sticky content-left-sidebar chat-application  footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
+<body class="horizontal-layout horizontal-menu navbar-sticky content-left-sidebar chat-application footer-static" data-open="hover" data-menu="horizontal-menu" data-col="content-left-sidebar">
 
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top bg-success navbar-brand-center">
@@ -70,13 +69,8 @@ require_once 'php/config.php';
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <ul class="nav navbar-nav bookmark-icons">                          
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link" onclick="retourn()" href="#" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link" href="dashboard-analytics.php" data-toggle="tooltip" data-placement="top" title="Retour"><div class="livicon-evo" data-options=" name: share-alt.svg; style: lines; size: 40px; strokeWidth: 2; rotate: -90"></div></a></li>
                     </ul>
-                    <script>
-                        function retourn() {
-                            window.history.back();
-                        }
-                    </script>
                     <ul class="nav navbar-nav float-right d-flex align-items-center">                        
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <div class="user-nav d-lg-flex d-none"><span class="user-name">Support</span><span class="user-status">En ligne</span></div><span><img class="round" src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="40" width="40"></span>
@@ -94,7 +88,6 @@ require_once 'php/config.php';
     <!-- END: Header-->
 
     <!-- BEGIN: Content-->
-    <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
     <div class="app-content content">
         <div class="content-area-wrapper">
             <div class="sidebar-left">
@@ -115,6 +108,7 @@ require_once 'php/config.php';
                         </header>
                         <div class="chat-user-profile-content">
                             <div class="chat-user-profile-scroll">
+                                <h6>DIRIGEANT</h6>
                                 <p class="mb-2">Nom : <?= $entreprise['nom_diri'] ?><br>Prénom : <?= $entreprise['prenom_diri'] ?></p>
                                 <h6>INFORMATIONS PERSONNELLES</h6>
                                 <ul class="list-unstyled mb-2">
@@ -145,19 +139,23 @@ require_once 'php/config.php';
                                 </fieldset>
                             </div>
                         </div>
-                        <div class="chat-sidebar-list-wrapper pt-2">
-                            <h6 class="px-2 pt-2 pb-25 mb-0">SUPPORT</h6>
-                            <ul class="chat-sidebar-list">
-                                <li class="list_support">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar m-0 mr-50"><img src="../../../app-assets/images/ico/chatpix3.png" height="36" width="36" alt="loading">
-                                            <span class="avatar-status-online"></span>
-                                        </div>
-                                        <div class="chat-sidebar-name">
-                                            <h6 class="mb-0">Audit action plus</h6><span class="text-muted">Support</span>
-                                        </div>
-                                    </div>
-                                </li>
+                        <div class="chat-sidebar-list-wrapper">
+                            <h6 class="px-2 pt-2">CHAT INTRA-ENTREPRISE<i id="creer_channel" class="bx bx-plus float-right cursor-pointer"></i></h6>
+                            <ul class="liste-channels chat-sidebar-list">
+                                
+                            </ul>
+                            <ul class="liste-membres chat-sidebar-list">
+         
+                            </ul>
+                            <h6 class="px-2 pt-2">SUPPORT</h6>
+                            <div class="m-1">
+                                <button id="btn_demande_req" type="button" class="btn btn-primary btn-block compose-btn">
+                                    <i class="bx bx-plus"></i>
+                                    Envoyer une requête
+                                </button>
+                            </div>
+                            <ul class="liste-tickets chat-sidebar-list">
+
                             </ul>
                         </div>
                     </div>
@@ -178,33 +176,23 @@ require_once 'php/config.php';
                                 <span class="bx bx-message chat-sidebar-toggle chat-start-icon font-large-3 p-3 mb-1"></span>
                                 <h4 class="d-none d-lg-block py-50 text-bold-500">Sélectionnez un contact pour démarrer un chat !</h4>
                                 <button class="btn btn-light-primary chat-start-text chat-sidebar-toggle d-block d-lg-none py-50 px-1">Start
-                                    Conversation!</button>
+                                    Conversation!
+                                </button>
                             </div>
                             <div class="chat-area d-none">
-                                <div class="chat-header">
-                                    <header class="d-flex justify-content-between align-items-center border-bottom px-1 py-75">
+                                <div class="chat-header" style="background-color: #FFFFFF;">
+                                    <header class="d-flex justify-content-between align-items-center border-bottom px-1 py-75" style="height: 59.5px;">
                                         <div class="d-flex align-items-center">
                                             <div class="chat-sidebar-toggle d-block d-lg-none mr-1"><i class="bx bx-menu font-large-1 cursor-pointer"></i>
                                             </div>
-                                            <div class="avatar m-0 mr-1">
-                                                <img src="../../../app-assets/images/ico/chatpix3.png" alt="avatar" height="36" width="36" />
-                                                <span class="avatar-status-online"></span>
+                                            <div id="image_chat" class="avatar m-0 mr-1">           
                                             </div>
-                                            <h6 class="mb-0">Chat'Pix</h6>
+                                            <h6 id="nom_chat" class="mb-0"></h6>
+                                            <input id ="id_chat" type="hidden" value=""> 
                                         </div>
-                                        <div class="chat-header-icons">
-                                            <span class="chat-icon-favorite">
-                                                <i class="bx bx-star font-medium-5 cursor-pointer"></i>
-                                            </span>
-                                            <span class="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded font-medium-4 ml-25 cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu">
-                                                </i>
-                                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-pin mr-25"></i> Pin to top</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-trash mr-25"></i> Delete chat</a>
-                                                    <a class="dropdown-item" href="JavaScript:void(0);"><i class="bx bx-block mr-25"></i> Block</a>
-                                                </span>
-                                            </span>
+                                        <div id="icons_channel" class="chat-header-icons" style="display: none;">
+                                            <i id="get_membres_not_in_channel" class="bx bx-user-plus font-medium-5 cursor-pointer mr-50"></i>
+                                            <i id="get_membres_channel" class="bx bxs-user-detail font-medium-5 cursor-pointer"></i>                
                                         </div>
                                     </header>
                                 </div>
@@ -221,9 +209,13 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
+                                            <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
+                                            <input type="hidden" id="id" value="<?= $_SESSION['id'] ?>">
+                                            <?php if (isset($_GET['req']) && !empty($_GET['req'])) { ?><input type="hidden" id="req" value="<?= $_GET['req'] ?>"><?php } ?>
                                             <input type="hidden" id="auteur" value="user">
+                                            <input type="hidden" id="type_chat" value="">
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
-                                            <button type="submit" id="btn_submit_user" class="btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
+                                            <button type="submit" class="btn-envoyer-msg btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
                                         </div>
                                     </div>
@@ -248,6 +240,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page Vendor JS-->
     <script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -261,7 +254,9 @@ require_once 'php/config.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-chat.js"></script>
     <script src="../../../app-assets/js/scripts/pages/chat_support.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/chat_interne.js"></script>
     <!-- END: Page JS-->
+
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
 </body>

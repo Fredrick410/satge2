@@ -658,7 +658,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_bon.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_fournisseur.js"></script>
 	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>

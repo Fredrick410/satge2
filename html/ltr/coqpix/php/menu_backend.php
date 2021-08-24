@@ -21,11 +21,14 @@
                     </li>
                     <li data-menu=""><a class="dropdown-item align-items-center" href="utilisateurs.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Utilisateurs</a>
                     </li>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="membre-back.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Membres Back</a>
+                    </li>
                 </ul>
             </li>
+            <?php if(substr($_SESSION['role'],1,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="balance"></i><span>Juridique</span></a>
                 <ul class="dropdown-menu">
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Création Société</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="creation-list-conversation-nonlu.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Création Société</a>
                     </li>
                     <li data-menu=""><a class="dropdown-item align-items-center" href="acte-modification.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Modification</a>
                     </li>
@@ -39,6 +42,7 @@
                     </li>
                 </ul>
             </li>
+            <?php } if(substr($_SESSION['role'],0,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="briefcase"></i><span>Comptabilité</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="cloudpix.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Cloudpix</a>
@@ -55,6 +59,7 @@
                     </li>
                 </ul>
             </li>
+            <?php } if(substr($_SESSION['role'],2,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="umbrella"></i><span>Social</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="salaire.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Bulletin de salaires</a>
@@ -75,12 +80,14 @@
                     </li>
                 </ul>
             </li>
+            <?php } ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="user"></i><span>RH</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="recrutement-list.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Recrutement</a>
                     </li>
                 </ul>
             </li>
+            <?php if(substr($_SESSION['role'],3,1) == '1') { ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="credit-card-out"></i><span>Fiscal</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="declarationtva.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Déclaration TVA</a>
@@ -93,6 +100,7 @@
                     </li>
                 </ul>
             </li>
+            <?php } ?>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="ban"></i><span>Administration</span></a>
                 <ul class="dropdown-menu">
                     <li data-menu=""><a class="dropdown-item align-items-center" href="param-formation.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Formation</a>
@@ -107,7 +115,7 @@
             </li>
             <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="menu-livicon" data-icon="comments"></i><span>HelpDesk</span></a>
                 <ul class="dropdown-menu">
-                    <li data-menu=""><a class="dropdown-item align-items-center" href="helpdesk-home.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Chat'Pix</a>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="helpdesk-tickets-support.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Chat'Pix</a>
                     </li>
                 </ul>
             </li>

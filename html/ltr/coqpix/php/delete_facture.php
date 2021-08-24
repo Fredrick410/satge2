@@ -11,6 +11,9 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
         $pdoDel->execute();
 
+        $pdoDele = $bdd->prepare('DELETE FROM prestations WHERE numeros= ""');
+        $pdoDele->execute();
+
         //calculs
 
         $pdoS = $bdd->prepare('SELECT * FROM calculs WHERE id_session = :num');
@@ -53,6 +56,11 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel->bindValue(':num', $_GET['numfacture']);
         $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
         $pdoDel->execute();
+
+        $pdoDele = $bdd->prepare('DELETE FROM prestations WHERE numeros=:num AND id_session =:id_session AND typ="facturevente"');
+        $pdoDele->bindValue(':num', $_GET['numfacture']);
+        $pdoDele->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
+        $pdoDele->execute();
 
         $pdoDe = $bdd->prepare('DELETE FROM facture WHERE id=:id AND id_session=:id_session');
         $pdoDe->bindValue(':id', $_GET['id']);

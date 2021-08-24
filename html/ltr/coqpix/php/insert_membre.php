@@ -5,68 +5,100 @@
     ini_set('display_errors', TRUE);
     ini_set('display_startup_errors', TRUE);
 
-
-    if(empty($_POST['perms_ventes'])){
-        $perms_ventes = "";
-    }else{
-        $perms_ventes = $_POST['perms_ventes'];
+    $statut = "Désactivé";
+    if (isset($_POST['utilisateur_coqpix'])) {
+        $statut = "New";
     }
 
-    if(empty($_POST['perms_achats'])){
-        $perms_achats = "";
-    }else{
-        $perms_achats = $_POST['perms_achats'];
+    $insert_membre = $bdd->prepare('INSERT INTO membres (nom,
+                                                        prenom,
+                                                        email,
+                                                        tel,
+                                                        dtenaissance,
+                                                        pays,
+                                                        langue,
+                                                        status_membres,
+                                                        startdte,
+                                                        id_session)
+                                                VALUES (:nom,
+                                                        :prenom,
+                                                        :email,
+                                                        :tel,
+                                                        :dtenaissance,
+                                                        :pays,
+                                                        :langue,
+                                                        :status_membres,
+                                                        curdate(),
+                                                        :id_session)');
+
+    $insert_membre->bindValue(':nom', htmlspecialchars($_POST['nom']));
+    $insert_membre->bindValue(':prenom', htmlspecialchars($_POST['prenom']));
+    $insert_membre->bindValue(':email', htmlspecialchars($_POST['email']));
+    $insert_membre->bindValue(':tel', htmlspecialchars($_POST['tel']));
+    $insert_membre->bindValue(':dtenaissance', htmlspecialchars($_POST['dtenaissance']));
+    $insert_membre->bindValue(':pays', htmlspecialchars($_POST['pays']));
+    $insert_membre->bindValue(':langue', htmlspecialchars($_POST['langue']));
+    $insert_membre->bindValue(':status_membres', $statut);
+    $insert_membre->bindValue(':id_session', htmlspecialchars($_POST['id_entreprise']));
+    $insert_membre->execute();
+
+    $query = $bdd->prepare('SELECT last_insert_id() AS id FROM membres');
+    $query->execute();
+    $id_membre = $query->fetch()['id'];
+
+    // Si l'option de compte Coqpix a été cochée
+    if (isset($_POST['utilisateur_coqpix'])) {
+
+        // Requetes permettant d'inserer les permissions
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "ventes");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_ventes']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "achats");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_achats']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "projets");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_projets']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "inventaire");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_inventaire']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "clients");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_clients']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "fournisseurs");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_fournisseurs']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "articles");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_articles']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
+        $query = $bdd->prepare('INSERT INTO permissions_front (module, niveau, id_membre) VALUES (:module, :niveau, :id_membre)');
+        $query->bindValue(':module', "membres");
+        $query->bindValue(':niveau', htmlspecialchars($_POST['perm_membres']));
+        $query->bindValue(':id_membre', $id_membre);
+        $query->execute();
+
     }
-
-    if(empty($_POST['perms_projets'])){
-        $perms_projets = "";
-    }else{
-        $perms_projets = $_POST['perms_projets'];
-    }
-
-    if(empty($_POST['perms_inventaires'])){
-        $perms_inventaires = "";
-    }else{
-        $perms_inventaires = $_POST['perms_inventaires'];
-    }
-    
-    $dte = date('d-m-Y');
-    $status_membre = "Active";
-
-    $insert = $bdd->prepare('INSERT INTO membres (nom, prenom, email, tel, dtenaissance, pays, langue, img_membres, name_entreprise, status_membres, role_membres, startdte, note_nb, note_nb_cout, perms_ventes, perms_achats, perms_projets, perms_inventaires, doc_note, doc_note_2, doc_note_3, doc_note_4, doc_note_5, nb_doc_note, id_session) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-    $insert->execute(array(
-        htmlspecialchars($_POST['nom']),
-        htmlspecialchars($_POST['prenom']),
-        htmlspecialchars($_POST['email']),
-        htmlspecialchars($_POST['tel']),
-        htmlspecialchars($_POST['dtenaissance']),
-        htmlspecialchars($_POST['pays']),
-        htmlspecialchars($_POST['langue']),
-        htmlspecialchars($_POST['img_membre']),
-        htmlspecialchars($_POST['name_entreprise']),
-        htmlspecialchars($status_membre),
-        htmlspecialchars($_POST['role_membres']),
-        htmlspecialchars($dte),
-        htmlspecialchars("0"),
-        htmlspecialchars("0"),
-        htmlspecialchars($perms_ventes),
-        htmlspecialchars($perms_achats),
-        htmlspecialchars($perms_projets),
-        htmlspecialchars($perms_inventaires),
-        htmlspecialchars(""),
-        htmlspecialchars(""),
-        htmlspecialchars(""),
-        htmlspecialchars(""),
-        htmlspecialchars(""),
-        htmlspecialchars("0"),
-        htmlspecialchars($_SESSION['id_session'])
-    ));
-
-    $updat = $bdd->prepare('UPDATE images SET  images = ?  WHERE name_entreprise = ?');
-    $updat->execute(array(
-        htmlspecialchars("astro4.gif"),
-        htmlspecialchars($_POST['entreprise'])
-    ));
 
     header('Location: ../membres-liste.php');
     exit();

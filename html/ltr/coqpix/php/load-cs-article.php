@@ -14,13 +14,12 @@ require_once 'config.php';
 //récupération PROPRE des variables AVANT de les utiliser
 $id = !empty($_POST['article']) ? $_POST['article'] : NULL;
 
-
 if($id){
 
   $sql = "SELECT article
                 ,referencearticle
-                ,prixvente
-                ,tvavente
+                ,coutachat
+                ,tvaachat
                 ,umesure
           FROM `article` 
           WHERE id_session =:id_session AND article = :article "; //$_SESSION

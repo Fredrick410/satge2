@@ -13,12 +13,13 @@ if (isset($_GET['num']) and is_numeric($_GET['num'])) {
 }
 
 // On recupere la candidature
-$pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="success"');
+$pdoStt = $bdd->prepare('SELECT * FROM rh_candidature WHERE id = :num AND statut="Admis à entretien"');
 $pdoStt->bindValue(':num', $id);
 $pdoStt->execute();
 $candidature = $pdoStt->fetch(PDO::FETCH_ASSOC);
+$missions_candidat = explode(";", $candidature['missions']);
 
-// Si la candidatures n'existe pas on retourne a la liste des candidatures pour entretiens
+// Si la candidature n'existe pas on retourne a la liste des candidatures pour entretiens
 if (count($candidature) != 0) {
     $explode = explode(';', $candidature['key_candidat']);
     $idannonce = $explode[2];
@@ -26,8 +27,7 @@ if (count($candidature) != 0) {
     $pdoStt->bindValue(':num', $idannonce);
     $pdoStt->execute();
     $missions = $pdoStt->fetchAll(PDO::FETCH_ASSOC);
-}
-else{
+} else {
     header('Location: rh-entretient-candidats.php');
 }
 
@@ -281,7 +281,7 @@ $pays = array(
                                                     <input class="form-control" type="date" name="dtenaissance" id="dtenaissance" value="<?= $candidature['dtenaissance_candidat'] ?>" disabled>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="pays" class="col-form-label">Pays du candidat</label>
+                                                    <label for="pays" class="col-form-label">Pays de résidence du candidat</label>
                                                     <input class="form-control" type="text" name="pays" id="pays" value="<?php if (isset($pays[$candidature['pays']])) {
                                                                                                                                 echo $pays[$candidature['pays']];
                                                                                                                             } else {
@@ -293,30 +293,37 @@ $pays = array(
                                                     <input class="form-control" type="text" name="langue" id="langue" value="<?= $candidature['langue'] ?>" disabled>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-form-label">Missions/compétences</label>
+                                                    <?php
+                                                    foreach ($missions as $key => $value) {
+                                                    ?>
+                                                        <div class="form-group">
+                                                            <label for="mission<?= $key ?>"><?= $value['libelle'] ?></label>
+                                                            <input type="checkbox" id="mission<?= $key ?>" name="missions[]" <?php foreach ($missions_candidat as $akey => $avalue) {
+                                                                                                                                    if ($value['libelle'] == $avalue) {
+                                                                                                                                        echo "checked";
+                                                                                                                                    }
+                                                                                                                                } ?>>
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="observations" class="col-form-label">Observations</label>
-                                                    <textarea class="form-control" name="observations" id="observations" rows="15">
-                                                    </textarea>
+                                                    <textarea class="form-control" name="observations" id="observations" rows="15"><?= $candidature['observations'] ?></textarea>
                                                 </div>
                                                 <div class="form-group" id="fiche-poste" style="display: none;">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label">Missions/compétences</label>
-                                                        <?php
-                                                        foreach ($missions as $key => $value) {
-                                                        ?>
-                                                            <div class="form-group">
-                                                                <label for="mission<?= $key ?>"><?= $value['libelle'] ?></label>
-                                                                <input type="checkbox" id="mission<?= $key ?>" name="missions[]">
-                                                            </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </div>
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="dtecontrat">Date de rendez-vous pour signature du contrat</label>
+                                                            <input type="date" name="dtecontrat" id="dtecontrat" class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-4">
                                                             <label for="startdte">Date de prise de service</label>
                                                             <input type="date" name="startdte" id="startdte" class="form-control">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
                                                             <label for="enddte">Date de fin de service</label>
                                                             <input type="date" name="enddte" id="enddte" class="form-control">
                                                         </div>
@@ -324,6 +331,7 @@ $pays = array(
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <button name="save" id="save" type="button" value="save" class="btn btn-success col-12 btconf">Sauvegarder le profil</button>
                                                 <button name="accept" id="accept" type="button" value="accept" class="btn btn-primary col-12 btconf">Embaucher le candidat</button>
                                                 <button name="refuse" id="refuse" type="button" value="refuse" class="btn btn-danger col-12 btconf">Refuser le candidat</button>
                                             </div>
@@ -390,6 +398,7 @@ $pays = array(
                 } else if (value == 'confirm') {
                     var labels = document.getElementsByTagName('label');
                     var observations = document.getElementById("observations").value;
+                    var dtecontrat = document.getElementById("dtecontrat").value;
                     var startdte = document.getElementById("startdte").value;
                     var enddte = document.getElementById("enddte").value;
                     var missions = [];
@@ -399,13 +408,13 @@ $pays = array(
                             missions.push(getLabel(checkboxes[i].id));
                         }
                     }
-                    console.log(missions);
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/insert_employe.php", //new path, save your work first before u try
                         type: "POST",
                         data: {
                             observations: observations,
                             missions: missions,
+                            dtecontrat: dtecontrat,
                             startdte: startdte,
                             enddte: enddte,
                             confirm: "confirm",
@@ -434,21 +443,51 @@ $pays = array(
 
             $("#refuse").click(function() {
                 var refuse = 'refuse';
-                var pays = document.getElementById("pays").value;
                 var observations = document.getElementById("observations").value;
                 $.ajax({
                     url: "../../../html/ltr/coqpix/php/refuser_candidat.php", //new path, save your work first before u try
                     type: "POST",
                     data: {
                         refuse: refuse,
-                        pays: pays,
                         observations: observations,
+                        missions: missions,
                         idcandidat: <?= $id ?>
                     },
                     dataType: "json",
                     success: function(data) {
                         if (data.status == "success") {
                             addAlert("Candidat refusé", "success");
+                            window.setTimeout(function() {
+                                window.location.href = data.link;
+                            }, 1000);
+                        } else {
+                            addAlert(data.message, "error");
+                        }
+                    }
+                });
+            });
+
+            $("#save").click(function() {
+                var observations = document.getElementById("observations").value;
+                var missions = [];
+                var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+                if (checkboxes.length > 0) {
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        missions.push(getLabel(checkboxes[i].id));
+                    }
+                }
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/edit_candidature.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        observations: observations,
+                        missions: missions,
+                        idcandidat: <?= $id ?>
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.status == "success") {
+                            addAlert("Profil sauvegardé", "success");
                             window.setTimeout(function() {
                                 window.location.href = data.link;
                             }, 1000);

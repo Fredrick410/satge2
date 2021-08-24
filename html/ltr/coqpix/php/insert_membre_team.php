@@ -11,7 +11,7 @@ session_start();
 $task = "list";
 
 if(array_key_exists("task", $_GET)){
-    $task = $_GET['task'];
+    $task = htmlspecialchars($_GET['task']);
 }
 
 if($task == "write"){
@@ -51,7 +51,7 @@ function postMessage(){
     //on definit la variable bdd dans la function 
     global $bdd;
 
-    $name_membre = $_POST['name_membre'];
+    $name_membre = htmlspecialchars($_POST['name_membre']);
     $img_membre = "team_img.png";
     $date_add = date("d/m/Y");
     $team_num = $_POST['team_num'];
