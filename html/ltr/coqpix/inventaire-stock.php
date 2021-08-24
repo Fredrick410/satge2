@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include 'php/verif_session_connect.php';
 error_reporting(E_ALL);
@@ -10,11 +10,6 @@ require_once 'php/config.php';
     $pdoS->bindValue(':numentreprise',$_SESSION['id']);
     $pdoS->execute();
     $entreprise = $pdoS->fetch();
-
-    $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
-    $pdoSt->bindValue(':num',$_SESSION['id_session']);
-    $pdoSt->execute();
-    $article = $pdoSt->fetchAll();
 
     $pdoSt = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']);
@@ -92,10 +87,10 @@ require_once 'php/config.php';
                             function retourn() {
                                 window.history.back();
                             }
-                        </script> 
+                        </script>
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul>              
+                        </ul>
                     </div>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
@@ -194,29 +189,49 @@ require_once 'php/config.php';
                                                 <!-- Indique la quantité de chaque produit dans le stock -->
                                                     <th>Quantité</th>
                                                 <!-- Indique si le produit est commandé : Commande en attente de validation / Commande annulé / Livraison en cours / Pas de commande -->
-                                                    <th title="Article commandé : 
+                                                    <th title="Article commandé :
 Non (par défaut)
 En cours de traitement
 Commande Validé/Livraison en cours
 Commande annulé"                                    >Commandé</th>
                                                 <!-- Date de la dernière commande effectué -->
-                                                    <th title="Date de la dernière commande de cet article">Date de commande</th>
+                                                    <th title="Date de la dernière commande de cet article">Date  de la dernière commande</th>
                                                 <!-- Fournisseur du produit -> on clique pour être redirigé vers une page afin de faire une commande chez ce fournisseur -->
                                                     <th>Fournisseur</th>
                                                     <th>Options</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="text-center">
-                                            <?php foreach($articlee as $articlees): ?>
+                                            <?php foreach($articlee as $articlees):?>
                                                 <tr>
                                                     <td><img src="../../../app-assets/images/article/<?= $articlees['img']; ?>" alt="" width="100"></td>
                                                     <td><?= $articlees['article'] ?></td>
                                                     <td><?= $articlees['referencearticle'] ?></td>
                                                     <td><?= $articlees['stock'] ?></td>
                                                     <td><?= $articlees['commandeatm'] ?></td>
-                                                    <td><?= $articlees['datecommande'] ?></td>
+                                                    <!-- Afficher la date de la dernière commande de l'article -->
+                                                    <td><?php $q = $bdd->prepare("SELECT datecommande from ARTICLES where id_session = :num and referencearticle = :ref and datecommande != 'NULL' and typ = 'Achat' or typ = 'Ventes et Achats' ");
+                                                              $q->bindValue('num', $_SESSION['id_session']);
+                                                              $q->bindValue('ref', $articlees['referencearticle']);
+                                                              $q->execute();
+                                                              $dte = $q->fetchAll();
+                                                              if(!empty($dte)){
+                                                              setlocale(LC_TIME, "fr_FR");
+                                                              $dtemax = $dte[0]['datecommande'];
+
+                                                              foreach ($dte as $dtes):
+                                                                $dteint = $dtes['datecommande'];
+                                                                if ($dtemax < $dteint) {
+                                                                  $dtemax = $dteint;
+                                                                }
+                                                              endforeach;
+                                                              echo strftime("%d/%m/%Y", strtotime($dtemax));
+                                                            }else {
+                                                              echo "Article jamais commandé";
+                                                            }?>
+                                                    </td>
                                                     <td><a href="fournisseur-edit.php?numfour=<?= $articlees['id_fournisseur'] ?>"><?= $articlees['name_fournisseur'] ?></a></td>
-                                                    <td><a href="article-edit.php?numarticle=<?= $articlees['id_article'] ?>&numfournisseur=<?= $articlees['id_fournisseur'] ?>" title="Editer article"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlees['id_article'] ?>" title="Supprimer article"><i class="bx bx-trash-alt"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="app-bon-achat-add-forbon.php?jXN955CbHqqbQ463u5Uq=Rt82u&numarticle=<?= $articlees['id_article'] ?>&numfournisseur=<?= $articlees['id_fournisseur'] ?>" title="Commandé l'article"><i class="bx bx-revision"></i></a></td> 
+                                                    <td><a href="article-edit.php?numarticle=<?= $articlees['id_article'] ?>&numfournisseur=<?= $articlees['id_fournisseur'] ?>" title="Editer article"><i class='bx bxs-edit'></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="php/delete_article.php?num=<?= $articlees['id_article'] ?>" title="Supprimer article"><i class="bx bx-trash-alt"></i></a>&nbsp&nbsp&nbsp&nbsp&nbsp<a href="app-bon-achat-add-forbon.php?jXN955CbHqqbQ463u5Uq=Rt82u&numarticle=<?= $articlees['id_article'] ?>&numfournisseur=<?= $articlees['id_fournisseur'] ?>" title="Commandé l'article"><i class="bx bx-revision"></i></a></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>

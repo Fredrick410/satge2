@@ -4,26 +4,26 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/verif_session_connect.php';
 require_once 'php/config.php';
-   
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-    $pdoSta->execute(); 
+    $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num AND typ="Ventes" OR typ="Ventes et Achats"');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $article = $pdoSt->fetchAll();
 
 	$pdoStt = $bdd->prepare('SELECT * FROM article WHERE id_article = :num');
     $pdoStt->bindValue(':num',$_GET['numarticle']);
-    $pdoStt->execute(); 
+    $pdoStt->execute();
     $article2 = $pdoStt->fetch();
 	// $id = $article2['id_article'];
 
 	$pdoStat = $bdd->prepare('SELECT * FROM fournisseur WHERE id = :num');
     $pdoStat->bindValue(':num',$_GET['numfournisseur']);
-    $pdoStat->execute(); 
+    $pdoStat->execute();
     $fournisseur2 = $pdoStat->fetch();
 
     $pdoS = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
@@ -50,11 +50,11 @@ require_once 'php/config.php';
 	$max_num = "";
 	$pdoSt = $bdd->prepare('SELECT id_bon_commande FROM bon_commande');
 		$pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-		$pdoSt->execute(); 
+		$pdoSt->execute();
 		$num = $pdoSt->fetchAll();
 		$count_num = count($num);
 		$max_num = "0";
-		for ($i=0; $i < $count_num ; $i++) { 
+		for ($i=0; $i < $count_num ; $i++) {
 			foreach($num as $n):
 
 				$number = $n['id_bon_commande'];
@@ -68,7 +68,7 @@ require_once 'php/config.php';
 		$max_num = $max_num + 1;
 
 		$strlen_num = strlen($max_num);
-		
+
 		if($strlen_num == "1"){
 			$max_num = '0'.$max_num;
 		}elseif($strlen_num == "2"){
@@ -88,12 +88,12 @@ require_once 'php/config.php';
 
             $pdoSt = $bdd->prepare('SELECT numerosbon FROM bon_commande WHERE id_session = :num');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-            $pdoSt->execute(); 
+            $pdoSt->execute();
             $incrementation = $pdoSt->fetchAll();
             $count_incrementation = count($incrementation);
             $max_incrementation = "0";
 
-            for ($i=0; $i < $count_incrementation ; $i++) { 
+            for ($i=0; $i < $count_incrementation ; $i++) {
                 foreach($incrementation as $incrementations):
 
                     $numeros = $incrementations['numerosbon'];
@@ -107,7 +107,7 @@ require_once 'php/config.php';
             $max_incrementation = $max_incrementation + 1;
 
             $strlen_incrementation = strlen($max_incrementation);
-            
+
             if($strlen_incrementation == "1"){
                 $max_incrementation = '00'.$max_incrementation;
             }elseif($strlen_incrementation == "2"){
@@ -119,7 +119,7 @@ require_once 'php/config.php';
             $max_incrementation = date('y').$max_incrementation;
 
         }
-        
+
     }else{
         header('Location: dashboard-analytics.php');
         exit();
@@ -202,21 +202,21 @@ require_once 'php/config.php';
                                             <div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 												<h6 class="invoice-number mr-75">N°</h6>
 												<input name="numeroboncom" id="numeros" type="number" value='<?= $maxid ?>' class="form-control pt-25 w-50" placeholder="BON-0" attribut readonly="readonly" <?php if($_GET['jXN955CbHqqbQ463u5Uq'] == "Rt82u"){echo "readonly";} ?> required>
-											</div>	
+											</div>
                                             <div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 												<h6 class="invoice-number mr-75">
 													Référence
 												</h6>
 												<input name="refbon" id="refbon" type="text" value='REF-' class="form-control pt-20 w-50" placeholder="XXX-">
 												<p style='position: relative; top: 7px;'>
-												&nbsp&nbsp&nbsp 
+												&nbsp&nbsp&nbsp
 												</p>
 											</div>
                                             <div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 												<h6 class="invoice-number mr-75">
 													Bon N°
 												</h6>
-												<input type="number" name="numerosbon" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000" attribut readonly="readonly" required>								
+												<input type="number" name="numerosbon" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000" attribut readonly="readonly" required>
 											</div>
                                             <div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 												<div class="d-flex align-items-center">
@@ -227,14 +227,14 @@ require_once 'php/config.php';
 												</div>
 											</div>
 											<p>
-												&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp 
+												&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp
 											</p>
                                             <div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 												<div class="d-flex align-items-center">
 													<small class="text-muted mr-75">*Date d'échéance : </small>
 													<fieldset class="d-flex justify-content-end">
 														<input name="dateecheance" id="dateecheance" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa">
-													</fieldset>														
+													</fieldset>
                                                 </div>
 											</div>
                                         </div>
@@ -266,7 +266,7 @@ require_once 'php/config.php';
 														<optgroup label="Liste des fournisseurs"></optgroup>
 														<?php foreach($fournisseur as $fournisseurr): ?>
 															<option value="<?= $fournisseurr['id'] ?>"><?= $fournisseurr['name_fournisseur'] ?></option>
-														<?php endforeach ?>		
+														<?php endforeach ?>
 														<option value="Pas de fournisseur">Autres</options>
 													</select>
 												</div>
@@ -292,7 +292,7 @@ require_once 'php/config.php';
                                                     <label for="email">TEL :</label>
 											        <fieldset class="invoice-address form-group">
 												        <input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone" value="<?= $article2['tel'] ?>">
-											        </fieldset>											
+											        </fieldset>
                                                 </div> -->
 									        </div>
 									        <hr>
@@ -366,7 +366,7 @@ require_once 'php/config.php';
 																				<div class="col-12 form-group">
 																					<label>Unite de mesure :</label>
 																					<input name="umesure" id="umesure"  type="text" class="form-control" placeholder="Unite de mesure" value="<?= $article2['umesure'] ?>">
-																				</div>		
+																				</div>
 																			</div>
 																		</div>
 																	</div>
@@ -457,7 +457,7 @@ require_once 'php/config.php';
                                                                 <input name="insert" id="subbt" type="hidden" value="Sauvegarder" class="btn btn btn-block subtotal-preview-btn green"/>
                                                             </li>
                                                         </ul>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -478,7 +478,7 @@ require_once 'php/config.php';
 																	</li>
 																</ul>
 																<div class="tab-content">
-																	<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">										
+																	<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																		<form action="php/insert_articlespopup_bon_commande.php" method="POST" enctype="multipart/form-data">
 																			<div class="row">
 																				<div class="col-12 col-sm-6">
@@ -540,7 +540,7 @@ require_once 'php/config.php';
 																						<label for="email">TEL :</label>
 																						<fieldset class="invoice-address form-group">
 																							<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone">
-																						</fieldset>	
+																						</fieldset>
 																					</div>
 																				</div>
 																				<div class="col-12">
@@ -612,7 +612,7 @@ require_once 'php/config.php';
 																				<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
 																			</div>
 																			<!-- users edit account form ends -->
-																		</form>										
+																		</form>
 																	</div>
 																</div>
 															</div>
@@ -693,25 +693,25 @@ require_once 'php/config.php';
     }).disableSelection();
   });
 
-function getCp(btn){	
+function getCp(btn){
 				$('#ville').empty();
-				$('#ville').attr('disabled','disabled');		
-				$.getJSON("https://comparateurs.hyperassur.com/api/miscellaneous/cities/"+btn.val(), function (data) { 
-					var ville = "<option value=''>Selectionnez votre ville</option>";  
+				$('#ville').attr('disabled','disabled');
+				$.getJSON("https://comparateurs.hyperassur.com/api/miscellaneous/cities/"+btn.val(), function (data) {
+					var ville = "<option value=''>Selectionnez votre ville</option>";
 					if(data.length>0){
 						$('#ville').removeAttr('disabled');
-						$.each(data, function (key, value) { 
-							ville+="<option value='"+value.name+"' data-insee_code='"+value.insee_code+"'>"+value.name+"</option>";  
-						}); 
-						$('#ville').html(ville);  
+						$.each(data, function (key, value) {
+							ville+="<option value='"+value.name+"' data-insee_code='"+value.insee_code+"'>"+value.name+"</option>";
+						});
+						$('#ville').html(ville);
 					}else{
 						$('#ville').empty();
-						$('#ville').attr('disabled','disabled');	
+						$('#ville').attr('disabled','disabled');
 					}
-				}); 
+				});
 			};
 
-			$('#ville').change(function(event) { 
+			$('#ville').change(function(event) {
 				$('#insee_code').val($('option:selected', this).attr('data-insee_code'));
 			});</script>
 
