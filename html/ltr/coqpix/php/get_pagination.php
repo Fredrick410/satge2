@@ -36,8 +36,10 @@ try {
 // On determine le nombre de page en prenant 5 commentaires par page
 $nbPages = (int)ceil($nb_comments['nb_comments'] / 5);
 $response_array['pagination'] = "";
+if( $nbPages == 0){
 
-if ($nbPages <= 5) {
+}
+else if ($nbPages <= 5) {
 	if ($current_page != 1) {
 		$response_array['pagination'] .= "<!-- Lien vers la page précédente -->"
 			. "<li class=\"page-item previous\"><a href=\"" . ($current_page - 1) . "\" class=\"page-link\"><i class=\"bx bx-chevron-left\"></i></a></li>";

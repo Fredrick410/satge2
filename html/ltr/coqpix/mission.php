@@ -5,7 +5,18 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-// Convert a date or timestamp into French.
+// Fonctions pour generer une couleur en hexadecimal de facon aleatoire
+function random_color_part()
+{
+    return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+}
+
+function random_color()
+{
+    return random_color_part() . random_color_part() . random_color_part();
+}
+
+// Convertis une date or ou temps en francais.
 function dateToFrench($date, $format)
 {
     $english_days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -34,6 +45,10 @@ foreach ($missions as $mission) {
     $tasks[] = $pdoS->fetchAll();
 }
 
+//print("<pre>". print_r($tasks,true)."</pre>");
+
+
+// Pour chaque tache recuperer le nombre de commentaire
 foreach ($tasks as $task) {
     foreach ($task as $tache) {
         $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_comment FROM task_commentaire WHERE task_num = :num');
@@ -43,10 +58,13 @@ foreach ($tasks as $task) {
     }
     if (isset($task_comment_number)) {
         $mission_task_comment_number[] = $task_comment_number;
-        unset($task_comment_number);
     }
+    unset($task_comment_number);
 }
 
+//print("<pre>" . print_r($mission_task_comment_number, true) . "</pre>");
+
+// Pour chaque tache recuperer le nombre de documents
 foreach ($tasks as $task) {
     foreach ($task as $tache) {
         $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_doc FROM task_doc WHERE task_num = :num');
@@ -56,12 +74,13 @@ foreach ($tasks as $task) {
     }
     if (isset($task_doc_number)) {
         $mission_task_doc_number[] = $task_doc_number;
-        unset($task_doc_number);
     }
+    unset($task_doc_number);
 }
-//print("<pre>". print_r($mission_task_membres,true)."</pre>");
 
+//print("<pre>". print_r($mission_task_doc_number,true)."</pre>");
 
+// Pour chaque tache recuperer les equipes
 foreach ($tasks as $task) {
     foreach ($task as $tache) {
         $pdoS = $bdd->prepare('SELECT * FROM tasks_teams INNER JOIN teams ON(tasks_teams.id_team = teams.id)  WHERE id_task = :num');
@@ -69,12 +88,39 @@ foreach ($tasks as $task) {
         $pdoS->execute();
         $task_teams[] = $pdoS->fetchAll();
     }
-    if (isset($task_teams)) {
+    if (!empty($task_teams)) {
+        if (isset($mission_task_teams)) {
+            for ($i = 0; $i < count($task_teams); $i++) {
+                for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                    foreach ($mission_task_teams as $tache_teams) {
+                        foreach ($tache_teams as $teams) {
+                            $name_team = array_column($teams, 'name_team');
+                            $found_key = array_search($task_teams[$i][$j]['name_team'], $name_team);
+                            if ($found_key !== false) {
+                                $task_teams[$i][$j]['color'] = $teams[$found_key]['color'];
+                            }
+                        }
+                    }
+                    if (!isset($task_teams[$i][$j]['color'])) {
+                        $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
+                    }
+                }
+            }
+        } else {
+            for ($i = 0; $i < count($task_teams); $i++) {
+                for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                    $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
+                }
+            }
+        }
         $mission_task_teams[] = $task_teams;
-        unset($task_teams);
     }
+    unset($task_teams);
 }
+//print("<pre>" . print_r($mission_task_teams, true) . "</pre>");
 
+
+// Pour chaque tache recuperer les membres
 foreach ($tasks as $task) {
     foreach ($task as $tache) {
         $pdoS = $bdd->prepare('SELECT * FROM tasks_membres INNER JOIN membres ON(tasks_membres.id_membre = membres.id)  WHERE id_task = :num');
@@ -82,13 +128,36 @@ foreach ($tasks as $task) {
         $pdoS->execute();
         $task_membres[] = $pdoS->fetchAll();
     }
-    if (isset($task_membres)) {
+    if (!empty($task_membres)) {
+        if (isset($mission_task_membres)) {
+            for ($i = 0; $i < count($task_membres); $i++) {
+                for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                    foreach ($mission_task_membres as $tache_membres) {
+                        foreach ($tache_membres as $membres) {
+                            $prenoms_membres = array_column($membres, 'prenom');
+                            $found_key = array_search($task_membres[$i][$j]['prenom'], $prenoms_membres);
+                            if ($found_key !== false) {
+                                $task_membres[$i][$j]['color'] = $membres[$found_key]['color'];
+                            }
+                        }
+                    }
+                    if (!isset($task_membres[$i][$j]['color'])) {
+                        $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
+                    }
+                }
+            }
+        } else {
+            for ($i = 0; $i < count($task_membres); $i++) {
+                for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                    $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
+                }
+            }
+        }
         $mission_task_membres[] = $task_membres;
-        unset($task_membres);
     }
+    unset($task_membres);
 }
 //print("<pre>". print_r($mission_task_membres,true)."</pre>");
-
 
 //On recupere la liste des membres de cette entreprise
 $pdoSttt = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
@@ -204,6 +273,9 @@ $etiq = $pdoSt->fetchAll();
                         <div class="col-12">
                             <button type="button" class="btn btn-primary mb-1" id="add-kanban">
                                 <i class='bx bx-add-to-queue mr-50'></i> Ajouter une mission
+                            </button>
+                            <button type="button" class="btn btn-success mb-1" id="progression">
+                                <i class='bx bx-task mr-50'></i> Progression
                             </button>
                             <div id="kanban-app"></div>
                         </div>
@@ -419,7 +491,6 @@ $etiq = $pdoSt->fetchAll();
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/daterange/moment.min.js"></script>
-    <script src="../../../app-assets/vendors/js/"></script>
     <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
     <script src="../../../app-assets/vendors/js/extensions/dropzone.min.js"></script>
     <!-- END: Page Vendor JS-->
@@ -463,7 +534,7 @@ $etiq = $pdoSt->fetchAll();
     </script>
 
     <script>
-        var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_curr_item_due_date, kanban_data, kanban_item, kanban_users;
+        var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_curr_item_due_date, kanban_data, kanban_item, kanban_users, kanban_users_color, kanban_users_name, arr;
 
         function addAlert(message, type) {
             if (type == "success") {
@@ -544,6 +615,9 @@ $etiq = $pdoSt->fetchAll();
         });
 
         $(document).ready(function() {
+            $('#progression').on("click", function(e) {
+                window.location.href = "mission-progression.php";
+            });
             $('.js-example-basic-multiple').select2();
             // Kanban Board and Item Data passed by json
             var kanban_board_data = [
@@ -567,6 +641,8 @@ $etiq = $pdoSt->fetchAll();
                                                 users: [
                                                     <?php
                                                     if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
                                                         $list_acronyme = [];
                                                         for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
                                                             $acronyme = "";
@@ -574,6 +650,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
@@ -582,6 +659,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($list_acronyme); $k++) {
@@ -626,7 +704,9 @@ $etiq = $pdoSt->fetchAll();
                                                 border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
                                                 users: [
                                                     <?php
-                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                    if (isset($mission_task_membres[$i][$j]) or isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
                                                         $list_acronyme = [];
                                                         for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
                                                             $acronyme = "";
@@ -634,6 +714,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
@@ -642,6 +723,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($list_acronyme); $k++) {
@@ -708,6 +790,8 @@ $etiq = $pdoSt->fetchAll();
                                                 users: [
                                                     <?php
                                                     if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
                                                         $list_acronyme = [];
                                                         for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
                                                             $acronyme = "";
@@ -715,6 +799,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
@@ -723,6 +808,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($list_acronyme); $k++) {
@@ -768,6 +854,8 @@ $etiq = $pdoSt->fetchAll();
                                                 users: [
                                                     <?php
                                                     if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
                                                         $list_acronyme = [];
                                                         for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
                                                             $acronyme = "";
@@ -775,6 +863,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
@@ -783,6 +872,7 @@ $etiq = $pdoSt->fetchAll();
                                                             foreach ($a as $value) {
                                                                 $acronyme .= strtoupper(substr($value, 0, 1));
                                                             }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
                                                             $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($list_acronyme); $k++) {
@@ -839,7 +929,7 @@ $etiq = $pdoSt->fetchAll();
             // Kanban Board
             var KanbanExample = new jKanban({
                 element: "#kanban-wrapper", // selector of the kanban container
-                buttonContent: "+ Add New Item", // text or html content of the board button
+                buttonContent: "+ Ajouter une tache", // text or html content of the board button
 
                 buttonClick: function(el, boardId) {
                     // create a form to add add new element
@@ -874,7 +964,30 @@ $etiq = $pdoSt->fetchAll();
                                 } else {
                                     KanbanExample.addElement(boardId, {
                                         id: data.id,
-                                        title: text
+                                        title: text,
+                                        dueDate: moment().format('DD-MM-YYYY'),
+                                        border: "",
+                                        users: [],
+                                        comment: 0,
+                                        attachment: 0,
+                                        drop: function(el, target, source, sibling) {
+                                            var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                            var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                            $.ajax({
+                                                url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                type: "POST",
+                                                data: {
+                                                    id_mission: id_mission,
+                                                    id_task: id_task
+                                                },
+                                                dataType: 'json',
+                                                success: function(data) {
+                                                    if (data.status != 'success') {
+                                                        addAlert(data.message);
+                                                    }
+                                                }
+                                            });
+                                        }
                                     });
                                 }
                             }
@@ -886,6 +999,11 @@ $etiq = $pdoSt->fetchAll();
                     })
                 },
                 addItemButton: true, // add a button to board for easy item creation
+                itemAddOptions: {
+                    enabled: true,
+                    content: '+ Ajouter une tache',
+                    footer: true
+                },
                 boards: kanban_board_data // data passed from defined variable
             });
 
@@ -905,12 +1023,16 @@ $etiq = $pdoSt->fetchAll();
                     // check if users are defined or not and loop it for getting value from user's array
                     if (typeof $(board_item_el).attr("data-users") !== "undefined") {
                         for (kanban_users in kanban_board_data[kanban_data].item[kanban_item].users) {
+                            arr = kanban_board_data[kanban_data].item[kanban_item].users[kanban_users].split(';');
+                            kanban_users_name = arr[0];
+                            kanban_users_color = arr[1];
+                            console.log(kanban_users_name + ' ' + kanban_users_color);
                             board_item_users +=
                                 '<li class="kanban-badge">' +
-                                '<div class="badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: #' +
-                                Math.floor(Math.random() * 16777215).toString(16) +
+                                '<div class="badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: ' +
+                                kanban_users_color +
                                 ' ;">' +
-                                kanban_board_data[kanban_data].item[kanban_item].users[kanban_users] +
+                                kanban_users_name +
                                 "</div>" +
                                 "</li>";
                         }
@@ -1041,8 +1163,7 @@ $etiq = $pdoSt->fetchAll();
                                     '<div class="dropdown">' +
                                     '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
                                     '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
-                                    '<a class="dropdown-item" href="#"><i class="bx bx-link mr-50"></i>Copy Link</a>' +
-                                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Delete</a>' +
+                                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Supprimer</a>' +
                                     "</div>" + "</div>";
                                 var kanbanNewDropdown = $(kanbanNewBoard).find("header");
                                 $(kanbanNewDropdown).append(kanbanNewBoardData);
@@ -1061,7 +1182,6 @@ $etiq = $pdoSt->fetchAll();
                     .closest(".kanban-board")
                     .attr("data-id");
                 addEventListener("click", () => {
-                    KanbanExample.removeBoard($id);
                     var id_mission = $id.replaceAll('kanban-', '');
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/delete_mission.php", //new path, save your work first before u try
@@ -1073,6 +1193,8 @@ $etiq = $pdoSt->fetchAll();
                         success: function(data) {
                             if (data.status != 'success') {
                                 addAlert(data.message);
+                            } else {
+                                KanbanExample.removeBoard($id);
                             }
                         }
                     });
@@ -1091,8 +1213,7 @@ $etiq = $pdoSt->fetchAll();
                 kanban_dropdown.innerHTML =
                     '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
                     '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
-                    '<a class="dropdown-item" href="#"><i class="bx bx-link-alt mr-50"></i>Copy Link</a>' +
-                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Delete</a>' +
+                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Supprimer</a>' +
                     "</div>";
                 if (!$(".kanban-board-header div").hasClass("dropdown")) {
                     $(".kanban-board-header").append(kanban_dropdown);
@@ -1183,7 +1304,6 @@ $etiq = $pdoSt->fetchAll();
             $(".delete-kanban-item").on("click", function() {
                 $delete_item = kanban_curr_item_id;
                 addEventListener("click", function() {
-                    KanbanExample.removeElement($delete_item);
                     var id_task = $delete_item.replaceAll('kanban-item-', '');
                     $.ajax({
                         url: "../../../html/ltr/coqpix/php/delete_tache.php", //new path, save your work first before u try
@@ -1195,6 +1315,8 @@ $etiq = $pdoSt->fetchAll();
                         success: function(data) {
                             if (data.status != 'success') {
                                 addAlert(data.message);
+                            } else {
+                                KanbanExample.removeElement($delete_item);
                             }
                         }
                     });
@@ -1228,7 +1350,7 @@ $etiq = $pdoSt->fetchAll();
                     success: function(data) {
                         if (data.status != 'success') {
                             addAlert(data.message);
-                        } else {
+                        } else {    
                             var nb_comment = $(kanban_curr_el).contents()[1].innerHTML;
                             nb_comment++;
                             $(kanban_curr_el).contents()[1].innerHTML = nb_comment;
@@ -1327,7 +1449,7 @@ $etiq = $pdoSt->fetchAll();
 
             // Show task popup
             // ------------------------------
-            $(".kanban-item").on("click", function(el) {
+            $(document).on('click', '.kanban-item', function(el) {
                 if ($(el.target.parentElement).hasClass('kanban-drag')) {
                     // kanban-overlay and sidebar display block on click of kanban-item
                     $(".kanban-overlay").addClass("show");
@@ -1404,10 +1526,14 @@ $etiq = $pdoSt->fetchAll();
                         if (data.status != 'success') {
                             addAlert(data.message);
                         } else {
-                            $.each(data.comments, function(key, value) {
-                                var commentHtml = createComment(value);
-                                $('#posts-list').append(commentHtml);
-                            });
+                            if (data.comments.length == 0) {
+                                $('#posts-list').append('Aucun commentaire disponible pour le moment');
+                            } else {
+                                $.each(data.comments, function(key, value) {
+                                    var commentHtml = createComment(value);
+                                    $('#posts-list').append(commentHtml);
+                                });
+                            }
                             $.ajax({
                                 url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
                                 type: "POST",
