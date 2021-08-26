@@ -36,6 +36,7 @@
             </li>
             <li class=" navigation-header"><span>Fonctions</span>
             </li>
+
             <!-- VENTES -->
             <?php if (permissions()['ventes'] >= 1) { ?>
                 <li class=" nav-item"><a href="#"><i class="menu-livicon" data-icon="coins"></i><span class="menu-title" data-i18n="Ventes">Ventes</span></a>
