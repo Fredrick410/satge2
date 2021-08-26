@@ -1,21 +1,182 @@
 <?php
-
 include 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
+// Fonctions pour generer une couleur en hexadecimal de facon aleatoire
+function random_color_part()
+{
+    return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+}
+
+function random_color()
+{
+    return random_color_part() . random_color_part() . random_color_part();
+}
+
+// Convertis une date or ou temps en francais.
+function dateToFrench($date, $format)
+{
+    $english_days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+    $french_days = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
+    $english_months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    $french_months = array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+    return str_replace($english_months, $french_months, str_replace($english_days, $french_days, date($format, strtotime($date))));
+}
+
 $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
 $pdoS->bindValue(':numentreprise', $_SESSION['id_session']);
 $pdoS->execute();
 $entreprise = $pdoS->fetch();
 
-$pdoS = $bdd->prepare('SELECT * FROM mission WHERE id = :num');
+//Recuperation des missions
+$pdoS = $bdd->prepare('SELECT * FROM mission WHERE id_session = :num ORDER BY id');
 $pdoS->bindValue(':num', $_SESSION['id_session']);
 $pdoS->execute();
-$mission = $pdoS->fetchAll();
+$missions = $pdoS->fetchAll();
 
+//Pour chaque mission on recupere les taches associees.
+foreach ($missions as $mission) {
+    $pdoS = $bdd->prepare('SELECT * FROM task WHERE id_mission = :num ORDER BY id');
+    $pdoS->bindValue(':num', $mission['id']);
+    $pdoS->execute();
+    $tasks[] = $pdoS->fetchAll();
+}
+
+//print("<pre>". print_r($tasks,true)."</pre>");
+
+
+// Pour chaque tache recuperer le nombre de commentaire
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_comment FROM task_commentaire WHERE task_num = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_comment_number[] = $pdoS->fetch();
+    }
+    if (isset($task_comment_number)) {
+        $mission_task_comment_number[] = $task_comment_number;
+    }
+    unset($task_comment_number);
+}
+
+//print("<pre>" . print_r($mission_task_comment_number, true) . "</pre>");
+
+// Pour chaque tache recuperer le nombre de documents
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_doc FROM task_doc WHERE task_num = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_doc_number[] = $pdoS->fetch();
+    }
+    if (isset($task_doc_number)) {
+        $mission_task_doc_number[] = $task_doc_number;
+    }
+    unset($task_doc_number);
+}
+
+//print("<pre>". print_r($mission_task_doc_number,true)."</pre>");
+
+// Pour chaque tache recuperer les equipes
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT * FROM tasks_teams INNER JOIN teams ON(tasks_teams.id_team = teams.id)  WHERE id_task = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_teams[] = $pdoS->fetchAll();
+    }
+    if (!empty($task_teams)) {
+        if (isset($mission_task_teams)) {
+            for ($i = 0; $i < count($task_teams); $i++) {
+                for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                    foreach ($mission_task_teams as $tache_teams) {
+                        foreach ($tache_teams as $teams) {
+                            $name_team = array_column($teams, 'name_team');
+                            $found_key = array_search($task_teams[$i][$j]['name_team'], $name_team);
+                            if ($found_key !== false) {
+                                $task_teams[$i][$j]['color'] = $teams[$found_key]['color'];
+                            }
+                        }
+                    }
+                    if (!isset($task_teams[$i][$j]['color'])) {
+                        $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
+                    }
+                }
+            }
+        } else {
+            for ($i = 0; $i < count($task_teams); $i++) {
+                for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                    $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
+                }
+            }
+        }
+        $mission_task_teams[] = $task_teams;
+    }
+    unset($task_teams);
+}
+//print("<pre>" . print_r($mission_task_teams, true) . "</pre>");
+
+
+// Pour chaque tache recuperer les membres
+foreach ($tasks as $task) {
+    foreach ($task as $tache) {
+        $pdoS = $bdd->prepare('SELECT * FROM tasks_membres INNER JOIN membres ON(tasks_membres.id_membre = membres.id)  WHERE id_task = :num');
+        $pdoS->bindValue(':num', $tache['id']);
+        $pdoS->execute();
+        $task_membres[] = $pdoS->fetchAll();
+    }
+    if (!empty($task_membres)) {
+        if (isset($mission_task_membres)) {
+            for ($i = 0; $i < count($task_membres); $i++) {
+                for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                    foreach ($mission_task_membres as $tache_membres) {
+                        foreach ($tache_membres as $membres) {
+                            $prenoms_membres = array_column($membres, 'prenom');
+                            $found_key = array_search($task_membres[$i][$j]['prenom'], $prenoms_membres);
+                            if ($found_key !== false) {
+                                $task_membres[$i][$j]['color'] = $membres[$found_key]['color'];
+                            }
+                        }
+                    }
+                    if (!isset($task_membres[$i][$j]['color'])) {
+                        $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
+                    }
+                }
+            }
+        } else {
+            for ($i = 0; $i < count($task_membres); $i++) {
+                for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                    $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
+                }
+            }
+        }
+        $mission_task_membres[] = $task_membres;
+    }
+    unset($task_membres);
+}
+//print("<pre>". print_r($mission_task_membres,true)."</pre>");
+
+//On recupere la liste des membres de cette entreprise
+$pdoSttt = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
+$pdoSttt->bindValue(':num', $_SESSION['id_session']);
+$pdoSttt->execute();
+$membres = $pdoSttt->fetchAll();
+//print("<pre>". print_r($tasks,true)."</pre>");
+
+//On recupere la liste des equipes de cette entreprise
+$pdoS = $bdd->prepare('SELECT * FROM teams WHERE id_session = :num');
+$pdoS->bindValue(':num', $_SESSION['id_session']);
+$pdoS->execute();
+$teams = $pdoS->fetchAll();
+
+//Recuperation de la liste des etiquettes crees par cette entreprise
+$pdoSt = $bdd->prepare('SELECT * FROM etiquette WHERE id_session = :id_session');
+$pdoSt->bindValue(':id_session', $_SESSION['id_session']);
+$pdoSt->execute();
+$etiq = $pdoSt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +199,8 @@ $mission = $pdoS->fetchAll();
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/jkanban/jkanban.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/editors/quill/quill.snow.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/pickers/pickadate/pickadate.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/select/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/file-uploaders/dropzone.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -52,11 +215,31 @@ $mission = $pdoS->fetchAll();
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-kanban.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/file-uploaders/dropzone.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
     <!-- END: Custom CSS-->
+    <style>
+        .no-comments {
+            list-style: none;
+        }
+
+        .none-validation {
+            display: none;
+        }
+
+        <?php
+        foreach ($etiq as $etiquette) {
+        ?>.kanban-container .kanban-board .kanban-item[data-border="<?= $etiquette['color'] ?>"]:before {
+            background-color: <?= $etiquette['color'] ?>;
+        }
+
+        <?php
+        }
+        ?>
+    </style>
 
 </head>
 <!-- END: Head-->
@@ -64,11 +247,6 @@ $mission = $pdoS->fetchAll();
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern <?php if ($entreprise['theme_web'] == 'light') echo "semi-"; ?>dark-layout 2-columns  navbar-sticky footer-static menu-collapsed " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="<?php if ($entreprise['theme_web'] == 'light') echo "semi-"; ?>dark-layout">
-    <style>
-        .none-validation {
-            display: none;
-        }
-    </style>
     <!-- BEGIN: Header-->
     <?php $btnreturn = false;
     include('php/menu_header_front.php'); ?>
@@ -85,7 +263,9 @@ $mission = $pdoS->fetchAll();
             <div class="content-header row">
             </div>
             <div class="content-body">
-                <?php var_dump($mission); ?>
+                <div id="message">
+
+                </div>
                 <!-- Basic Kanban App -->
                 <div class="kanban-overlay"></div>
                 <section id="kanban-wrapper">
@@ -93,6 +273,9 @@ $mission = $pdoS->fetchAll();
                         <div class="col-12">
                             <button type="button" class="btn btn-primary mb-1" id="add-kanban">
                                 <i class='bx bx-add-to-queue mr-50'></i> Ajouter une mission
+                            </button>
+                            <button type="button" class="btn btn-success mb-1" id="progression">
+                                <i class='bx bx-task mr-50'></i> Progression
                             </button>
                             <div id="kanban-app"></div>
                         </div>
@@ -102,7 +285,7 @@ $mission = $pdoS->fetchAll();
                     <div class="kanban-sidebar">
                         <div class="card shadow-none quill-wrapper">
                             <div class="card-header d-flex justify-content-between align-items-center border-bottom px-2 py-1">
-                                <h3 class="card-title">UI Design</h3>
+                                <h3 class="card-title">Modifier une tâche</h3>
                                 <button type="button" class="close close-icon">
                                     <i class="bx bx-x"></i>
                                 </button>
@@ -112,77 +295,93 @@ $mission = $pdoS->fetchAll();
                                 <div class="card-content">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label>Card Title</label>
-                                            <input type="text" class="form-control edit-kanban-item-title" placeholder="kanban Title">
+                                            <label>Libellé de la tâche</label>
+                                            <input type="text" class="form-control edit-kanban-item-title" id="name_task" placeholder="Ex: Test">
                                         </div>
                                         <div class="form-group">
-                                            <label>Due Date</label>
-                                            <input type="text" class="form-control edit-kanban-item-date" placeholder="21 August, 2019">
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label>Label</label>
-                                                    <select class="form-control text-white">
-                                                        <option class="bg-primary" selected>Primary</option>
-                                                        <option class="bg-danger">Danger</option>
-                                                        <option class="bg-success">Success</option>
-                                                        <option class="bg-info">Info</option>
-                                                        <option class="bg-warning">Warning</option>
-                                                        <option class="bg-secondary">Secondary</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label>Member</label>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar m-0 mr-1">
-                                                            <img src="../../../app-assets/images/portrait/small/avatar-s-20.jpg" height="36" width="36" alt="avtar img holder">
-                                                        </div>
-                                                        <div class="badge-circle badge-circle-light-secondary">
-                                                            <i class="bx bx-plus"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <label>Description de la tâche</label>
+                                            <textarea name="description_task" id="description_task" cols="30" rows="10" wrap="hard"></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <label>Attachment</label>
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="emailAttach">
-                                                <label class="custom-file-label" for="emailAttach">Attach file</label>
+                                            <label>Date de début</label>
+                                            <input type="text" class="form-control edit-kanban-item-date" id="date_task" placeholder="Ex: Mercredi 21 Août 2019">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date de fin</label>
+                                            <input type="text" class="form-control edit-kanban-item-date" id="dateecheance_task" placeholder="Ex: Mercredi 21 Août 2019">
+                                        </div>
+                                        <div id="div_etiq">
+                                            <label style="color: #bac0c7;">Etiquette</label>
+                                            <div class="flex-grow-1 d-flex align-items-center form-group">
+                                                <i class="bx bx-tag align-middle mr-25"></i>
+                                                <select id="etiquette_task" class="form-control">
+                                                    <?php foreach ($etiq as $etiquette) : ?>
+                                                        <option value="<?= $etiquette['color'] ?>"><?= $etiquette['name_etiq'] ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <i onclick="newetiq()" class="bx bx-plus-circle cursor-pointer"></i>
                                             </div>
                                         </div>
-                                        <!-- Compose mail Quill editor -->
+                                        <div id="div_color" class="form-group" style="display: none;">
+                                            <label for="etiq">Nouvelle etiquette :</label>
+                                            <input type="text" class="form-control" id="etiq" name="new_etiq" placeholder="Nom de l'étiquette" disabled>
+                                            <input class="form-control" id="etiq_color" type="color" name="new_color" value="#ffc874" class="form-control" disabled>
+                                        </div>
                                         <div class="form-group">
-                                            <label>Comment</label>
-                                            <div class="snow-container border rounded p-1">
-                                                <div class="compose-editor"></div>
-                                                <div class="d-flex justify-content-end">
-                                                    <div class="compose-quill-toolbar">
-                                                        <span class="ql-formats mr-0">
-                                                            <button class="ql-bold"></button>
-                                                            <button class="ql-italic"></button>
-                                                            <button class="ql-underline"></button>
-                                                            <button class="ql-link"></button>
-                                                            <button class="ql-image"></button>
-                                                            <button class="btn btn-sm btn-primary btn-comment ml-25">Comment</button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <label for="membres">Membres</label>
+                                            <?php
+                                            if (isset($membres) and count($membres) != 0) {
+                                            ?>
+                                                <select class="form-control js-example-basic-multiple" id="membres" multiple>
+                                                    <?php
+                                                    foreach ($membres as $membre) {
+                                                    ?>
+                                                        <option value="<?= $membre['id'] ?>"><?= $membre['nom'] . " " . $membre['prenom'] ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                Aucun membre
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="equipe">Equipe</label>
+                                            <?php
+                                            if (isset($teams) and count($teams) != 0) {
+                                            ?>
+                                                <select class="form-control js-example-basic-multiple" id="teams" multiple>
+                                                    <?php
+                                                    foreach ($teams as $team) {
+                                                    ?>
+                                                        <option value="<?= $team['id'] ?>"><?= $team['name_team'] ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <br>Aucune équipe
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
                                     </div>
+                                    <input type="hidden" id="tache">
                                 </div>
                                 <div class="card-footer d-flex justify-content-end">
                                     <button type="reset" class="btn btn-light-danger delete-kanban-item d-flex align-items-center mr-1">
                                         <i class='bx bx-trash mr-50'></i>
-                                        <span>Delete</span>
+                                        <span>Supprimer</span>
                                     </button>
                                     <button class="btn btn-primary glow update-kanban-item d-flex align-items-center">
                                         <i class='bx bx-send mr-50'></i>
-                                        <span>Save</span>
+                                        <span>Sauvegarder</span>
                                     </button>
                                 </div>
                             </form>
@@ -192,6 +391,87 @@ $mission = $pdoS->fetchAll();
                     <!--/ User Chat profile right area -->
                 </section>
                 <!--/ Sample Project kanban -->
+
+                <div class="modal fade" id="comment" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Commentaires</h5>
+                                <button type="button" class="close cancel" data-dismiss="modal" aria-label="Close">
+                                    <i class="bx bx-x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="posts-list">
+
+                                </div>
+                                <nav>
+                                    <ul class="pagination justify-content-center" id="pagination">
+                                    </ul>
+                                </nav>
+                                <!-- Compose mail Quill editor -->
+                                <div class="form-group">
+                                    <label>Ajouter un commentaire</label>
+                                    <div class="snow-container border rounded p-1">
+                                        <div class="compose-editor"></div>
+                                        <input type="hidden" id="id_tache">
+                                        <div class="d-flex justify-content-end">
+                                            <div class="compose-quill-toolbar">
+                                                <span class="ql-formats mr-0">
+                                                    <button class="ql-bold"></button>
+                                                    <button class="ql-italic"></button>
+                                                    <button class="ql-underline"></button>
+                                                    <button class="ql-link"></button>
+                                                    <button id="submit_comment" class="btn btn-sm btn-primary btn-comment ml-25" style="width: auto;">Commenter</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block cancel">Fermer</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="attachment" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Pièces jointes</h5>
+                                <button type="button" class="close cancel" data-dismiss="modal" aria-label="Close">
+                                    <i class="bx bx-x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div id="dpz-multiple-files" class="dropzone">
+                                        <div class="dz-message">Télécharger un fichier</div>
+                                        <input type="hidden" id="id_task">
+                                        <div class="fallback">
+                                            <div class="custom-file">
+                                                <label class="custom-file-label" for="emailAttach">Joindre un fichier</label>
+                                                <input name="fichier" class="custom-file-input" id="fichier" type="file" multiple />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block cancel">Fermer</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
@@ -210,6 +490,9 @@ $mission = $pdoS->fetchAll();
     <script src="../../../app-assets/vendors/js/editors/quill/quill.min.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.js"></script>
     <script src="../../../app-assets/vendors/js/pickers/pickadate/picker.date.js"></script>
+    <script src="../../../app-assets/vendors/js/pickers/daterange/moment.min.js"></script>
+    <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/dropzone.min.js"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
@@ -221,133 +504,432 @@ $mission = $pdoS->fetchAll();
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <!-- <script src="../../../app-assets/js/scripts/pages/app-kanban.js"></script> -->
+    <script src="../../../app-assets/js/scripts/forms/select/form-select2.js"></script>
     <!-- END: Page JS-->
 
     <script>
-        $(document).ready(function() {
-            var kanban_curr_el, kanban_curr_item_id, kanban_item_title, kanban_data, kanban_item, kanban_users;
+        // Fonction de creation des commentaires
+        function createComment(data) {
+            var content = document.createElement('textarea');
+            content.innerHTML = data.content;
+            content.classList.add('form-control');
+            content.style = 'style="overflow:auto;resize:none"';
+            var html = '<div class="card">' +
+                '<div class="card-body">' +
+                '<h5>' + data.par + '</h5>' +
+                content.childNodes[0].nodeValue +
+                '</div>' +
+                '<div class="card-footer text-muted text-right"><small>Le ' + moment(data.date, 'YYYY-MM-DD').format("DD-MM-YYYY") + ' à ' + data.date_hmin + '</small></div>' +
+                '</div>';
+            return html;
+        }
 
+        function newetiq() {
+            document.getElementById('div_color').style.display = "block";
+            document.getElementById('etiq').disabled = false;
+            document.getElementById('etiq_color').disabled = false;
+            $('#div_etiq').hide();
+            document.getElementById('etiquette_task').disabled = true;
+        }
+    </script>
+
+    <script>
+        var kanban_curr_el, kanban_curr_item_id, kanban_curr_item_title, kanban_curr_item_due_date, kanban_data, kanban_item, kanban_users, kanban_users_color, kanban_users_name, arr;
+
+        function addAlert(message, type) {
+            if (type == "success") {
+                $('#message').html(
+                    '<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            } else {
+                $('#message').html(
+                    '<div class="alert alert-danger">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '&times;</button>' + message + '</div>');
+            }
+        }
+
+        Dropzone.autoDiscover = false;
+
+        /********************************************
+         *               Add multiple files         *
+         ********************************************/
+        var myDropzone = new Dropzone("#dpz-multiple-files", {
+            url: "php/insert_files_tache.php",
+            paramName: "fichier", // The name that will be used to transfer the file
+            maxFilesize: 5, // MB
+            clickable: true,
+            addRemoveLinks: true,
+            dictRemoveFile: "Supprimer",
+            removedfile: function(file) {
+                var fileuploaded = file.previewElement.querySelector("[data-dz-name]");
+                var name = fileuploaded.innerHTML;
+                var id_task = document.getElementById('id_task').value;
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/delete_file_tache.php',
+                    data: {
+                        id_task: id_task,
+                        namedoc_task: name
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else if (data.message == null) {
+                            var nb_attachment = $(kanban_curr_el).contents()[1].innerHTML;
+                            nb_attachment--;
+                            $(kanban_curr_el).contents()[1].innerHTML = nb_attachment;
+                        }
+                        file.previewElement.remove();
+                    }
+                });
+            },
+            maxThumbnailFilesize: 1, // MB
+            acceptedFiles: 'image/jpg,image/jpeg,image/png,application/pdf',
+            init: function() {
+
+                // Using a closure.
+                var _this = this;
+
+                this.on("sending", function(file, xhr, formData) {
+                    var id_task = document.getElementById('id_task').value;
+                    formData.append("id_task", id_task);
+                });
+
+                this.on("success", function(file, responseText) {
+                    var a = document.createElement('a');
+                    a.setAttribute('href', "../../../src/task/document/" + responseText.trim());
+                    a.setAttribute('target', "_blank");
+                    a.setAttribute('class', "btn btn-outline-primary");
+                    a.innerHTML = "Visualiser";
+                    file.previewTemplate.appendChild(a);
+                    var fileuploded = file.previewElement.querySelector("[data-dz-name]");
+                    fileuploded.innerHTML = responseText.trim();
+                    var nb_attachment = $(kanban_curr_el).contents()[1].innerHTML;
+                    nb_attachment++;
+                    $(kanban_curr_el).contents()[1].innerHTML = nb_attachment;
+                });
+            }
+        });
+
+        $(document).ready(function() {
+            $('#progression').on("click", function(e) {
+                window.location.href = "mission-progression.php";
+            });
+            $('.js-example-basic-multiple').select2();
             // Kanban Board and Item Data passed by json
-            var kanban_board_data = [{
-                    id: "kanban-board-1",
-                    title: "Marketing",
-                    item: [{
-                            id: "11",
-                            title: "Facebook Campaign 😎",
-                            border: "success",
-                            dueDate: "Feb 6",
-                            comment: 1,
-                            attachment: 3,
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-11.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-12.jpg"
+            var kanban_board_data = [
+                <?php
+                $last_id_task = 1;
+                for ($i = 0; $i < count($missions); $i++) {
+                    if ($i != count($missions) - 1) {
+                ?> {
+                            id: "kanban-<?= $missions[$i]['id'] ?>",
+                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>",
+                            item: [
+                                <?php
+                                if (isset($tasks[$i]) and count($tasks[$i]) != 0) {
+                                    for ($j = 0; $j < count($tasks[$i]); $j++) {
+                                        if ($j != count($tasks[$i]) - 1) {
+                                ?> {
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                        <?php
+                                        } else {
+                                        ?> {
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) or isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        <?php
+                                        }
+                                        if ($last_id_task < $tasks[$i][$j]['id']) {
+                                            $last_id_task = $tasks[$i][$j]['id'];
+                                        }
+                                        ?>
+                                <?php
+                                    }
+                                }
+                                ?>
                             ]
                         },
-                        {
-                            id: "12",
-                            title: "Type Something",
-                            border: "info",
-                            image: "../../../app-assets/images/banner/banner-21.jpg",
-                            dueDate: "Feb 10"
+                    <?php
+                    } else {
+                        $last_id_mission = $missions[$i]['id'];
+                    ?> {
+                            id: "kanban-<?= $missions[$i]['id'] ?>",
+                            title: "<?= htmlspecialchars($missions[$i]['name_mission']) ?>",
+                            item: [
+                                <?php
+                                if (isset($tasks[$i]) and count($tasks[$i]) != 0) {
+                                    for ($j = 0; $j < count($tasks[$i]); $j++) {
+                                        if ($j != count($tasks[$i]) - 1) {
+                                ?> {
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                        <?php
+                                        } else {
+                                        ?> {
+                                                id: "kanban-item-<?= $tasks[$i][$j]['id'] ?>",
+                                                title: "<?= $tasks[$i][$j]['name_task'] ?>",
+                                                dueDate: "<?= dateToFrench($tasks[$i][$j]['dateecheance_task'], 'd-m-Y') ?>",
+                                                border: "<?= $tasks[$i][$j]['color_etiq'] ?>",
+                                                users: [
+                                                    <?php
+                                                    if (isset($mission_task_membres[$i][$j]) and isset($mission_task_teams[$i][$j])) {
+                                                        //print("<pre>". print_r($mission_task_membres[$i][$j],true)."</pre>");
+                                                        //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
+                                                        $list_acronyme = [];
+                                                        for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
+                                                            $acronyme = "";
+                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                            foreach ($a as $value) {
+                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            }
+                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
+                                                            $list_acronyme[] = $acronyme;
+                                                        }
+                                                        for ($k = 0; $k < count($list_acronyme); $k++) {
+                                                            if ($k != count($list_acronyme) - 1) {
+                                                    ?> '<?= $list_acronyme[$k] ?>',
+                                                            <?php
+                                                            } else {
+                                                            ?> '<?= $list_acronyme[$k] ?>'
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                ],
+                                                comment: <?= $mission_task_comment_number[$i][$j]['nb_comment'] ?>,
+                                                attachment: <?= $mission_task_doc_number[$i][$j]['nb_doc'] ?>,
+                                                drop: function(el, target, source, sibling) {
+                                                    var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                                    var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                                    $.ajax({
+                                                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                        type: "POST",
+                                                        data: {
+                                                            id_mission: id_mission,
+                                                            id_task: id_task
+                                                        },
+                                                        dataType: 'json',
+                                                        success: function(data) {
+                                                            if (data.status != 'success') {
+                                                                addAlert(data.message);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        <?php
+                                        }
+                                        if ($last_id_task < $tasks[$i][$j]['id']) {
+                                            $last_id_task = $tasks[$i][$j]['id'];
+                                        }
+                                        ?>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            ]
                         }
-                    ]
-                },
-                {
-                    id: "kanban-board-2",
-                    title: "UI Designing",
-                    item: [{
-                            id: "21",
-                            title: "Flat UI Kit Design",
-                            border: "secondary"
-                        },
-                        {
-                            id: "22",
-                            title: "Drag people onto a card to indicate that.",
-                            border: "info",
-                            dueDate: "Jan 1",
-                            comment: 8,
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-24.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-14.jpg"
-                            ]
-                        },
-                        {
-                            id: "23",
-                            title: "Application Design",
-                            border: "warning"
-                        },
-                        {
-                            id: "24",
-                            title: "BBQ Logo Design 😱",
-                            border: "primary",
-                            dueDate: "Jan 6",
-                            comment: 10,
-                            attachment: 6,
-                            badgeContent: "AK",
-                            badgeColor: "danger"
-                        }
-                    ]
-                },
-                {
-                    id: "kanban-board-3",
-                    title: "Developing",
-                    item: [{
-                            id: "31",
-                            title: "Database Management System (DBMS) is a collection of programs",
-                            border: "warning",
-                            dueDate: "Mar 1",
-                            comment: 10,
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-20.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-22.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-13.jpg"
-                            ]
-                        },
-                        {
-                            id: "32",
-                            title: "Admin Dashboard 🙂",
-                            border: "success",
-                            dueDate: "Mar 6",
-                            comment: 7,
-                            badgeContent: "AD",
-                            badgeColor: "primary"
-                        },
-                        {
-                            id: "33",
-                            title: "Fix bootstrap progress bar with & issue",
-                            border: "primary",
-                            dueDate: "Mar 9",
-                            users: [
-                                "../../../app-assets/images/portrait/small/avatar-s-1.jpg",
-                                "../../../app-assets/images/portrait/small/avatar-s-2.jpg"
-                            ]
-                        }
-                    ]
+                <?php
+                    }
                 }
+                ?>
             ];
 
             // Kanban Board
             var KanbanExample = new jKanban({
                 element: "#kanban-wrapper", // selector of the kanban container
-                buttonContent: "+ Add New Item", // text or html content of the board button
-
-                // click on current kanban-item
-                click: function(el) {
-                    // kanban-overlay and sidebar display block on click of kanban-item
-                    $(".kanban-overlay").addClass("show");
-                    $(".kanban-sidebar").addClass("show");
-
-                    // Set el to var kanban_curr_el, use this variable when updating title
-                    kanban_curr_el = el;
-
-                    // Extract  the kan ban item & id and set it to respective vars
-                    kanban_item_title = $(el).contents()[0].data;
-                    kanban_curr_item_id = $(el).attr("data-eid");
-
-                    // set edit title
-                    $(".edit-kanban-item .edit-kanban-item-title").val(kanban_item_title);
-                },
+                buttonContent: "+ Ajouter une tache", // text or html content of the board button
 
                 buttonClick: function(el, boardId) {
                     // create a form to add add new element
@@ -367,8 +949,48 @@ $mission = $pdoS->fetchAll();
                     formItem.addEventListener("submit", function(e) {
                         e.preventDefault();
                         var text = e.target[0].value;
-                        KanbanExample.addElement(boardId, {
-                            title: text
+                        var id_mission = boardId.replaceAll('kanban-', '');
+                        $.ajax({
+                            url: "../../../html/ltr/coqpix/php/insert_tache.php", //new path, save your work first before u try
+                            type: "POST",
+                            data: {
+                                name_task: text,
+                                id_mission: id_mission
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.status != 'success') {
+                                    addAlert(data.message);
+                                } else {
+                                    KanbanExample.addElement(boardId, {
+                                        id: data.id,
+                                        title: text,
+                                        dueDate: moment().format('DD-MM-YYYY'),
+                                        border: "",
+                                        users: [],
+                                        comment: 0,
+                                        attachment: 0,
+                                        drop: function(el, target, source, sibling) {
+                                            var id_mission = target.parentElement.getAttribute('data-id').replaceAll('kanban-', '');
+                                            var id_task = el.dataset.eid.replaceAll('kanban-item-', '');
+                                            $.ajax({
+                                                url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                                                type: "POST",
+                                                data: {
+                                                    id_mission: id_mission,
+                                                    id_task: id_task
+                                                },
+                                                dataType: 'json',
+                                                success: function(data) {
+                                                    if (data.status != 'success') {
+                                                        addAlert(data.message);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
                         });
                         formItem.parentNode.removeChild(formItem);
                     });
@@ -377,6 +999,11 @@ $mission = $pdoS->fetchAll();
                     })
                 },
                 addItemButton: true, // add a button to board for easy item creation
+                itemAddOptions: {
+                    enabled: true,
+                    content: '+ Ajouter une tache',
+                    footer: true
+                },
                 boards: kanban_board_data // data passed from defined variable
             });
 
@@ -396,11 +1023,17 @@ $mission = $pdoS->fetchAll();
                     // check if users are defined or not and loop it for getting value from user's array
                     if (typeof $(board_item_el).attr("data-users") !== "undefined") {
                         for (kanban_users in kanban_board_data[kanban_data].item[kanban_item].users) {
+                            arr = kanban_board_data[kanban_data].item[kanban_item].users[kanban_users].split(';');
+                            kanban_users_name = arr[0];
+                            kanban_users_color = arr[1];
+                            console.log(kanban_users_name + ' ' + kanban_users_color);
                             board_item_users +=
-                                '<li class="avatar pull-up my-0">' +
-                                '<img class="media-object rounded-circle" src=" ' +
-                                kanban_board_data[kanban_data].item[kanban_item].users[kanban_users] +
-                                '" alt="Avatar" height="24" width="24">' +
+                                '<li class="kanban-badge">' +
+                                '<div class="badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: ' +
+                                kanban_users_color +
+                                ' ;">' +
+                                kanban_users_name +
+                                "</div>" +
                                 "</li>";
                         }
                     }
@@ -434,26 +1067,7 @@ $mission = $pdoS->fetchAll();
                             "</span>" +
                             "</div>";
                     }
-                    // check if Image is defined or not
-                    if (typeof $(board_item_el).attr("data-image") !== "undefined") {
-                        board_item_image =
-                            '<div class="kanban-image mb-1">' +
-                            '<img class="img-fluid" src=" ' +
-                            kanban_board_data[kanban_data].item[kanban_item].image +
-                            '" alt="kanban-image">';
-                        ("</div>");
-                    }
-                    // check if Badge is defined or not
-                    if (typeof $(board_item_el).attr("data-badgeContent") !== "undefined") {
-                        board_item_badge =
-                            '<div class="kanban-badge">' +
-                            '<div class="badge-circle badge-circle-sm badge-circle-light-' +
-                            kanban_board_data[kanban_data].item[kanban_item].badgeColor +
-                            ' font-size-small font-weight-bold">' +
-                            kanban_board_data[kanban_data].item[kanban_item].badgeContent +
-                            "</div>";
-                        ("</div>");
-                    }
+
                     // add custom 'kanban-footer'
                     if (
                         typeof(
@@ -473,7 +1087,7 @@ $mission = $pdoS->fetchAll();
                             '<div class="kanban-footer-right">' +
                             '<div class="kanban-users">' +
                             board_item_badge +
-                            '<ul class="list-unstyled users-list m-0 d-flex align-items-center">' +
+                            '<ul class="list-unstyled m-0 d-flex align-items-center">' +
                             board_item_users +
                             "</ul>" +
                             "</div>" +
@@ -491,31 +1105,74 @@ $mission = $pdoS->fetchAll();
             // Add new kanban board
             //---------------------
             var addBoardDefault = document.getElementById("add-kanban");
-            var i = 1;
+            <?php
+            if (isset($last_id_mission)) {
+            ?>
+                var i = <?= $last_id_mission + 1 ?>;
+            <?php
+            } else {
+            ?>
+                var i = 1;
+            <?php
+            }
+            ?>
             addBoardDefault.addEventListener("click", function() {
-                KanbanExample.addBoards([{
-                    id: "kanban-" + i, // generate random id for each new kanban
-                    title: "Default Title"
-                }]);
-                var kanbanNewBoard = KanbanExample.findBoard("kanban-" + i)
+                name_mission = "Nom de la mission";
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        name_mission: name_mission
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'success') {
+                            i = data.id;
+                            KanbanExample.addBoards([{
+                                id: "kanban-" + i, // generate random id for each new kanban
+                                title: "Nom de la mission"
+                            }]);
 
-                if (kanbanNewBoard) {
-                    $(".kanban-title-board").on("mouseenter", function() {
-                        $(this).attr("contenteditable", "true");
-                        $(this).addClass("line-ellipsis");
-                    });
-                    kanbanNewBoardData =
-                        '<div class="dropdown">' +
-                        '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
-                        '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
-                        '<a class="dropdown-item" href="#"><i class="bx bx-link mr-50"></i>Copy Link</a>' +
-                        '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Delete</a>' +
-                        "</div>" + "</div>";
-                    var kanbanNewDropdown = $(kanbanNewBoard).find("header");
-                    $(kanbanNewDropdown).append(kanbanNewBoardData);
-                }
-                i++;
+                            var kanbanNewBoard = KanbanExample.findBoard("kanban-" + i);
 
+                            if (kanbanNewBoard) {
+                                $(".kanban-title-board").on("mouseenter", function() {
+                                    $(this).attr("contenteditable", "true");
+                                    $(this).addClass("line-ellipsis");
+                                });
+                                $(".kanban-title-board").on("mouseleave", function() {
+                                    // On recupere le nom de la mission et son id
+                                    var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
+                                    var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
+                                    $.ajax({
+                                        url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                                        type: "POST",
+                                        data: {
+                                            name_mission: name_mission,
+                                            id_mission: id_mission
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            if (data.status != 'success') {
+                                                addAlert(data.message);
+                                            }
+                                        }
+                                    });
+                                });
+                                kanbanNewBoardData =
+                                    '<div class="dropdown">' +
+                                    '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
+                                    '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
+                                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Supprimer</a>' +
+                                    "</div>" + "</div>";
+                                var kanbanNewDropdown = $(kanbanNewBoard).find("header");
+                                $(kanbanNewDropdown).append(kanbanNewBoardData);
+                            }
+                        } else {
+                            addAlert(data.message);
+                        }
+                    }
+                });
             });
 
             // Delete kanban board
@@ -525,7 +1182,22 @@ $mission = $pdoS->fetchAll();
                     .closest(".kanban-board")
                     .attr("data-id");
                 addEventListener("click", () => {
-                    KanbanExample.removeBoard($id);
+                    var id_mission = $id.replaceAll('kanban-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/delete_mission.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_mission: id_mission
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            } else {
+                                KanbanExample.removeBoard($id);
+                            }
+                        }
+                    });
                 });
             });
 
@@ -541,8 +1213,7 @@ $mission = $pdoS->fetchAll();
                 kanban_dropdown.innerHTML =
                     '<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
                     '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton"> ' +
-                    '<a class="dropdown-item" href="#"><i class="bx bx-link-alt mr-50"></i>Copy Link</a>' +
-                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Delete</a>' +
+                    '<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>Supprimer</a>' +
                     "</div>";
                 if (!$(".kanban-board-header div").hasClass("dropdown")) {
                     $(".kanban-board-header").append(kanban_dropdown);
@@ -561,9 +1232,71 @@ $mission = $pdoS->fetchAll();
             // Updating Data Values to Fields
             // -------------------------------
             $(".update-kanban-item").on("click", function(e) {
-                // var $edit_title = $(".edit-kanban-item .edit-kanban-item-title").val();
-                // $(kanban_curr_el).txt($edit_title);
                 e.preventDefault();
+                var id_task = $("#tache").val();
+                var $edit_title = $("#name_task").val();
+                var description_task = $('#description_task').val();
+                var date_task = $('#date_task').siblings('input[type=hidden]').val();
+                var dateecheance_task = $('#dateecheance_task').siblings('input[type=hidden]').val();
+                var etiquette_task = $("#etiquette_task").val();
+                var new_etiq = $("#etiq").val();
+                var new_etiq_color = $("#etiq_color").val();
+                var selected_membres = [];
+                var selected_teams = [];
+                var membres = $('#membres').select2('data');
+                var teams = $('#teams').select2('data');
+                if (membres != null) {
+                    membres.forEach((element) => {
+                        selected_membres.push(element.id);
+                    });
+                }
+                if (teams != null) {
+                    teams.forEach((element) => {
+                        selected_teams.push(element.id);
+                    });
+                }
+                if (selected_membres.length != 0 || selected_teams.length != 0) {
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/edit_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task,
+                            name_task: $edit_title,
+                            description_task: description_task,
+                            date_task: date_task,
+                            dateecheance_task: dateecheance_task,
+                            etiquette_task: etiquette_task,
+                            new_etiq: new_etiq,
+                            new_etiq_color: new_etiq_color,
+                            selected_membres: selected_membres,
+                            selected_teams: selected_teams
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            } else {
+                                $(kanban_curr_item_due_date).contents()[0].data = $('#dateecheance_task').val();
+                                $(kanban_curr_el).txt = $edit_title;
+                                $("#etiquette_task").val("");
+                                $("#etiq").val("");
+                                $("#etiq_color").val("#000000");
+                                $('#div_color').hide();
+                                $('#etiq').prop('disabled', true);
+                                $('#etiq_color').prop('disabled', true);
+                                $('#div_etiq').show();
+                                $('#etiquette_task').prop('disabled', false);
+                                $("#etiquette_task").append(new Option(new_etiq, new_etiq_color));
+                                if (typeof(data.color) !== "undefined") {
+                                    $("head > style").append('.kanban-container .kanban-board .kanban-item[data-border="' + data.color + '"]:before {background-color:' + data.color + ';}');
+                                    $("[data-eid='kanban-item-" + id_task + "']").attr('data-border', data.color);
+                                } else {
+                                    $("[data-eid='kanban-item-" + id_task + "']").attr('data-border', etiquette_task);
+                                }
+                            }
+                        }
+                    });
+                }
             });
 
             // Delete Kanban Item
@@ -571,18 +1304,140 @@ $mission = $pdoS->fetchAll();
             $(".delete-kanban-item").on("click", function() {
                 $delete_item = kanban_curr_item_id;
                 addEventListener("click", function() {
-                    KanbanExample.removeElement($delete_item);
+                    var id_task = $delete_item.replaceAll('kanban-item-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/delete_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status != 'success') {
+                                addAlert(data.message);
+                            } else {
+                                KanbanExample.removeElement($delete_item);
+                            }
+                        }
+                    });
                 });
             });
 
+
+
             // Kanban Quill Editor
             // -------------------
-            var composeMailEditor = new Quill(".snow-container .compose-editor", {
+            var composeCommentEditor = new Quill(".snow-container .compose-editor", {
                 modules: {
                     toolbar: ".compose-quill-toolbar"
                 },
-                placeholder: "Write a Comment... ",
+                placeholder: "Ecrire un commentaire...",
                 theme: "snow"
+            });
+
+            $('#submit_comment').on('click', function(e) {
+                e.preventDefault();
+                var comment = composeCommentEditor.root.innerHTML;
+                var id_task = document.getElementById('id_tache').value;
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_comment.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        content: comment,
+                        num: id_task
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {    
+                            var nb_comment = $(kanban_curr_el).contents()[1].innerHTML;
+                            nb_comment++;
+                            $(kanban_curr_el).contents()[1].innerHTML = nb_comment;
+                            composeCommentEditor.setText('');
+                            var id_task = document.getElementById('id_tache').value;
+                            var current_page = data.last_page;
+                            $.ajax({
+                                url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
+                                type: "POST",
+                                data: {
+                                    id_task: id_task,
+                                    current_page: current_page
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status != 'success') {
+                                        addAlert(data.message);
+                                    } else {
+                                        $('#posts-list').empty()
+                                        $.each(data.comments, function(key, value) {
+                                            var commentHtml = createComment(value);
+                                            $('#posts-list').append(commentHtml);
+                                        });
+                                        $.ajax({
+                                            url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
+                                            type: "POST",
+                                            data: {
+                                                id_task: id_task,
+                                                current_page: current_page
+                                            },
+                                            dataType: 'json',
+                                            success: function(data) {
+                                                if (data.status != 'success') {
+                                                    addAlert(data.message);
+                                                } else {
+                                                    $('#pagination').html(data.pagination);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '.page-link', function(e) {
+                e.preventDefault();
+                var id_task = document.getElementById('id_tache').value;
+                var current_page = $(this).attr('href');
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_task: id_task,
+                        current_page: current_page
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {
+                            $('#posts-list').empty()
+                            $.each(data.comments, function(key, value) {
+                                var commentHtml = createComment(value);
+                                $('#posts-list').append(commentHtml);
+                            });
+                            $.ajax({
+                                url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
+                                type: "POST",
+                                data: {
+                                    id_task: id_task,
+                                    current_page: current_page
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status != 'success') {
+                                        addAlert(data.message);
+                                    } else {
+                                        $('#pagination').html(data.pagination);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             });
 
             // Making Title of Board editable
@@ -592,8 +1447,197 @@ $mission = $pdoS->fetchAll();
                 $(this).addClass("line-ellipsis");
             });
 
+            // Show task popup
+            // ------------------------------
+            $(document).on('click', '.kanban-item', function(el) {
+                if ($(el.target.parentElement).hasClass('kanban-drag')) {
+                    // kanban-overlay and sidebar display block on click of kanban-item
+                    $(".kanban-overlay").addClass("show");
+                    $(".kanban-sidebar").addClass("show");
+                    // Set el to var kanban_curr_el, use this variable when updating title
+                    kanban_curr_el = $(el.target);
+                    kanban_curr_item_due_date = $(el.target).find(".kanban-due-date").contents()[1];
+                    // Extract  the kan ban item & id and set it to respective vars
+                    kanban_curr_item_title = $(el.target).contents()[0].data;
+                    kanban_curr_item_id = $(el.target).attr("data-eid");
+                    var id_task = kanban_curr_item_id.replaceAll('kanban-item-', '');
+                    $.ajax({
+                        url: "../../../html/ltr/coqpix/php/get_tache.php", //new path, save your work first before u try
+                        type: "POST",
+                        data: {
+                            id_task: id_task
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.status == 'success') {
+                                $("#tache").val(id_task);
+                                $("#description_task").val(data.task.description_task);
+
+                                var date_task = $('#date_task').pickadate('picker');
+                                moment.locale('fr');
+                                date_task.set('select', moment(data.task.date_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
+
+                                var dateecheance_task = $('#dateecheance_task').pickadate('picker');
+                                dateecheance_task.set('select', moment(data.task.dateecheance_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
+
+                                $("#etiquette_task").val(data.task.color_etiq);
+                                $("#color_etiq").val(data.task.color_etiq);
+                                var selected_membres = [];
+                                var selected_teams = [];
+                                if (data.membres.length != 0) {
+                                    data.membres.forEach(element => {
+                                        selected_membres.push(element['id_membre']);
+                                    });
+                                }
+                                $("#membres").val(selected_membres);
+                                $('#membres').trigger('change');
+                                if (data.teams) {
+                                    data.teams.forEach(element => {
+                                        selected_teams.push(element['id_team']);
+                                    });
+                                }
+                                $("#teams").val(selected_teams);
+                                $('#teams').trigger('change');
+
+                                // set edit title
+                                $("#name_task").val(kanban_curr_item_title);
+                            } else {
+                                addAlert(data.message);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Show comment popup
+            // ------------------------------
+            $(".kanban-comment").on("click", function() {
+                var id_task = $(this).closest(".kanban-item").attr("data-eid").replaceAll('kanban-item-', '');
+                kanban_curr_el = $(this);
+                $("#id_task").removeAttr('value');
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_comments_task.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_task: id_task
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {
+                            if (data.comments.length == 0) {
+                                $('#posts-list').append('Aucun commentaire disponible pour le moment');
+                            } else {
+                                $.each(data.comments, function(key, value) {
+                                    var commentHtml = createComment(value);
+                                    $('#posts-list').append(commentHtml);
+                                });
+                            }
+                            $.ajax({
+                                url: "../../../html/ltr/coqpix/php/get_pagination.php", //new path, save your work first before u try
+                                type: "POST",
+                                data: {
+                                    id_task: id_task,
+                                    current_page: 1
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.status != 'success') {
+                                        addAlert(data.message);
+                                    } else {
+                                        $('#pagination').html(data.pagination);
+                                    }
+                                }
+                            });
+                            $('#id_tache').val(id_task);
+                            $('#comment').modal('show');
+                        }
+                    }
+                });
+            });
+
+            // Show attachment popup
+            // ------------------------------
+            $(".kanban-attachment").on("click", function() {
+                var id_task = $(this).closest(".kanban-item").attr("data-eid").replaceAll('kanban-item-', '');
+                kanban_curr_el = $(this);
+                $("#id_task").removeAttr('value');
+                myDropzone.removeAllFiles(true);
+
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/get_attachments_task.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        id_task: id_task
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        } else {
+                            $.each(data.docs, function(key, value) {
+                                var mockFile = {
+                                    name: value.name,
+                                    size: value.size,
+                                    status: 'success'
+                                };
+                                myDropzone.options.addedfile.call(myDropzone, mockFile);
+                                myDropzone.files.push(mockFile);
+                                var a = document.createElement('a');
+                                a.setAttribute('href', "../../../src/task/document/" + mockFile.name);
+                                a.setAttribute('target', "_blank");
+                                a.setAttribute('class', "btn btn-outline-primary");
+                                a.innerHTML = "Download";
+                                myDropzone.files[myDropzone.files.length - 1].previewTemplate.appendChild(a);
+                            });
+                            $("#id_task").val(id_task);
+                            $('#attachment').modal('show');
+                        }
+                    }
+                });
+            });
+
+            $(".kanban-title-board").on("mouseleave", function() {
+                // On recupere le nom de la mission et son id
+                var name_mission = this.innerHTML.replaceAll('<div>', '').replaceAll('</div>', '').replaceAll('<br>', '\n').trim();
+                var id_mission = $(this).closest(".kanban-board").attr("data-id").replaceAll('kanban-', '');
+                $.ajax({
+                    url: "../../../html/ltr/coqpix/php/insert_mission.php", //new path, save your work first before u try
+                    type: "POST",
+                    data: {
+                        name_mission: name_mission,
+                        id_mission: id_mission
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status != 'success') {
+                            addAlert(data.message);
+                        }
+                    }
+                });
+            });
+
             // kanban Item - Pick-a-Date
-            $(".edit-kanban-item-date").pickadate();
+            $(".edit-kanban-item-date").pickadate({
+                /*selectYears: true,
+                selectMonths: true,*/
+                labelMonthNext: 'Mois suivant',
+                labelMonthPrev: 'Mois précédent',
+                labelMonthSelect: 'Selectionner le mois',
+                labelYearSelect: 'Selectionner une année',
+                monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jui', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+                weekdaysFull: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                today: 'Aujourd\'hui',
+                clear: 'Réinitialiser',
+                close: 'Fermer',
+                format: 'dd-mm-yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                hiddenSuffix: ''
+            });
 
             // Perfect Scrollbar - card-content on kanban-sidebar
             if ($(".kanban-sidebar .edit-kanban-item .card-content").length > 0) {
@@ -603,10 +1647,10 @@ $mission = $pdoS->fetchAll();
             }
 
             // select default bg color as selected option
-            $("select").addClass($(":selected", this).attr("class"));
+            $("#color").addClass($(":selected", this).attr("class"));
 
             // change bg color of select form-control
-            $("select").change(function() {
+            $("#color").change(function() {
                 $(this)
                     .removeClass($(this).attr("class"))
                     .addClass($(":selected", this).attr("class") + " form-control text-white");

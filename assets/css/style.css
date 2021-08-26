@@ -39,6 +39,200 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
     font-size:200%;
     font-weight: bold;
     text-align: center;
-    color: blue;
+    color: #0000ff;
 }
+
+/**=====================
+    Progress CSS Ends
+==========================**/
+.project-list .row {
+  margin: 15px; }
+
+.project-list button:focus {
+  outline: none !important; }
+
+.project-list .theme-form .form-group {
+  margin-bottom: 15px; }
+
+.project-list .border-tab.nav-tabs .nav-item .nav-link {
+  border: 1px solid transparent;
+  padding: 5px 30px 5px 0;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.project-list .btn {
+  margin-right: 5px;
+  vertical-align: -12px; }
+  .project-list .btn svg {
+    vertical-align: middle;
+    height: 16px; }
+
+.project-list ul {
+  margin-bottom: 0 !important;
+  border-bottom: 0; }
+  .project-list ul li svg {
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 5px; }
+
+.tab-content .row > div.col-xl-4:nth-child(1) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 10ms;
+          animation: fadeIncustom 0.5s linear 10ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(2) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 20ms;
+          animation: fadeIncustom 0.5s linear 20ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(3) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 30ms;
+          animation: fadeIncustom 0.5s linear 30ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(4) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 40ms;
+          animation: fadeIncustom 0.5s linear 40ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(5) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 50ms;
+          animation: fadeIncustom 0.5s linear 50ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(6) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 60ms;
+          animation: fadeIncustom 0.5s linear 60ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(7) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 70ms;
+          animation: fadeIncustom 0.5s linear 70ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(8) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 80ms;
+          animation: fadeIncustom 0.5s linear 80ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(9) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 90ms;
+          animation: fadeIncustom 0.5s linear 90ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(10) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 100ms;
+          animation: fadeIncustom 0.5s linear 100ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(11) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 110ms;
+          animation: fadeIncustom 0.5s linear 110ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(12) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 120ms;
+          animation: fadeIncustom 0.5s linear 120ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(13) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 130ms;
+          animation: fadeIncustom 0.5s linear 130ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(14) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 140ms;
+          animation: fadeIncustom 0.5s linear 140ms; }
+
+.tab-content .row > div.col-xl-4:nth-child(15) {
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation: fadeIncustom 0.5s linear 150ms;
+          animation: fadeIncustom 0.5s linear 150ms; }
+
+.project-cards .tab-content {
+  margin-bottom: -30px; }
+
+.project-box {
+  border: 1px solid #efefef;
+  border-radius: 5px;
+  padding: 30px;
+  background-color: white;
+  margin-bottom: 30px; }
+  .project-box h6 {
+    font-weight: 500 !important; }
+  .project-box .badge {
+    position: absolute;
+    right: 30px;
+    top: 15px; }
+  .project-box .project-status p {
+    margin-bottom: 5px;
+    font-weight: 800; }
+  .project-box .media {
+    margin-bottom: 15px; }
+    .project-box .media .media-body {
+      opacity: 0.5; }
+  .project-box .details div {
+    margin-bottom: 5px;
+    opacity: 0.7; }
+
+.projectdetails .card .card-body {
+  padding: 20px; }
+
+.projectdetails .card .card-footer {
+  padding: 20px; }
+
+.projectdetails .card select {
+  width: 90px;
+  height: 28px;
+  font-size: 11px;
+  right: 20px;
+  top: 20px; }
+
+.projectmore .details .col-4 {
+  margin-bottom: 5px; }
+  .projectmore .details .col-4:nth-child(even) {
+    opacity: 0.5; }
+
+.projectmore h5 {
+  font-size: 20px;
+  font-weight: 600; }
+
+.projectmore .task-list {
+  position: relative; }
+  .projectmore .task-list ul li {
+    margin-bottom: 5px; }
+  .projectmore .task-list ul + ul {
+    position: absolute;
+    left: 50%;
+    top: 0; }
+
+.new-users.activity .gradient-round {
+  padding: 13px;
+  font-size: 20px;
+  line-height: 1.4;
+  text-align: center;
+  top: unset !important; }
+  .new-users.activity .gradient-round::after {
+    display: none; }
 

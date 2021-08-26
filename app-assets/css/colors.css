@@ -75,6 +75,20 @@
 
 /* For Pagination */
 /* -------------- */
+/* For Pagination */
+/* -------------- */
+.pagination-white .page-item.active .page-link, .pagination-white .page-item.active .page-link:hover {
+  background: #FFFFFF !important;
+  color: #fff;
+}
+
+.pagination-white .page-item.previous .page-link, .pagination-white .page-item.next .page-link {
+  color: #FFFFFF;
+}
+
+.pagination-white .page-item.previous .page-link:hover, .pagination-white .page-item.next .page-link:hover {
+  background: #FFFFFF;
+}
 
 /* Progress Bars white */
 /* ---------------------- */

@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
-require_once 'php/config.php';
-require_once 'php/verif_session_connect.php';
+require_once 'config.php';
+require_once 'verif_session_connect.php';
 
 const HTTP_OK = 200;
 const HTTP_BAD_REQUEST = 400;
