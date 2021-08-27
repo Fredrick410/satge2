@@ -182,7 +182,7 @@ function changerThemeTicket(id_ticket, theme) {
     const requeteAjax = new XMLHttpRequest();
     // EN LOCAL
     // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
-    // EL LIGNE
+    // EN LIGNE
     requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?theme='+theme);
 
     requeteAjax.send(data);
@@ -260,7 +260,7 @@ $(".btn-envoyer-msg").click(function(event) {
 
         // On vérifie que le chat sélectionné est bien le support
         if (type_chat == "support") {
-            let id_membre = document.getElementById("id_session").value;
+            let id_membre = document.getElementById("id_membre").value;
             let id_ticket = document.getElementById("id_chat").value;
             postMessageSupport(event, "user", id_membre, id_ticket);
         }
@@ -310,7 +310,7 @@ $(".theme-ticket").click(function(e) {
 
 // S'execute lorsqu'on clique sur "Envoyer une requête" dans Support
 $('#btn_demande_req').on('click', function () {
-    let id_membre = document.getElementById("id_session").value;
+    let id_membre = document.getElementById("id_membre").value;
     Swal.fire({
         title: 'Contacter le support',
         html:
