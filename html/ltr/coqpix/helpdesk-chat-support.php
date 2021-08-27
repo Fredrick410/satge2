@@ -15,6 +15,7 @@ require_once 'php/config.php';
 
         if (count($infos_ticket) != 0) {
 
+            $select_ticket->execute();
             $infos_ticket = $select_ticket->fetch();
 
             // Requete pour recuperer l'id du membre
