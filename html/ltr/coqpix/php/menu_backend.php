@@ -98,6 +98,8 @@
                     </li>
                     <li data-menu=""><a class="dropdown-item align-items-center" href="task-fisca.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Tache fisca</a>
                     </li>
+                    <li data-menu=""><a class="dropdown-item align-items-center" href="control-fiscal.php" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Controle fiscale</a>
+                    </li>
                 </ul>
             </li>
             <?php } ?>
