@@ -13,7 +13,10 @@ function getDateEnLettres(date) {
 function getTickets(id_membre) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
 
     requeteAjax.onload = function() {
 
@@ -55,7 +58,10 @@ function getTickets(id_membre) {
 function getMessagesSupport(auteur, id_ticket) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
 
     requeteAjax.onload = function() {
 
@@ -135,7 +141,10 @@ function postMessageSupport(event, auteur, id_membre, id_ticket) {
     data.append('texte', texte.value);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
@@ -154,7 +163,11 @@ function changerStatutTicket(id_ticket, statut) {
     data.append('id_ticket', id_ticket);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?statut='+statut);
+
 
     requeteAjax.send(data);
     return false;
@@ -167,7 +180,10 @@ function changerThemeTicket(id_ticket, theme) {
     data.append('id_ticket', id_ticket);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
+    // EL LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?theme='+theme);
 
     requeteAjax.send(data);
     return false;
@@ -179,15 +195,16 @@ function changerThemeTicket(id_ticket, theme) {
 // ================================
 
 auteur = document.getElementById("auteur").value
-id_membre = document.getElementById("id_session").value;
+id_membre = document.getElementById("id_membre").value;
 
 $(document).ready(function() {
 
-    if (auteur == "user") {
-        if (document.getElementById("req").value != null) {
-            $(".tickets").children('li:last-child').trigger("click");
-        }
-    }
+    // if (auteur == "user") {
+    //     // Si un nouveau ticket vient d'être créé, ouvrir la discussion
+    //     if (document.getElementById("req").value != null) {
+    //         $(".liste-tickets").children('li:first-child').trigger("click");
+    //     }
+    // }
 
     if (auteur == "support") {
         if (document.getElementById("id_ticket").value != null) {

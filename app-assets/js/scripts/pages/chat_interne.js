@@ -13,7 +13,10 @@ function getDateEnLettres(date) {
 function getMessages(id_source, id_destination, type_message) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?type_message="+type_message+"&id_source="+id_source+"&id_destination="+id_destination);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?type_message="+type_message+"&id_source="+id_source+"&id_destination="+id_destination);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_interne.php?type_message="+type_message+"&id_source="+id_source+"&id_destination="+id_destination);
 
     requeteAjax.onload = function() {
 
@@ -102,7 +105,10 @@ function getMessages(id_source, id_destination, type_message) {
 function getChannels(id_membre) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getChannels&id_membre="+id_membre);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getChannels&id_membre="+id_membre);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_interne.php?method=getChannels&id_membre="+id_membre);
 
     requeteAjax.onload = function() {
 
@@ -136,7 +142,10 @@ function getChannels(id_membre) {
 function getMembres(id_membre, id_entreprise) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembres&id_membre="+id_membre+"&id_entreprise="+id_entreprise);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembres&id_membre="+id_membre+"&id_entreprise="+id_entreprise);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_interne.php?method=getMembres&id_membre="+id_membre+"&id_entreprise="+id_entreprise);
 
     requeteAjax.onload = function() {
 
@@ -180,7 +189,10 @@ function getMembres(id_membre, id_entreprise) {
 function getMembresChannel(id_membre, id_channel) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresChannel&id_membre="+id_membre+"&id_channel="+id_channel);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresChannel&id_membre="+id_membre+"&id_channel="+id_channel);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_interne.php?method=getMembresChannel&id_membre="+id_membre+"&id_channel="+id_channel);
 
     requeteAjax.onload = function() {
 
@@ -226,7 +238,10 @@ function getMembresChannel(id_membre, id_channel) {
 function getMembresNotInChannel(id_entreprise, id_channel) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresNotInChannel&id_entreprise="+id_entreprise+"&id_channel="+id_channel);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=getMembresNotInChannel&id_entreprise="+id_entreprise+"&id_channel="+id_channel);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_interne.php?method=getMembresNotInChannel&id_entreprise="+id_entreprise+"&id_channel="+id_channel);
 
     requeteAjax.onload = function() {
 
@@ -299,7 +314,10 @@ function postMessage(event, id_source, id_destination, type_message) {
     data.append('texte', texte.value);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=post');
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=post');
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_interne.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
@@ -319,7 +337,10 @@ function addMembreChannel(id_membre, id_channel) {
     data.append('id_channel', id_channel);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=addMembreChannel');
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=addMembreChannel');
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_interne.php?method=addMembreChannel');
 
     requeteAjax.send(data);
     return false;
@@ -333,7 +354,10 @@ function deleteMembreChannel(id_membre, id_channel) {
     data.append('id_channel', id_channel);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=deleteMembreChannel');
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_interne.php?method=deleteMembreChannel');
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_interne.php?method=deleteMembreChannel');
 
     requeteAjax.send(data);
     return false;
