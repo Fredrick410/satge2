@@ -13,7 +13,10 @@ function getDateEnLettres(date) {
 function getTickets(id_membre) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_support.php?method=getTickets&id_membre="+id_membre);
 
     requeteAjax.onload = function() {
 
@@ -55,7 +58,10 @@ function getTickets(id_membre) {
 function getMessagesSupport(auteur, id_ticket) {
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/chat_support.php?auteur="+auteur+"&id_ticket="+id_ticket);
 
     requeteAjax.onload = function() {
 
@@ -135,7 +141,10 @@ function postMessageSupport(event, auteur, id_membre, id_ticket) {
     data.append('texte', texte.value);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?method=post');
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?method=post');
 
     requeteAjax.onload = function() {
         texte.value = '';
@@ -154,7 +163,11 @@ function changerStatutTicket(id_ticket, statut) {
     data.append('id_ticket', id_ticket);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?statut='+statut);
+    // EN LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?statut='+statut);
+
 
     requeteAjax.send(data);
     return false;
@@ -167,7 +180,10 @@ function changerThemeTicket(id_ticket, theme) {
     data.append('id_ticket', id_ticket);
 
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
+    // EN LOCAL
+    // requeteAjax.open('POST', '../../../../coqpix/html/ltr/coqpix/php/chat_support.php?theme='+theme);
+    // EL LIGNE
+    requeteAjax.open('POST', '../../../../html/ltr/coqpix/php/chat_support.php?theme='+theme);
 
     requeteAjax.send(data);
     return false;
@@ -178,31 +194,43 @@ function changerThemeTicket(id_ticket, theme) {
 // ---------- EVENEMENTS ----------
 // ================================
 
+// Variable permettant de savoir si on est dans le front ou dans le back
 auteur = document.getElementById("auteur").value
-id_membre = document.getElementById("id_session").value;
 
 $(document).ready(function() {
 
+    // Si on est dans le front
     if (auteur == "user") {
-        if (document.getElementById("req").value != null) {
-            $(".tickets").children('li:last-child').trigger("click");
+
+        id_session = document.getElementById("id_session").value;
+
+        // On affiche les tickets de l'utilisateur
+        getTickets(id_session);
+        if (typeof majTickets != 'undefined') {
+            clearInterval(majTickets);
         }
+        majTickets = setInterval(function() { getTickets(id_session); }, 10000);
+
+        // Si un nouveau ticket vient d'être créé, ouvrir la discussion
+        // if (document.getElementById("req").value != null) {
+        //     $(".liste-tickets").children('li:last-child').trigger("click");
+        // }
+
     }
 
+    // Si on est dans le back
     if (auteur == "support") {
-        if (document.getElementById("id_ticket").value != null) {
-            let id_ticket = document.getElementById("id_ticket").value;
+
+        id_membre = document.getElementById("id_membre").value;
+        id_ticket = document.getElementById("id_ticket").value;
+
+        if (id_ticket != null) {
             getMessagesSupport(auteur, id_ticket);
         }
+
     }
 
 });
-
-getTickets(id_membre);
-if (typeof majTickets != 'undefined') {
-    clearInterval(majTickets);
-}
-majTickets = setInterval(function() { getTickets(id_membre); }, 10000);
 
 // S'execute lorsqu'on clique sur un contact dans "SUPPORT"
 $(document).on('click', '.chat-support', function() {
@@ -227,7 +255,7 @@ $(document).on('click', '.chat-support', function() {
         }
         majMessages = setInterval(function() { getMessagesSupport(auteur, id_ticket); }, 5000);
 
-        setTimeout(function() { getTickets(id_membre); }, 100);
+        setTimeout(function() { getTickets(id_session); }, 100);
 
     }
 
@@ -243,14 +271,12 @@ $(".btn-envoyer-msg").click(function(event) {
 
         // On vérifie que le chat sélectionné est bien le support
         if (type_chat == "support") {
-            let id_membre = document.getElementById("id_session").value;
             let id_ticket = document.getElementById("id_chat").value;
-            postMessageSupport(event, "user", id_membre, id_ticket);
+            postMessageSupport(event, "user", id_session, id_ticket);
         }
 
+    // Si on est dans le back
     } else {
-        let id_membre = document.getElementById("id_membre").value;
-        let id_ticket = document.getElementById("id_ticket").value;
         postMessageSupport(event, "support", id_membre, id_ticket);
     }
 
@@ -258,8 +284,8 @@ $(".btn-envoyer-msg").click(function(event) {
 
 // S'execute lorsqu'on clique sur le cadenas (fermer ou ouvrir un ticket)
 $("#fermer_ticket").click(function(e) {
-    e.preventDefault
-    let id_ticket = document.getElementById("id_ticket").value;
+    e.preventDefault;
+
     let statut = document.getElementById("statut").textContent;
     if (statut == "fermé") {
         document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-success badge-pill ml-1">ouvert</span>`;
@@ -272,8 +298,8 @@ $("#fermer_ticket").click(function(e) {
 
 // S'execute lorsqu'on clique sur l'icone jaune (mettre un ticket en urgent)
 $("#ticket_urgent").click(function(e) {
-    e.preventDefault
-    let id_ticket = document.getElementById("id_ticket").value;
+    e.preventDefault;
+
     let statut = document.getElementById("statut").textContent;
     if (statut == "urgent") {
         document.getElementById("statut_ticket").innerHTML = `<span id="statut" class="badge badge-light-success badge-pill ml-1">ouvert</span>`;
@@ -285,19 +311,18 @@ $("#ticket_urgent").click(function(e) {
 });
 
 $(".theme-ticket").click(function(e) {
-    e.preventDefault
-    let id_ticket = document.getElementById("id_ticket").value;
+    e.preventDefault;
+
     let theme = $(this).children('span')[1].textContent;
     changerThemeTicket(id_ticket, theme);
 });
 
 // S'execute lorsqu'on clique sur "Envoyer une requête" dans Support
 $('#btn_demande_req').on('click', function () {
-    let id_membre = document.getElementById("id_session").value;
     Swal.fire({
         title: 'Contacter le support',
         html:
-            `<form method="post" action="php/insert_ticket.php?id_membre=${id_membre}" class="form form-vertical">`+
+            `<form method="post" action="php/insert_ticket.php?id_membre=${id_session}" class="form form-vertical">`+
                 '<div class="form-body">'+
                     '<div class="row">'+
                         '<div class="col-12">'+

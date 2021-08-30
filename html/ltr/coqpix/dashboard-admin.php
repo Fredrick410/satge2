@@ -890,7 +890,7 @@ require_once 'php/verif_session_connect_admin.php';
                         <div class="swiper-container gallery-thumbs">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
-                                    <button type="button" class="btn btn-yellow btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block text-dark">Comptabilité</strong></button>
+                                    <button type="button" class="btn btn-lg btn-block py-1 py-md-0 px-0" style="background-color: yellow;"><strong class="d-none d-md-block text-dark">Comptabilité</strong></button>
                                 </div>
                                 <div class="swiper-slide">
                                     <button type="button" class="btn btn-danger btn-lg btn-block py-1 py-md-0 px-0"><strong class="d-none d-md-block">Juridique</strong></button>
