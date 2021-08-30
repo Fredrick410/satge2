@@ -6,7 +6,10 @@ function getTicketsSupport(filtre) {
 
     // 1. Elle doit créer une requête AJAX pour se connecter au serveur, et notamment au fichier ../../../../html/ltr/coqpix/php/chat_crea.php
     const requeteAjax = new XMLHttpRequest();
-    requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/ticket_support.php?filtre="+filtre);
+    // EN LOCAL
+    // requeteAjax.open("GET", "../../../../coqpix/html/ltr/coqpix/php/ticket_support.php?filtre="+filtre);
+    // EN LIGNE
+    requeteAjax.open("GET", "../../../../html/ltr/coqpix/php/ticket_support.php?filtre="+filtre);
 
     // 2. Quand elle reçoit les données, il faut qu'elle les traite (en exploitant le JSON) et il faut qu'elle affiche ces données au format HTML
     requeteAjax.onload = function() {

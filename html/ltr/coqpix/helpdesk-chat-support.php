@@ -6,10 +6,32 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
     if (isset($_GET['id_ticket']) && !empty($_GET['id_ticket'])) {
+
+        // Requete pour recuperer les infos du ticket
         $select_ticket = $bdd->prepare('SELECT S.objet, S.statut, M.nom, M.prenom FROM support_ticket S, membres M WHERE S.id_ticket = :id_ticket AND M.id = S.id_membre');
         $select_ticket->bindValue(':id_ticket', $_GET['id_ticket']);
         $select_ticket->execute();
-        $infos_ticket = $select_ticket->fetch();
+        $infos_ticket = $select_ticket->fetchAll();
+
+        if (count($infos_ticket) != 0) {
+
+            $select_ticket->execute();
+            $infos_ticket = $select_ticket->fetch();
+
+            // Requete pour recuperer l'id du membre
+            $query = $bdd->prepare('SELECT id_membre FROM support_ticket WHERE id_ticket = :id_ticket');
+            $query->bindValue('id_ticket', $_GET['id_ticket']);
+            $query->execute();
+            $result = $query->fetch();
+
+        } else {
+            header('Location: helpdesk-tickets-support.php');
+            exit();
+        }
+
+    } else {
+        header('Location: helpdesk-tickets-support.php');
+        exit();
     }
 
 ?>
@@ -259,18 +281,13 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
-                                            <?php
-                                            if (isset($_GET['id_ticket']) && !empty($_GET['id_ticket'])) { ?>
-                                                <input type="hidden" id="id_ticket" value="<?= $_GET['id_ticket'] ?>">
-                                                <?php
-                                                $query = $bdd->prepare('SELECT id_membre FROM support_ticket WHERE id_ticket = :id_ticket');
-                                                $query->bindValue('id_ticket', $_GET['id_ticket']);
-                                                $query->execute();
-                                                $result = $query->fetch(); ?>
-                                                <input type="hidden" id="id_membre" value="<?= $result['id_membre'] ?>">
-                                            <?php
-                                            } ?>
+                                            <!-- ID du ticket -->
+                                            <input type="hidden" id="id_ticket" value="<?= $_GET['id_ticket'] ?>">
+                                            <!-- ID du membre qui a créé le ticket -->
+                                            <input type="hidden" id="id_membre" value="<?= $result['id_membre'] ?>">
+                                            <!-- Variable permettant de savoir que l'on est dans le back -->
                                             <input type="hidden" id="auteur" value="support">
+                                            <!-- Texte du message -->
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
                                             <button type="submit" class="btn-envoyer-msg btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>

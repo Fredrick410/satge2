@@ -1,4 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+require_once 'config.php';
+require_once 'verif_session_connect.php';
 include "mail.php";
 $message = "Bonjour,\n\n" .
 "Vous venez de valider votre dépot de document. La prochaine etape est la réalisation du test prévu pour ce poste.\n\n" .

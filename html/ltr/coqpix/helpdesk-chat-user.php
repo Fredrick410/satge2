@@ -209,11 +209,20 @@ require_once 'php/config.php';
                                         <div class="d-flex align-items-center">
                                             <i class="bx bx-face cursor-pointer"></i>
                                             <i class="bx bx-paperclip ml-1 cursor-pointer"></i>
+                                            <!-- ID de l'utilisateur connecté -->
                                             <input type="hidden" id="id_session" value="<?= $_SESSION['id_membre'] ?>">
+                                            <!-- ID de l'entreprise de l'utilisateur -->
                                             <input type="hidden" id="id" value="<?= $_SESSION['id'] ?>">
-                                            <?php if (isset($_GET['req']) && !empty($_GET['req'])) { ?><input type="hidden" id="req" value="<?= $_GET['req'] ?>"><?php } ?>
+                                            <?php if (isset($_GET['req']) && !empty($_GET['req'])) { ?>
+                                                <!-- Variable GET permettant de savoir que l'on vient de créer un ticket et qu'il faut l'ouvrir -->
+                                                <input type="hidden" id="req" value="<?= $_GET['req'] ?>">
+                                            <?php } ?>
+                                            <!-- Variable permettant de savoir que l'on est dans le front -->
                                             <input type="hidden" id="auteur" value="user">
+                                            <!-- Variable permettant de savoir dans quel chat on se situe (Channel, Chat privé, Support)
+                                            afin de charger les messages correspondants -->
                                             <input type="hidden" id="type_chat" value="">
+                                            <!-- Texte du message -->
                                             <input type="text" id="texte" class="form-control chat-message-send mx-1" placeholder="Tapez votre message ici...">
                                             <button type="submit" class="btn-envoyer-msg btn btn-primary glow send d-lg-flex"><i class="bx bx-paper-plane"></i>
                                             <span class="d-none d-lg-block ml-1">Envoyer</span></button>
