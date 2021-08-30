@@ -1054,7 +1054,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																	<div class="col-1 invoice-item-title">
 																		Référence
 																</div>
-																
+
 																<?php // Permission de niveau 2 pour créer un client
 																if (permissions()['articles'] >= 2) { ?>
 																	<div class="col-md-4 col-12 form-group">
@@ -1062,7 +1062,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																		<!-- popup article déplacé -->
 																	</div>
 																<?php } ?>
-																
+
 															</div>
 															<div class="invoice-item d-flex border rounded mb-1">
 																<div class="invoice-item-filed row pt-1 px-1">
@@ -1722,7 +1722,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																	<div class="tab-content">
 																		<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																			<!-- users edit media object start -->
-																			<!-- 
+																			<!--
 																									<form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
 																										<div class="media mb-2">
 																											<a class="mr-2" href="#"><img src="../../../src/img/<?= $entreprisee['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64"></a>
@@ -2078,7 +2078,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																		<div class="tab-content">
 																			<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																				<!-- users edit media object start -->
-																				<!-- 
+																				<!--
 																								<form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
 																									<div class="media mb-2">
 																										<a class="mr-2" href="#"><img src="../../../src/img/<?= $entreprisee['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64"></a>
@@ -2521,7 +2521,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																						<label for="email">TEL :</label>
 																						<fieldset class="invoice-address form-group">
 																							<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone">
-																						</fieldset>	
+																						</fieldset>
 																					</div> -->
 																		</div>
 																		<div class="col-12">
@@ -2689,7 +2689,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																						<label for="email">TEL :</label>
 																						<fieldset class="invoice-address form-group">
 																							<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone">
-																						</fieldset>	
+																						</fieldset>
 																					</div> -->
 																		</div>
 																		<div class="col-12">

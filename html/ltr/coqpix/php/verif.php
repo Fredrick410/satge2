@@ -14,13 +14,13 @@ $pass_hash = crypt($_GET["passwordentreprise"], '5c725a26307c3b5170634a7e2b');
 
 //On sélectionne dans la table 'utilisateurs' les pseudo qui sont les mêmes que le pseudo tapé dans le formulaire
 
-$query = $bdd->prepare("SELECT id, count(*) AS nb FROM membres WHERE email = :pseudo AND password_membre = :pass");
+$query = $bdd->prepare("SELECT id FROM membres WHERE email = :pseudo AND password_membre = :pass");
 $query->bindValue(':pseudo', $pseudo);
 $query->bindValue(':pass', $pass_hash);
 $query->execute();
 $membre = $query->fetch();
 
-if ($membre['nb'] == 1) {
+if ($membre['id'] != NULL) {
 
     $id_membre = $membre['id'];
 

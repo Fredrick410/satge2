@@ -216,12 +216,12 @@ Commande annulé"                    >Commandé</th>
                                 $reqs->execute();
                                 $resq = $reqs->fetch();
 
-                                $count = "SELECT COUNT(article) as countarticle FROM articles WHERE numeros=(SELECT id_bon_commande FROM bon_commande WHERE id_bon_commande=:numeros)";
+                                /*$count = "SELECT COUNT(article) as countarticle FROM articles WHERE numeros=(SELECT id_bon_commande FROM bon_commande WHERE id_bon_commande=:numeros)";
 
                                 $reqss = $bdd->prepare($count);
                                 $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT);
                                 $reqss->execute();
-                                $resqq = $reqss->fetch();
+                                $resqq = $reqss->fetch();*/
                             ?>
                                 <tr>
                                     <td></td>
@@ -239,58 +239,131 @@ Commande annulé"                    >Commandé</th>
                                     echo strftime("%d/%m/%Y", strtotime($date['datecommande']));?></td>
                                     <td><a href="fournisseur-edit.php?numfour=<?= $bons['numerosfournisseur'] ?>"><?= $bons['name_fournisseur'] ?></a></td>
                                     <td title="Article commandé - Nombre total d'articles">
-                                      Nombres d'articles:
-                                      <?= $resqq['countarticle'] ?><!-- indiquer le nb d'article present dans la commande -->
-                                      </br>
                                       <?php
                                       $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="bonachat"');
                                       $pdo->bindValue(':num',$_SESSION['id_session']);
                                       $pdo->bindValue(':numeros',$numeros);
                                       $pdo->execute();
-                                      $articles = $pdo->fetchAll();?>
-                                      <!-- afficher seulement les 2 premiers articles puis mettre des "..." s'il y a plus d'articles -->
-                                      <table>
+                                      $articles = $pdo->fetchAll();
+
+                                      $pdo = $bdd->prepare('SELECT * FROM prestations WHERE id_session = :num AND numeros=:numeros AND typ = "bonachat"');
+                                      $pdo->bindValue(':num',$_SESSION['id_session']);
+                                      $pdo->bindValue(':numeros',$numeros);
+                                      $pdo->execute();
+                                      $prestation = $pdo->fetchAll();
+
+                                      //compter le nb d'article présent dans la commande
+                                      $count = "SELECT COUNT(article) as countarticle FROM articles WHERE numeros=:numeros and typ = 'bonachat'";
+                                      $reqss = $bdd->prepare($count);
+                                      $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT);
+                                      $reqss->execute();
+                                      $resqq = $reqss->fetch();?>
+                                      Nombres d'articles:
+                                      <?= $resqq['countarticle'] ?><!-- indiquer le nb d'article present dans la commande -->
+                                      </br>
+
+                                      <?php //compter le nb de prestation présent dans la commande
+                                      $count = "SELECT COUNT(prestation) as countpresta FROM prestations WHERE numeros=:numeros and typ = 'bonachat'";
+                                      $reqss = $bdd->prepare($count);
+                                      $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT);
+                                      $reqss->execute();
+                                      $respresta = $reqss->fetch();?>
+                                      Nombres de prestation:
+                                      <?= $respresta['countpresta'] ?><!-- indiquer le nb de prestation present dans la commande -->
+                                      </br>
+                                      <!-- faire cette boucle seulemnt s'il y a au moins 1 article-->
+                                      <?php if ($resqq['countarticle'] !="0"): ?>
+                                        <!-- afficher seulement les 2 premiers articles puis mettre des "..." s'il y a plus d'articles -->
+                                        <table>
                                         <?php
                                         if (count($articles)<=2) {
                                           foreach($articles as $articless): ?>
                                             <tr>
                                               <td><?= $articless['article']; ?></td>
                                             </tr>
-                                          <?php endforeach;
+                                            <?php endforeach;
                                         }else {
                                           for ($i=0; $i < 2; $i++) {?>
                                             <tr>
                                               <td><?= $articles[$i]['article']; ?></td>
                                             </tr>
-                                        <?php  } ?>
+                                          <?php  } ?>
                                           <tr>
-                                            <td>...</td>
-                                          </tr>
-                                        <?php  } ?>
-                                      </table>
-                                    </td>
-                                  <td>
-                                    <!-- afficher la quantite qui correspond a chaque article -->
-                                    <table>
-                                      <?php
-                                      if (count($articles)<=2) {
-                                        foreach($articles as $articless): ?>
-                                          <tr>
-                                            <td><?= $articless['quantite']; ?></td>
-                                          </tr>
-                                        <?php endforeach;
-                                      }else {
-                                        for ($i=0; $i < 2; $i++) {?>
-                                          <tr>
-                                            <td><?= $articles[$i]['quantite']; ?></td>
-                                          </tr>
-                                      <?php  } ?>
-                                        <tr>
                                           <td>...</td>
-                                        </tr>
-                                      <?php  } ?>
-                                    </table>
-                                    </td>
+                                          </tr>
+                                        <?php  } ?>
+                                        </table>
+                                        </td>
+                                        <td>
+                                          <table>
+                                            <br><br>
+                                            <?php
+                                                if (count($articles)<=2) {
+                                                  foreach($articles as $articless): ?>
+                                                    <tr>
+                                                      <td><?= $articless['quantite']; ?></td>
+                                                    </tr>
+                                                  <?php endforeach;
+                                                }else {
+                                                  for ($i=0; $i < 2; $i++) {?>
+                                                    <tr>
+                                                      <td><?= $articles[$i]['quantite']; ?></td>
+                                                    </tr>
+                                                  <?php  } ?>
+                                                  <tr>
+                                                    <td>...</td>
+                                                  </tr>
+                                                <?php  } ?>
+                                          </table>
+                                        </td>
+                                      <?php else: ?>
+                                        <td>
+                                          <!-- faire cette boucle seulemnt s'il y a au moins 1 prestation et aucun article-->
+                                          <?php if ($respresta['countpresta'] !="0"): ?>
+                                            <table>
+                                            <?php //afficher toutes les presta si count <= 3
+                                            if (count($prestation)<=2) {
+                                              foreach($prestation as $prestations): ?>
+                                                <tr>
+                                                  <td><?= $prestations['prestation']; ?></td>
+                                                </tr>
+                                                <?php endforeach;
+                                            }else {//afficher toutes les presta seulement les 3 premieres
+                                              for ($i=0; $i < 2; $i++) {?>
+                                                <tr>
+                                                  <td><?= $prestations[$i]['prestation']; ?></td>
+                                                </tr>
+                                              <?php  } ?>
+                                              <tr>
+                                              <td>...</td>
+                                              </tr>
+                                            <?php  } ?>
+                                            </table>
+                                          </td>
+                                          <td>
+                                            <table>
+                                              <br><br>
+                                              <?php
+                                                  if (count($prestation)<=2) {//afficher la quantite correspondant à chaque presta
+                                                    foreach($prestation as $prestations): ?>
+                                                      <tr>
+                                                        <td><?= $prestations['quantite']; ?></td>
+                                                      </tr>
+                                                    <?php endforeach;
+                                                  }else {
+                                                    for ($i=0; $i < 2; $i++) {?>
+                                                      <tr>
+                                                        <td><?= $prestations[$i]['quantite']; ?></td>
+                                                      </tr>
+                                                    <?php  } ?>
+                                                    <tr>
+                                                      <td>...</td>
+                                                    </tr>
+                                                  <?php  } ?>
+                                            </table>
+                                          </td>
+                                          <?php endif; ?>
+                                      <?php endif; ?>
                                     <td>
                                       <?php //status de la commande pour CSS
                                       if($bons['commande']=='Commande validée / Livraison en cours'){
@@ -310,7 +383,7 @@ Commande annulé"                    >Commandé</th>
                                             <a href="app-bon-achat-edit.php?numbon=<?= $bons['id_bon_commande'] ?>&numfournisseur=<?= $bons['id'] ?>" class="invoice-action-edit cursor-pointer" title="Editer le bon de commande">
                                                 <i class="bx bx-edit"></i>
                                             </a>&nbsp&nbsp&nbsp&nbsp
-                                            <a href="php/delete_bon_achat.php?numbon=<?= $bons['numerosbon'] ?>&id=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1" title="Supprimer le bon de commande">
+                                            <a href="php/delete_bon_achat.php?id=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1" title="Supprimer le bon de commande">
                                                 <i class='bx bxs-trash'></i>
                                             </a>
                                             <?php /*boutton à afficher seulement si on a les permissions */

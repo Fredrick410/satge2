@@ -41,6 +41,11 @@ require_once 'php/permissions_front.php';
     $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
+    $pdoStt = $bdd->prepare('SELECT * FROM prestations WHERE id_session = :num AND typ="bonvente"');
+    $pdoStt->bindValue(':num', $_SESSION['id_session']); //$_SESSION
+    $pdoStt->execute();
+    $prestation = $pdoStt->fetchAll();
+
     try{
 
     $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
@@ -386,6 +391,137 @@ require_once 'php/permissions_front.php';
                                                     <button class="btn btn-light-primary btn-sm" type="button">
                                                         <i class="bx bx-plus"></i>
                                                         <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter l'article</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <table id="table" name="table" class="table table-bordered"><style>.red{color: red;} .line{text-decoration: underline;}</style>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>bon</th>
+                                                        <th>Ref</th>
+                                                        <th>Nom</th>
+                                                        <th>Ct</th>
+                                                        <th>Qt</th>
+                                                        <th>U</th>
+                                                        <th>Tva(%)</th>
+                                                        <th>Red(%)</th>
+                                                    <tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="invoice-product-details ">
+
+                                                <div data-repeater-list="group-a">
+                                                    <div data-repeater-item>
+                                                    <!-- affiche les prestations deja présents -->
+                                                        <?php foreach($prestation as $prestations): ?>
+                                                        <div class="invoice-item d-flex border rounded mb-1">
+                                                            <div class="invoice-item-filed row pt-1 px-1">
+                                                                <div class="col-12 col-md-4 form-group">
+                                                                    <label>Prestation :</label>
+                                                                    <input name="prestation" type="text" class="form-control invoice-item-desc" placeholder="prestation" value="<?= $prestations['prestation'] ?>" readonly>
+                                                                </div>
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                    <label>Cout :</label>
+                                                                    <input name="cout" type="number" class="form-control" placeholder="0" value="<?= $prestations['cout'] ?>" readonly >
+                                                                </div>
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                    <label>Quantite :</label>
+                                                                    <input name="quantite" type="number" class="form-control" placeholder="0" value="<?= $prestations['quantite'] ?>" readonly>
+                                                                </div>
+                                                                <div class="col-md-2 col-12 form-group">
+                                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<strong class="text-primary align-middle"><?= $prestations['cout'] * $prestations['quantite'] ?> €</strong>
+                                                                </div>
+                                                                <div class="col-md-4 col-12 form-group">
+                                                                    <label>Ref :</label>
+                                                                    <input name="referencearticle" type="text" class="form-control invoice-item-desc" placeholder="Réference" value="<?= $prestations['referencepresta'] ?>" readonly>
+                                                                </div>
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                <label>Remise:</label>
+                                                                    <input name="remise" type="number" class="form-control" placeholder="0" value="<?= $prestations['remise'] ?>" readonly>
+                                                                </div>
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                <label>Tva :</label>
+                                                                    <input name="tva" type="number" class="form-control" placeholder="0" value="<?= $prestations['tva'] ?>" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
+                                                                <div class="dropdown">
+                                                                    <a href="php/delete_article_bon.php?num=<?= $prestations['id'] ?>&numbon=<?= $facture['id'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php endforeach; ?>
+                                                        <hr>
+                                                        <div class="row mb-50">
+                                                            <div class="col-3 col-md-4 invoice-item-title">Prestation</div>
+                                                            <div class="col-3 invoice-item-title">Coût</div>
+                                                            <div class="col-3 invoice-item-title">Quantite</div>
+                                                            <div class="col-3 col-md-2 invoice-item-title">Prix</div>
+                                                        </div>
+                                                        <div class="invoice-item d-flex border-black rounded mb-1">
+                                                            <div class="invoice-item-filed row pt-1 px-1">
+                                                              <div class="col-12 col-md-4 form-group">
+                                                                <select name="prestation5" id="prestation5" class="form-control invoice-item-select">
+                                                                  <option value="Pas de prestation">Sélectionnez une prestation</option>
+                                                                  <optgroup label="Liste des prestations"></optgroup>
+                                                                  <?php foreach ($prestation as $prestationn) : ?>
+                                                                    <option value="<?= $prestationn['prestation'] ?>"><?= $prestationn['prestation'] ?></option>
+                                                                  <?php endforeach; ?>
+                                                                  <!--Affichage de tout les produits -->
+                                                                  <optgroup label="Autres options">
+                                                                    <option value="Pas de prestation">Autres</option>
+                                                                  </optgroup>
+                                                                </select>
+                                                              </div>
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                    <input name="cout" id="cout" type="number" min="1" class="form-control border-black" placeholder="0" onkeyup="myFunction5()" step="any">
+                                                                </div>
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                    <input name="quantite" id="quantite" min="1" type="number" value="1" class="form-control border-black" placeholder="0" onkeyup="myFunction()" step="any">
+                                                                </div>
+                                                                <div class="col-md-2 col-12 form-group">
+                                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                                                                    <!-- prix de quantité*prix en js -->
+                                                                    <strong
+                                                                    id="demo" class="text-primary align-middle">00.00 €</strong>
+                                                                </div>
+
+                                                                <div class="col-md-3 col-12 form-group">
+                                                                    <label for="ref">REF :</label>
+                                                                    <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
+                                                                </div>
+                                                            </div>
+                                                            <div class="invoice-icon d-flex flex-column justify-content-between border-left-black p-25">
+                                                                <div class="dropdown">
+                                                                    <i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
+                                                                    <div class="dropdown-menu p-1">
+                                                                        <div class="row">
+                                                                            <div class="col-12 form-group">
+                                                                                <label for="discount">Remise(%)</label>
+                                                                                <input name="remise" id="remise" value="0" type="number" class="form-control border-black" id="discount" placeholder="remise" maxlength="3" min="0" max="100">
+                                                                            </div>
+                                                                             <div class="col-12 form-group">
+                                                                                <label for="discount">Tva(%)</label>
+                                                                                <input name="tva" id="tva" value="20" type="number" class="form-control border-black" id="discount" placeholder="0" maxlength="3" min="0" max="100">
+                                                                            </div>
+                                                                            <div class="col-12 form-group">
+                                                                                <label>Unite de mesure :</label>
+                                                                                <input name="umesure" id="umesure"  type="text" class="form-control border-black" placeholder="Unite de mesure">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="form-group">
+                                                <div class="col p-0">
+                                                    <button class="btn btn-light-primary btn-sm" type="button">
+                                                        <i class="bx bx-plus"></i>
+                                                        <span type="button" id="button_send" class="invoice-repeat-btn">Ajouter la prestation</span>
                                                     </button>
                                                 </div>
                                             </div>

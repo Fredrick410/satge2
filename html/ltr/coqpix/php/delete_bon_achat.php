@@ -1,5 +1,5 @@
 <?php
-    
+
 session_start();
 require_once 'config.php';
 error_reporting(E_ALL);
@@ -12,7 +12,12 @@ ini_set('display_startup_errors', TRUE);
         $pdoDel->execute();
 
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros=:num AND id_session =:id_session AND typ="bonachat"');
-        $pdoDel->bindValue(':num', $_GET['numbon']);
+        $pdoDel->bindValue(':num', $_GET['id']);
+        $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
+        $pdoDel->execute();
+
+        $pdoDel = $bdd->prepare('DELETE FROM prestations WHERE numeros=:num AND id_session =:id_session AND typ="bonachat"');
+        $pdoDel->bindValue(':num', $_GET['id']);
         $pdoDel->bindValue(':id_session', $_SESSION['id_session']); //$_SESSION
         $pdoDel->execute();
 
@@ -24,5 +29,5 @@ ini_set('display_startup_errors', TRUE);
         sleep(1);
         header('Location: ../inventaire-commande-fourni.php');
         exit();
-    
+
 ?>
