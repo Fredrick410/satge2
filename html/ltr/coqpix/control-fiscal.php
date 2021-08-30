@@ -6,10 +6,6 @@ ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 $authorised_roles = array('admin', 'gestionnaire fiscal');
 require_once 'php/verif_session_connect_admin.php';
-    
-    $pdoSta = $bdd->prepare('SELECT * FROM entreprise');
-    $pdoSta->execute();
-    $entreprise = $pdoSta->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -47,6 +43,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/switch_emote.css">
     <!-- END: Custom CSS-->
 
 </head>
@@ -102,52 +99,122 @@ require_once 'php/verif_session_connect_admin.php';
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-content">
-                                    <div class="card-body card-dashboard">
-                                        <div class="table-responsive">
-                                            <!--Bouton à scripté -->
-                                            <div class="card-footer d-flex justify-content-start pt-0">
-                                                <button class="btn btn-primary glow mr-1 mb-1">
-                                                    <i class="bx bx-plus"></i> 
-                                                    <span class="d-sm-inline d-none">Nouveau Dossier</span>
-                                                </button>
-                                            </div>
-                                            <table class="table zero-configuration">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">
-                                                            Création dossier                                                                
-                                                        </th>
-                                                        <th class="text-center">Dossier en cours</th>
-                                                        <th class="text-center">Dossier clos</th>                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php 
-                                                        $pdoSt = $bdd->prepare('SELECT * FROM fiscal');
-                                                        $pdoSt->execute(); 
-                                                        $donnee = $pdoSt->fetchAll();
-                                                        foreach($donnee as $donnees):
-
-                                                    ?>
-                                                    <tr>
-                                                        <div>
-                                                            <td class="text-center">
-                                                                <?= $donnees['name_entreprise'] ?>
-                                                            </td>
+                                    <div class="card-header">
+                                        <div class="card-footer d-flex justify-content-start pt-0">
+                                            <!-- Bouton à script-->
+                                            <button class="btn btn-primary glow mr-1 mb-1">
+                                                <i class="bx bx-plus"></i> 
+                                                <span class="d-sm-inline d-none">Nouveau Dossier</span>
+                                            </button>
+                                            <div class="form-group" style="height: 108px;">
+                                                <div onclick="action_switch();" class="toggle dog-rollover">
+                                                    <input class="bt_input" id="doggo2" type="checkbox"/>
+                                                    <label class="toggle-item" for="doggo2">
+                                                        <div class="dog">
+                                                            <div class="ear"></div>
+                                                            <div class="ear right"></div>
+                                                            <div class="face">
+                                                                <div class="eyes"></div>
+                                                                <div class="mouth"></div>
+                                                            </div>
                                                         </div>
-                                                        <td class="text-center">Liste dossier en cours</td>
-                                                        <td class="text-center">Liste dossier clos</td>
-                                                    </tr>
-                                                    <?php endforeach; ?>
-                                                </tbody>                                                
-                                            </table>
+                                                 </label>
+                                                </div>
+                                                <div>
+                                                    <label style="color: orange;">En Cours</label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<label style="color: green;">Terminé</label>
+                                                </div>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                    <div class="card-body card-dashboard">
+                                        <!-- File Fiscal in Progress -->
+                                        <div id="div_process" class="form-group">
+                                            <div class="text-center">
+                                                <h5>Dossier en cours</h5>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table zero-configuration" style='overflow: hidden;'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">
+                                                                Nom société                                                                
+                                                            </th>
+                                                            <th class="text-center">Dossier en cours</th>
+                                                            <th class="text-center">Dossier clos</th>
+                                                            <th class="text-center">Action</th>                                                        
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php 
+                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut = "PROCESS" ');
+                                                            $pdoSt->execute(); 
+                                                            $donnee = $pdoSt->fetchAll();
+                                                            foreach($donnee as $donnees):
+                                                        ?>
+                                                        <tr>
+                                                            <div>
+                                                                <td class="text-center">
+                                                                    <?= $donnees['name_entreprise'] ?>
+                                                                </td>
+                                                            </div>
+                                                            <td class="text-center">Liste dossier en cours</td>
+                                                            <td class="text-center">Liste dossier clos</td>
+                                                            <td class="text-center">action button</>
+                                                        </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>                                                
+                                                </table>
+                                            </div>
                                         </div>
+                                        <!-- /File Fiscal in Progress -->
+                                        <!-- File Fiscal Finish -->
+                                        <div id="div_finish" class="form-group none-validation">
+                                            <div class="text-center">
+                                                <h5>Dossier Terminé</h5>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table zero-configuration" style='overflow: hidden;'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">
+                                                                Nom société                                                                
+                                                            </th>
+                                                            <th class="text-center">Dossier en cours</th>
+                                                            <th class="text-center">Dossier clos</th>
+                                                            <th class="text-center">Action</th>                                                        
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php 
+                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut = "FINISH" ');
+                                                            $pdoSt->execute(); 
+                                                            $donnee = $pdoSt->fetchAll();
+                                                            foreach($donnee as $donnees):
+                                                        ?>
+                                                        <tr>
+                                                            <div>
+                                                                <td class="text-center">
+                                                                    <?= $donnees['name_entreprise'] ?>
+                                                                </td>
+                                                            </div>
+                                                            <td class="text-center">Liste dossier en cours</td>
+                                                            <td class="text-center">Liste dossier clos</td>
+                                                            <td class="text-center">action button</>
+                                                        </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>                                                
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- /File Fiscal Finish -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                
                 <!--/ Zero configuration table -->
                 <!--/ User new tax file -->
                 <div class="compose-new-file-sidebar">
@@ -163,7 +230,7 @@ require_once 'php/verif_session_connect_admin.php';
                             <div class="card-content">
                                 <div class="card-body pt-0">
                                     <div class="form-group">
-                                        <label>Nom de l'entreprise</label>
+                                        <label>Nom de la société</label>
                                         <input type="text" name="crea_societe" class="form-control" placeholder="Nom de l'entreprise" required>
                                     </div>
                                     <div class="form-group">
@@ -175,9 +242,10 @@ require_once 'php/verif_session_connect_admin.php';
                                         <label>Objet du contrôle</label>
                                         <select name="object_control" class="form-control invoice-item-select" required>
                                             <option value="" selected disable hidden>Choisir l'objet du contrôle</option>
-                                            <option value="TVA">Taxe sur la valeur ajoutée (TVA)</option>
+                                            <option value="ISTVA">Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)</option>
+                                            <option value="IRTVA">Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)</option>
                                             <option value="IR">Impôt sur le revenu (IR)</option>
-                                            <option value="IS">Impôt sur les sociétés (IS)</option>
+                                            <option value="TVA">Taxe sur la valeur ajoutée (TVA)</option>
                                         </select>
                                     </fieldset>
                                 </div>
@@ -232,7 +300,20 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
-    
+    <script>
+        function action_switch(){
+            let switchK = document.getElementById('doggo2');
+            if(switchK.checked){
+                document.getElementById('div_process').style.display = "none";
+                document.getElementById('div_finish').style.display = "block";
+            } else {
+                document.getElementById('div_process').style.display = "block";
+                document.getElementById('div_finish').style.display = "none";
+            }
+        }
+    </script>
+
+
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
 </body>

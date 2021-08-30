@@ -19,7 +19,7 @@ require_once 'verif_session_connect_admin.php';
         htmlspecialchars($date_control_begin),
         htmlspecialchars($date_control_end),
         htmlspecialchars($object_control),
-        htmlspecialchars("NEW")
+        htmlspecialchars("PROCESS")
     ));
 
     header('Location: ../control-fiscal.php');
