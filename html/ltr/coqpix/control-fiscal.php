@@ -280,6 +280,20 @@ require_once 'php/verif_session_connect_admin.php';
     </div>
     <!-- END: Content-->
 
+
+    <script>
+        function action_switch(){
+            let switchK = document.getElementById('doggo2');
+            if(switchK.checked){
+                document.getElementById('div_process').style.display = "none";
+                document.getElementById('div_finish').style.display = "block";
+            } else {
+                document.getElementById('div_process').style.display = "block";
+                document.getElementById('div_finish').style.display = "none";
+            }
+        }
+    </script>
+    
     <!-- BEGIN: Vendor JS-->
     <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
     <script src="../../../app-assets/fonts/LivIconsEvo/js/LivIconsEvo.tools.js"></script>
@@ -310,19 +324,6 @@ require_once 'php/verif_session_connect_admin.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
     <!-- END: Page JS-->
-    <script>
-        function action_switch(){
-            let switchK = document.getElementById('doggo2');
-            if(switchK.checked){
-                document.getElementById('div_process').style.display = "none";
-                document.getElementById('div_finish').style.display = "block";
-            } else {
-                document.getElementById('div_process').style.display = "block";
-                document.getElementById('div_finish').style.display = "none";
-            }
-        }
-    </script>
-
 
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>
