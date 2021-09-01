@@ -152,14 +152,17 @@ require_once 'php/verif_session_connect_admin.php';
                                                             foreach($donnee as $donnees):
                                                         ?>
                                                         <tr>
-                                                            <div>
-                                                                <td class="text-center">
-                                                                    <?= $donnees['name_entreprise'] ?>
-                                                                </td>
-                                                            </div>
+                                                            <td class="text-center">
+                                                                <?= $donnees['name_entreprise'] ?>
+                                                            </td>
                                                             <td class="text-center">Liste dossier en cours</td>
                                                             <td class="text-center">Liste dossier clos</td>
-                                                            <td class="text-center">action button</>
+                                                            <td class="text-center">
+                                                                <i class='bx bxs-pencil'></i>
+                                                                <i class='bx bxs-trash'></i>
+                                                                <i class='bx bxs-user-check icon_verif' ></i>
+                                                                <i class='bx bx-x icon_x'></i>
+                                                            </td>
                                                         </tr>
                                                         <?php endforeach; ?>
                                                     </tbody>                                                
@@ -192,14 +195,17 @@ require_once 'php/verif_session_connect_admin.php';
                                                             foreach($donnee as $donnees):
                                                         ?>
                                                         <tr>
-                                                            <div>
-                                                                <td class="text-center">
-                                                                    <?= $donnees['name_entreprise'] ?>
-                                                                </td>
-                                                            </div>
+                                                            <td class="text-center">
+                                                                <?= $donnees['name_entreprise'] ?>
+                                                            </td>
                                                             <td class="text-center">Liste dossier en cours</td>
                                                             <td class="text-center">Liste dossier clos</td>
-                                                            <td class="text-center">action button</>
+                                                            <td class="text-center">
+                                                                <i class='bx bxs-pencil'></i>
+                                                                <i class='bx bxs-trash'></i>
+                                                                <i class='bx bxs-user-check icon_verif' ></i>
+                                                                <i class='bx bx-x icon_x'></i>
+                                                            </td>
                                                         </tr>
                                                         <?php endforeach; ?>
                                                     </tbody>                                                
@@ -234,8 +240,12 @@ require_once 'php/verif_session_connect_admin.php';
                                         <input type="text" name="crea_societe" class="form-control" placeholder="Nom de l'entreprise" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Période de contrôle</label>
+                                        <label>Période de contrôle :</label>
+                                        </br>
+                                        <label for="">Date début contrôle :</label> 
                                         <input type="date" name="date_control_begin" required>
+                                        
+                                        <label for="">Date fin contrôle :</label> 
                                         <input type="date" name="date_control_end"required>
                                     </div>
                                     <fieldset class="form-group">
