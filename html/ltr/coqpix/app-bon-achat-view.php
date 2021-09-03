@@ -28,11 +28,6 @@ $pdo->bindValue(':numeros', $_GET['numbon']);
 $pdo->execute();
 $articles = $pdo->fetchAll();
 
-$pdo = $bdd->prepare('SELECT * FROM prestations WHERE id_session = :num AND numeros=:numeros AND typ="bonachat"');
-$pdo->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-$pdo->bindValue(':numeros', $_GET['numbon']);
-$pdo->execute();
-$prestation = $pdo->fetchAll();
 
 try {
 
@@ -368,7 +363,6 @@ include('php/menu_header_front.php'); ?>
                                         <hr>
                                     </div>
                                     <!-- product details table-->
-                                    <?php if (!empty($articles)): ?>
                                       <div class="invoice-product-details table-responsive mx-md-25">
                                           <table class="table table-borderless mb-0">
                                               <thead>
@@ -397,35 +391,6 @@ include('php/menu_header_front.php'); ?>
                                               </tbody>
                                           </table>
                                       </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($prestation)): ?>
-                                      <?php if (!empty($articles)) echo "<hr>"; ?>
-                                      <div class="invoice-product-details table-responsive mx-md-25">
-                                          <table class="table table-borderless mb-0">
-                                              <thead>
-                                                  <tr class="border-0">
-                                                      <th scope="col">Prestation</th>
-                                                      <th scope="col">Référence</th>
-                                                      <th scope="col">Prix U</th>
-                                                      <th scope="col">Quantite</th>
-                                                      <th scope="col" class="text-right">Prix HT</th>
-                                                  </tr>
-                                              </thead>
-                                              <tbody>
-                                                  <?php foreach ($prestation as $prestations) : ?>
-                                                      <tr>
-                                                          <td><?= $prestations['prestation']; ?></td>
-                                                          <td><?= $prestations['referencepresta']; ?></td>
-                                                          <td><?= $prestations['cout']; ?></td>
-                                                          <td><?= $prestations['quantite']; ?></td>
-                                                          <td><?= $prestations['remise']; ?></td>
-                                                          <td class="text-primary text-right font-weight-bold"><?= $prestations['cout'] * $prestations['quantite'] ?> <?= $bonss['monnaie']; ?></td>
-                                                      </tr>
-                                                  <?php endforeach; ?>
-                                              </tbody>
-                                          </table>
-                                      </div>
-                                    <?php endif; ?>
 
                                     <style>
                                         .tvadis {

@@ -33,7 +33,13 @@ ini_set('display_startup_errors', TRUE);
         $color = "badge badge-light-success badge-pill";
     }
 
-    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, refbon, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, numerosfournisseur,bonpour) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    //recup l'entreprise qui a commander
+    $sql = $bdd->prepare('SELECT * from entreprise where id =:id');
+    $sql->bindValue('id',$_SESSION['id_session']);
+    $sql->execute();
+    $entreprise = $sql->fetch();
+
+    $insert = $bdd->prepare('INSERT INTO bon_commande (numerosbon, dte, dateecheance, nom_bon, refbon, modalite, monnaie, note, status_bon, status_color, etiquette, id_session, descrip, numerosfournisseur,bonpour,adresse,email,tel,departement) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($numerosbon),
         htmlspecialchars($dte),
@@ -54,7 +60,11 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($_POST['descrip']),
         // htmlspecialchars($_POST['nom_fournisseur']),
         htmlspecialchars($_POST['numerosfournisseur']),
-        htmlspecialchars($bonpour)
+        htmlspecialchars($entreprise['nameentreprise']),
+        htmlspecialchars($entreprise['adresseentreprise']),
+        htmlspecialchars($entreprise['emailentreprise']),
+        htmlspecialchars($entreprise['telentreprise']),
+        htmlspecialchars($entreprise['pays_entreprise'])//pas de deparement dans le table entreprise
     ));
 
         $pdoA = $bdd->prepare('UPDATE articles SET typ="bonachat" WHERE typ="" AND numeros=:numeros AND id_session=:num');

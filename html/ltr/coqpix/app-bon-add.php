@@ -26,12 +26,12 @@ require_once 'php/permissions_front.php';
     $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
-	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-	$pdaSt->bindValue(':num', $_SESSION['id_session']);
-	$pdaSt->execute();
-	$cliet = $pdaSt->fetch();
+  	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+  	$pdaSt->bindValue(':num', $_SESSION['id_session']);
+  	$pdaSt->execute();
+  	$cliet = $pdaSt->fetch();
 
-	$total = $cliet['cout']*$cliet['quantite'];
+	  $total = $cliet['cout']*$cliet['quantite'];
 
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM bon');
@@ -283,7 +283,7 @@ require_once 'php/permissions_front.php';
 																Date:
 															</small>
 															<fieldset class="d-flex ">
-																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>">
+																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>" required>
 															</fieldset>
 														</div>
 													</div>
@@ -293,7 +293,7 @@ require_once 'php/permissions_front.php';
 																Date d'échéance :
 															</small>
 															<fieldset class="d-flex justify-content-end">
-																<input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa">
+																<input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" required>
 															</fieldset>
 														</div>
 													</div>
@@ -357,7 +357,7 @@ require_once 'php/permissions_front.php';
 															</fieldset>
 															<label for="email">TEL :</label>
 															<fieldset class="invoice-address form-group">
-																<input name="telfirst" id="telephone" type="text" class="form-control" placeholder="Téléphone" required>
+																<input name="telfirst" id="telephone" type="text" class="form-control" placeholder="Téléphone">
 															</fieldset>
 														</div>
 													</div>
@@ -399,15 +399,18 @@ require_once 'php/permissions_front.php';
 																		<div class="col-3 col-md-3 invoice-item-title">
 																			Article
 																		</div>
-																		<div class="col-4 invoice-item-title">
+																		<div class="col-2 invoice-item-title">
 																			Prix Unitaire
 																		</div>
 																		<div class="col-2 invoice-item-title">
 																			Quantite
 																		</div>
-																		<div class="col-1 invoice-item-title">
+																		<div class="col-2 invoice-item-title">
 																			Prix HT
 																		</div>
+                                    <div class="col-1 invoice-item-title">
+  																		Référence
+  																	</div>
 																	</div>
 																	<div class="invoice-item d-flex border rounded mb-1">
 																		<div class="invoice-item-filed row pt-1 px-1">
@@ -1388,6 +1391,33 @@ require_once 'php/permissions_front.php';
 																																<label>Référence de l'article :</label>
 																																<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
 																															</div>
+                                                              <!-- selectionner si c un bien ou un service -->
+                                                              <div class="form-group">
+                                                                  <label>Catégorie :</label>
+                                                                  <select class="form-control" name="categorie">
+                                                                    <option value="bien">Bien</option>
+                                                                    <option value="service">Service</option>
+                                                                  </select>
+                                                              </div>
+                                                              <div class="form-group">
+                                                                <label>Type :</label>
+                                                                  <!-- selectionner si le type du bien -->
+                                                                  <select class="form-control" name="sstyp">
+                                                                    <optgroup label="Bien">
+                                                                      <option value="marchandise">Marchandise</option>
+                                                                      <option value="produit fini">Produits fini</option>
+                                                                      <option value="produit semi fini">Produits semi fini</option>
+                                                                      <option value="Matiere 1ere">Matiere 1ere</option>
+                                                                      <option value="fourniture">Fournitures</option>
+                                                                      <option value="consommable">Consommable</option>
+                                                                     </optgroup>
+                                                                    <optgroup label="Service">
+                                                                      <option value="prestation">Prestation</option>
+                                                                      <option value="travaux">Travaux</option>
+                                                                      <option value="etudes">Etudes</option>
+                                                                    </optgroup>
+                                                                  </select>
+                                                              </div>
 																														</div>
 																														<div class="col-12">
 																															<hr>
@@ -1500,17 +1530,17 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_bon.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <!-- END: Page JS-->
- 	<script src="script.js"></script>
+ 	  <script src="script.js"></script>
     <!-- END: Page JS-->
 <!-- partial -->
   	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

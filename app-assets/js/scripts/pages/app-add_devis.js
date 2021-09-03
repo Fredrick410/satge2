@@ -62,7 +62,7 @@ $(document).ready(function() {
         var sendremise = JSON.stringify(remise);
 
         $.ajax({
-            url: "../../../html/ltr/coqpix/php/insert_articles_bon.php", //new path, save your work first before u try
+            url: "../../../html/ltr/coqpix/php/insert_articles_devis.php", //new path, save your work first before u try
             type: "POST",
             data: {
                 numeros : sendNumeros,
@@ -145,7 +145,7 @@ $(document).ready(function() {
         var sendremise = JSON.stringify(remise);
 
         $.ajax({
-            url: "../../../html/ltr/coqpix/php/insert_articles_bon.php", //new path, save your work first before u try
+            url: "../../../html/ltr/coqpix/php/insert_articles_devis.php", //new path, save your work first before u try
             type: "POST",
             data: {
                 numeros : sendNumeros,
@@ -227,7 +227,7 @@ $(document).ready(function() {
         var sendremise = JSON.stringify(remise);
 
         $.ajax({
-            url: "../../../html/ltr/coqpix/php/insert_articles_bon.php", //new path, save your work first before u try
+            url: "../../../html/ltr/coqpix/php/insert_articles_devis.php", //new path, save your work first before u try
             type: "POST",
             data: {
                 numeros : sendNumeros,
@@ -309,7 +309,7 @@ $(document).ready(function() {
         var sendremise = JSON.stringify(remise);
 
         $.ajax({
-            url: "../../../html/ltr/coqpix/php/insert_articles_bon.php", //new path, save your work first before u try
+            url: "../../../html/ltr/coqpix/php/insert_articles_devis.php", //new path, save your work first before u try
             type: "POST",
             data: {
                 numeros : sendNumeros,

@@ -1,0 +1,12 @@
+
+insert_articlespopup_bon_commande.php
+
+//bdd
+
+#categorie <=> bien ou service
+ALTER TABLE ARTICLE add categorie varchar(10) after typ;
+#sstyp <=> sstyp c les typ de biens ou de services
+ALTER TABLE ARTICLE add sstyp varchar(15) after typ; 
+
+drop table prestation;
+drop table prestations;

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once 'verif_session_connect.php';
 error_reporting(E_ALL);
@@ -30,8 +30,17 @@ require_once 'config.php';
         }
 
     }
+    $service = array("prestation","travaux","etudes");
+    $sstyp = htmlspecialchars($_POST['sstyp']);
+    if ($_POST['categorie'] === "bien" && in_array($sstyp,$service)) {
+      header('Location: ../app-devis-add.php?jXN955CbHqqbQ463u5Uq=1');
+      exit;
+    }elseif ($_POST['categorie'] === "service" && !(in_array($sstyp,$service))) {
+      header('Location: ../app-devis-add.php?jXN955CbHqqbQ463u5Uq=1');
+      exit;
+    }
 
-    $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session) VALUES(?,?,?,?,?,?,?,?,?)');
+    $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ,sstyp, id_session,categorie) VALUES(?,?,?,?,?,?,?,?,?,?,?)');
     $insert->execute(array(
         htmlspecialchars($_POST['article']),
         htmlspecialchars($_POST['referencearticle']),
@@ -41,7 +50,9 @@ require_once 'config.php';
         htmlspecialchars($_POST['tvaachat']),
         htmlspecialchars($_POST['umesure']),
         htmlspecialchars($typ),
-        htmlspecialchars($_SESSION['id_session'])
+        $sstyp,
+        htmlspecialchars($_SESSION['id_session']),
+        htmlspecialchars($_POST['categorie'])
     ));
 
     header('Location: ../app-devis-add.php?jXN955CbHqqbQ463u5Uq=1');

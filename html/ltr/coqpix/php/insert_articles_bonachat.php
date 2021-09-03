@@ -13,7 +13,7 @@ $tvaArr = !empty($_POST["tva"]) ? json_decode($_POST["tva"]): NULL;
 $remiseArr = !empty($_POST["remise"]) ?json_decode($_POST["remise"]): NULL;
 $quantArr = !empty($_POST["quantite"]) ? json_decode($_POST["quantite"]): NULL;
 $umesureArr = !empty($_POST["umesure"]) ? json_decode($_POST["umesure"]): NULL;
-$typ = "bonvente";
+$typ = "bonachat";
 $id_session = !empty($_SESSION['id_session']) ? $_SESSION['id_session'] : NULL ; //$_SESSION
 
 

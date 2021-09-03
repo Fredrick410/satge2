@@ -21,10 +21,6 @@ $pdoSt->bindValue(':num', $_SESSION['id_session']); //$_SESSION
 $pdoSt->execute();
 $article = $pdoSt->fetchAll();
 
-$pdoStt = $bdd->prepare('SELECT * FROM prestation WHERE id_session = :num AND typ="Ventes"');
-$pdoStt->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-$pdoStt->execute();
-$prestation = $pdoStt->fetchAll();
 
 $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
 $pdoSt->bindValue(':num', $_SESSION['id_session']); //$_SESSION
@@ -355,7 +351,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 															<ul class="list-group list-group-flush">
 																<div class="form-group">
 																	<label for="descrip">Description</label>
-																	<textarea class="form-control" name="descrip" id="descrip" rows="5" required></textarea>
+																	<textarea class="form-control" name="descrip" id="descrip" rows="5"></textarea>
 																</div>
 															</ul>
 														</div>
@@ -458,7 +454,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																	<div class="col-2 invoice-item-title">
 																		Quantite
 																	</div>
-																	<div class="col-1 invoice-item-title">
+																	<div class="col-2 invoice-item-title">
 																		Prix HT
 																	</div>
 																	<div class="col-1 invoice-item-title">
@@ -1023,602 +1019,6 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 														</div>
 													</div>
 												</div>
-
-												<hr>
-
-												<div class="card-body pt-50 col-lg-12  ">
-													<!-- product details table-->
-													<div class="invoice-product-details ">
-														<div data-repeater-list="group-a">
-															<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																<!-- <input type="text" style="visibility: hidden;" name="numerotitre" id="numero_titre5" value='<?= $maxidT + 4 ?>' class="form-control pt-25 w-50" attribut readonly="readonly">
-																<input name="ntitre" id="titre5" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation"> -->
-																<input name="numerotitre5" id="numero_titre5" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation" disabled="true" hidden="true">
-															</div>
-															<input id="disable5" type="button" class="col-md-3 col-12 form-control" value="+ Ajouter un titre" onclick="switchDisable5()">
-															<br>
-															<div data-repeater-item>
-																<div class="row mb-50">
-																	<div class="col-3 col-md-3 invoice-item-title">
-																		Prestation
-																	</div>
-																	<div class="col-2 invoice-item-title">
-																		Prix Unitaire
-																	</div>
-																	<div class="col-2 invoice-item-title">
-																		Quantite
-																	</div>
-																	<div class="col-1 invoice-item-title">
-																		Prix HT
-																	</div>
-																	<div class="col-1 invoice-item-title">
-																		Référence
-																</div>
-
-																<?php // Permission de niveau 2 pour créer un client
-																if (permissions()['articles'] >= 2) { ?>
-																	<div class="col-md-4 col-12 form-group">
-																		<button id="btnClient5" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
-																		<!-- popup article déplacé -->
-																	</div>
-																<?php } ?>
-
-															</div>
-															<div class="invoice-item d-flex border rounded mb-1">
-																<div class="invoice-item-filed row pt-1 px-1">
-																	<div class="col-12 col-md-4 form-group">
-																		<select name="prestation5" id="prestation5" class="form-control invoice-item-select">
-																			<option value="Pas de prestation">Sélectionnez une prestation</option>
-																			<optgroup label="Liste des prestations"></optgroup>
-																			<?php foreach ($prestation as $prestationn) : ?>
-																				<option value="<?= $prestationn['prestation'] ?>"><?= $prestationn['prestation'] ?></option>
-																			<?php endforeach; ?>
-																			<!--Affichage de tout les produits -->
-																			<optgroup label="Autres options">
-																				<option value="Pas de prestation">Autres</option>
-																			</optgroup>
-																		</select>
-																	</div>
-																	<div class="col-md-3 col-12 form-group">
-																		<input name="cout5" id="cout5" type="number" class="form-control" placeholder="0" onkeyup="myFunction5()" step="any">
-																	</div>
-																	<div class="col-md-3 col-12 form-group">
-																		<input name="quantite5" id="quantite5" type="number" value="" class="form-control" placeholder="0" onkeyup="myFunction5()" step="any">
-																	</div>
-																	<div class="col-md-2 col-12 form-group">
-																		&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-																		<strong id="demo5" class="text-primary align-middle">00.00 €</strong>
-																	</div>
-																	<div class="col-md-4 col-12 form-group">
-																		<button id="btnClient6" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup4">Nouvelle prestation</button>
-																		<!-- popup article déplacé -->
-																	</div>
-																</div>
-																<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																	<input name="referencepresta5" id="referencepresta5" type="text" class="form-control" placeholder="Référence">
-																</div>
-																<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
-																	<div class="dropdown" style="margin-top: 15px;">
-																		<i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
-																		<div class="dropdown-menu p-1">
-																			<div class="row">
-																				<div class="col-12 form-group">
-																					<label for="discount">Remise(%)</label>
-																					<input name="remise5" id="remise5" value="0" type="number" class="form-control" id="discount" placeholder="Remise" maxlength="3" min="0" max="100">
-																				</div>
-																				<div class="col-12 form-group">
-																					<label for="discount">Tva(%)</label>
-																					<input name="tva5" id="tva5" value="20" type="number" class="form-control" id="discount" placeholder="0" maxlength="3" min="0" max="100">
-																				</div>
-																				<div class="col-12 form-group">
-																					<label>Unite de mesure :</label>
-																					<input name="umesure5" id="umesure5" type="text" class="form-control" placeholder="Unite de mesure">
-																				</div>
-
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="col p-0">
-														<button class="btn btn-light-primary btn-sm" type="button">
-															<i class="bx bx-plus"></i>
-															<span type="button" name="insert" id="button_send5" class="invoice-repeat-btn">Ajouter la prestation</span>
-														</button>
-													</div>
-												</div>
-												<table name="table5" id="table5" class="table table-bordered">
-													<style>
-														.red {
-															color: red;
-														}
-
-														.line {
-															text-decoration: underline;
-														}
-													</style>
-													<tbody>
-														<tr>
-															<!-- <th>
-																	Facture
-																</th> -->
-															<th>
-																Ref
-															</th>
-															<th>
-																Nom
-															</th>
-															<th>
-																Pu HT
-															</th>
-															<th>
-																Qt
-															</th>
-															<th>
-																Total HT
-															</th>
-															<th>
-																U
-															</th>
-															<th>
-																Tva(%)
-															</th>
-															<th>
-																Red(%)
-															</th>
-															<th>
-																Titre
-															</th>
-														<tr>
-													</tbody>
-												</table>
-												<!-- </div> -->
-												<!-- invoice subtotal -->
-												<hr>
-
-												<input type="button" id="btnPrestation" value="+ Ajouter une autre catégorie de prestation" onclick="masquer_div('prestation_masquer');" class="btn btn-outline-primary col-lg-12 col-md-12 mt-25" />
-												<!-- adresse livraison -->
-												<hr>
-												<div id="prestation_masquer" class="row invoice-info" style="display:none;">
-													<div class="invoice-product-details ">
-														<div data-repeater-list="group-a">
-															<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																<!-- <input type="text" style="visibility: hidden;" name="numerotitre" id="numero_titre6" value='<?= $maxidT + 5 ?>' class="form-control pt-25 w-50" attribut readonly="readonly">
-																	<input name="ntitre" id="titre6" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation"> -->
-																<input name="numerotitre6" id="numero_titre6" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation" disabled="true" hidden="true">
-															</div>
-															<input id="disable6" type="button" class="col-md-3 col-12 form-control" value="+ Ajouter un titre" onclick="switchDisable6()">
-															<br>
-															<div data-repeater-item>
-																<div class="row mb-50">
-																	<div class="col-3 col-md-3 invoice-item-title">
-																		Prestation
-																	</div>
-																	<div class="col-2 invoice-item-title">
-																		Prix Unitaire
-																	</div>
-																	<div class="col-2 invoice-item-title">
-																		Quantite
-																	</div>
-																	<div class="col-1 invoice-item-title">
-																		Prix HT
-																	</div>
-																	<div class="col-1 invoice-item-title">
-																		Référence
-																	</div>
-																</div>
-																<div class="invoice-item d-flex border rounded mb-1">
-																	<div class="invoice-item-filed row pt-1 px-1">
-																		<div class="col-12 col-md-4 form-group">
-																			<select name="prestation6" id="prestation6" class="form-control invoice-item-select">
-																				<option value="Pas de prestation">Sélectionnez une prestation</option>
-																				<optgroup label="Liste des prestations"></optgroup>
-																				<?php foreach ($prestation as $prestationn) : ?>
-																					<option value="<?= $prestationn['prestation'] ?>"><?= $prestationn['prestation'] ?></option>
-																				<?php endforeach; ?>
-																				<!--Affichage de tout les produits -->
-																				<optgroup label="Autres options">
-																					<option value="Pas de prestation">Autres</option>
-																				</optgroup>
-																			</select>
-																		</div>
-																		<div class="col-md-3 col-12 form-group">
-																			<input name="cout6" id="cout6" type="number" class="form-control" placeholder="0" onkeyup="myFunction6()" step="any">
-																		</div>
-																		<div class="col-md-3 col-12 form-group">
-																			<input name="quantite6" id="quantite6" type="number" value="" class="form-control" placeholder="0" onkeyup="myFunction6()" step="any">
-																		</div>
-																		<div class="col-md-2 col-12 form-group">
-																			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-																			<strong id="demo6" class="text-primary align-middle">00.00 €</strong>
-																		</div>
-																		<div class="col-md-4 col-12 form-group">
-																			<button id="btnClient6" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup4">Nouvelle prestation</button>
-																			<!-- popup article déplacé -->
-																		</div>
-																	</div>
-																	<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																		<input name="referencepresta6" id="referencepresta6" type="text" class="form-control" placeholder="Référence">
-																	</div>
-																	<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
-																		<div class="dropdown" style="margin-top: 15px;">
-																			<i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
-																			<div class="dropdown-menu p-1">
-																				<div class="row">
-																					<div class="col-12 form-group">
-																						<label for="discount">Remise(%)</label>
-																						<input name="remise6" id="remise6" value="0" type="number" class="form-control" id="discount" placeholder="Remise" maxlength="3" min="0" max="100">
-																					</div>
-																					<div class="col-12 form-group">
-																						<label for="discount">Tva(%)</label>
-																						<input name="tva6" id="tva6" value="20" type="number" class="form-control" id="discount" placeholder="0" maxlength="3" min="0" max="100">
-																					</div>
-																					<div class="col-12 form-group">
-																						<label>Unite de mesure :</label>
-																						<input name="umesure6" id="umesure6" type="text" class="form-control" placeholder="Unite de mesure">
-																					</div>
-
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="form-group">
-														<div class="col p-0">
-															<button class="btn btn-light-primary btn-sm" type="button">
-																<i class="bx bx-plus"></i>
-																<span type="button" name="insert" id="button_send6" class="invoice-repeat-btn">Ajouter la prestation</span>
-															</button>
-														</div>
-													</div>
-													<table id="table6" name="table" class="table table-bordered">
-														<style>
-															.red {
-																color: red;
-															}
-
-															.line {
-																text-decoration: underline;
-															}
-														</style>
-														<tbody>
-															<tr>
-																<!-- <th>
-																		Facture
-																	</th> -->
-																<th>
-																	Ref
-																</th>
-																<th>
-																	Nom
-																</th>
-																<th>
-																	Pu HT
-																</th>
-																<th>
-																	Qt
-																</th>
-																<th>
-																	Total HT
-																</th>
-																<th>
-																	U
-																</th>
-																<th>
-																	Tva(%)
-																</th>
-																<th>
-																	Red(%)
-																</th>
-																<th>
-																	Titre
-																</th>
-															<tr>
-														</tbody>
-													</table>
-
-													<hr>
-
-													<input type="button" id="btnPrestation" value="+ Ajouter une autre catégorie de prestation" onclick="masquer_div('prestation2_masquer');" class="btn btn-outline-primary col-lg-12 col-md-12 mt-25" />
-													<!-- adresse livraison -->
-													<hr>
-													<div id="prestation2_masquer" class="row invoice-info" style="display:none;">
-														<div class="invoice-product-details ">
-															<div data-repeater-list="group-a">
-																<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																	<!-- <input type="text" style="visibility: hidden;" name="numerotitre" id="numero_titre7" value='<?= $maxidT + 6 ?>' class="form-control pt-25 w-50" attribut readonly="readonly">
-																		<input name="ntitre" id="titre7" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation"> -->
-																	<input name="numerotitre7" id="numero_titre7" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation" disabled="true" hidden="true">
-																</div>
-																<input id="disable7" type="button" class="col-md-3 col-12 form-control" value="+ Ajouter un titre" onclick="switchDisable7()">
-																<br>
-																<div data-repeater-item>
-																	<div class="row mb-50">
-																		<div class="col-3 col-md-3 invoice-item-title">
-																			Prestation
-																		</div>
-																		<div class="col-2 invoice-item-title">
-																			Prix Unitaire
-																		</div>
-																		<div class="col-2 invoice-item-title">
-																			Quantite
-																		</div>
-																		<div class="col-1 invoice-item-title">
-																			Prix HT
-																		</div>
-																		<div class="col-1 invoice-item-title">
-																			Référence
-																		</div>
-																	</div>
-																	<div class="invoice-item d-flex border rounded mb-1">
-																		<div class="invoice-item-filed row pt-1 px-1">
-																			<div class="col-12 col-md-4 form-group">
-																				<select name="prestation7" id="prestation7" class="form-control invoice-item-select">
-																					<option value="Pas de prestation">Sélectionnez une prestation</option>
-																					<optgroup label="Liste des prestations"></optgroup>
-																					<?php foreach ($prestation as $prestationn) : ?>
-																						<option value="<?= $prestationn['prestation'] ?>"><?= $prestationn['prestation'] ?></option>
-																					<?php endforeach; ?>
-																					<!--Affichage de tout les produits -->
-																					<optgroup label="Autres options">
-																						<option value="Pas de prestation">Autres</option>
-																					</optgroup>
-																				</select>
-																			</div>
-																			<div class="col-md-3 col-12 form-group">
-																				<input name="cout7" id="cout7" type="number" class="form-control" placeholder="0" onkeyup="myFunction7()" step="any">
-																			</div>
-																			<div class="col-md-3 col-12 form-group">
-																				<input name="quantite7" id="quantite7" type="number" value="" class="form-control" placeholder="0" onkeyup="myFunction7()" step="any">
-																			</div>
-																			<div class="col-md-2 col-12 form-group">
-																				&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-																				<strong id="demo7" class="text-primary align-middle">00.00 €</strong>
-																			</div>
-																			<div class="col-md-4 col-12 form-group">
-																				<button id="btnClient6" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup4">Nouvelle prestation</button>
-																				<!-- popup article déplacé -->
-																			</div>
-																		</div>
-																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																			<input name="referencepresta7" id="referencepresta7" type="text" class="form-control" placeholder="Référence">
-																		</div>
-																		<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
-																			<div class="dropdown" style="margin-top: 15px;">
-																				<i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
-																				<div class="dropdown-menu p-1">
-																					<div class="row">
-																						<div class="col-12 form-group">
-																							<label for="discount">Remise(%)</label>
-																							<input name="remise7" id="remise7" value="0" type="number" class="form-control" id="discount" placeholder="Remise" maxlength="3" min="0" max="100">
-																						</div>
-																						<div class="col-12 form-group">
-																							<label for="discount">Tva(%)</label>
-																							<input name="tva7" id="tva7" value="20" type="number" class="form-control" id="discount" placeholder="0" maxlength="3" min="0" max="100">
-																						</div>
-																						<div class="col-12 form-group">
-																							<label>Unite de mesure :</label>
-																							<input name="umesure7" id="umesure7" type="text" class="form-control" placeholder="Unite de mesure">
-																						</div>
-
-																					</div>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="form-group">
-															<div class="col p-0">
-																<button class="btn btn-light-primary btn-sm" type="button">
-																	<i class="bx bx-plus"></i>
-																	<span type="button" name="insert" id="button_send7" class="invoice-repeat-btn">Ajouter la prestation</span>
-																</button>
-															</div>
-														</div>
-														<table id="table7" name="table" class="table table-bordered">
-															<style>
-																.red {
-																	color: red;
-																}
-
-																.line {
-																	text-decoration: underline;
-																}
-															</style>
-															<tbody>
-																<tr>
-																	<!-- <th>
-																			Facture
-																		</th> -->
-																	<th>
-																		Ref
-																	</th>
-																	<th>
-																		Nom
-																	</th>
-																	<th>
-																		Pu HT
-																	</th>
-																	<th>
-																		Qt
-																	</th>
-																	<th>
-																		Total HT
-																	</th>
-																	<th>
-																		U
-																	</th>
-																	<th>
-																		Tva(%)
-																	</th>
-																	<th>
-																		Red(%)
-																	</th>
-																	<th>
-																		Titre
-																	</th>
-																<tr>
-															</tbody>
-														</table>
-
-														<hr>
-
-														<input type="button" id="btnPrestation" value="+ Ajouter une autre catégorie de prestation" onclick="masquer_div('prestation3_masquer');" class="btn btn-outline-primary col-lg-12 col-md-12 mt-25" />
-														<!-- adresse livraison -->
-														<hr>
-														<div id="prestation3_masquer" class="row invoice-info" style="display:none;">
-															<div class="invoice-product-details ">
-																<div data-repeater-list="group-a">
-																	<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																		<!-- <input type="text" style="visibility: hidden;" name="numerotitre" id="numero_titre8" value='<?= $maxidT + 7 ?>' class="form-control pt-25 w-50" attribut readonly="readonly">
-																			<input name="ntitre" id="titre8" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation"> -->
-																		<input name="numerotitre8" id="numero_titre8" type="text" class="form-control" placeholder="Titre de la catégorie de la prestation" disabled="true" hidden="true">
-																	</div>
-																	<input id="disable8" type="button" class="col-md-3 col-12 form-control" value="+ Ajouter un titre" onclick="switchDisable8()">
-																	<br>
-																	<div data-repeater-item>
-																		<div class="row mb-50">
-																			<div class="col-3 col-md-3 invoice-item-title">
-																				Prestation
-																			</div>
-																			<div class="col-2 invoice-item-title">
-																				Prix Unitaire
-																			</div>
-																			<div class="col-2 invoice-item-title">
-																				Quantite
-																			</div>
-																			<div class="col-1 invoice-item-title">
-																				Prix HT
-																			</div>
-																			<div class="col-1 invoice-item-title">
-																				Référence
-																			</div>
-																		</div>
-																		<div class="invoice-item d-flex border rounded mb-1">
-																			<div class="invoice-item-filed row pt-1 px-1">
-																				<div class="col-12 col-md-4 form-group">
-																					<select name="prestation8" id="prestation8" class="form-control invoice-item-select">
-																						<option value="Pas de prestation">Sélectionnez une prestation</option>
-																						<optgroup label="Liste des prestations"></optgroup>
-																						<?php foreach ($prestation as $prestationn) : ?>
-																							<option value="<?= $prestationn['prestation'] ?>"><?= $prestationn['prestation'] ?></option>
-																						<?php endforeach; ?>
-																						<!--Affichage de tout les produits -->
-																						<optgroup label="Autres options">
-																							<option value="Pas de prestation">Autres</option>
-																						</optgroup>
-																					</select>
-																				</div>
-																				<div class="col-md-3 col-12 form-group">
-																					<input name="cout8" id="cout8" type="number" class="form-control" placeholder="0" onkeyup="myFunction8()" step="any">
-																				</div>
-																				<div class="col-md-3 col-12 form-group">
-																					<input name="quantite8" id="quantite8" type="number" value="" class="form-control" placeholder="0" onkeyup="myFunction8()" step="any">
-																				</div>
-																				<div class="col-md-2 col-12 form-group">
-																					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-																					<strong id="demo8" class="text-primary align-middle">00.00 €</strong>
-																				</div>
-																				<div class="col-md-4 col-12 form-group">
-																					<button id="btnClient6" type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup4">Nouvelle prestation</button>
-																					<!-- popup article déplacé -->
-																				</div>
-																			</div>
-																			<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																				<input name="referencepresta8" id="referencepresta8" type="text" class="form-control" placeholder="Référence">
-																			</div>
-																			<div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
-																				<div class="dropdown" style="margin-top: 15px;">
-																					<i class="bx bx-cog cursor-pointer dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button"></i>
-																					<div class="dropdown-menu p-1">
-																						<div class="row">
-																							<div class="col-12 form-group">
-																								<label for="discount">Remise(%)</label>
-																								<input name="remise8" id="remise8" value="0" type="number" class="form-control" id="discount" placeholder="Remise" maxlength="3" min="0" max="100">
-																							</div>
-																							<div class="col-12 form-group">
-																								<label for="discount">Tva(%)</label>
-																								<input name="tva8" id="tva8" value="20" type="number" class="form-control" id="discount" placeholder="0" maxlength="3" min="0" max="100">
-																							</div>
-																							<div class="col-12 form-group">
-																								<label>Unite de mesure :</label>
-																								<input name="umesure8" id="umesure8" type="text" class="form-control" placeholder="Unite de mesure">
-																							</div>
-
-																						</div>
-																					</div>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="form-group">
-																<div class="col p-0">
-																	<button class="btn btn-light-primary btn-sm" type="button">
-																		<i class="bx bx-plus"></i>
-																		<span type="button" name="insert" id="button_send8" class="invoice-repeat-btn">Ajouter la prestation</span>
-																	</button>
-																</div>
-															</div>
-															<table id="table8" name="table" class="table table-bordered">
-																<style>
-																	.red {
-																		color: red;
-																	}
-
-																	.line {
-																		text-decoration: underline;
-																	}
-																</style>
-																<tbody>
-																	<tr>
-																		<!-- <th>
-																				Facture
-																			</th> -->
-																		<th>
-																			Ref
-																		</th>
-																		<th>
-																			Nom
-																		</th>
-																		<th>
-																			Pu HT
-																		</th>
-																		<th>
-																			Qt
-																		</th>
-																		<th>
-																			Total HT
-																		</th>
-																		<th>
-																			U
-																		</th>
-																		<th>
-																			Tva(%)
-																		</th>
-																		<th>
-																			Red(%)
-																		</th>
-																		<th>
-																			Titre
-																		</th>
-																	<tr>
-																</tbody>
-															</table>
-															<hr>
-														</div>
-													</div>
-												</div>
 											</div>
 
 											<hr>
@@ -1629,8 +1029,8 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 														<div class="col-lg-12 col-12"></div>
 														<div class="col-md-6 col-12">
 															<div class="form-group">
-																<label>Accompte :</label>
-																<input id="accompte" name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un accompte sur la facture" required>
+																<label>Acompte :</label>
+																<input id="accompte" name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un acompte sur la facture">
 															</div>
 															<div class="form-group">
 																<label>Modalité de paiement:</label>
@@ -1659,7 +1059,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 															</div>
 															<label for="etiq">Etiquette :</label>
 															<div class="form-group" id="etiq">
-																<select id="etiquette" name="etiquette" class="form-control invoice-item-select" required>
+																<select id="etiquette" name="etiquette" class="form-control invoice-item-select">
 																	<option value="Inconnue" selected>Inconnue</option>
 																	<option value="Electronique">Electronique</option>
 																	<option value="Décoration">Décoration</option>
@@ -2477,6 +1877,33 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																				<label>Référence de l'article :</label>
 																				<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
 																			</div>
+                                      <!-- selectionner si c un bien ou un service -->
+                                      <div class="form-group">
+                                          <label>Catégorie :</label>
+                                          <select class="form-control" name="categorie">
+                                            <option value="bien">Bien</option>
+                                            <option value="service">Service</option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                        <label>Type :</label>
+                                          <!-- selectionner si le type du bien -->
+                                          <select class="form-control" name="sstyp">
+                                            <optgroup label="Bien">
+                                              <option value="marchandise">Marchandise</option>
+                                              <option value="produit fini">Produits fini</option>
+                                              <option value="produit semi fini">Produits semi fini</option>
+                                              <option value="matiere 1ere">Matiere 1ere</option>
+                                              <option value="fourniture">Fournitures</option>
+                                              <option value="consommable">Consommable</option>
+                                             </optgroup>
+                                            <optgroup label="Service">
+                                              <option value="prestation">Prestation</option>
+                                              <option value="travaux">Travaux</option>
+                                              <option value="etudes">Etudes</option>
+                                            </optgroup>
+                                          </select>
+                                      </div>
 																		</div>
 																		<div class="col-12">
 																			<hr>
@@ -2568,7 +1995,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																			<div class="form-group">
 																				<div class="controls">
 																					<label>Quantité :</label>
-																					<input name="stock" id="stock" type="number" value="" class="form-control" placeholder="Quantité acheté pour le stock" onkeyup="myFunction()" step="any">
+																					<input name="stock" id="stock" type="number" value="" class="form-control" placeholder="Quantité minimale pour le stock" onkeyup="myFunction()" step="any">
 																				</div>
 																				<div class="controls">
 																					<label>Cout d'achat HT :</label>
@@ -2594,143 +2021,6 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 																		</div>
 																		<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
 																			<button id="btnClient7" type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
-																		</div>
-																		<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
-																	</div>
-																	<!-- users edit account form ends -->
-																</form>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- POPUP PRESTATION -->
-								<div id="popup4" class="modal">
-									<div class="modal-dialog modal-dialog-centered">
-										<div class="modal-content">
-											<div class="h-auto card">
-												<div class="card-content">
-													<div class="card-body">
-														<ul class="nav nav-tabs mb-2" role="tablist">
-															<li class="nav-item">
-																<a class="nav-link d-flex align-items-center active" id="account-tab" data-toggle="tab" href="#account" aria-controls="account" role="tab" aria-selected="true">
-																	<i class='bx bxs-purchase-tag-alt'></i>
-																	<span class="d-none d-sm-block">Ajouter une prestation</span>
-																</a>
-															</li>
-														</ul>
-														<div class="tab-content">
-															<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
-																<form action="php/insert_prestationspopup_facture.php" method="POST" enctype="multipart/form-data">
-																	<div class="row">
-																		<div class="col-12 col-sm-6">
-																			<div class="form-group">
-																				<div class="controls">
-																					<label>*Nom de la prestation :</label>
-																					<input name="prestation" type="text" class="form-control" placeholder="Nom de la prestation">
-																				</div>
-																			</div>
-																			<div class="form-group">
-																				<div class="controls">
-																					<label>Unités de mesure :</label>
-																					<input name="umesure" type="text" class="form-control" placeholder="Unités de mesure">
-																				</div>
-																			</div>
-																		</div>
-																		<div class="col-12 col-sm-6">
-																			<div class="form-group">
-																				<label>Référence de la prestation :</label>
-																				<input name="referencepresta" type="text" class="form-control" placeholder="Référence de la prestation">
-																			</div>
-																		</div>
-																		<div class="col-12">
-																			<hr>
-																			<style>
-																				.line {
-																					text-decoration: underline;
-																				}
-																			</style>
-																		</div>
-																		<div class="col-12">
-																			<div class="form-group">
-																				<label>*Fournisseur</label>
-																				<select name="id_fournisseur" id="fourpour" class="form-control invoice-item-select">
-																					<option value="Pas de fournisseur">Sélectionnez un fournisseur</option>
-																					<?php foreach ($fournisseur as $fournisseurr) : ?>
-																						<option value="<?= $fournisseurr['id'] ?>"><?= $fournisseurr['name_fournisseur'] ?></option>
-																					<?php endforeach; ?>
-																				</select>
-																			</div>
-																			<!-- <div class="form-group">
-																						<label for="adress">*Adresse :</label>
-																						<fieldset class="invoice-address form-group">
-																							<textarea name="adresse" id="adresse" class="form-control" placeholder="Mountain View, Californie, États-Unis"></textarea>
-																						</fieldset>
-																					</div>
-																					<div class="form-group">
-																						<label for="email">*Code postal :</label>
-																						<input type="number" name="codepostal6" class="form-control required" placeholder="Code Postal" onkeyup="getCp6($(this))" autocomplete="off">
-																						<input type="hidden" name="insee_code6" id="insee_code6" value="" autocomplete="off">
-																					</div>
-																					<div class="form-group">
-																						<label for="email">*Ville :</label>
-																						<select name="departement" id="ville6" class="form-control required"  required="" disabled=""></select>
-																					</div>
-																					<div class="form-group">
-																						<label for="email">Email :</label>
-																						<fieldset class="invoice-address form-group">
-																							<input name="email" id="email" type="email" class="form-control" placeholder="Email">
-																						</fieldset>
-																					</div>
-																					<div class="form-group">
-																						<label for="email">TEL :</label>
-																						<fieldset class="invoice-address form-group">
-																							<input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone">
-																						</fieldset>
-																					</div> -->
-																		</div>
-																		<div class="col-12">
-																			<hr>
-																			<style>
-																				.line {
-																					text-decoration: underline;
-																				}
-																			</style>
-																		</div>
-																		<div class="col-12 col-sm-12  border">
-																			<div class="form-group text-center">
-																				<h4 class="line">ACHAT</h4>
-																			</div>
-																		</div>
-																		<div class="col-12 col-sm-12 border">
-																			<div class="form-group">
-																				<div class="controls">
-																					<label>Cout d'achat HT :</label>
-																					<input name="coutachat" type="number" step="any" class="form-control" placeholder="Cout d'achat de l'article">
-																				</div>
-																				<div class="controls">
-																					<label>TVA achat :</label>
-																					<fieldset class="invoice-address form-group">
-																						<select name="tvaachat" class="form-control invoice-item-select">
-																							<option value="20">Taux normal : 20 %</option>
-																							<option value="10">Taux intermédiaire : 10 %</option>
-																							<option value="5.5">Taux réduit : 5.5 %</option>
-																							<option value="2.1">Taux particulier : 2.1 %</option>
-																							<option value="0">Taux nul : 0 %</option>
-																						</select>
-																					</fieldset>
-																				</div>
-																			</div>
-																		</div>
-																		<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-																			<input type="file" id="file" name="img" style="display:none" />
-																			<a onclick="file.click()" class="btn btn-outline-primary">Ajouter une image à la prestation</a>
-																		</div>
-																		<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
-																			<button id="btnClient8" type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
 																		</div>
 																		<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
 																	</div>
@@ -2939,7 +2229,7 @@ if ($_GET['jXN955CbHqqbQ463u5Uq'] == "1" or $_GET['jXN955CbHqqbQ463u5Uq'] == "0"
 		};
 	</script>
 
-	<!-- Script pour désactiver le bouton d'ajout d'un article (ou prestation) dans le tableau des différents sections -->
+	<!-- Script pour désactiver le bouton d'ajout d'un article dans le tableau des différents sections -->
 	<script>
 		let article = document.getElementById("article");
 		let quantite = document.getElementsById("quantite");

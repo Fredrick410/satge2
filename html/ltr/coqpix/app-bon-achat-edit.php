@@ -4,50 +4,50 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
-   
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-    $pdoSta->execute(); 
+    $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $pdoSto = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
     $pdoSto->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSto->execute(); 
+    $pdoSto->execute();
     $article = $pdoSto->fetchAll();
 
     $pdoS = $bdd->prepare('SELECT * FROM bon_commande WHERE id_bon_commande = :num');
     $pdoS->bindValue(':num',$_GET['numbon']);
-    $true = $pdoS->execute(); 
+    $true = $pdoS->execute();
     $bon = $pdoS->fetch();
 
     $pdoStt = $bdd->prepare('SELECT * FROM fournisseur WHERE id = :num');
     $pdoStt->bindValue(':num',$_GET['numfournisseur']);
-    $pdoStt->execute(); 
+    $pdoStt->execute();
     $fournisseurr = $pdoStt->fetch();
 
     $pdoSat = $bdd->prepare('SELECT * FROM fournisseur WHERE id_session = :num');
     $pdoSat->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSat->execute(); 
+    $pdoSat->execute();
     $fournisseur = $pdoSat->fetchAll();
 
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="bonachat"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
     $pdo->bindValue(':numeros',$_GET['numbon']);
-    $pdo->execute(); 
+    $pdo->execute();
     $articles = $pdo->fetchAll();
 
     $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
     try{
-  
+
     $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM ( SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$_GET['numbon']); 
+    $req->bindValue(':numeros',$_GET['numbon']);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -57,12 +57,12 @@ require_once 'php/config.php';
     $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
 
     try{
-  
+
     $sq = "SELECT ROUND(SUM(R.TOTA), 2) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) R ";
-  
+
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$_GET['numbon']); 
+    $re->bindValue(':numeros',$_GET['numbon']);
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -72,12 +72,12 @@ require_once 'php/config.php';
     $montant_r = !empty($rer) ? $rer['MONTANT_R'] : 0;
 
     try{
-  
+
     $sql = "SELECT ROUND(SUM(V.TOTAL), 2) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) V ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$_GET['numbon']); 
+    $req->bindValue(':numeros',$_GET['numbon']);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -169,14 +169,14 @@ require_once 'php/config.php';
 														</h6>
 														<input type="number" name="id_bon_commande" id="numeros" value='<?= $bon['id_bon_commande'] ?>' class="form-control pt-25 w-50" placeholder="00000" disabled>
                                                         <p style='position: relative; top: 7px;'>
-                                                            &nbsp&nbsp&nbsp 
+                                                            &nbsp&nbsp&nbsp
                                                         </p>
                                                 <h6 class="invoice-number mr-75">
                                                                 Référence
                                                             </h6>
                                                             <input name="refbon" id="refbon" type="text" value="<?= $bon['refbon'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
                                                             <p style='position: relative; top: 7px;'>
-                                                                &nbsp&nbsp&nbsp 
+                                                                &nbsp&nbsp&nbsp
                                                             </p>
                                                 <h6 class="invoice-number mr-75">Bon N°</h6>
                                                 <input name="numerosbon"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $bon['numerosbon'] ?>" disabled>
@@ -204,11 +204,11 @@ require_once 'php/config.php';
                                         <div class="row my-2 py-50">
                                             <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
                                                 <h4 class="text-primary">Bon</h4>
-                                                <input name="nom_bon" id="nom_bon" type="text" class="form-control" placeholder="Nom de la facture" value="<?= $bon['nom_bon'] ?>"> 
+                                                <input name="nom_bon" id="nom_bon" type="text" class="form-control" placeholder="Nom de la facture" value="<?= $bon['nom_bon'] ?>">
                                                 <div class="form-group">
                                                             <label for="exampleFormControlTextarea1">Description</label>
                                                             <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $bon['descrip']?></textarea>
-                                                        </div>   
+                                                        </div>
                                             </div>
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
                                                 <img src="../../../src/img/<?= $entreprise['img_entreprise'] ?>" alt="logo" height="164" width="164">
@@ -270,7 +270,7 @@ require_once 'php/config.php';
                                                                     <input name="cout" min="1" type="number" class="form-control" placeholder="0" value="<?= $articless['cout'] ?>" readonly>
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <label>Quantite :</label>    
+                                                                    <label>Quantite :</label>
                                                                     <input name="quantite" min="1" type="number" class="form-control" placeholder="0" value="<?= $articless['quantite'] ?>" readonly>
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
@@ -291,7 +291,7 @@ require_once 'php/config.php';
                                                             </div>
                                                             <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
                                                                 <div class="dropdown">
-                                                                    <a href="php/delete_article_bon_achat.php?num=<?= $articless['id'] ?>&numbon=<?= $bon['id_bon_commande'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>                                            
+                                                                    <a href="php/delete_article_bon_achat.php?num=<?= $articless['id'] ?>&numbon=<?= $bon['id_bon_commande'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -508,7 +508,7 @@ require_once 'php/config.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_bonachat.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>

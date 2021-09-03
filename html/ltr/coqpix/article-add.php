@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
@@ -88,10 +88,10 @@ require_once 'php/permissions_front.php';
                             function retourn() {
                                 window.history.back();
                             }
-                        </script> 
+                        </script>
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="file-manager.php" data-toggle="tooltip" data-placement="top" title="CloudPix"><div class="livicon-evo" data-options=" name: cloud-upload.svg; style: filled; size: 40px; strokeColorAction: #8a99b5; colorsOnHover: darker "></div></a></li>
-                        </ul>              
+                        </ul>
                     </div>
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-fr"></i><span class="selected-language">Francais</span></a>
@@ -139,7 +139,7 @@ require_once 'php/permissions_front.php';
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
     <!-- END: Main Menu-->
-    
+
     <!-- BEGIN: Content-->
 
     <div class="app-content content">
@@ -174,7 +174,7 @@ require_once 'php/permissions_front.php';
                                             <div class="media-body">
                                                 <h4 class="media-heading">Image du fournisseur</h4>
                                                 <div class="col-12 px-0 d-flex">
-                                                    <input type="file" name="FILES" accept="image/png, image/jpg, image/jpeg" required>                                                   
+                                                    <input type="file" name="FILES" accept="image/png, image/jpg, image/jpeg" required>
                                                 </div><br>
                                                 <input type="submit" value="Sauvegarder" class="btn btn-sm btn-primary">
                                             </div>
@@ -207,6 +207,35 @@ require_once 'php/permissions_front.php';
                                                     <div class="form-group">
                                                         <label>Référence de l'article :</label>
                                                         <input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
+                                                    </div>
+                                                    <!-- selectionner si c un bien ou un service -->
+                                                    <div class="col-6">
+                                                        <label>Catégorie :</label>
+                                                        <select class="form-control" name="categorie" onclick="bien()">
+                                                          <option value="bien">Bien</option>
+                                                          <option value="service">Service</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6" id="sstypbien">
+                                                      <label>Type :</label>
+                                                        <!-- selectionner si le type du bien -->
+                                                        <select class="form-control" name="sstypbien">
+                                                          <option value="marchandise">Marchandise</option>
+                                                          <option value="produit fini">Produits fini</option>
+                                                          <option value="produit semi fini">Produits semi fini</option>
+                                                          <option value="Matiere 1ere">Matiere 1ere</option>
+                                                          <option value="fourniture">Fournitures</option>
+                                                          <option value="consommable">Consommable</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6" hidden id="sstypservice">
+                                                      <label>Type :</label>
+                                                      <!-- selectionner si le type du service -->
+                                                        <select class="form-control" name="sstypservice">
+                                                          <option value="prestation">Prestation</option>
+                                                          <option value="travaux">Travaux</option>
+                                                          <option value="etudes">Etudes</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -252,9 +281,9 @@ require_once 'php/permissions_front.php';
                                                     <label for="email">TEL :</label>
 											        <fieldset class="invoice-address form-group">
 												        <input name="tel" id="telephone" type="text" class="form-control" placeholder="Téléphone">
-											        </fieldset>											
+											        </fieldset>
                                                 </div> -->
-                                                  
+
                                                 <div class="col-12">
                                                  <hr><style>.line{text-decoration: underline;}</style>
                                                 </div>
@@ -294,7 +323,7 @@ require_once 'php/permissions_front.php';
                                                     <div class="form-group">
                                                          <div class="controls">
                                                             <label>Quantité :</label>
-                                                            <input name="stock" id="stock" type="number" value="" class="form-control" placeholder="Quantité acheté pour le stock" onkeyup="myFunction()" step="any">
+                                                            <input name="stock" id="stock" type="number" value="" class="form-control" placeholder="Quantité acheté pour le stock" onkeyup="myFunction()" step="any" required>
                                                         </div>
                                                         <div class="controls">
                                                             <label>Cout d'achat HT :</label>
@@ -317,7 +346,7 @@ require_once 'php/permissions_front.php';
                                                 <br>
                                                 <br>
 
-                                                
+
 
                                                 <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
                                                 <input type="file" id="file" name="img" style="display:none"/>
@@ -331,7 +360,7 @@ require_once 'php/permissions_front.php';
                                             </div>
                                         <!-- users edit account form ends -->
                                     </div>
-                            
+
                             </form>
                             	<!-- POPUP FOURNISSEUR -->
                                 <div id="popupF" class="modal">
@@ -386,7 +415,7 @@ require_once 'php/permissions_front.php';
 																								<div class="col-12 col-sm-6 mt-1 mt-sm-0">
 
 																													<!-- PUBLICITER -->
-																									
+
 																								</div>
 																								<input name="" type="hidden" value="73">
 																								<div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
@@ -406,7 +435,7 @@ require_once 'php/permissions_front.php';
 																											<label>*Nom de la socièté :</label>
 																											<input name="name_fournisseur" type="text" class="form-control" placeholder="Nom de la société" required="">
 																										</div>
-																									</div>  
+																									</div>
 																									<div class="form-group">
 																										<div class="controls">
 																											<label>Numéros SIRET :</label>
@@ -471,7 +500,7 @@ require_once 'php/permissions_front.php';
 																											<label>*Adresse :</label>
 																											<input name="adresse" type="text" class="form-control" placeholder="Adresse du fournisseur" required="" data-validation-required-message="L'e-mail de la societe du fournisseur est obligatoire">
 																										</div>
-																									</div>                                  
+																									</div>
 																									<div class="form-group">
 																										<div class="controls">
 																											<label>*Pays :</label>
@@ -707,7 +736,7 @@ require_once 'php/permissions_front.php';
 																								</div>
 																							</div>
 																							<!-- users edit account form ends -->
-																						</form>			
+																						</form>
 																				</div>
 																		</div>
 																	</div>
@@ -754,18 +783,19 @@ require_once 'php/permissions_front.php';
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
     <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_article.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_fournisseur.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp5.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp5.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
     <script src="../../../app-assets/js/scripts/navs/navs.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
-    <?php include('timeout.php'); ?>
+    <?php  include('timeout.php'); ?>
 </body>
 <!-- END: Body-->
 
