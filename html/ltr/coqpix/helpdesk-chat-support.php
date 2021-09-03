@@ -212,7 +212,7 @@ require_once 'php/config.php';
                                 <div class="chat-header" style="background-color: #FFFFFF">
                                     <header class="d-flex justify-content-between align-items-center border-bottom px-1 py-75">
                                         <div class="d-flex align-items-center">
-                                            <a href="helpdesk-tickets-support" class="mr-50">
+                                            <a href="helpdesk-tickets-support.php" class="mr-50">
                                                 <span class="fonticon-wrap d-inline">
                                                     <i class="livicon-evo" data-options="name: chevron-left.svg; size: 32px; style: lines; strokeColor:#475f7b; eventOn:grandparent; duration:0.85;">
                                                     </i>
