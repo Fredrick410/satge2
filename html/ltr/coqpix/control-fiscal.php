@@ -139,8 +139,8 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <th class="text-center">
                                                                 Nom société                                                                
                                                             </th>
-                                                            <th class="text-center">Dossier en cours</th>
-                                                            <th class="text-center">Dossier clos</th>
+                                                            <th class="text-center">Objet control dossier</th>
+                                                            <th class="text-center">Etat dossier</th>
                                                             <th class="text-center">Action</th>                                                        
                                                         </tr>
                                                     </thead>
@@ -153,10 +153,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                         ?>
                                                         <tr>
                                                             <td class="text-center">
-                                                                <?= $donnees['name_entreprise'] ?>
+                                                                <a href="control-fiscal-view.php?num=<?= $donnees['id'] ?>">
+                                                                    <?= $donnees['name_entreprise'] ?>
+                                                                </a>                                                                
                                                             </td>
-                                                            <td class="text-center">Liste dossier en cours</td>
-                                                            <td class="text-center">Liste dossier clos</td>
+                                                            <td class="text-center">Objet</td>
+                                                            <td class="text-center">Etat</td>
                                                             <td class="text-center">
                                                                 <i class='bx bxs-pencil'></i>
                                                                 <i class='bx bxs-trash'></i>
@@ -182,8 +184,8 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <th class="text-center">
                                                                 Nom société                                                                
                                                             </th>
-                                                            <th class="text-center">Dossier en cours</th>
-                                                            <th class="text-center">Dossier clos</th>
+                                                            <th class="text-center">Objet control dossier</th>
+                                                            <th class="text-center">Etat dossier</th>
                                                             <th class="text-center">Action</th>                                                        
                                                         </tr>
                                                     </thead>
@@ -198,8 +200,8 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <td class="text-center">
                                                                 <?= $donnees['name_entreprise'] ?>
                                                             </td>
-                                                            <td class="text-center">Liste dossier en cours</td>
-                                                            <td class="text-center">Liste dossier clos</td>
+                                                            <td class="text-center">Objet</td>
+                                                            <td class="text-center">Etat</td>
                                                             <td class="text-center">
                                                                 <i class='bx bxs-pencil'></i>
                                                                 <i class='bx bxs-trash'></i>
@@ -241,12 +243,13 @@ require_once 'php/verif_session_connect_admin.php';
                                     </div>
                                     <div class="form-group">
                                         <label>Période de contrôle :</label>
-                                        </br>
-                                        <label for="">Date début contrôle :</label> 
-                                        <input type="date" name="date_control_begin" required>
+                                        <div>
+                                            <label for="">Date début contrôle :</label> 
+                                            <input type="date" name="date_control_begin" required>
                                         
-                                        <label for="">Date fin contrôle :</label> 
-                                        <input type="date" name="date_control_end"required>
+                                            <label for="">Date fin contrôle :</label> 
+                                            <input type="date" name="date_control_end"required>
+                                        </div>
                                     </div>
                                     <fieldset class="form-group">
                                         <label>Objet du contrôle</label>

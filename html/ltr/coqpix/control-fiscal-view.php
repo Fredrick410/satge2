@@ -7,6 +7,11 @@ require_once 'php/config.php';
 $authorised_roles = array('admin', 'gestionnaire fiscal');
 require_once 'php/verif_session_connect_admin.php';
 
+    $pdoSta = $bdd->prepare('SELECT * FROM fiscal WHERE id=:num');
+    $pdoSta->bindValue(':num',$_GET['num']);
+    $pdoSta->execute();
+    $societe = $pdoSta->fetch();
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -66,6 +71,15 @@ require_once 'php/verif_session_connect_admin.php';
     overflow-x:hidden;
     }
     
+    .image-upload > input {
+        display: none;
+    }
+    
+    .image-upload img {
+        width: 80px;
+        cursor: pointer;
+    }
+
 </style>
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu navbar-static-top navbar-brand-center" style="background-color: #e72424;">
@@ -117,6 +131,20 @@ require_once 'php/verif_session_connect_admin.php';
                         <!-- Detailed Fiscal View -->
                         <div class="fiscal-app-list">
                             <!-- fiscal details start -->
+                            <?php
+                                if($societe['doc_mandat'] !== ""){
+                                    if(substr($societe['doc_mandat'], -3) == "pdf"){
+                                        $societe_mandat = "pdf.png";
+                                    }
+                                    else{
+                                        $societe_mandat = "doc.png";
+                                    }
+                                }
+                                else{
+                                    $societe_mandat = "doc.png";
+                                }
+                            
+                            ?>
                             <section class="file-repository">
                                 <div class="row">
                                     <div class="col-12" style="padding: 0px;">
@@ -125,6 +153,13 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <!---->
                                                 <div id="headingCollapse1" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                                    <div>
+                                                        <div class="pr-1">
+                                                            <div class="avatar mr-75">                                                                   
+                                                                <div class="livicon-evo" data-options=" name: briefcase.svg; size: 40px "></div>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="media-body mt-25">
                                                         <span class="text-primary">Fichiers FEC</span>
                                                         <small class="text-muted d-block">Attestation de dépôt</small>
@@ -132,21 +167,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                 </div>
                                                 <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
                                                     <div>
-                                                        <ul>
-                                                            <li class="cursor-pointer pb-25">
-                                                                <!--
-                                                                <small class="text-muted ml-1 attchement-text <?php if($crea['doc_pieceid'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>
-                                                                <img src="../../../app-assets/images/icon/<?= $crea_pieceid ?>" height="30" alt="psd.png">
-                                                                <small class="text-muted ml-1 attchement-text"><?= $crea['doc_pieceid'] ?></small>
-                                                                    <a href="creation-upload.php?num=<?= $_GET['num'] ?>&forme=morale&type=pieceid">
-                                                                        <div class="image-upload">
-                                                                            <div class="livicon-evo" data-options=" name: <?php if($crea['doc_pieceid'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
-                                                                        </div>
-                                                                    </a>
-                                                                <a class="<?php if($crea['doc_pieceid'] == ""){echo "nonedoc";} ?>" href="../../../src/crea_societe/pieceid/<?= $crea['doc_pieceid'] ?>" target="_blank"><div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div></a>
-                                                                -->
-                                                            </li>
-                                                        </ul>
+
                                                     </div>
                                                 </div>
                                                 <!---->
@@ -188,7 +209,8 @@ require_once 'php/verif_session_connect_admin.php';
                                     <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-header text-center">
-                                                <h4 class="card-title">Nom de la Société</h4>
+                                                <h4 class="card-title"><?= $societe['name_entreprise'] ?></h4>
+                                                barre chargement
                                             </div>
                                             <div class="card-content">
                                                 <div class="card-body">
@@ -201,11 +223,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <label for="">Periode de controle :</label>
                                                                     <div>
                                                                         <label for="">Date début contrôle :</label> 
-                                                                        <input type="date">
+                                                                        <input type="date" value=<?= $societe['date_control_begin'] ?> >
                                                                     </div>
                                                                     <div>
                                                                         <label for="">Date fin contrôle :</label> 
-                                                                        <input type="date">
+                                                                        <input type="date" value=<?= $societe['date_control_end'] ?>>
                                                                     </div>
                                                                 </div>
                                                             </div>
