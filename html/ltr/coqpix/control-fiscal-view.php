@@ -161,36 +161,280 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                     </div>
                                                     <div class="media-body mt-25">
+                                                        <span class="text-primary">Phase de premier rendez-vous</span>
+                                                        <small class="text-muted d-block">Mandat, Cerfa 3927-SD, Courrier Annexe, Ensemble des fichiers FEC, Attestation de Rdv</small>
+                                                    </div>
+                                                </div>
+                                                <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
+                                                    <div class="card-content">
+                                                        <div class="card-footer pt-0 border-top text-center" >
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Mandat :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Cerfa 3927-SD :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Courrier Annexe :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Ensemble des fichiers FEC :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Attestation de Rdv :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!---->
+                                            <!---->
+                                            <div class="card collapse-header" role="tablist">
+                                                <div id="headingCollapse2" class="card-header d-flex justify-content-between align-items-center" 
+                                                data-toggle="collapse" role="tab" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                                    <div>
+                                                        <div class="pr-1">
+                                                            <div class="avatar mr-75">                                                                   
+                                                                <div class="livicon-evo" data-options=" name: briefcase.svg; size: 40px "></div>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body mt-25">
                                                         <span class="text-primary">Fichiers FEC</span>
                                                         <small class="text-muted d-block">Attestation de dépôt</small>
                                                     </div>
                                                 </div>
-                                                <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
-                                                    <div>
+                                                <div id="collapse2" role="tabpanel" aria-labelledby="headingCollapse2" class="collapse">
+                                                    <div class="card-content">
+                                                        <div class="card-footer pt-0 border-top text-center" >
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
 
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <!---->
-                                                <!---->
-                                                <div id="headingCollapse2" class="card-header d-flex justify-content-between align-items-center" 
-                                                data-toggle="collapse" role="tab" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                                    <div class="media-body mt-25">
-                                                        <span class="text-primary">Dates RDV avec contrôleur</span>
-                                                        <small class="text-muted d-block">Agenda et Commentaires de l'inspecteur</small>
-                                                    </div>
-                                                </div>
-                                                <div id="collapse2" role="tabpanel" aria-labelledby="headingCollapse2" class="collapse"></div>
-                                                <!---->
-                                                <!---->
+                                            </div>   
+                                            <!---->
+                                            <!---->
+                                            <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse3" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                                    <div>
+                                                        <div class="pr-1">
+                                                            <div class="avatar mr-75">                                                                   
+                                                                <div class="livicon-evo" data-options=" name: briefcase.svg; size: 40px "></div>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="media-body mt-25">
-                                                        <span class="text-primary">Compte rendu de vérification</span>
-                                                        <small class="text-muted d-block">Date de délai de contestation (Notification pour prolongation délai 30 jours et 60 jours)</small>
+                                                        <span class="text-primary">Fichiers FEC</span>
+                                                        <small class="text-muted d-block">Attestation de dépôt</small>
                                                     </div>
                                                 </div>
-                                                <div id="collapse3" role="tabpanel" aria-labelledby="headingCollapse3" class="collapse"></div>
-                                                <!---->
+                                                <div id="collapse3" role="tabpanel" aria-labelledby="headingCollapse3" class="collapse">
+                                                    <div class="card-content">
+                                                        <div class="card-footer pt-0 border-top text-center" >
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                                        <!---->
+                                            <!---->
+                                            <div class="card collapse-header" role="tablist">
+                                                <div id="headingCollapse3" class="card-header d-flex justify-content-between align-items-center" 
+                                                data-toggle="collapse" role="tab" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                                    <div>
+                                                        <div class="pr-1">
+                                                            <div class="avatar mr-75">                                                                   
+                                                                <div class="livicon-evo" data-options=" name: briefcase.svg; size: 40px "></div>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body mt-25">
+                                                        <span class="text-primary">Fichiers FEC</span>
+                                                        <small class="text-muted d-block">Attestation de dépôt</small>
+                                                    </div>
+                                                </div>
+                                                <div id="collapse3" role="tabpanel" aria-labelledby="headingCollapse3" class="collapse">
+                                                    <div class="card-content">
+                                                        <div class="card-footer pt-0 border-top text-center" >
+                                                            <ul class="list-unstyled mb-0">
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
