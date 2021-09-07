@@ -5,24 +5,23 @@
         $infos_user = $query->fetch();
     ?>
     
-    <div class="header-navbar-shadow">
-        <script>
-            function demarrerMission() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'php/demarrer_mission.php',
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.status != 'success') {
-                            addAlert(data.message);
-                        }
+    <script>
+        function demarrerMission() {
+            $.ajax({
+                type: 'POST',
+                url: 'php/demarrer_mission.php',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status != 'success') {
+                        addAlert(data.message);
                     }
-                });
-                setTimeout(demarrerMission, 5000); // you could choose not to continue on failure...
-            }
-            setTimeout(demarrerMission, 5000);
-        </script>
-    </div>
+                }
+            });
+            setTimeout(demarrerMission, 5000); // you could choose not to continue on failure...
+        }
+        setTimeout(demarrerMission, 5000);
+    </script>
+    <div class="header-navbar-shadow"></div>
     <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top w-auto">
         <div class="navbar-wrapper">
             <div class="navbar-container content">
