@@ -17,6 +17,15 @@
         </script>
     </div>
     <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
+    <?php
+        $query = $bdd->prepare('SELECT upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres, E.nameentreprise FROM membres M, entreprise E WHERE M.id_session = E.id AND M.id = :id_membre');
+        $query->bindValue(':id_membre', $_SESSION['id_membre']);
+        $query->execute();
+        $infos_user = $query->fetch();
+    ?>
+    
+    <div class="header-navbar-shadow"></div>
+    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top w-auto">
         <div class="navbar-wrapper">
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
