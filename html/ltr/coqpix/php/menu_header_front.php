@@ -1,3 +1,19 @@
+    <script>
+        function demarrerMission() {
+            $.ajax({
+                type: 'POST',
+                url: 'php/demarrer_mission.php',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status != 'success') {
+                        addAlert(data.message);
+                    }
+                }
+            });
+            setTimeout(demarrerMission, 5000); // you could choose not to continue on failure...
+        }
+        setTimeout(demarrerMission, 5000);
+    </script>
     <?php
         $query = $bdd->prepare('SELECT upper(M.nom) AS nom, concat(ucase(left(M.prenom, 1)), lcase(substring(M.prenom, 2))) AS prenom, M.img_membres, E.nameentreprise FROM membres M, entreprise E WHERE M.id_session = E.id AND M.id = :id_membre');
         $query->bindValue(':id_membre', $_SESSION['id_membre']);
