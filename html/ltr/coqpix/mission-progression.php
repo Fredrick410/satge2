@@ -247,6 +247,8 @@ foreach ($tasks as $task) {
                                                                     $duree_effectuee_task = $now->diff($start)->format("%a"); //3
                                                                     if ($tasks[$i]['status_task'] === 'Terminé') {
                                                                         $pourcentage = 100;
+                                                                    } else if ($tasks[$i]['status_task'] === 'En attente') {
+                                                                        $pourcentage = 0;
                                                                     } else if ($end == $start) {
                                                                         $pourcentage = 99;
                                                                     } else if ($now >= $end) {
@@ -330,6 +332,8 @@ foreach ($tasks as $task) {
                                                                         $duree_effectuee_task = $now->diff($start)->format("%a"); //3
                                                                         if ($tasks[$i]['status_task'] === 'Terminé') {
                                                                             $pourcentage = 100;
+                                                                        } else if ($tasks[$i]['status_task'] === 'En attente') {
+                                                                            $pourcentage = 0;
                                                                         } else if ($end == $start) {
                                                                             $pourcentage = 99;
                                                                         } else if ($now >= $end) {
@@ -414,6 +418,8 @@ foreach ($tasks as $task) {
                                                                         $duree_effectuee_task = $now->diff($start)->format("%a"); //3
                                                                         if ($tasks[$i]['status_task'] === 'Terminé') {
                                                                             $pourcentage = 100;
+                                                                        } else if ($tasks[$i]['status_task'] === 'En attente') {
+                                                                            $pourcentage = 0;
                                                                         } else if ($end == $start) {
                                                                             $pourcentage = 99;
                                                                         } else if ($now >= $end) {
@@ -498,6 +504,8 @@ foreach ($tasks as $task) {
                                                                         $duree_effectuee_task = $now->diff($start)->format("%a"); //3
                                                                         if ($tasks[$i]['status_task'] === 'Terminé') {
                                                                             $pourcentage = 100;
+                                                                        } else if ($tasks[$i]['status_task'] === 'En attente') {
+                                                                            $pourcentage = 0;
                                                                         } else if ($end == $start) {
                                                                             $pourcentage = 99;
                                                                         } else if ($now >= $end) {

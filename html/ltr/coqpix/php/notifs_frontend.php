@@ -93,7 +93,67 @@
 
         // si c'est un ajout de membre
         
-		}
+		} else if ($result['type_demande'] === "taches demain"){
+
+			$notif = "Vous avez des tâches pour demain";
+            
+            ?>
+                    <a href="mission.php">
+                        <?php
+
+        // si ce sont des tâches pour demain
+        
+		} else if ($result['type_demande'] === "tache demain"){
+
+        $notif = "Vous avez une tâche pour demain";
+        
+        ?>
+                <a href="mission.php">
+                    <?php
+
+        // si c'est une tâche pour demain
+        
+        }  else if ($result['type_demande'] === "taches aujourd'hui"){
+
+			$notif = "Vous avez des tâches pour aujourd'hui";
+            
+            ?>
+                    <a href="mission.php">
+                        <?php
+
+        // si ce sont des tâches pour aujourd'hui
+        
+		} else if ($result['type_demande'] === "tache aujourd'hui"){
+
+        $notif = "Vous avez une tâche pour aujourd'hui";
+        
+        ?>
+                <a href="mission.php">
+                    <?php
+
+        // si c'est une tâche pour aujourd'hui
+        
+        } else if ($result['type_demande'] === "taches demarrent"){
+
+			$notif = "Vous avez des tâches démarrées pendant votre absence";
+            
+            ?>
+                    <a href="mission.php">
+                        <?php
+
+        // si ce sont des tâches démarrées pendant votre absence
+        
+		} else if ($result['type_demande'] === "tache demarre"){
+
+            $notif = "Vous avez une tâche démarrée pendant votre absence";
+        
+        ?>
+                <a href="mission.php">
+                    <?php
+
+        // si c'est une tâche démarrée pendant votre absence
+        
+        }
                
         ?>
 
@@ -101,7 +161,7 @@
                             <div class="media d-flex align-items-center border-0">
                                 <div class="media-left pr-0">
                                     <div class="avatar mr-1 m-0"><img
-                                            src="../../../src/img/astro1" alt="avatar"
+                                            src="../../../src/img/astro1.gif" alt="avatar"
                                             height="39" width="39"></div>
                                 </div>
                                 <div class="media-body">

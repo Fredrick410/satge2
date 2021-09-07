@@ -50,114 +50,161 @@ foreach ($missions as $mission) {
 
 // Pour chaque tache recuperer le nombre de commentaire
 foreach ($tasks as $task) {
-    foreach ($task as $tache) {
-        $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_comment FROM task_commentaire WHERE task_num = :num');
-        $pdoS->bindValue(':num', $tache['id']);
-        $pdoS->execute();
-        $task_comment_number[] = $pdoS->fetch();
+    if (count($task) == 0) {
+        $mission_task_comment_number[] = array();
+    } else {
+        foreach ($task as $tache) {
+            $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_comment FROM task_commentaire WHERE task_num = :num');
+            $pdoS->bindValue(':num', $tache['id']);
+            $pdoS->execute();
+            $task_comment_number[] = $pdoS->fetch();
+        }
+        if (isset($task_comment_number)) {
+            $mission_task_comment_number[] = $task_comment_number;
+        }
+        unset($task_comment_number);
     }
-    if (isset($task_comment_number)) {
-        $mission_task_comment_number[] = $task_comment_number;
-    }
-    unset($task_comment_number);
 }
 
 //print("<pre>" . print_r($mission_task_comment_number, true) . "</pre>");
 
 // Pour chaque tache recuperer le nombre de documents
 foreach ($tasks as $task) {
-    foreach ($task as $tache) {
-        $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_doc FROM task_doc WHERE task_num = :num');
-        $pdoS->bindValue(':num', $tache['id']);
-        $pdoS->execute();
-        $task_doc_number[] = $pdoS->fetch();
+    if (count($task) == 0) {
+        $mission_task_doc_number[] = array();
+    } else {
+        foreach ($task as $tache) {
+            $pdoS = $bdd->prepare('SELECT COUNT(*) as nb_doc FROM task_doc WHERE task_num = :num');
+            $pdoS->bindValue(':num', $tache['id']);
+            $pdoS->execute();
+            $task_doc_number[] = $pdoS->fetch();
+        }
+        if (isset($task_doc_number)) {
+            $mission_task_doc_number[] = $task_doc_number;
+        }
+        unset($task_doc_number);
     }
-    if (isset($task_doc_number)) {
-        $mission_task_doc_number[] = $task_doc_number;
-    }
-    unset($task_doc_number);
 }
 
 //print("<pre>". print_r($mission_task_doc_number,true)."</pre>");
 
 // Pour chaque tache recuperer les equipes
 foreach ($tasks as $task) {
-    foreach ($task as $tache) {
-        $pdoS = $bdd->prepare('SELECT * FROM tasks_teams INNER JOIN teams ON(tasks_teams.id_team = teams.id)  WHERE id_task = :num');
-        $pdoS->bindValue(':num', $tache['id']);
-        $pdoS->execute();
-        $task_teams[] = $pdoS->fetchAll();
-    }
-    if (!empty($task_teams)) {
-        if (isset($mission_task_teams)) {
-            for ($i = 0; $i < count($task_teams); $i++) {
-                for ($j = 0; $j < count($task_teams[$i]); $j++) {
-                    foreach ($mission_task_teams as $tache_teams) {
-                        foreach ($tache_teams as $teams) {
-                            $name_team = array_column($teams, 'name_team');
-                            $found_key = array_search($task_teams[$i][$j]['name_team'], $name_team);
-                            if ($found_key !== false) {
-                                $task_teams[$i][$j]['color'] = $teams[$found_key]['color'];
+    if (count($task) == 0) {
+        $mission_task_teams[] = array();
+    } else {
+        foreach ($task as $tache) {
+            $pdoS = $bdd->prepare('SELECT * FROM tasks_teams INNER JOIN teams ON(tasks_teams.id_team = teams.id)  WHERE id_task = :num');
+            $pdoS->bindValue(':num', $tache['id']);
+            $pdoS->execute();
+            $task_teams[] = $pdoS->fetchAll();
+        }
+        if (!empty($task_teams)) {
+            if (isset($mission_task_teams)) {
+                for ($i = 0; $i < count($task_teams); $i++) {
+                    for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                        foreach ($mission_task_teams as $tache_teams) {
+                            foreach ($tache_teams as $teams) {
+                                $name_team = array_column($teams, 'name_team');
+                                $found_key = array_search($task_teams[$i][$j]['name_team'], $name_team);
+                                if ($found_key !== false) {
+                                    $task_teams[$i][$j]['color'] = $teams[$found_key]['color'];
+                                }
+                            }
+                        }
+                        if (!isset($task_teams[$i][$j]['color'])) {
+                            $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
+                        }
+                    }
+                }
+            } else {
+                for ($i = 0; $i < count($task_teams); $i++) {
+                    if ($i == 0) {
+                        for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                            $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
+                        }
+                    } else {
+                        for ($j = 0; $j < count($task_teams[$i]); $j++) {
+                            for ($k = 0; $k < $i; $k++) {
+                                $name_team = array_column($task_teams[$k], 'name_team');
+                                $found_key = array_search($task_teams[$i][$j]['name_team'], $name_team);
+                                if ($found_key !== false) {
+                                    $task_teams[$i][$j]['color'] = $task_teams[$k][$found_key]['color'];
+                                }
                             }
                         }
                     }
-                    if (!isset($task_teams[$i][$j]['color'])) {
-                        $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
-                    }
                 }
             }
-        } else {
-            for ($i = 0; $i < count($task_teams); $i++) {
-                for ($j = 0; $j < count($task_teams[$i]); $j++) {
-                    $task_teams[$i][$j]['color'] = '#' . strtoupper(random_color());
-                }
-            }
+            $mission_task_teams[] = $task_teams;
         }
-        $mission_task_teams[] = $task_teams;
+        unset($task_teams);
     }
-    unset($task_teams);
 }
 //print("<pre>" . print_r($mission_task_teams, true) . "</pre>");
 
 
 // Pour chaque tache recuperer les membres
 foreach ($tasks as $task) {
-    foreach ($task as $tache) {
-        $pdoS = $bdd->prepare('SELECT * FROM tasks_membres INNER JOIN membres ON(tasks_membres.id_membre = membres.id)  WHERE id_task = :num');
-        $pdoS->bindValue(':num', $tache['id']);
-        $pdoS->execute();
-        $task_membres[] = $pdoS->fetchAll();
-    }
-    if (!empty($task_membres)) {
-        if (isset($mission_task_membres)) {
-            for ($i = 0; $i < count($task_membres); $i++) {
-                for ($j = 0; $j < count($task_membres[$i]); $j++) {
-                    foreach ($mission_task_membres as $tache_membres) {
-                        foreach ($tache_membres as $membres) {
-                            $prenoms_membres = array_column($membres, 'prenom');
-                            $found_key = array_search($task_membres[$i][$j]['prenom'], $prenoms_membres);
-                            if ($found_key !== false) {
-                                $task_membres[$i][$j]['color'] = $membres[$found_key]['color'];
+    if (count($task) == 0) {
+        $mission_task_membres[] = array();
+    } else {
+        foreach ($task as $tache) {
+            $pdoS = $bdd->prepare('SELECT * FROM tasks_membres INNER JOIN membres ON(tasks_membres.id_membre = membres.id)  WHERE id_task = :num');
+            $pdoS->bindValue(':num', $tache['id']);
+            $pdoS->execute();
+            $task_membres[] = $pdoS->fetchAll();
+        }
+        if (!empty($task_membres)) {
+            if (isset($mission_task_membres)) {
+                for ($i = 0; $i < count($task_membres); $i++) {
+                    for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                        foreach ($mission_task_membres as $tache_membres) {
+                            foreach ($tache_membres as $membres) {
+                                $noms_membres = array_column($membres, 'nom');
+                                $prenoms_membres = array_column($membres, 'prenom');
+                                for ($l = 0; $l < count($noms_membres); $l++) {
+                                    $name_membre[] = $noms_membres[$l] . " " . $prenoms_membres[$l];
+                                }
+                                $found_key = array_search($task_membres[$i][$j]['nom'] . " " . $task_membres[$i][$j]['prenom'], $name_membre);
+                                if ($found_key !== false) {
+                                    $task_membres[$i][$j]['color'] = $membres[$found_key]['color'];
+                                }
+                            }
+                        }
+                        if (!isset($task_membres[$i][$j]['color'])) {
+                            $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
+                        }
+                    }
+                }
+            } else {
+                for ($i = 0; $i < count($task_membres); $i++) {
+                    if ($i == 0) {
+                        for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                            $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
+                        }
+                    } else {
+                        for ($j = 0; $j < count($task_membres[$i]); $j++) {
+                            for ($k = 0; $k < $i; $k++) {
+                                $noms_membres = array_column($task_membres[$k], 'nom');
+                                $prenoms_membres = array_column($task_membres[$k], 'prenom');
+                                for ($l = 0; $l < count($noms_membres); $l++) {
+                                    $name_membre[] = $noms_membres[$l] . " " . $prenoms_membres[$l];
+                                }
+                                $found_key = array_search($task_membres[$i][$j]['nom'] . " " . $task_membres[$i][$j]['prenom'], $name_membre);
+                                if ($found_key !== false) {
+                                    $task_membres[$i][$j]['color'] = $task_membres[$k][$found_key]['color'];
+                                }
                             }
                         }
                     }
-                    if (!isset($task_membres[$i][$j]['color'])) {
-                        $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
-                    }
                 }
             }
-        } else {
-            for ($i = 0; $i < count($task_membres); $i++) {
-                for ($j = 0; $j < count($task_membres[$i]); $j++) {
-                    $task_membres[$i][$j]['color'] = '#' . strtoupper(random_color());
-                }
-            }
+            $mission_task_membres[] = $task_membres;
         }
-        $mission_task_membres[] = $task_membres;
+        unset($task_membres);
     }
-    unset($task_membres);
 }
-//print("<pre>". print_r($mission_task_membres,true)."</pre>");
 
 //On recupere la liste des membres de cette entreprise
 $pdoSttt = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
@@ -238,6 +285,25 @@ $etiq = $pdoSt->fetchAll();
 
         <?php
         }
+        ?><?php
+            foreach ($etiq as $etiquette) {
+                if ($etiquette['color'] != '#FFFFFF' or $etiquette['color'] != '#F5F5F5') {
+            ?>select option[value="<?= $etiquette['color'] ?>"] {
+            background-color: <?= $etiquette['color'] ?>;
+            color: white;
+        }
+
+        <?php
+                } else {
+        ?>select option[value="<?= $etiquette['color'] ?>"] {
+            background-color: <?= $etiquette['color'] ?>;
+            color: black;
+        }
+
+        <?php
+                }
+            }
+
         ?>
     </style>
 
@@ -316,7 +382,7 @@ $etiq = $pdoSt->fetchAll();
                                                 <i class="bx bx-tag align-middle mr-25"></i>
                                                 <select id="etiquette_task" class="form-control">
                                                     <?php foreach ($etiq as $etiquette) : ?>
-                                                        <option value="<?= $etiquette['color'] ?>"><?= $etiquette['name_etiq'] ?></option>
+                                                        <option value="<?= $etiquette['color'] ?>" style="background-color: <?= $etiquette['color'] ?>;"><?= $etiquette['name_etiq'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                                 <i onclick="newetiq()" class="bx bx-plus-circle cursor-pointer"></i>
@@ -329,47 +395,53 @@ $etiq = $pdoSt->fetchAll();
                                         </div>
                                         <div class="form-group">
                                             <label for="membres">Membres</label>
-                                            <?php
-                                            if (isset($membres) and count($membres) != 0) {
-                                            ?>
-                                                <select class="form-control js-example-basic-multiple" id="membres" multiple>
-                                                    <?php
-                                                    foreach ($membres as $membre) {
-                                                    ?>
-                                                        <option value="<?= $membre['id'] ?>"><?= $membre['nom'] . " " . $membre['prenom'] ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                Aucun membre
-                                            <?php
-                                            }
-                                            ?>
+                                            <div class="flex-grow-1 d-flex align-items-center form-group">
+                                                <?php
+                                                if (isset($membres) and count($membres) != 0) {
+                                                ?>
+                                                    <select class="form-control js-example-basic-multiple" id="membres" multiple>
+                                                        <?php
+                                                        foreach ($membres as $membre) {
+                                                        ?>
+                                                            <option value="<?= $membre['id'] ?>"><?= $membre['nom'] . " " . $membre['prenom'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    Aucun membre
+                                                <?php
+                                                }
+                                                ?>
+                                                <a href="membres-liste.php"><i class="bx bx-plus-circle cursor-pointer"></i></a>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="equipe">Equipe</label>
-                                            <?php
-                                            if (isset($teams) and count($teams) != 0) {
-                                            ?>
-                                                <select class="form-control js-example-basic-multiple" id="teams" multiple>
-                                                    <?php
-                                                    foreach ($teams as $team) {
-                                                    ?>
-                                                        <option value="<?= $team['id'] ?>"><?= $team['name_team'] ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <br>Aucune équipe
-                                            <?php
-                                            }
-                                            ?>
+                                            <div class="flex-grow-1 d-flex align-items-center form-group">
+                                                <?php
+                                                if (isset($teams) and count($teams) != 0) {
+                                                ?>
+                                                    <select class="form-control js-example-basic-multiple" id="teams" multiple>
+                                                        <?php
+                                                        foreach ($teams as $team) {
+                                                        ?>
+                                                            <option value="<?= $team['id'] ?>"><?= $team['name_team'] ?></option>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <br>Aucune équipe
+                                                <?php
+                                                }
+                                                ?>
+                                                <a href="teams-list.php"><i class="bx bx-plus-circle cursor-pointer"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                     <input type="hidden" id="tache">
@@ -618,6 +690,10 @@ $etiq = $pdoSt->fetchAll();
             $('#progression').on("click", function(e) {
                 window.location.href = "mission-progression.php";
             });
+
+            $('#etiquette_task').on("change", function(e) {
+                document.getElementById('etiquette_task').style.backgroundColor = document.getElementById('etiquette_task').value;
+            });
             $('.js-example-basic-multiple').select2();
             // Kanban Board and Item Data passed by json
             var kanban_board_data = [
@@ -645,22 +721,30 @@ $etiq = $pdoSt->fetchAll();
                                                         //print("<pre>". print_r($mission_task_teams[$i][$j],true)."</pre>");
                                                         $list_acronyme = [];
                                                         for ($k = 0; $k < count($mission_task_membres[$i][$j]); $k++) {
-                                                            $acronyme = "";
-                                                            $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
-                                                            foreach ($a as $value) {
-                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            if (empty($mission_task_membres[$i][$j][$k]['img_membres'])) {
+                                                                $acronyme = "";
+                                                                $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                                foreach ($a as $value) {
+                                                                    $acronyme .= strtoupper(substr($value, 0, 1));
+                                                                }
+                                                                $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
+                                                                $list_acronyme[] = $acronyme;
+                                                            } else {
+                                                                $list_acronyme[] = "../../../src/img/" . $mission_task_membres[$i][$j][$k]['img_membres'];
                                                             }
-                                                            $acronyme .= ';' . $mission_task_membres[$i][$j][$k]['color'];
-                                                            $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($mission_task_teams[$i][$j]); $k++) {
-                                                            $acronyme = "";
-                                                            $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
-                                                            foreach ($a as $value) {
-                                                                $acronyme .= strtoupper(substr($value, 0, 1));
+                                                            if (empty($mission_task_teams[$i][$j][$k]['photo_team'])) {
+                                                                $acronyme = "";
+                                                                $a = str_word_count($mission_task_teams[$i][$j][$k]['name_team'], 1);
+                                                                foreach ($a as $value) {
+                                                                    $acronyme .= strtoupper(substr($value, 0, 1));
+                                                                }
+                                                                $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
+                                                                $list_acronyme[] = $acronyme;
+                                                            } else {
+                                                                $list_acronyme[] = "../../../src/img/" . $mission_task_teams[$i][$j][$k]['photo_team'];
                                                             }
-                                                            $acronyme .= ';' . $mission_task_teams[$i][$j][$k]['color'];
-                                                            $list_acronyme[] = $acronyme;
                                                         }
                                                         for ($k = 0; $k < count($list_acronyme); $k++) {
                                                             if ($k != count($list_acronyme) - 1) {
@@ -1023,18 +1107,28 @@ $etiq = $pdoSt->fetchAll();
                     // check if users are defined or not and loop it for getting value from user's array
                     if (typeof $(board_item_el).attr("data-users") !== "undefined") {
                         for (kanban_users in kanban_board_data[kanban_data].item[kanban_item].users) {
-                            arr = kanban_board_data[kanban_data].item[kanban_item].users[kanban_users].split(';');
-                            kanban_users_name = arr[0];
-                            kanban_users_color = arr[1];
-                            console.log(kanban_users_name + ' ' + kanban_users_color);
-                            board_item_users +=
-                                '<li class="kanban-badge">' +
-                                '<div class="badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: ' +
-                                kanban_users_color +
-                                ' ;">' +
-                                kanban_users_name +
-                                "</div>" +
-                                "</li>";
+                            //console.log(kanban_board_data[kanban_data].item[kanban_item].users[kanban_users]);
+                            if (kanban_board_data[kanban_data].item[kanban_item].users[kanban_users].includes("img")) {
+                                board_item_users +=
+                                    '<li class="avatar pull-up my-0">' +
+                                    '<img class="media-object rounded-circle" src=" ' +
+                                    kanban_board_data[kanban_data].item[kanban_item].users[kanban_users] +
+                                    '" alt="Avatar" height="30" width="30">' +
+                                    "</li>";
+                            } else {
+                                arr = kanban_board_data[kanban_data].item[kanban_item].users[kanban_users].split(';');
+                                kanban_users_name = arr[0];
+                                kanban_users_color = arr[1];
+                                //console.log(kanban_users_name + ' ' + kanban_users_color);
+                                board_item_users +=
+                                    '<li class="kanban-badge avatar pull-up my-0">' +
+                                    '<div class="media-object rounded-circle badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: ' +
+                                    kanban_users_color +
+                                    ' ;">' +
+                                    kanban_users_name +
+                                    "</div>" +
+                                    "</li>";
+                            }
                         }
                     }
                     // check if dueDate is defined or not
@@ -1087,7 +1181,7 @@ $etiq = $pdoSt->fetchAll();
                             '<div class="kanban-footer-right">' +
                             '<div class="kanban-users">' +
                             board_item_badge +
-                            '<ul class="list-unstyled m-0 d-flex align-items-center">' +
+                            '<ul class="list-unstyled users-list m-0 d-flex align-items-center">' +
                             board_item_users +
                             "</ul>" +
                             "</div>" +
@@ -1350,7 +1444,7 @@ $etiq = $pdoSt->fetchAll();
                     success: function(data) {
                         if (data.status != 'success') {
                             addAlert(data.message);
-                        } else {    
+                        } else {
                             var nb_comment = $(kanban_curr_el).contents()[1].innerHTML;
                             nb_comment++;
                             $(kanban_curr_el).contents()[1].innerHTML = nb_comment;
@@ -1481,6 +1575,7 @@ $etiq = $pdoSt->fetchAll();
                                 dateecheance_task.set('select', moment(data.task.dateecheance_task, 'YYYY-MM-DD').format("DD-MM-YYYY"));
 
                                 $("#etiquette_task").val(data.task.color_etiq);
+                                document.getElementById('etiquette_task').style.backgroundColor = data.task.color_etiq;
                                 $("#color_etiq").val(data.task.color_etiq);
                                 var selected_membres = [];
                                 var selected_teams = [];
@@ -1526,6 +1621,7 @@ $etiq = $pdoSt->fetchAll();
                         if (data.status != 'success') {
                             addAlert(data.message);
                         } else {
+                            $('#posts-list').empty();
                             if (data.comments.length == 0) {
                                 $('#posts-list').append('Aucun commentaire disponible pour le moment');
                             } else {
