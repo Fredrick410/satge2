@@ -6,11 +6,12 @@
     require_once 'config.php';
 
     $num = $_GET['num'];
+    $etape= $_GET['etape'];
     $type = $_GET['type'];
 
     if (is_uploaded_file($_FILES['doc_files']['tmp_name'])) {
         echo "File ". $_FILES['doc_files']['name'] ." téléchargé avec succès.\n";
-        $dir = '../../../../src/fiscal/'.$type.'/';
+        $dir = '../../../../src/fiscal/'.$etape.'/';
 
         if(!is_dir($dir)){
             echo " Le répertoire de destination n'existe pas !";

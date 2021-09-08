@@ -10,7 +10,7 @@
     <div class="file-container">
         <div class="file-overlay"></div>
         <div class="file-wrapper">
-            <form action="php/insert_fiscaldoc.php?num=<?= $_GET['num'] ?>&type=<?= $_GET['type'] ?>" method="POST" enctype="multipart/form-data">
+            <form action="php/insert_fiscaldoc.php?num=<?= $_GET['num'] ?>&etape=<?= $_GET['etape'] ?>&type=<?= $_GET['type'] ?>" method="POST" enctype="multipart/form-data">
                 <input name="doc_files" class="file-input" id="js-file-input" type="file" onchange="this.form.submit();"/>
             </form>
             <div class="file-content">

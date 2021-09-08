@@ -62,6 +62,7 @@ require_once 'php/verif_session_connect_admin.php';
     .icon{color: #727E8C;}
     .icon:hover{color: #00fbff; opacity: 0.5; cursor: pointer;}
     .none-validation{display: none;}
+    .sizeright{font-size: 12px;}
 
     .bouge{
     overflow-y: auto;
@@ -131,24 +132,112 @@ require_once 'php/verif_session_connect_admin.php';
                         <!-- Detailed Fiscal View -->
                         <div class="fiscal-app-list">
                             <!-- fiscal details start -->
-                            <?php
-                                if($societe['doc_mandat'] !== ""){
-                                    if(substr($societe['doc_mandat'], -3) == "pdf"){
-                                        $societe_mandat = "pdf.png";
-                                    }
-                                    else{
-                                        $societe_mandat = "doc.png";
-                                    }
-                                }
-                                else{
-                                    $societe_mandat = "doc.png";
-                                }
-                            
-                            ?>
                             <section class="file-repository">
                                 <div class="row">
                                     <div class="col-12" style="padding: 0px;">
                                         <div class="collapsible fiscal-detail-head">
+                                            <!--First Phase start-->
+                                            <?php
+                                                //Nombre fichier phase1
+                                
+                                                if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
+                                                    $t_doc_mandat = "1";
+                                                }else{
+                                                    $t_doc_mandat = "0";
+                                                }
+                                        
+                                                if($societe['doc_cerfa27'] !== "" AND is_null($societe['doc_cerfa27'])==false ){
+                                                    $t_doc_cerfa27 = "1";
+                                                }else{
+                                                    $t_doc_cerfa27 = "0";
+                                                }
+                                                
+                                                if($societe['doc_cour'] !== "" AND is_null($societe['doc_cour'])==false ){
+                                                    $t_doc_cour = "1";
+                                                }else{
+                                                    $t_doc_cour = "0";
+                                                } 
+                                                
+                                                if($societe['doc_fec'] !== "" AND is_null($societe['doc_fec'])==false ){
+                                                    $t_doc_fec = "1";
+                                                }else{
+                                                    $t_doc_fec = "0";
+                                                }
+                                                
+                                                if($societe['doc_rdv'] !== "" AND is_null($societe['doc_rdv'])==false ){
+                                                    $t_doc_rdv = "1";
+                                                }else{
+                                                    $t_doc_rdv = "0";
+                                                }
+
+                                                $t_phase1 = '' . ($t_doc_mandat + $t_doc_cerfa27 + $t_doc_cour + $t_doc_fec + $t_doc_rdv) . '/5';
+
+                                
+                                                //Mandat
+                                                if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
+                                                    if(substr($societe['doc_mandat'], -3) == "pdf"){
+                                                        $societe_mandat = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_mandat = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_mandat = "doc.png";
+                                                }
+                            
+                                                //Cerfa
+                                                if($societe['doc_cerfa27'] !== "" AND is_null($societe['doc_cerfa27'])==false ){
+                                                    if(substr($societe['doc_cerfa27'], -3) == "pdf"){
+                                                        $societe_cerfa27 = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_cerfa27 = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_cerfa27 = "doc.png";
+                                                }
+
+                                                //Courrier Annexe
+                                                if($societe['doc_cour'] !== "" AND is_null($societe['doc_cour'])==false ){
+                                                    if(substr($societe['doc_cour'], -3) == "pdf"){
+                                                        $societe_cour = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_cour = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_cour = "doc.png";
+                                                }
+
+                                                //FEC
+                                                if($societe['doc_fec'] !== "" AND is_null($societe['doc_fec'])==false ){
+                                                    if(substr($societe['doc_fec'], -3) == "pdf"){
+                                                        $societe_fec = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_fec = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_fec = "doc.png";
+                                                }
+
+                                                //Attestation RDV
+                                                if($societe['doc_rdv'] !== "" AND is_null($societe['doc_rdv'])==false ){
+                                                    if(substr($societe['doc_rdv'], -3) == "pdf"){
+                                                        $societe_rdv = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_rdv = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_rdv = "doc.png";
+                                                }
+                                            ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <!---->
                                                 <div id="headingCollapse1" class="card-header d-flex justify-content-between align-items-center" 
@@ -164,6 +253,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <span class="text-primary">Phase de premier rendez-vous</span>
                                                         <small class="text-muted d-block">Mandat, Cerfa 3927-SD, Courrier Annexe, Ensemble des fichiers FEC, Attestation de Rdv</small>
                                                     </div>
+                                                    <div class="information d-sm-flex d-none align-items-center">        
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
+                                                        </div>
+                                                        <p class="sizeright <?php if($t_phase1 == "5/5"){echo "success";}else{echo "warning";} ?>"><?= $t_phase1 ?></p>
+                                                    </div>
                                                 </div>
                                                 <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
                                                     <div class="card-content">
@@ -172,13 +267,13 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Mandat :</small>                                   
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == "" OR is_null($societe['doc_mandat'])==true){echo "warning";}else{echo "success";} ?>">Mandat :</small>                                   
                                                                             <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
                                                                             <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
                                                                         </div>
 
-                                                                        <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                        <div class="col-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase1/mandat&type=mandat">
                                                                                 <div class="image-upload">
                                                                                     <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
@@ -186,7 +281,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_mandat'] == "" OR is_null($societe['doc_mandat'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -195,21 +290,21 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Cerfa 3927-SD :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_cerfa27'] == "" OR is_null($societe['doc_cerfa27'])==true){echo "warning";}else{echo "success";} ?>">Cerfa 3927-SD :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_cerfa27 ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_cerfa27'] ?></small>
                                                                         </div>
 
-                                                                        <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                        <div class="col-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase1/cerfa_27&type=cerfa27">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_cerfa27'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_cerfa27'] == "" OR is_null($societe['doc_cerfa27'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/cerfa_27/<?= $societe['doc_cerfa27'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -218,21 +313,21 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Courrier Annexe :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_cour'] == "" OR is_null($societe['doc_cour'])==true){echo "warning";}else{echo "success";} ?>">Courrier Annexe :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_cour ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_cour'] ?></small>
                                                                         </div>
 
-                                                                        <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                        <div class="col-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase1/courrier&type=cour">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_cour'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_cour'] == "" OR is_null($societe['doc_cour'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/courrier/<?= $societe['doc_cour'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -241,21 +336,21 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Ensemble des fichiers FEC :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_fec'] == "" OR is_null($societe['doc_fec'])==true){echo "warning";}else{echo "success";} ?>">Ensemble des fichiers FEC :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_fec ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_fec'] ?></small>
                                                                         </div>
 
-                                                                        <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                        <div class="col-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase1/fichier_FEC&type=fec">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_fec'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_fec'] == "" OR is_null($societe['doc_fec'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/fichier_FEC/<?= $societe['doc_fec'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -264,21 +359,21 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Attestation de Rdv :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_rdv'] == "" OR is_null($societe['doc_rdv'])==true){echo "warning";}else{echo "success";} ?>">Attestation de rendez-vous :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_rdv ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_rdv'] ?></small>
                                                                         </div>
 
-                                                                        <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                        <div class="col-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase1/attestation_RDV&type=rdv">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_rdv'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_rdv'] == "" OR is_null($societe['doc_rdv'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/attestation_RDV/<?= $societe['doc_rdv'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -289,8 +384,52 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!---->
-                                            <!---->
+                                            <!--First Phase end-->
+                                            <!--Second Phase start-->
+                                            <?php
+                                                //Nombre fichier phase2
+
+                                                if($societe['doc_mail'] !== "" AND is_null($societe['doc_mail'])==false ){
+                                                    $t_doc_mail = "1";
+                                                }else{
+                                                    $t_doc_mail = "0";
+                                                }
+
+                                                if($societe['doc_noteV'] !== "" AND is_null($societe['doc_noteV'])==false ){
+                                                    $t_doc_noteV = "1";
+                                                }else{
+                                                    $t_doc_noteV = "0";
+                                                }
+
+                                                $t_phase2 = '' . ($t_doc_mail + $t_doc_noteV) . '/2';
+
+                                                //Courrier
+                                                if($societe['doc_mail'] !== "" AND is_null($societe['doc_mail'])==false ){
+                                                    if(substr($societe['doc_mail'], -3) == "pdf"){
+                                                        $societe_mail = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_mail = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_mail = "doc.png";
+                                                }
+                                                
+                                                //Note interne (phase verification/contradictoire)
+                                                if($societe['doc_noteV'] !== "" AND is_null($societe['doc_noteV'])==false ){
+                                                    if(substr($societe['doc_noteV'], -3) == "pdf"){
+                                                        $societe_noteV = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_noteV = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_noteV = "doc.png";
+                                                }
+                                                
+                                            ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse2" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
@@ -302,8 +441,15 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                     </div>
                                                     <div class="media-body mt-25">
-                                                        <span class="text-primary">Fichiers FEC</span>
-                                                        <small class="text-muted d-block">Attestation de dépôt</small>
+                                                        <span class="text-primary">Phase de vérification et contradictoire</span>
+                                                        <small class="text-muted d-block">Courrier / Mail, Note interne</small>
+                                                    </div>
+
+                                                    <div class="information d-sm-flex d-none align-items-center">        
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
+                                                        </div>
+                                                        <p class="sizeright <?php if($t_phase2 == "2/2"){echo "success";}else{echo "warning";} ?>"><?= $t_phase2 ?></p>
                                                     </div>
                                                 </div>
                                                 <div id="collapse2" role="tabpanel" aria-labelledby="headingCollapse2" class="collapse">
@@ -313,21 +459,44 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mail'] == "" OR is_null($societe['doc_mail'])==true){echo "warning";}else{echo "success";} ?>">Courrier/Mail :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mail ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mail'] ?></small>
                                                                         </div>
 
                                                                         <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase2/mail&type=mail">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mail'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_mail'] == "" OR is_null($societe['doc_mail'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase2/mail/<?= $societe['doc_mail'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_noteV'] == "" OR is_null($societe['doc_noteV'])==true){echo "warning";}else{echo "success";} ?>">Note Interne :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_noteV ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_noteV'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase2/note_int&type=noteV">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_noteV'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_noteV'] == "" OR is_null($societe['doc_noteV'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase2/note_int/<?= $societe['doc_noteV'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -338,8 +507,69 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                 </div>
                                             </div>   
-                                            <!---->
-                                            <!---->
+                                            <!--Second Phase end-->
+                                            <!--Third Phase start-->
+                                            <?php
+                                                if($societe['doc_cerfa24'] !== "" AND is_null($societe['doc_cerfa24'])==false ){
+                                                    $t_doc_cerfa24 = "1";
+                                                }else{
+                                                    $t_doc_cerfa24 = "0";
+                                                }
+
+                                                if($societe['doc_cerfa26'] !== "" AND is_null($societe['doc_cerfa26'])==false ){
+                                                    $t_doc_cerfa26 = "1";
+                                                }else{
+                                                    $t_doc_cerfa26 = "0";
+                                                }
+
+                                                if($societe['doc_contest'] !== "" AND is_null($societe['doc_contest'])==false ){
+                                                    $t_doc_contest = "1";
+                                                }else{
+                                                    $t_doc_contest = "0";
+                                                }
+
+                                                $t_phase3 = '' . ($t_doc_cerfa24 + $t_doc_cerfa26 + $t_doc_contest) . '/3';
+
+                                                //Cerfa 3924
+                                                if($societe['doc_cerfa24'] !== "" AND is_null($societe['doc_cerfa24'])==false ){
+                                                    if(substr($societe['doc_cerfa24'], -3) == "pdf"){
+                                                        $societe_cerfa24 = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_cerfa24 = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_cerfa24 = "doc.png";
+                                                }
+
+                                                //Cerfa 3926
+                                                if($societe['doc_cerfa26'] !== "" AND is_null($societe['doc_cerfa26'])==false ){
+                                                    if(substr($societe['doc_cerfa26'], -3) == "pdf"){
+                                                        $societe_cerfa26 = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_cerfa26 = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_cerfa26 = "doc.png";
+                                                }
+
+                                                //Courrier contestation
+                                                if($societe['doc_contest'] !== "" AND is_null($societe['doc_contest'])==false ){
+                                                    if(substr($societe['doc_contest'], -3) == "pdf"){
+                                                        $societe_contest = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_contest = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_contest = "doc.png";
+                                                }
+
+                                            ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse3" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
@@ -351,8 +581,14 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                     </div>
                                                     <div class="media-body mt-25">
-                                                        <span class="text-primary">Fichiers FEC</span>
-                                                        <small class="text-muted d-block">Attestation de dépôt</small>
+                                                        <span class="text-primary">Phase de proposition de rectification</span>
+                                                        <small class="text-muted d-block">Cerfa 3924, Cerfa 3926, Courrier contestation</small>
+                                                    </div>
+                                                    <div class="information d-sm-flex d-none align-items-center">        
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
+                                                        </div>
+                                                        <p class="sizeright <?php if($t_phase3 == "3/3"){echo "success";}else{echo "warning";} ?>"><?= $t_phase3 ?></p>
                                                     </div>
                                                 </div>
                                                 <div id="collapse3" role="tabpanel" aria-labelledby="headingCollapse3" class="collapse">
@@ -362,21 +598,67 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_cerfa24'] == ""){echo "warning";}else{echo "success";} ?>">Cerfa 3924 :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_cerfa24 ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_cerfa24'] ?></small>
                                                                         </div>
 
                                                                         <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase3/cerfa_24&type=cerfa24">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_cerfa24'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_cerfa24'] == "" OR is_null($societe['doc_cerfa24'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase3/cerfa_24/<?= $societe['doc_cerfa24'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_cerfa26'] == ""){echo "warning";}else{echo "success";} ?>">Cerfa 3926 :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_cerfa26 ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_cerfa26'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase3/cerfa_26&type=cerfa26">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_cerfa26'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_cerfa26'] == "" OR is_null($societe['doc_cerfa26'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase3/cerfa_26/<?= $societe['doc_cerfa26'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_contest'] == ""){echo "warning";}else{echo "success";} ?>">Courrier contestation :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_contest ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_contest'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase3/courrier_contest&type=contest">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_contest'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_contest'] == "" OR is_null($societe['doc_contest'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase3/courrier_contest/<?= $societe['doc_contest'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -387,11 +669,54 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                 </div>
                                             </div>
-                                                                                        <!---->
-                                            <!---->
+                                            <!--Third Phase end-->
+                                            <!--Fourth Phase start-->
+                                            <?php
+                                                if($societe['doc_saisine'] !== "" AND is_null($societe['doc_saisine'])==false ){
+                                                    $t_doc_saisine = "1";
+                                                }else{
+                                                    $t_doc_saisine = "0";
+                                                }
+
+                                                if($societe['doc_noteI'] !== "" AND is_null($societe['doc_noteI'])==false ){
+                                                    $t_doc_noteI = "1";
+                                                }else{
+                                                    $t_doc_noteI = "0";
+                                                }
+
+                                                $t_phase4 = '' . ($t_doc_saisine + $t_doc_noteI) . '/2';
+
+                                                //Saisine
+                                                if($societe['doc_saisine'] !== "" AND is_null($societe['doc_saisine'])==false ){
+                                                    if(substr($societe['doc_saisine'], -3) == "pdf"){
+                                                        $societe_saisine = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_saisine = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_saisine = "doc.png";
+                                                }
+
+                                                //Note Interne phase4
+                                                if($societe['doc_noteI'] !== "" AND is_null($societe['doc_noteI'])==false ){
+                                                    if(substr($societe['doc_noteI'], -3) == "pdf"){
+                                                        $societe_noteI = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_noteI = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_noteI = "doc.png";
+                                                }
+ 
+                                            
+                                            ?>
                                             <div class="card collapse-header" role="tablist">
-                                                <div id="headingCollapse3" class="card-header d-flex justify-content-between align-items-center" 
-                                                data-toggle="collapse" role="tab" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                                <div id="headingCollapse4" class="card-header d-flex justify-content-between align-items-center" 
+                                                data-toggle="collapse" role="tab" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
                                                     <div>
                                                         <div class="pr-1">
                                                             <div class="avatar mr-75">                                                                   
@@ -400,32 +725,61 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                     </div>
                                                     <div class="media-body mt-25">
-                                                        <span class="text-primary">Fichiers FEC</span>
-                                                        <small class="text-muted d-block">Attestation de dépôt</small>
+                                                        <span class="text-primary">Phase Contentieuse Impôt</span>
+                                                        <small class="text-muted d-block">Courrier se saisine par le chef de Brigade / l'interlocuteur / la Comission Départementale, Note interne</small>
+                                                    </div>
+                                                    <div class="information d-sm-flex d-none align-items-center">        
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
+                                                        </div>
+                                                        <p class="sizeright <?php if($t_phase4 == "2/2"){echo "success";}else{echo "warning";} ?>"><?= $t_phase4 ?></p>
                                                     </div>
                                                 </div>
-                                                <div id="collapse3" role="tabpanel" aria-labelledby="headingCollapse3" class="collapse">
+                                                <div id="collapse4" role="tabpanel" aria-labelledby="headingCollapse4" class="collapse">
                                                     <div class="card-content">
                                                         <div class="card-footer pt-0 border-top text-center" >
                                                             <ul class="list-unstyled mb-0">
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_mandat'] == ""){echo "warning";}else{echo "success";} ?>">Piece d'identitée :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_mandat ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_mandat'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_saisine'] == ""){echo "warning";}else{echo "success";} ?>">Courrier se saisine par le chef de Brigade / l'interlocuteur / la Comission Départementale :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_saisine ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_saisine'] ?></small>
                                                                         </div>
 
                                                                         <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&type=mandat">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>etape=Phase4/saisine&type=saisine">
                                                                                 <div class="image-upload">
-                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_mandat'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_saisine'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
 
                                                                         <div class="col-md-1">
-                                                                            <a class="<?php if($societe['doc_mandat'] == ""){echo "nonedoc";} ?>" href="../../../src/fiscal/mandat/<?= $societe['doc_mandat'] ?>" target="_blank">
+                                                                            <a class="<?php if($societe['doc_saisine'] == "" OR is_null($societe['doc_saisine'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase4/saisine/<?= $societe['doc_saisine'] ?>" target="_blank">
+                                                                                <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_noteI'] == ""){echo "warning";}else{echo "success";} ?>">Note interne :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_noteI ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_noteI'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col-md-1-md-1">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>etape=Phase4/note_int&type=noteI">
+                                                                                <div class="image-upload">
+                                                                                    <div class="livicon-evo" data-options=" name: <?php if($societe['doc_noteI'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_noteI'] == "" OR is_null($societe['doc_noteI'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase4/note_int/<?= $societe['doc_noteI'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
@@ -436,16 +790,51 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--Fourth Phase end-->
+                                            <!--Fifth Phase start-->
+                                            <div class="card collapse-header" role="tablist">
+                                                <div id="headingCollapse5" class="card-header d-flex justify-content-between align-items-center" 
+                                                data-toggle="collapse" role="tab" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                                    <div>
+                                                        <div class="pr-1">
+                                                            <div class="avatar mr-75">                                                                   
+                                                                <div class="livicon-evo" data-options=" name: briefcase.svg; size: 40px "></div>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="media-body mt-25">
+                                                        <span class="text-primary">Phase Conctentieuse Administrative</span>
+                                                        <small class="text-muted d-block">Identification compte en ligne telecours citoyen</small>
+                                                    </div>
+                                                    <div class="information d-sm-flex d-none align-items-center">        
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
+                                                        </div>
+                                                        <p class="sizeright">0/1</p>
+                                                    </div>
+                                                </div>
+                                                <div id="collapse5" role="tabpanel" aria-labelledby="headingCollapse5" class="collapse">
+                                                    <div class="card-content">
+                                                        <div class="card-footer pt-0 border-top text-center" >
+                                                            <ul class="list-unstyled mb-0">                                                                
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text">que mettre? doc pdf ?</small>
+                                                                        </div>                                                                    
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--Fifth Phase end-->
                                         </div>
                                     </div>
                                 </div>
                             </section>
-                            
                             <!-- fiscal details end -->
-                            <div class="form-group text-center">
-                                <p class="compose-btn esp">Courrier ?</p>
-                            </div>
-
                                 
                             <!-- Simple Validation start -->
                             <section class="simple-validation">
