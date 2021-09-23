@@ -139,17 +139,43 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <th class="text-center">
                                                                 Nom société                                                                
                                                             </th>
-                                                            <th class="text-center">Objet control dossier</th>
+                                                            <th class="text-center">Objet du control</th>
                                                             <th class="text-center">Etat dossier</th>
                                                             <th class="text-center">Action</th>                                                        
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php 
-                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut = "PROCESS" ');
+                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut != "FINISH" ');
                                                             $pdoSt->execute(); 
                                                             $donnee = $pdoSt->fetchAll();
                                                             foreach($donnee as $donnees):
+                                                                // Statut de la barre de suivi
+                                                                if($donnees['statut'] == "Phase de premier rendez-vous"){
+                                                                    $nb_etape_valide = 0;
+                                                                }else if($donnees['statut'] == "Phase de vérification et contradictoire"){
+                                                                    $nb_etape_valide = 1;
+                                                                    }else if($donnees['statut'] == "Phase de proposition de rétification"){
+                                                                        $nb_etape_valide = 2;
+                                                                        }else if($donnees['statut'] == "Phase Contentieuse / Impôt"){
+                                                                            $nb_etape_valide = 3;
+                                                                            }else if($donnees['statut'] ==  "Phase Conctentieuse Administrative"){
+                                                                                $nb_etape_valide = 4;
+                                                                            }
+                                                                //
+                                                                if($donnees['object_control'] == "ISTVA"){
+                                                                    $object_display="Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)";
+                                                                }
+                                                                if($donnees['object_control'] == "IRTVA"){
+                                                                    $object_display="Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)";
+                                                                }
+                                                                if($donnees['object_control'] == "IR"){
+                                                                    $object_display="Impôt sur le revenu (IR)";
+                                                                }
+                                                                if($donnees['object_control'] == "TVA"){
+                                                                    $object_display="Taxe sur la valeur ajoutée (TVA)";
+                                                                }
+                                                                
                                                         ?>
                                                         <tr>
                                                             <td class="text-center">
@@ -157,8 +183,16 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <?= $donnees['name_entreprise'] ?>
                                                                 </a>                                                                
                                                             </td>
-                                                            <td class="text-center">Objet</td>
-                                                            <td class="text-center">Etat</td>
+                                                            <td class="text-center"><?= $object_display ?></td>
+                                                            <td class="text-center">
+                                                                <div class="activity-progress">
+                                                                    <p class="text-muted d-inline-block mb-50">Etat du dossier : <?= $donnees['statut'] ?></p>
+                                                                    <p class="float-right"><?= $nb_etape_valide ?> / 5</p>
+                                                                    <div class="progress progress-bar-yellow progress-sm">
+                                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $nb_etape_valide/5 ?>" style="width:<?= 100*$nb_etape_valide/5 ?>%"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
                                                             <td class="text-center">
                                                                 <i class='bx bxs-pencil'></i>
                                                                 <i class='bx bxs-trash'></i>
@@ -248,7 +282,7 @@ require_once 'php/verif_session_connect_admin.php';
                                             <input type="date" name="date_control_begin" required>
                                         
                                             <label for="">Date fin contrôle :</label> 
-                                            <input type="date" name="date_control_end"required>
+                                            <input type="date" name="date_control_end" value="">
                                         </div>
                                     </div>
                                     <fieldset class="form-group">

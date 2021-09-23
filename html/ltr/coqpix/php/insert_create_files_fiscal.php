@@ -8,7 +8,14 @@ require_once 'verif_session_connect_admin.php';
 
     $name_entreprise = $_POST['crea_societe'];
     $date_control_begin = $_POST['date_control_begin'];
-    $date_control_end = $_POST['date_control_end'];
+    
+    if(isset($_POST['date_control_end'])){
+       
+        $date_control_end = $_POST['date_control_end'];
+    }else{
+        $date_control_end = "";
+    }
+    
     $object_control = $_POST['object_control'];
     
 
@@ -19,7 +26,7 @@ require_once 'verif_session_connect_admin.php';
         htmlspecialchars($date_control_begin),
         htmlspecialchars($date_control_end),
         htmlspecialchars($object_control),
-        htmlspecialchars("PROCESS")
+        htmlspecialchars("Phase de premier rendez-vous")
     ));
 
     header('Location: ../control-fiscal.php');

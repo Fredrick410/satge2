@@ -12,6 +12,71 @@ require_once 'php/verif_session_connect_admin.php';
     $pdoSta->execute();
     $societe = $pdoSta->fetch();
 
+    if(isset($_POST['date_begin'])){
+        $date_control_begin = htmlspecialchars($_POST['date_begin']);
+        if($date_control_begin !== ""){
+            $sql = $bdd->prepare('UPDATE fiscal SET date_control_begin=:date_control_begin WHERE id=:num LIMIT 1');
+            $sql->bindValue(':date_control_begin', $date_control_begin);
+            $sql->bindValue(':num', $_GET['num']);
+            $sql->execute();
+
+        }else{
+            $date_control_begin2 = substr($societe['date_control_begin'], 0, -5);        
+            $sql = $bdd->prepare('UPDATE fiscal SET date_control_begin=:date_control_begin WHERE id=:num LIMIT 1');
+            $sql->bindValue(':date_control_begin', $date_control_begin2);
+            $sql->bindValue(':num', $_GET['num']);
+            $sql->execute();
+            
+        }
+        
+        header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
+        exit();
+    }
+
+    if(isset($_POST['date_end'])){
+        $date_control_end = htmlspecialchars($_POST['date_end']);
+        if($date_control_end !== ""){
+            $sql = $bdd->prepare('UPDATE fiscal SET date_control_end=:date_control_end WHERE id=:num LIMIT 1');
+            $sql->bindValue(':date_control_end', $date_control_end);
+            $sql->bindValue(':num', $_GET['num']);
+            $sql->execute();
+
+        }else{
+            $date_control_end2 = substr($societe['date_control_end'], 0, -5);        
+            $sql = $bdd->prepare('UPDATE fiscal SET date_control_end=:date_control_end WHERE id=:num LIMIT 1');
+            $sql->bindValue(':date_control_end', $date_control_end2);
+            $sql->bindValue(':num', $_GET['num']);
+            $sql->execute();
+            
+        }
+        
+        header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
+        exit();
+    }
+
+    if(isset($_POST['control_obj'])){
+        $object_control = htmlspecialchars($_POST['control_obj']);
+
+        if($object_control !== ""){        
+            $sql = $bdd->prepare('UPDATE fiscal SET object_control=:object_control WHERE id=:num LIMIT 1');
+            $sql->bindValue(':object_control', $object_control);
+            $sql->bindValue(':num', $_GET['num']);
+            $sql->execute();
+        
+        }else{
+            $object_control2 = substr($societe['object_control'], 0, -5);        
+            $sql = $bdd->prepare('UPDATE fiscal SET object_control=:object_control WHERE id=:num LIMIT 1');
+            $sql->bindValue(':object_control', $object_control2);
+            $sql->bindValue(':num', $_GET['num']);
+            $sql->execute();
+
+        }
+                
+        header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
+        exit();
+    }
+        
+
 ?>
 <!DOCTYPE html>
 <html class="loading" lang="fr" data-textdirection="ltr">
@@ -64,14 +129,16 @@ require_once 'php/verif_session_connect_admin.php';
     .none-validation{display: none;}
     .sizeright{font-size: 12px;}
 
+    .sizebar{margin: 10px auto; width: 500px; }
+
     .bouge{
-    overflow-y: auto;
-    scrollbar-color: #e5e5e5 white;
-    scrollbar-width: thin;
-    border-radius: 10px;
-    overflow-x:hidden;
+        overflow-y: auto;
+        scrollbar-color: #e5e5e5 white;
+        scrollbar-width: thin;
+        border-radius: 10px;
+        overflow-x:hidden;
     }
-    
+
     .image-upload > input {
         display: none;
     }
@@ -238,8 +305,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     $societe_rdv = "doc.png";
                                                 }
                                             ?>
-                                            <div class="card collapse-header" role="tablist">
-                                                <!---->
+                                            <div class="card collapse-header" role="tablist">                                                
                                                 <div id="headingCollapse1" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
                                                     <div>
@@ -725,7 +791,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </div>
                                                     </div>
                                                     <div class="media-body mt-25">
-                                                        <span class="text-primary">Phase Contentieuse Impôt</span>
+                                                        <span class="text-primary">Phase Contentieuse / Impôt</span>
                                                         <small class="text-muted d-block">Courrier se saisine par le chef de Brigade / l'interlocuteur / la Comission Départementale, Note interne</small>
                                                     </div>
                                                     <div class="information d-sm-flex d-none align-items-center">        
@@ -748,7 +814,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>
 
                                                                         <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>etape=Phase4/saisine&type=saisine">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase4/saisine&type=saisine">
                                                                                 <div class="image-upload">
                                                                                     <div class="livicon-evo" data-options=" name: <?php if($societe['doc_saisine'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
@@ -771,7 +837,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>
 
                                                                         <div class="col-md-1-md-1">
-                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>etape=Phase4/note_int&type=noteI">
+                                                                            <a href="control-fiscal-upload.php?num=<?= $_GET['num'] ?>&etape=Phase4/note_int&type=noteI">
                                                                                 <div class="image-upload">
                                                                                     <div class="livicon-evo" data-options=" name: <?php if($societe['doc_noteI'] == ""){echo "plus-alt";}else{echo "morph-link";} ?>.svg; size: 25px "></div>
                                                                                 </div>
@@ -792,6 +858,28 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                             <!--Fourth Phase end-->
                                             <!--Fifth Phase start-->
+                                            <?php
+                                                if($societe['doc_telecours'] !== "" AND is_null($societe['doc_telecours'])==false ){
+                                                    $t_doc_telecours = "1";
+                                                }else{
+                                                    $t_doc_telecours = "0";
+                                                }
+
+                                                $t_phase5 = '' . ($t_doc_telecours) . '/1';
+
+                                                //Saisine
+                                                if($societe['doc_telecours'] !== "" AND is_null($societe['doc_telecours'])==false ){
+                                                    if(substr($societe['doc_telecours'], -3) == "pdf"){
+                                                        $societe_telecours = "pdf.png";
+                                                    }
+                                                    else{
+                                                        $societe_telecours = "doc.png";
+                                                    }
+                                                }
+                                                else{
+                                                    $societe_telecours = "doc.png";
+                                                }
+                                            ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse5" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
@@ -810,7 +898,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
                                                         </div>
-                                                        <p class="sizeright">0/1</p>
+                                                        <p class="sizeright <?php if($t_phase5 == "1/1"){echo "success";}else{echo "warning";} ?>"><?= $t_phase5 ?></p>
                                                     </div>
                                                 </div>
                                                 <div id="collapse5" role="tabpanel" aria-labelledby="headingCollapse5" class="collapse">
@@ -819,9 +907,31 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <ul class="list-unstyled mb-0">                                                                
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
+                                                                        <!-- REdirection + Log Telecours -->
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text">que mettre? doc pdf ?</small>
-                                                                        </div>                                                                    
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_telecours'] == ""){echo "warning";}else{echo "success";} ?>">addresse mail :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_telecours ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_telecours'] ?></small>
+                                                                        </div>
+
+                                                                        <div class="col">
+                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_telecours'] == ""){echo "warning";}else{echo "success";} ?>">mot de passe :</small>                                   
+                                                                            <img src="../../../app-assets/images/icon/<?= $societe_telecours ?>" height="30" alt="psd.png">
+                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_telecours'] ?></small>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+                                                                <li class="cursor-pointer pb-25">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <a href="https://citoyens.telerecours.fr/#/authentication">
+                                                                                <button type="button" class="btn-send btn btn-primary">
+                                                                                    <i class='bx mr-25'></i> 
+                                                                                    <span class="d-sm-inline d-none">Télérecours citoyens</span>
+                                                                                </button>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -835,7 +945,7 @@ require_once 'php/verif_session_connect_admin.php';
                                 </div>
                             </section>
                             <!-- fiscal details end -->
-                                
+                            
                             <!-- Simple Validation start -->
                             <section class="simple-validation">
                                 <div class="row">
@@ -843,62 +953,169 @@ require_once 'php/verif_session_connect_admin.php';
                                         <div class="card">
                                             <div class="card-header text-center">
                                                 <h4 class="card-title"><?= $societe['name_entreprise'] ?></h4>
-                                                barre chargement
+                                                <?php
+                                                    $num = $_GET['num'];
+
+                                                    if($t_phase1 == "5/5"){
+                                                        $nb_etape_valide=1;
+                                                        $etat_dossier="Phase de vérification et contradictoire";
+                                                        if($t_phase2 == "2/2"){
+                                                            $nb_etape_valide=2;
+                                                            $etat_dossier="Phase de proposition de rétification";
+                                                            if($t_phase3 == "3/3"){
+                                                                $nb_etape_valide=3;
+                                                                $etat_dossier="Phase Contentieuse / Impôt";
+                                                                if($t_phase4 == "2/2"){
+                                                                    $nb_etape_valide=4;
+                                                                    $etat_dossier="Phase Conctentieuse Administrative";
+                                                                }
+                                                            }
+                                                        }
+                                                    }else{
+                                                        $nb_etape_valide=0;
+                                                        $etat_dossier="Phase de premier rendez-vous";
+                                                    }
+
+                                                    $update = $bdd->prepare('UPDATE fiscal SET statut = ? WHERE id = ?');                                                    
+                                                    $update->execute(array( $etat_dossier, $num ));
+                            
+                                                ?>                                               
+                                                <div class="activity-progress sizebar">
+                                                    <p class="text-muted d-inline-block mb-50">Etat du dossier : <?= $etat_dossier ?></p>
+                                                    <p class="float-right"><?= $nb_etape_valide ?> / 5</p>
+                                                    <div class="progress progress-bar-yellow progress-sm">
+                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $nb_etape_valide/5 ?>" style="width:<?= 100*$nb_etape_valide/5 ?>%"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="card-content">
                                                 <div class="card-body">
+                                                    <?php
+                                                        //Fiscal Control Object
+                                                        if ($societe['object_control'] == "ISTVA"){
+                                                            $title_object="Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)";
+                                                        }
+
+                                                        if ($societe['object_control'] == "IRTVA"){
+                                                            $title_object="Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)";
+                                                        }
+
+                                                        if ($societe['object_control'] == "IR"){
+                                                            $title_object="Impôt sur le revenu (IR)";
+                                                        }
+                                                        
+                                                        if ($societe['object_control'] == "TVA"){
+                                                            $title_object="Taxe sur la valeur ajoutée (TVA)";
+                                                        }
+                                                                
+                                                    ?>
                                                     <!-- Form Validation start -->
-                                                    <form action="" class="form-horizontal" method="POST">
-                                                        <div class="row">
-                                                            <!-- Left column -->
-                                                            <div class="col" style="border-right: 1px solid #A3AFBD;">
-                                                                <div class="form-group">
-                                                                    <label for="">Periode de controle :</label>
-                                                                    <div>
+                                                    <div class="row">
+                                                        <div class="col" style="border-right: 1px solid #A3AFBD;">
+                                                            <div class="form-group">
+                                                                <label for="">Periode de controle :</label>
+                                                                <!--<div>
+                                                                    <form action="">                                                                    
                                                                         <label for="">Date début contrôle :</label> 
                                                                         <input type="date" value=<?= $societe['date_control_begin'] ?> >
+                                                                    </form>
+                                                                </div>-->
+                                                                <form action="" method="POST">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <label class="text-center mr-75 <?php if(strpos($societe['date_control_begin'], '!edit') === false){echo "none-validation";} ?>">
+                                                                            Date début contrôle : 
+                                                                        </label>
+                                                                        <label class="text-center <?php if(strpos($societe['date_control_begin'], '!edit') !== false){echo "none-validation";} ?>">
+                                                                            Date de début du contrôle le <?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($societe['date_control_begin'])); ?>
+                                                                        </label>
+                                                                        
+                                                                        <fieldset class="d-flex justify-content-end">
+                                                                            <input name="date_begin" type="date" class="form-control mb-50 mb-sm-0 <?php if(strpos($societe['date_control_begin'], '!edit') === false){echo "none-validation";} ?>" placeholder="jj-mm-aa" style="margin: 5px; position: relative;">
+                                                                            <button type="submit" class="btn btn-icon btn-light-success <?php if(strpos($societe['date_control_begin'], '!edit') === false){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
+
+                                                                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if(strpos($societe['date_control_begin'], '!edit') !== false){echo "none-validation";} ?>" style="margin-left: 10px ;position: relative; top: 20%;">
+                                                                                <p class="mb-0">Déposé</p>
+                                                                                <input onchange="dateD_depo()" type="checkbox" class="custom-control-input" id="customSwitch97" checked>
+                                                                                <label class="custom-control-label" for="customSwitch97">
+                                                                                    <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                                                    <span class="switch-icon-right"><i class="bx bx-x"></i></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </fieldset>                                                                        
                                                                     </div>
-                                                                    <div>
+                                                                </form>
+
+                                                                <form action="" method="POST">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <label class="text-center mr-75 <?php if(strpos($societe['date_control_end'], '!edit') === false){echo "none-validation";} ?>">
+                                                                            Date fin contrôle : 
+                                                                        </label>
+                                                                        <label class="text-center <?php if(strpos($societe['date_control_end'], '!edit') !== false){echo "none-validation";} ?>">
+                                                                            Date de fin du contrôle le <?php setlocale(LC_TIME, "fr_FR"); echo strftime("%d/%m/%Y", strtotime($societe['date_control_end'])); ?>
+                                                                        </label>
+                                                                        <!--
                                                                         <label for="">Date fin contrôle :</label> 
                                                                         <input type="date" value=<?= $societe['date_control_end'] ?>>
+                                                                        -->
+                                                                        <fieldset class="d-flex justify-content-end">
+                                                                            <input name="date_end" type="date" class="form-control mb-50 mb-sm-0 <?php if(strpos($societe['date_control_end'], '!edit') === false){echo "none-validation";} ?>" placeholder="jj-mm-aa" style="margin: 5px; position: relative;">
+                                                                            <button type="submit" class="btn btn-icon btn-light-success <?php if(strpos($societe['date_control_end'], '!edit') === false){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
+
+                                                                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if(strpos($societe['date_control_end'], '!edit') !== false){echo "none-validation";} ?>" style="margin-left: 10px ;position: relative; top: 20%;">
+                                                                                <p class="mb-0">Déposé</p>
+                                                                                <input onchange="dateF_depo()" type="checkbox" class="custom-control-input" id="customSwitch98" checked>
+                                                                                <label class="custom-control-label" for="customSwitch98">
+                                                                                    <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                                                    <span class="switch-icon-right"><i class="bx bx-x"></i></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </fieldset>                                                                        
                                                                     </div>
-                                                                </div>
+                                                                </form>
                                                             </div>
-                                                            <!-- Right column -->
-                                                            <div class="col">
+                                                        </div>
+                                                        <div class="col pt-0 text-center">
+                                                            <form action="" method="POST">
+                                                                <label class="text-muted mr-75 <?php if(strpos($societe['object_control'], '!edit') === false){echo "none-validation";} ?>">
+                                                                    Objet du contrôle: 
+                                                                </label>
+                                                                <label class="text-center <?php if(strpos($societe['object_control'], '!edit') !== false){echo "none-validation";} ?>">
+                                                                    Objet du contrôle: <?= $title_object ?>
+                                                                </label>
                                                                 <fieldset class="form-group">
-                                                                    <label>Objet du contrôle</label>
-                                                                    <select name="object_control" class="form-control invoice-item-select" required>
+                                                                    <select name="control_obj" class="form-control invoice-item-select <?php if(strpos($societe['object_control'], '!edit') == false){echo "none-validation";} ?>">
                                                                         <option value="" selected disable hidden>Choisir l'objet du contrôle</option>
                                                                         <option value="ISTVA">Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)</option>
                                                                         <option value="IRTVA">Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)</option>
                                                                         <option value="IR">Impôt sur le revenu (IR)</option>
                                                                         <option value="TVA">Taxe sur la valeur ajoutée (TVA)</option>
                                                                     </select>
+                                                                    <button type="submit" class="btn btn-icon btn-light-success <?php if(strpos($societe['object_control'], '!edit') == false){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
+                                                                
+                                                                    <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if(strpos($societe['object_control'], '!edit') !== false){echo "none-validation";} ?>" style="position: relative; top: 20%;">
+                                                                        <p class="mb-0">Déposé</p>
+                                                                        <input onchange="object_depo()" type="checkbox" class="custom-control-input" id="customSwitch99" checked>
+                                                                        <label class="custom-control-label" for="customSwitch99">
+                                                                            <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                                            <span class="switch-icon-right"><i class="bx bx-x"></i></span>
+                                                                        </label>
+                                                                    </div>
                                                                 </fieldset>
-                                                            </div>  
+                                                            </form>                                                            
                                                         </div>
-                                                        <!-- Button Validation-->
-                                                        <div>
-                                                            <button type="submit" name="action1" class="btn btn-light-secondary cancel-btn mr-1">
-                                                                <i class='bx bx-send mr-25'></i>
-                                                                <span class="d-sm-inline d-none">Enregistrer les modifications</span>
-                                                            </button>
-                                                            <button type="submit" name="action1" class="btn-send btn btn-primary">
-                                                                <i class='bx bx-send mr-25'></i> 
-                                                                <span class="d-sm-inline d-none">Clore le dossier</span>
-                                                            </button>
-                                                        </div>      
-                                                    </form>
+                                                    </div>                                                    
                                                     <!-- Form Validation end -->
-                                                    <div class="form-group">
-                                                        <br>
-                                                        <!--
-                                                        <div class="form-group">
-                                                            <a href="php/corbeille_societe.php?statut=valide&num=<?= $_GET['num'] ?>"><button type="button" class="btn mb-1 btn-outline-danger btn-lg btn-block">Suppression du dossier de création !</button></a>
-                                                        </div>
-                                                        -->
-                                                    </div>
+                                                </div>
+                                                <div class="card-footer ">
+                                                        <button onclick="fermer_dossier()" type="submit" class="btn-send btn btn-light-secondary">
+                                                            <i class='bx bx-send mr-25'></i> 
+                                                            <span class="d-sm-inline d-none">Clotûrer le dossier</span>
+                                                        </button>
+                                                        <!-- renvoyer un message d'erreur-->
+                                                        <button onclick="supr_dossier()" type="reset" class="btn btn-light-secondary cancel-btn mr-1">
+                                                            <i class='bx bx-x mr-25'></i>
+                                                            <span class="d-sm-inline d-none">Supprimer le dossier</span>
+                                                        </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -916,14 +1133,42 @@ require_once 'php/verif_session_connect_admin.php';
 
 
     <script>
-        function action_switch(){
-            let switchK = document.getElementById('doggo2');
-            if(switchK.checked){
-                document.getElementById('div_process').style.display = "none";
-                document.getElementById('div_finish').style.display = "block";
-            } else {
-                document.getElementById('div_process').style.display = "block";
-                document.getElementById('div_finish').style.display = "none";
+        function object_depo(){
+            document.location.href="php/change_depo_fiscal.php?num=<?= $_GET['num'] ?>&style=object";
+        }
+
+        function dateD_depo(){
+            document.location.href="php/change_depo_fiscal.php?num=<?= $_GET['num'] ?>&style=dateD";
+        }
+
+        function dateF_depo(){
+            document.location.href="php/change_depo_fiscal.php?num=<?= $_GET['num'] ?>&style=dateF";
+        }
+        
+        function fermer_dossier(){
+            //
+            var spge = <?php echo json_encode($societe['statut']); ?>;
+            //
+            if (spge !== "Phase Conctentieuse Administrative") {
+                alert('Pour clôturer ce dossier, il faut compléter la phase: '+spge+'');
+            } else {                
+                var res = confirm("Êtes-vous sûr de vouloir clôturer ce dossier ?");
+                if(res){
+                    // Mettez ici la logique de suppression
+                }              
+            }
+            //alert("Afficher msg erreur");
+            /*var res = confirm("Êtes-vous sûr de vouloir supprimer?");
+            if(res){
+                // Mettez ici la logique de suppression
+            }*/
+            
+        }
+
+        function supr_dossier(){
+            var res = confirm("Êtes-vous sûr de vouloir supprimer ?");
+            if(res){
+                // Mettez ici la logique de suppression
             }
         }
     </script>
