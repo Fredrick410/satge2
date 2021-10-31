@@ -10,38 +10,38 @@ require_once 'php/permissions_front.php';
         header('Location: app-devis-list.php');
         exit();
     }
-   
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-    $pdoSta->execute(); 
+    $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num AND typ="Ventes" OR typ="Ventes et Achats"');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $article = $pdoSt->fetchAll();
 
     $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
-	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-	$pdaSt->bindValue(':num', $_SESSION['id_session']);
-	$pdaSt->execute();
-	$cliet = $pdaSt->fetch();
+  	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+  	$pdaSt->bindValue(':num', $_SESSION['id_session']);
+  	$pdaSt->execute();
+  	$cliet = $pdaSt->fetch();
 
 	$total = $cliet['cout']*$cliet['quantite'];
-   
+
 	// Auto incrémentation de l'ID de la facture
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM devis');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-            $pdoSt->execute(); 
+            $pdoSt->execute();
             $num = $pdoSt->fetchAll();
             $count_num = count($num);
             $max_num = "0";
-            for ($i=0; $i < $count_num ; $i++) { 
+            for ($i=0; $i < $count_num ; $i++) {
                 foreach($num as $n):
 
                     $number = $n['id'];
@@ -55,7 +55,7 @@ require_once 'php/permissions_front.php';
             $max_num = $max_num + 1;
 
             $strlen_num = strlen($max_num);
-            
+
             if($strlen_num == "1"){
                 $max_num = '0'.$max_num;
             }elseif($strlen_num == "2"){
@@ -64,9 +64,9 @@ require_once 'php/permissions_front.php';
                 $max_num = $max_num;
             }
 
-           
 
-        
+
+
     // Auto incrementation
 
     $max_incrementation = "";
@@ -77,12 +77,12 @@ require_once 'php/permissions_front.php';
 
             $pdoSt = $bdd->prepare('SELECT numerosdevis FROM devis WHERE id_session = :num');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-            $pdoSt->execute(); 
+            $pdoSt->execute();
             $incrementation = $pdoSt->fetchAll();
             $count_incrementation = count($incrementation);
             $max_incrementation = "0";
 
-            for ($i=0; $i < $count_incrementation ; $i++) { 
+            for ($i=0; $i < $count_incrementation ; $i++) {
                 foreach($incrementation as $incrementations):
 
                     $numeros = $incrementations['numerosdevis'];
@@ -96,7 +96,7 @@ require_once 'php/permissions_front.php';
             $max_incrementation = $max_incrementation + 1;
 
             $strlen_incrementation = strlen($max_incrementation);
-            
+
             if($strlen_incrementation == "1"){
                 $max_incrementation = '00'.$max_incrementation;
             }elseif($strlen_incrementation == "2"){
@@ -108,7 +108,7 @@ require_once 'php/permissions_front.php';
             $max_incrementation = date('y').$max_incrementation;
 
         }
-        
+
     }else{
         header('Location: dashboard-analytics.php');
         exit();
@@ -230,7 +230,7 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
-	
+
     <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->
@@ -250,22 +250,22 @@ require_once 'php/permissions_front.php';
                                     <div class="card-body pb-0 mx-25">
                                         <!-- header section -->
                                 <form autocomplete="off" action="php/insert_devis.php" method="POST">
-                                        <div class="row mx-0" > 
+                                        <div class="row mx-0" >
 													<!-- Contenu du haut de l'ajout de facture DEBUT -->
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 																	<h6 class="invoice-number mr-75">
 																		N°
-																	
+
 																	</h6>
 																	<input  type="text" name="numeroarticle" id="numeros"  value='<?= $max_num ?>' class="form-control pt-25 w-50" placeholder="FAC-0" attribut readonly="readonly">
-													</div>			
+													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 														<h6 class="invoice-number mr-75">
 															Référence
 														</h6>
 														<input name="refdevis" id="refdevis" type="text" value='REF-' class="form-control pt-20 w-50" placeholder="XXX-">
 														<p style='position: relative; top: 7px;'>
-															&nbsp&nbsp&nbsp 
+															&nbsp&nbsp&nbsp
 														</p>
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
@@ -273,25 +273,25 @@ require_once 'php/permissions_front.php';
 														Devis N°
 														</h6>
 														<input type="number" name="numerosdevis" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
-														
+
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 														<div class="d-flex align-items-center">
 															<small class="text-muted mr-75">
-																Date: 
+																Date:
 															</small>
 															<fieldset class="d-flex ">
-																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>">
+																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>" required>
 															</fieldset>
 														</div>
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 														<div class="d-flex align-items-center">
 															<small class="text-muted mr-75">
-																Date d'échéance : 
+																Date d'échéance :
 															</small>
 															<fieldset class="d-flex justify-content-end">
-																<input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa">
+																<input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" required>
 															</fieldset>
 														</div>
 													</div>
@@ -358,8 +358,8 @@ require_once 'php/permissions_front.php';
 														</div>
 													</div>
 													<hr>
-												</div>									
-											
+												</div>
+
 													<div class="card-body pt-50 col-lg-12  ">
 														<!-- product details table-->
 														<div class="invoice-product-details ">
@@ -369,15 +369,18 @@ require_once 'php/permissions_front.php';
 																		<div class="col-3 col-md-3 invoice-item-title">
 																			Article
 																		</div>
-																		<div class="col-4 invoice-item-title">
+																		<div class="col-2 invoice-item-title">
 																			Prix Unitaire
 																		</div>
 																		<div class="col-2 invoice-item-title">
 																			Quantite
 																		</div>
-																		<div class="col-1 invoice-item-title">
+																		<div class="col-2 invoice-item-title">
 																			Prix HT
 																		</div>
+                                    <div class="col-1 invoice-item-title">
+  																		Référence
+  																	</div>
 																	</div>
 																	<div class="invoice-item d-flex border rounded mb-1">
 																		<div class="invoice-item-filed row pt-1 px-1">
@@ -405,7 +408,7 @@ require_once 'php/permissions_front.php';
 																				<strong id="demo" class="text-primary align-middle">00.00 €</strong>
 																			</div>
 																			<?php // Permission de niveau 2 pour créer un article
-                    														if (permissions()['articles'] >= 2) { ?> 
+                    														if (permissions()['articles'] >= 2) { ?>
 																				<div class="col-md-4 col-12 form-group">
 																					<button type="button" class="btn btn-primary" style="margin-top: 25px" data-toggle="modal" data-target="#popup3">Nouvel article</button>
 																					<!-- popup article déplacé -->
@@ -413,7 +416,7 @@ require_once 'php/permissions_front.php';
 																			<?php } ?>
 																		</div>
 																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																			<!-- 
+																			<!--
 																			<label for="ref">REF :</label>
 																			-->
 																			<input name="referencearticle"  id="referencearticle" type="text" class="form-control" placeholder="Référence">
@@ -435,7 +438,7 @@ require_once 'php/permissions_front.php';
 																							<label>Unite de mesure :</label>
 																							<input name="umesure" id="umesure"  type="text" class="form-control" placeholder="Unite de mesure">
 																						</div>
-																						
+
 																					</div>
 																				</div>
 																			</div>
@@ -445,7 +448,7 @@ require_once 'php/permissions_front.php';
 															</div>
 														</div>
 													</div>
-														
+
 															<div class="form-group">
 																	<div class="col p-0">
 																		<button class="btn btn-light-primary btn-sm" type="button">
@@ -496,7 +499,7 @@ require_once 'php/permissions_front.php';
 																	</tbody>
 																</table>
 															</div>
-														
+
 														<!-- invoice subtotal -->
 																<hr>
 
@@ -506,7 +509,7 @@ require_once 'php/permissions_front.php';
 																	<div class="col-lg-12 col-12"></div>
 																	<div class="col-md-6 col-12">
 																		<div class="form-group">
-																			<label>Accompte :</label>
+																			<label>Acompte :</label>
 																			<input name="accompte" type="number" value="0" class="form-control" placeholder="Ajouter un accompte sur le devis">
 																		</div>
 																		<div class="form-group">
@@ -605,7 +608,7 @@ require_once 'php/permissions_front.php';
 																							<div class="tab-content">
 																								<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																									<!-- users edit media object start -->
-																									<!-- 
+																									<!--
 																									<form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
 																										<div class="media mb-2">
 																											<a class="mr-2" href="#"><img src="../../../src/img/<?= $entreprisee['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64"></a>
@@ -924,7 +927,7 @@ require_once 'php/permissions_front.php';
 																												<button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
 																											</div>
 																											<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
-																										
+
 																										<!-- users edit account form ends -->
 																										</div>
 																									</form>
@@ -932,7 +935,7 @@ require_once 'php/permissions_front.php';
 																							</div>
 																						</div>
 																					</div>
-																				</div>															
+																				</div>
 																			</div>
 																		</div>
 																	</div>
@@ -940,7 +943,7 @@ require_once 'php/permissions_front.php';
 
 														<!-- FORM PRO -->
 														<div class="col-lg-6 col-md-12 mt-25" style=" padding-top: 0px;">
-															<div class="form-group">																
+															<div class="form-group">
 																<div id="popup2" class="modal">
 																	<div class="modal-dialog modal-dialog-centered">
 																		<div class="modal-content">
@@ -958,7 +961,7 @@ require_once 'php/permissions_front.php';
 																						<div class="tab-content">
 																							<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																								<!-- users edit media object start -->
-																								<!-- 
+																								<!--
 																								<form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
 																									<div class="media mb-2">
 																										<a class="mr-2" href="#"><img src="../../../src/img/<?= $entreprisee['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64"></a>
@@ -1303,7 +1306,7 @@ require_once 'php/permissions_front.php';
 																										<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
 																									</div>
 																									<!-- users edit account form ends -->
-																							
+
 																								</form>
 																							</div>
 																						</div>
@@ -1314,7 +1317,7 @@ require_once 'php/permissions_front.php';
 																	</div>
 																</div>
 															</div>
-														</div>												
+														</div>
 													<!-- FIN FORM PRO -->
 												</div>
 											</div>
@@ -1335,7 +1338,7 @@ require_once 'php/permissions_front.php';
 																										</ul>
 																										<div class="tab-content">
 																											<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
-																											
+
 																												<form action="php/insert_popup_devis.php" method="POST">
 																													<div class="row">
 																														<div class="col-12 col-sm-6">
@@ -1357,6 +1360,33 @@ require_once 'php/permissions_front.php';
 																																<label>Référence de l'article :</label>
 																																<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
 																															</div>
+                                                              <!-- selectionner si c un bien ou un service -->
+                                                              <div class="form-group">
+                                                                  <label>Catégorie :</label>
+                                                                  <select class="form-control" name="categorie">
+                                                                    <option value="bien">Bien</option>
+                                                                    <option value="service">Service</option>
+                                                                  </select>
+                                                              </div>
+                                                              <div class="form-group">
+                                                                <label>Type :</label>
+                                                                  <!-- selectionner si le type du bien -->
+                                                                  <select class="form-control" name="sstyp">
+                                                                    <optgroup label="Bien">
+                                                                      <option value="marchandise">Marchandise</option>
+                                                                      <option value="produit fini">Produits fini</option>
+                                                                      <option value="produit semi fini">Produits semi fini</option>
+                                                                      <option value="matiere 1ere">Matiere 1ere</option>
+                                                                      <option value="fourniture">Fournitures</option>
+                                                                      <option value="consommable">Consommable</option>
+                                                                     </optgroup>
+                                                                    <optgroup label="Service">
+                                                                      <option value="prestation">Prestation</option>
+                                                                      <option value="travaux">Travaux</option>
+                                                                      <option value="etudes">Etudes</option>
+                                                                    </optgroup>
+                                                                  </select>
+                                                              </div>
 																														</div>
 																														<div class="col-12">
 																															<hr>
@@ -1426,7 +1456,7 @@ require_once 'php/permissions_front.php';
 																													</div>
 																													<!-- users edit account form ends -->
 																												</form>
-																											
+
 																										</div>
 																									</div>
 																								</div>
@@ -1469,9 +1499,9 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_devis.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <!-- END: Page JS-->

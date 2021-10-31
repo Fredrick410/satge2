@@ -10,37 +10,37 @@ require_once 'php/permissions_front.php';
         header('Location: app-bon-list.php');
         exit();
     }
-   
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-    $pdoSta->execute(); 
+    $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num AND typ="Ventes" OR typ="Ventes et Achats"');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $article = $pdoSt->fetchAll();
 
     $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
-	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
-	$pdaSt->bindValue(':num', $_SESSION['id_session']);
-	$pdaSt->execute();
-	$cliet = $pdaSt->fetch();
+  	$pdaSt = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num');
+  	$pdaSt->bindValue(':num', $_SESSION['id_session']);
+  	$pdaSt->execute();
+  	$cliet = $pdaSt->fetch();
 
-	$total = $cliet['cout']*$cliet['quantite'];
-   
+	  $total = $cliet['cout']*$cliet['quantite'];
+
     $max_num = "";
     $pdoSt = $bdd->prepare('SELECT id FROM bon');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-            $pdoSt->execute(); 
+            $pdoSt->execute();
             $num = $pdoSt->fetchAll();
             $count_num = count($num);
             $max_num = "0";
-            for ($i=0; $i < $count_num ; $i++) { 
+            for ($i=0; $i < $count_num ; $i++) {
                 foreach($num as $n):
 
                     $number = $n['id'];
@@ -54,7 +54,7 @@ require_once 'php/permissions_front.php';
             $max_num = $max_num + 1;
 
             $strlen_num = strlen($max_num);
-            
+
             if($strlen_num == "1"){
                 $max_num = '0'.$max_num;
             }elseif($strlen_num == "2"){
@@ -63,9 +63,9 @@ require_once 'php/permissions_front.php';
                 $max_num = $max_num;
             }
 
-           
 
-        
+
+
     // Auto incrementation
 
     $max_incrementation = "";
@@ -76,12 +76,12 @@ require_once 'php/permissions_front.php';
 
             $pdoSt = $bdd->prepare('SELECT numerosbon FROM bon WHERE id_session = :num');
             $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-            $pdoSt->execute(); 
+            $pdoSt->execute();
             $incrementation = $pdoSt->fetchAll();
             $count_incrementation = count($incrementation);
             $max_incrementation = "0";
 
-            for ($i=0; $i < $count_incrementation ; $i++) { 
+            for ($i=0; $i < $count_incrementation ; $i++) {
                 foreach($incrementation as $incrementations):
 
                     $numeros = $incrementations['numerosbon'];
@@ -95,7 +95,7 @@ require_once 'php/permissions_front.php';
             $max_incrementation = $max_incrementation + 1;
 
             $strlen_incrementation = strlen($max_incrementation);
-            
+
             if($strlen_incrementation == "1"){
                 $max_incrementation = '00'.$max_incrementation;
             }elseif($strlen_incrementation == "2"){
@@ -107,7 +107,7 @@ require_once 'php/permissions_front.php';
             $max_incrementation = date('y').$max_incrementation;
 
         }
-        
+
     }else{
         header('Location: dashboard-analytics.php');
         exit();
@@ -229,7 +229,7 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Main Menu-->
     <?php include('php/menu_front.php'); ?>
-	
+
     <!-- END: Main Menu-->
 
     <!-- BEGIN: Content-->
@@ -249,24 +249,24 @@ require_once 'php/permissions_front.php';
                                     <div class="card-body pb-0 mx-25">
                                         <!-- header section -->
 										<!-- form qui insert toute la page -->
-                                <form autocomplete="off" action="php/insert_bon.php" method="POST">  
-                                        <div class="row mx-0" > 
+                                <form autocomplete="off" action="php/insert_bon.php" method="POST">
+                                        <div class="row mx-0" >
 
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 																	<h6 class="invoice-number mr-75">
 																		N°
-																	
+
 																	</h6>
 																	<!-- auto incrémentation du n° avec le max_num plus haut  -->
 																	<input  type="text" name="numeroarticle" id="numeros"  value='<?= $max_num ?>' class="form-control pt-25 w-50" placeholder="FAC-0" attribut readonly="readonly">
-													</div>			
+													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
 														<h6 class="invoice-number mr-75">
 															Référence
 														</h6>
 														<input name="refbon" id="refbon" type="text" value='REF-' class="form-control pt-20 w-50" placeholder="XXX-">
 														<p style='position: relative; top: 7px;'>
-															&nbsp&nbsp&nbsp 
+															&nbsp&nbsp&nbsp
 														</p>
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0" >
@@ -275,29 +275,29 @@ require_once 'php/permissions_front.php';
 														</h6>
 														<!-- auto incrémentation du numéro qui peut aussi etre choisi -->
 														<input type="number" name="numerosbon" value='<?= $max_incrementation ?>' class="form-control pt-25 w-50" placeholder="00000">
-														
+
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 														<div class="d-flex align-items-center">
 															<small class="text-muted mr-75">
-																Date: 
+																Date:
 															</small>
 															<fieldset class="d-flex ">
-																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>">
+																<input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" value="<?php echo date("d/m/Y");?>" required>
 															</fieldset>
 														</div>
 													</div>
 													<div class="col-xl-2 col-md-12 d-flex align-items-center pl-0">
 														<div class="d-flex align-items-center">
 															<small class="text-muted mr-75">
-																Date d'échéance : 
+																Date d'échéance :
 															</small>
 															<fieldset class="d-flex justify-content-end">
-																<input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa">
+																<input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" required>
 															</fieldset>
 														</div>
 													</div>
-												
+
 												<!-- logo and title -->
 												<div class="col-lg-12 col-md-12 mt-25">
 													<div class="row my-2 py-50">
@@ -357,17 +357,17 @@ require_once 'php/permissions_front.php';
 															</fieldset>
 															<label for="email">TEL :</label>
 															<fieldset class="invoice-address form-group">
-																<input name="telfirst" id="telephone" type="text" class="form-control" placeholder="Téléphone" required>
+																<input name="telfirst" id="telephone" type="text" class="form-control" placeholder="Téléphone">
 															</fieldset>
 														</div>
 													</div>
 													<hr>
-													
+
 													<input type="button" value="+ Ajouter une adresse de livraison (facultatif)" onclick="masquer_div('a_masquer');" class="btn btn-outline-primary col-lg-12 col-md-12 mt-25"/>
 																		<!-- adresse livraison -->
 													<div id="a_masquer" class="row invoice-info" style="display:none;">
-														<div class="col-lg-6 col-md-12 mt-25">												
-															
+														<div class="col-lg-6 col-md-12 mt-25">
+
 															<label for="adresse">Adresse de livraison (facultative) :</label>
 															<fieldset class="invoice-address form-group">
 																<textarea name="adressetwo" id="adresse" class="form-control" rows="4" placeholder="Mountain View, Californie, États-Unis"></textarea>
@@ -379,17 +379,17 @@ require_once 'php/permissions_front.php';
 																<input type="number" name="codePostal2" class=" form-control" placeholder="Code Postal" onkeyup="getCp2($(this))" autocomplete="off">
 																<input type="hidden" name="insee_code" id="insee_code" value="" autocomplete="off">
 															</div>
-															
+
 															<div class="form-group">
 																<label for="email">Département :</label>
 																<select name="departementtwo" id="ville2" class="form-control " ></select>
-															</div>													
-															
+															</div>
+
 														</div>
 													</div>
 													<br>
-												</div>									
-											
+												</div>
+
 													<div class="card-body pt-50 col-lg-12  ">
 														<!-- product details table-->
 														<div class="invoice-product-details ">
@@ -399,15 +399,18 @@ require_once 'php/permissions_front.php';
 																		<div class="col-3 col-md-3 invoice-item-title">
 																			Article
 																		</div>
-																		<div class="col-4 invoice-item-title">
+																		<div class="col-2 invoice-item-title">
 																			Prix Unitaire
 																		</div>
 																		<div class="col-2 invoice-item-title">
 																			Quantite
 																		</div>
-																		<div class="col-1 invoice-item-title">
+																		<div class="col-2 invoice-item-title">
 																			Prix HT
 																		</div>
+                                    <div class="col-1 invoice-item-title">
+  																		Référence
+  																	</div>
 																	</div>
 																	<div class="invoice-item d-flex border rounded mb-1">
 																		<div class="invoice-item-filed row pt-1 px-1">
@@ -444,7 +447,7 @@ require_once 'php/permissions_front.php';
 																			<?php } ?>
 																		</div>
 																		<div class="col-md-3 col-12 form-group" style="margin-top: 15px;">
-																			<!-- 
+																			<!--
 																			<label for="ref">REF :</label>
 																			-->
 																			<input name="referencearticle"  id="referencearticle" type="text" class="form-control" placeholder="Référence">
@@ -466,7 +469,7 @@ require_once 'php/permissions_front.php';
 																							<label>Unite de mesure :</label>
 																							<input name="umesure" id="umesure"  type="text" class="form-control" placeholder="Unite de mesure">
 																						</div>
-																						
+
 																					</div>
 																				</div>
 																			</div>
@@ -476,7 +479,7 @@ require_once 'php/permissions_front.php';
 															</div>
 														</div>
 													</div>
-														
+
 															<div class="form-group">
 																	<div class="col p-0">
 																		<button class="btn btn-light-primary btn-sm" type="button">
@@ -527,7 +530,7 @@ require_once 'php/permissions_front.php';
 																	</tbody>
 																</table>
 															</div>
-														
+
 														<!-- invoice subtotal -->
 																<hr>
 
@@ -636,7 +639,7 @@ require_once 'php/permissions_front.php';
 																							<div class="tab-content">
 																								<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																									<!-- users edit media object start -->
-																									<!-- 
+																									<!--
 																									<form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
 																										<div class="media mb-2">
 																											<a class="mr-2" href="#"><img src="../../../src/img/<?= $entreprisee['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64"></a>
@@ -955,7 +958,7 @@ require_once 'php/permissions_front.php';
 																												<button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">Continuer<i class='bx bx-right-arrow-alt'></i></button>
 																											</div>
 																											<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
-																										
+
 																										<!-- users edit account form ends -->
 																										</div>
 																									</form>
@@ -963,7 +966,7 @@ require_once 'php/permissions_front.php';
 																							</div>
 																						</div>
 																					</div>
-																				</div>															
+																				</div>
 																			</div>
 																		</div>
 																	</div>
@@ -971,7 +974,7 @@ require_once 'php/permissions_front.php';
 
 														<!-- FORM PRO -->
 														<div class="col-lg-6 col-md-12 mt-25" style=" padding-top: 0px;">
-															<div class="form-group">																
+															<div class="form-group">
 																<div id="popup2" class="modal">
 																	<div class="modal-dialog modal-dialog-centered">
 																		<div class="modal-content">
@@ -989,7 +992,7 @@ require_once 'php/permissions_front.php';
 																						<div class="tab-content">
 																							<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
 																								<!-- users edit media object start -->
-																								<!-- 
+																								<!--
 																								<form action="php/insert_image_edit.php" method="POST" enctype="multipart/form-data">
 																									<div class="media mb-2">
 																										<a class="mr-2" href="#"><img src="../../../src/img/<?= $entreprisee['img_entreprise'] ?>" alt="logo entreprise" class="users-avatar-shadow rounded-circle" height="64" width="64"></a>
@@ -1334,7 +1337,7 @@ require_once 'php/permissions_front.php';
 																										<label class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">Penser à completer les champs obligatoires*</label>
 																									</div>
 																									<!-- users edit account form ends -->
-																							
+
 																								</form>
 																							</div>
 																						</div>
@@ -1345,7 +1348,7 @@ require_once 'php/permissions_front.php';
 																	</div>
 																</div>
 															</div>
-														</div>												
+														</div>
 													<!-- FIN FORM PRO -->
 												</div>
 											</div>
@@ -1366,7 +1369,7 @@ require_once 'php/permissions_front.php';
 																										</ul>
 																										<div class="tab-content">
 																											<div class="tab-pane active fade show" id="account" aria-labelledby="account-tab" role="tabpanel">
-																											
+
 																												<form action="php/insert_articlespopup_bon.php" method="POST">
 																													<div class="row">
 																														<div class="col-12 col-sm-6">
@@ -1388,6 +1391,33 @@ require_once 'php/permissions_front.php';
 																																<label>Référence de l'article :</label>
 																																<input name="referencearticle" type="text" class="form-control" placeholder="Référence de l'article">
 																															</div>
+                                                              <!-- selectionner si c un bien ou un service -->
+                                                              <div class="form-group">
+                                                                  <label>Catégorie :</label>
+                                                                  <select class="form-control" name="categorie">
+                                                                    <option value="bien">Bien</option>
+                                                                    <option value="service">Service</option>
+                                                                  </select>
+                                                              </div>
+                                                              <div class="form-group">
+                                                                <label>Type :</label>
+                                                                  <!-- selectionner si le type du bien -->
+                                                                  <select class="form-control" name="sstyp">
+                                                                    <optgroup label="Bien">
+                                                                      <option value="marchandise">Marchandise</option>
+                                                                      <option value="produit fini">Produits fini</option>
+                                                                      <option value="produit semi fini">Produits semi fini</option>
+                                                                      <option value="Matiere 1ere">Matiere 1ere</option>
+                                                                      <option value="fourniture">Fournitures</option>
+                                                                      <option value="consommable">Consommable</option>
+                                                                     </optgroup>
+                                                                    <optgroup label="Service">
+                                                                      <option value="prestation">Prestation</option>
+                                                                      <option value="travaux">Travaux</option>
+                                                                      <option value="etudes">Etudes</option>
+                                                                    </optgroup>
+                                                                  </select>
+                                                              </div>
 																														</div>
 																														<div class="col-12">
 																															<hr>
@@ -1457,7 +1487,7 @@ require_once 'php/permissions_front.php';
 																													</div>
 																													<!-- users edit account form ends -->
 																												</form>
-																											
+
 																										</div>
 																									</div>
 																								</div>
@@ -1500,17 +1530,17 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_bon.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
-	<script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp2.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp3.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/getcp4.js"></script>
+	  <script src="../../../app-assets/js/scripts/pages/masquer.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <!-- END: Page JS-->
- 	<script src="script.js"></script>
+ 	  <script src="script.js"></script>
     <!-- END: Page JS-->
 <!-- partial -->
   	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

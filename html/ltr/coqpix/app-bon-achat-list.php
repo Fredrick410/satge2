@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once 'php/verif_session_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
@@ -9,7 +9,7 @@ require_once 'php/config.php';
     // $sql = "SELECT cout * quantite as TOTAL FROM bon_commande WHERE id_session = :num AND numerosbon=:numerosbon AND commande='Commandeencoursdetraitement'";
     // $req = $bdd->prepare($sql);
     // $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    // $req->bindValue(':numerosbon',$numerosbon); 
+    // $req->bindValue(':numerosbon',$numerosbon);
     // $req->execute();
     // $res = $req->fetch();
 
@@ -143,18 +143,18 @@ require_once 'php/config.php';
                                 // $reqs = $req->fetch();
 
                                 // $montant_t = !empty($reqs) ? $reqs['TOTAL'] : 0;
-                                
+
                                 // var_dump($reqs);
                             ?> -->
                             <?php foreach ($bons_four as $bons):
                                 $numeros = $bons['id_bon_commande'];
-                               
+
                                 try{
                                     // Somme du prix HT
                                 $sql = "SELECT SUM(ROUND(T.TOTAL, 2)) as MONTANT_T FROM (SELECT cout, quantite, (cout * quantite) as TOTAL FROM articles WHERE numeros=:numeros AND typ='bonachat') T";
-  
+
                                 $req = $bdd->prepare($sql);
-                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT); 
+                                $req->bindValue(':numeros',$numeros, PDO::PARAM_INT);
                                 $req->execute();
                                 $res = $req->fetch();
                                 }catch(Exception $e){
@@ -184,7 +184,7 @@ require_once 'php/config.php';
                                             </a>&nbsp&nbsp&nbsp&nbsp
                                             <a href="php/delete_bon_achat.php?bon=<?= $bons['numerosbon'] ?>&numbon=<?= $bons['id_bon_commande'] ?>" class="invoice-action-view mr-1">
                                                 <i class='bx bxs-trash'></i>
-                                            </a>                                
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

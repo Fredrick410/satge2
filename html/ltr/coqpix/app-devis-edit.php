@@ -10,41 +10,41 @@ require_once 'php/permissions_front.php';
         header('Location: app-devis-list.php');
         exit();
     }
-   
+
     $pdoSta = $bdd->prepare('SELECT * FROM entreprise WHERE id = :num');
     $pdoSta->bindValue(':num',$_SESSION['id_session'], PDO::PARAM_INT); //$_SESSION
-    $pdoSta->execute(); 
+    $pdoSta->execute();
     $entreprise = $pdoSta->fetch();
 
     $pdoSt = $bdd->prepare('SELECT * FROM article WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $article = $pdoSt->fetchAll();
 
     $pdoS = $bdd->prepare('SELECT * FROM devis WHERE id = :num');
     $pdoS->bindValue(':num',$_GET['numdevis']);
-    $pdoS->execute(); 
+    $pdoS->execute();
     $facture = $pdoS->fetch();
-    
+
 
     $pdo = $bdd->prepare('SELECT * FROM articles WHERE id_session = :num AND numeros=:numeros AND typ="devisvente"');
     $pdo->bindValue(':num',$_SESSION['id_session']); //$_SESSION
     $pdo->bindValue(':numeros',$_GET['numdevis']);
-    $pdo->execute(); 
+    $pdo->execute();
     $articles = $pdo->fetchAll();
 
     $pdoSt = $bdd->prepare('SELECT * FROM client WHERE id_session = :num');
     $pdoSt->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-    $pdoSt->execute(); 
+    $pdoSt->execute();
     $client = $pdoSt->fetchAll();
 
     try{
-  
+
     $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='devisvente' ) T ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$_GET['numdevis']); 
+    $req->bindValue(':numeros',$_GET['numdevis']);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -55,12 +55,12 @@ require_once 'php/permissions_front.php';
 
 
     try{
-  
+
     $sq = "SELECT SUM(R.TOTA) as MONTANT_R FROM ( SELECT cout,quantite,remise ,(((cout * quantite) * (1 - (remise/100)))) as TOTA FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='devisvente' ) R ";
-  
+
     $re = $bdd->prepare($sq);
     $re->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $re->bindValue(':numeros',$_GET['numdevis']); 
+    $re->bindValue(':numeros',$_GET['numdevis']);
     $re->execute();
     $rer = $re->fetch();
     }catch(Exception $e){
@@ -70,12 +70,12 @@ require_once 'php/permissions_front.php';
     $montant_r = !empty($rer) ? $rer['MONTANT_R'] : 0;
 
     try{
-  
+
     $sql = "SELECT SUM(V.TOTAL) as MONTANT_V FROM ( SELECT cout,quantite,tva ,(((cout * quantite) * (1 - (tva/100)))) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='devisvente' ) V ";
-  
+
     $req = $bdd->prepare($sql);
     $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION['id_session']
-    $req->bindValue(':numeros',$_GET['numdevis']); 
+    $req->bindValue(':numeros',$_GET['numdevis']);
     $req->execute();
     $res = $req->fetch();
     }catch(Exception $e){
@@ -171,7 +171,7 @@ require_once 'php/permissions_front.php';
                                 <form autocomplete="off" action="php/edit-devis.php" method="POST">
                                     <input type="hidden" name="numdevis" value="<?= $facture['id'] ?>">
                                         <div class="row mx-0">
-                                        
+
                                             <div class="col-xl-6 col-md-12 d-flex align-items-center pl-0">
                                                         <h6 class="invoice-number mr-75">
                                                                         N°
@@ -186,7 +186,7 @@ require_once 'php/permissions_front.php';
                                                             </h6>
                                                             <input name="refdevis" id="refdevis" type="text" value="<?= $facture['refdevis'] ?>" class="form-control pt-20 w-50" placeholder="XXX-">
                                                             <p style='position: relative; top: 7px;'>
-                                                                &nbsp&nbsp&nbsp 
+                                                                &nbsp&nbsp&nbsp
                                                             </p>
                                                 <h6 class="invoice-number mr-75">Devis N°</h6>
                                                 <input name="numerosdevis"  type="text" class="form-control pt-25 w-50" placeholder="00000" value="<?= $facture['numerosdevis'] ?>" >
@@ -200,30 +200,30 @@ require_once 'php/permissions_front.php';
                                                     <div class="d-flex align-items-center">
                                                         <small class="text-muted mr-75">*Date : </small>
                                                         <fieldset class="d-flex ">
-                                                            <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dte'] ?>">
+                                                            <input name="dte" id="dte" type="date" class="form-control mr-2 mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dte'] ?>" required>
                                                         </fieldset>
                                                     </div>
                                                     <div class="d-flex align-items-center">
                                                         <small class="text-muted mr-75">
                                                         Date d'échéance : </small>
                                                         <fieldset class="d-flex justify-content-end">
-                                                            <input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dateecheance'] ?>">
+                                                            <input name="dateecheance" id="dateecheance" type="date" class="form-control mb-50 mb-sm-0" placeholder="jj-mm-aa" value="<?= $facture['dateecheance'] ?>" required>
                                                         </fieldset>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <hr>
                                         <!-- logo and title -->
                                         <div class="row my-2 py-50">
                                             <div class="col-sm-6 col-12 order-2 order-sm-1" style="text-align:center;padding-top:4%">
                                                 <h4 class="text-primary">Devis</h4>
-                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du devis" value="<?= $facture['nomproduit'] ?>"> 
+                                                <input name="nomproduit" id="nomproduit" type="text" class="form-control" placeholder="Nom du devis" value="<?= $facture['nomproduit'] ?>">
                                                 <div class="form-group">
                                                             <label for="exampleFormControlTextarea1">Description</label>
                                                             <textarea class="form-control" name="descrip" id="exampleFormControlTextarea1" rows="5"><?= $facture['descrip']?></textarea>
-                                                        </div>  
+                                                        </div>
                                             </div>
                                             <!-- LOGO -->
                                             <div class="col-sm-6 col-12 order-1 order-sm-1 d-flex justify-content-end">
@@ -250,15 +250,15 @@ require_once 'php/permissions_front.php';
                                                         <option value="Pas de clients">Autres</option>
                                                     </select>
                                                 </div>
-                                               
+
                                                 <label for="adress">*Adresse :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="adresse" id="adresse" class="form-control" rows="4" value="<?= $facture['adresse'] ?>">
                                                 </fieldset>
-                                             
+
                                             </div>
 											 <div class="col-lg-6 col-md-12 mt-25">
-                                                
+
                                                 <label for="email">*Département :</label>
                                                 <fieldset class="invoice-address form-group">
                                                     <input name="departement" id="departement" type="number" class="form-control" placeholder="Département" value="<?= $facture['departement'] ?>">
@@ -278,7 +278,7 @@ require_once 'php/permissions_front.php';
                                     <div class="card-body pt-50">
                                         <!-- product details table-->
                                         <div class="invoice-product-details ">
-                                                            
+
                                                 <div data-repeater-list="group-a">
                                                     <div data-repeater-item>
                                                       <!-- affiche les articles deja présents -->
@@ -294,7 +294,7 @@ require_once 'php/permissions_front.php';
                                                                     <input name="cout" type="number" class="form-control" placeholder="0" value="<?= $articless['cout'] ?>" readonly >
                                                                 </div>
                                                                 <div class="col-md-3 col-12 form-group">
-                                                                    <label>Quantite :</label>    
+                                                                    <label>Quantite :</label>
                                                                     <input name="quantite" type="number" class="form-control" placeholder="0" value="<?= $articless['quantite'] ?>" readonly>
                                                                 </div>
                                                                 <div class="col-md-2 col-12 form-group">
@@ -315,7 +315,7 @@ require_once 'php/permissions_front.php';
                                                             </div>
                                                             <div class="invoice-icon d-flex flex-column justify-content-between border-left p-25">
                                                                 <div class="dropdown">
-                                                                    <a href="php/delete_articles_devis.php?num=<?= $articless['id'] ?>&numdevis=<?= $facture['id'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>                                            
+                                                                    <a href="php/delete_articles_devis.php?num=<?= $articless['id'] ?>&numdevis=<?= $facture['id'] ?>"><div class="livicon-evo  cursor-pointer dropdown-toggle" data-options=" name: close.svg; size: 15px "></div></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -357,7 +357,7 @@ require_once 'php/permissions_front.php';
                                                                     <!-- prix de quantité*prix en js -->
 
                                                                 </div>
-                                                                
+
                                                                 <div class="col-md-3 col-12 form-group">
                                                                     <label for="ref">REF :</label>
                                                                     <input name="referencearticle" id="referencearticle" type="text" class="form-control invoice-item-desc border-black" placeholder="Réference">
@@ -496,7 +496,7 @@ require_once 'php/permissions_front.php';
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between border-0 py-0">
                                                             <span class="invoice-subtotal-title">Total TTC - Accompte</span>
-                                                            <h6 class="invoice-subtotal-value mb-0"><?= ($montant_t + ($montant_t - $montant_tva)) - $facture['accompte'] ?> <?= $facture['monnaie']; ?></h6>
+                                                            <h6 class="invoice-subtotal-value mb-0"><?= ($montant_t + ($montant_t - $montant_tva)) - intval($facture['accompte'] )?> <?= $facture['monnaie']; ?></h6>
                                                         </li>
                                                         <hr>
                                                         <li class="list-group-item d-flex justify-content-between border-0 pb-0">
@@ -553,13 +553,13 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_devis.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
-    <?php include('timeout.php'); ?>
+    <?php //include('timeout.php'); ?>
 </body>
 <!-- END: Body-->
 

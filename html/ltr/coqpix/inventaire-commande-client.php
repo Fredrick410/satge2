@@ -241,49 +241,62 @@ require_once 'php/config.php';
                                       $pdo->bindValue(':num',$_SESSION['id_session']);
                                       $pdo->bindValue(':numeros',$numeros);
                                       $pdo->execute();
-                                      $articles = $pdo->fetchAll();?>
-                                      <!-- afficher seulement les 2 premiers articles puis mettre des "..." s'il y a plus d'articles -->
-                                      <table>
-                                      <?php
-                                      if (count($articles)<=2) {
-                                        foreach($articles as $articless): ?>
+                                      $articles = $pdo->fetchAll();
+
+                                      //compter le nb d'article présent dans la commande
+                                      $count = "SELECT COUNT(article) as countarticle FROM articles WHERE numeros=:numeros and typ = 'bonvente'";
+                                      $reqss = $bdd->prepare($count);
+                                      $reqss->bindValue(':numeros',$numeros, PDO::PARAM_INT);
+                                      $reqss->execute();
+                                      $resqq = $reqss->fetch();?>
+                                      Nombres d'articles:
+                                      <?= $resqq['countarticle'] ?><!-- indiquer le nb d'article present dans la commande -->
+                                      </br>
+
+                                        <!-- afficher seulement les 2 premiers articles puis mettre des "..." s'il y a plus d'articles -->
+                                        <table>
+                                        <?php
+                                        if (count($articles)<=2) {
+                                          foreach($articles as $articless): ?>
+                                            <tr>
+                                              <td><?= $articless['article']; ?></td>
+                                            </tr>
+                                            <?php endforeach;
+                                        }else {
+                                          for ($i=0; $i < 2; $i++) {?>
+                                            <tr>
+                                              <td><?= $articles[$i]['article']; ?></td>
+                                            </tr>
+                                          <?php  } ?>
                                           <tr>
-                                            <td><?= $articless['article']; ?></td>
-                                          </tr>
-                                          <?php endforeach;
-                                      }else {
-                                        for ($i=0; $i < 2; $i++) {?>
-                                          <tr>
-                                            <td><?= $articles[$i]['article']; ?></td>
+                                          <td>...</td>
                                           </tr>
                                         <?php  } ?>
-                                        <tr>
-                                        <td>...</td>
-                                        </tr>
-                                      <?php  } ?>
-                                      </table>
-                                      </td>
-                                      <td>
-                                        <table>
-                                          <?php
-                                              if (count($articles)<=2) {
-                                                foreach($articles as $articless): ?>
+                                        </table>
+                                        </td>
+                                        <td>
+                                          <table>
+                                            <br><br>
+                                            <?php
+                                                if (count($articles)<=2) {
+                                                  foreach($articles as $articless): ?>
+                                                    <tr>
+                                                      <td><?= $articless['quantite']; ?></td>
+                                                    </tr>
+                                                  <?php endforeach;
+                                                }else {
+                                                  for ($i=0; $i < 2; $i++) {?>
+                                                    <tr>
+                                                      <td><?= $articles[$i]['quantite']; ?></td>
+                                                    </tr>
+                                                  <?php  } ?>
                                                   <tr>
-                                                    <td><?= $articless['quantite']; ?></td>
-                                                  </tr>
-                                                <?php endforeach;
-                                              }else {
-                                                for ($i=0; $i < 2; $i++) {?>
-                                                  <tr>
-                                                    <td><?= $articles[$i]['quantite']; ?></td>
+                                                    <td>...</td>
                                                   </tr>
                                                 <?php  } ?>
-                                                <tr>
-                                                  <td>...</td>
-                                                </tr>
-                                              <?php  } ?>
-                                        </table>
-                                      </td>
+                                          </table>
+                                        </td>
+
                                       <td><?php //status de la commande pour CSS
                                       if($bons['commande']=='Commande en cours de traitement'){
                                         $stts ='badge badge-light-secondary badge-pill';

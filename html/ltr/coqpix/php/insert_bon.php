@@ -14,7 +14,7 @@ ini_set('display_startup_errors', TRUE);
     }
     $numeroarticle = $_POST['numeroarticle'];
     if($_POST['dte'] == ""){
-        $dte = "00-00-00";
+        $dte = "0000-00-00";
     }else{
         $dte = $_POST['dte'];
     }
@@ -49,7 +49,7 @@ ini_set('display_startup_errors', TRUE);
         $adressetwo = $_POST['adressetwo'];
     }
 
-    if($_POST['departementtwo'] == ""){
+    if(!isset($_POST['departementtwo'])){
         $departementtwo = "31100";
     }else{
         $departementtwo = $_POST['departementtwo'];
@@ -80,8 +80,8 @@ ini_set('display_startup_errors', TRUE);
     }
 
 
-    
-    // end vide 
+
+    // end vide
 
     if($_POST['statut'] == "NON PAYE"){
         $color = "badge badge-light-danger badge-pill";
@@ -114,7 +114,7 @@ ini_set('display_startup_errors', TRUE);
         htmlspecialchars($departementtwo)
     ));
 
-        $pdoA = $bdd->prepare('UPDATE articles SET typ="bonvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');  
+        $pdoA = $bdd->prepare('UPDATE articles SET typ="bonvente" WHERE typ="" AND numeros=:numeros AND id_session=:num');
         $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdoA->bindValue(':numeros', $numeroarticle);
         $pdoA->execute();
@@ -127,19 +127,19 @@ ini_set('display_startup_errors', TRUE);
         $calculs = $pdoS->fetch();
 
     try{
-  
+
         $sql = "SELECT SUM(T.TOTAL) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonvente' ) T ";
-        
+
         $req = $bdd->prepare($sql);
         $req->bindValue(':num',$_SESSION['id_session']); //$_SESSION
-        $req->bindValue(':numeros',$_POST['numeroarticle']); 
+        $req->bindValue(':numeros',$_POST['numeroarticle']);
         $req->execute();
         $res = $req->fetch();
         }catch(Exception $e){
             echo "Erreur " . $e->getMessage();
         }
 
-        $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;       
+        $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
 
         $facture_nb = $calculs['facture_nb'] + 1;
         $facture_all = $calculs['facture_all'] + $montant_t;
@@ -147,7 +147,7 @@ ini_set('display_startup_errors', TRUE);
         $lastdte = date('d-m-Y');  // $calculs['lastdte'] pour autre de facture
 
         $pdo = $bdd->prepare('UPDATE calculs SET facture_nb=:facture_nb, facture_all=:facture_all, devis_all=:devis_all, lastdte=:lastdte WHERE id_session=:num LIMIT 1');
-    
+
         $pdo->bindValue(':num', $_SESSION['id_session']); //$_SESSION
         $pdo->bindValue(':facture_nb', $facture_nb);
         $pdo->bindValue(':facture_all', $facture_all);
@@ -157,15 +157,15 @@ ini_set('display_startup_errors', TRUE);
 
 
         //delete tout les articles en plus
-        
+
         $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
         $pdoDel->execute();
 
-        
+
 
     header('Location: ../app-bon-list.php');
     exit();
 
 
-    
+
 ?>

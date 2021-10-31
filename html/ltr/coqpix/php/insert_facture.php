@@ -82,7 +82,7 @@ if ($_POST['note'] == "") {
     $note = $_POST['note'];
 }
 
-// end vide 
+// end vide
 
 if ($_POST['statut'] == "NON PAYE") {
     $color = "badge badge-light-danger badge-pill";
@@ -150,7 +150,7 @@ if ($_POST['departementtwo'] == "" || $_POST['adressetwo'] == "") {
 //     htmlspecialchars($numeroarticle)
 // ));
 
-// Pour mettre à jour les différents articles et prestations utilisés dans une facture, en particulier pour préciser le type de document
+// Pour mettre à jour les différents articles utilisés dans une facture, en particulier pour préciser le type de document
 
 $pdoA = $bdd->prepare('UPDATE articles SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');
 $pdoA->bindValue(':num', $_SESSION['id_session']); //$_SESSION
@@ -158,11 +158,6 @@ $pdoA->bindValue(':numeros', $numeroarticle);
 // $pdoA->bindValue(':titre', $ntitre);
 $pdoA->execute();
 
-$pdoP = $bdd->prepare('UPDATE prestations SET typ="facturevente" WHERE typ="" AND numeros=:numeros AND id_session=:num');
-$pdoP->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-$pdoP->bindValue(':numeros', $numeroarticle);
-// $pdoP->bindValue(':titre', $ntitre);
-$pdoP->execute();
 
 //calculs
 
@@ -186,19 +181,6 @@ try {
 
 $montant_t = !empty($res) ? $res['MONTANT_T'] : 0;
 
-try {
-
-    $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM prestations WHERE id_session = :num AND numeros=:numeros AND typ='facturevente' ) T ";
-
-    $reqp = $bdd->prepare($sql);
-    $reqp->bindValue(':num', $_SESSION['id_session']); //$_SESSION
-    $reqp->bindValue(':numeros', $_POST['numeroarticle']);
-    $reqp->execute();
-    $resp = $reqp->fetch();
-} catch (Exception $e) {
-    echo "Erreur " . $e->getMessage();
-}
-
 $montant_tp = !empty($resp) ? $resp['MONTANT_T'] : 0;
 
 $facture_nb = $calculs['facture_nb'] + 1;
@@ -216,13 +198,11 @@ $pdo->bindValue(':lastdte', $lastdte);
 $pdo->execute();
 
 
-//delete tous les articles et prestations
+//delete tous les articles
 
 $pdoDel = $bdd->prepare('DELETE FROM articles WHERE numeros= ""');
 $pdoDel->execute();
 
-$pdoDelp = $bdd->prepare('DELETE FROM prestations WHERE numeros= ""');
-$pdoDelp->execute();
 
 // $pdoDelt = $bdd->prepare('DELETE FROM titres WHERE numeros= ""');
 // $pdoDelt->execute();

@@ -62,7 +62,7 @@ btnClientFact.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+/*    //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -97,7 +97,7 @@ btnClientFact.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -163,7 +163,7 @@ btnClientFact2.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+/*    //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -198,7 +198,7 @@ btnClientFact2.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -264,7 +264,7 @@ btnClientFact3.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+/*    //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -299,7 +299,7 @@ btnClientFact3.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -310,7 +310,7 @@ btnClientFact3.addEventListener("click", () => {
     localStorage.setItem('etiquettee', document.querySelector('#etiquette').value);
     localStorage.setItem('statutt', document.querySelector('#statut').value);
 
-    
+
 });
 
 btnClientFact4.addEventListener("click", () => {
@@ -367,7 +367,7 @@ btnClientFact4.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+  /*  //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -402,7 +402,7 @@ btnClientFact4.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -469,7 +469,7 @@ btnClientFact5.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+  /*  //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -504,7 +504,7 @@ btnClientFact5.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -570,7 +570,7 @@ btnClientFact6.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+/*    //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -605,7 +605,7 @@ btnClientFact6.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -671,7 +671,7 @@ btnClientFact7.addEventListener("click", () => {
     localStorage.setItem('tvaa4', document.querySelector('#tva4').value);
     localStorage.setItem('unitemesure4', document.querySelector('#umesure4').value);
 
-    //Pour les prestations
+/*    //Pour les prestations
     localStorage.setItem('titre5', document.querySelector('#numero_titre5').value);
     localStorage.setItem('nomprestation5', document.querySelector('#prestation5').value);
     localStorage.setItem('prix5', document.querySelector('#cout5').value);
@@ -706,7 +706,7 @@ btnClientFact7.addEventListener("click", () => {
     localStorage.setItem('refprestation8', document.querySelector('#referencepresta8').value);
     localStorage.setItem('remisee8', document.querySelector('#remise8').value);
     localStorage.setItem('tvaa8', document.querySelector('#tva8').value);
-    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);
+    localStorage.setItem('unitemesure8', document.querySelector('#umesure8').value);*/
 
     //--------------------------------
 
@@ -776,7 +776,7 @@ document.querySelector('#remise4').value = localStorage.getItem('remisee4');
 document.querySelector('#tva4').value = localStorage.getItem('tvaa4');
 document.querySelector('#umesure4').value = localStorage.getItem('unitemesure4');
 
-//Pour les prestations
+/*//Pour les prestations
 document.querySelector('#numero_titre5').value = localStorage.getItem('titre5');
 document.querySelector('#prestation5').value = localStorage.getItem('nomprestation5');
 document.querySelector('#cout5').value = localStorage.getItem('prix5');
@@ -811,7 +811,7 @@ document.querySelector('#quantite8').value = localStorage.getItem('quantitee8');
 document.querySelector('#referencepresta8').value = localStorage.getItem('refprestation8');
 document.querySelector('#remise8').value = localStorage.getItem('remisee8');
 document.querySelector('#tva8').value = localStorage.getItem('tvaa8');
-document.querySelector('#umesure8').value = localStorage.getItem('unitemesure8');
+document.querySelector('#umesure8').value = localStorage.getItem('unitemesure8');*/
 
 //--------------------------------
 

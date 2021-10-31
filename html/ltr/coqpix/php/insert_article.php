@@ -12,6 +12,7 @@ $test = $incre->fetch();
 $maxid = $test['MAX(id_article)'] + 1;
 
 
+
     if($_POST['prixvente'] == "" && $_POST['coutachat'] == ""){
 
         $typ = "Aucun";
@@ -37,6 +38,12 @@ $maxid = $test['MAX(id_article)'] + 1;
 
     }
 
+    if ($_POST['categorie'] === "bien") {
+      $sstyp = htmlspecialchars($_POST['sstypbien']);
+    }elseif ($_POST['categorie'] === "service") {
+      $sstyp = htmlspecialchars($_POST['sstypservice']);
+    }
+
     if(isset($_FILES['img']) AND !empty($_FILES['img']['name'])) {
         $tailleMax = 2097152;
         $extensionsValides = array('jpg', 'jpeg', 'gif', 'png');
@@ -47,7 +54,7 @@ $maxid = $test['MAX(id_article)'] + 1;
               $resultat = move_uploaded_file($_FILES['img']['tmp_name'], $chemin);
               if($resultat) {
                  $path = $maxid.".".$extensionUpload;
-                 $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, img, id_session, stock, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
+                 $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, img, id_session, stock, id_fournisseur,categorie,sstyp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
                 $insert->execute(array(
                     htmlspecialchars($_POST['article']),
                     htmlspecialchars($_POST['referencearticle']),
@@ -60,7 +67,9 @@ $maxid = $test['MAX(id_article)'] + 1;
                     htmlspecialchars($path),
                     htmlspecialchars($_SESSION['id_session']),
                     htmlspecialchars($_POST['stock']),
-                    htmlspecialchars($_POST['id_fournisseur'])
+                    htmlspecialchars($_POST['id_fournisseur']),
+                    htmlspecialchars($_POST['categorie']),
+                    $sstyp
                     // htmlspecialchars($_POST['adresse']),
                     // htmlspecialchars($_POST['codepostal']),
                     // htmlspecialchars($_POST['departement']),
@@ -79,25 +88,27 @@ $maxid = $test['MAX(id_article)'] + 1;
            $msg = "Votre photo ne doit pas dépasser 2Mo";
         }
     }elseif(empty($_FILES['img']['name'])){
-        $insert = $bdd->prepare('INSERT INTO article(article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session, stock, id_fournisseur) VALUES(?,?,?,?,?,?,?,?,?,?,?)');
-        $insert->execute(
-            htmlspecialchars($_POST['article']),
-            htmlspecialchars($_POST['referencearticle']),
-            htmlspecialchars($_POST['prixvente']),
-            htmlspecialchars($_POST['coutachat']),
-            htmlspecialchars($_POST['tvavente']),
-            htmlspecialchars($_POST['tvaachat']),
-            htmlspecialchars($_POST['umesure']),
-            htmlspecialchars($typ),
-            htmlspecialchars($_SESSION['id_session']),
-            htmlspecialchars($_POST['stock']),
-            htmlspecialchars($_POST['id_fournisseur'])
-            // htmlspecialchars($_POST['adresse']),
-            // htmlspecialchars($_POST['codepostal']),
-            // htmlspecialchars($_POST['departement']),
-            // htmlspecialchars($_POST['email']),
-            // htmlspecialchars($_POST['tel'])
-        );
+      $insert = $bdd->prepare('INSERT INTO article (article, referencearticle, prixvente, coutachat, tvavente, tvaachat, umesure, typ, id_session, stock, id_fournisseur,categorie,sstyp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)');
+     $insert->execute(array(
+         htmlspecialchars($_POST['article']),
+         htmlspecialchars($_POST['referencearticle']),
+         htmlspecialchars($_POST['prixvente']),
+         htmlspecialchars($_POST['coutachat']),
+         htmlspecialchars($_POST['tvavente']),
+         htmlspecialchars($_POST['tvaachat']),
+         htmlspecialchars($_POST['umesure']),
+         htmlspecialchars($typ),
+         htmlspecialchars($_SESSION['id_session']),
+         htmlspecialchars($_POST['stock']),
+         htmlspecialchars($_POST['id_fournisseur']),
+         htmlspecialchars($_POST['categorie']),
+         $sstyp
+         // htmlspecialchars($_POST['adresse']),
+         // htmlspecialchars($_POST['codepostal']),
+         // htmlspecialchars($_POST['departement']),
+         // htmlspecialchars($_POST['email']),
+         // htmlspecialchars($_POST['tel'])
+     ));
     }
 
 

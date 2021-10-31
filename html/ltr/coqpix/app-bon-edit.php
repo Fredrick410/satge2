@@ -404,6 +404,7 @@ require_once 'php/permissions_front.php';
                                                 </tbody>
                                             </table>
                                         </div>
+
                                         <!-- invoice subtotal -->
                                         <hr>
                                         <div class="invoice-subtotal pt-50">
@@ -547,7 +548,7 @@ require_once 'php/permissions_front.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/pages/app-invoice.js"></script>
-    <script src="../../../app-assets/js/scripts/pages/app-add_facture.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-add_bon.js"></script>
     <script src="../../../app-assets/js/scripts/pages/myFunction_facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/complete-facture.js"></script>
     <script src="../../../app-assets/js/scripts/pages/buttonc.js"></script>

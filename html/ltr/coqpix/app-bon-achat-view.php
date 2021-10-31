@@ -28,6 +28,7 @@ $pdo->bindValue(':numeros', $_GET['numbon']);
 $pdo->execute();
 $articles = $pdo->fetchAll();
 
+
 try {
 
     $sql = "SELECT ROUND(SUM(T.TOTAL), 2) as MONTANT_T FROM ( SELECT cout,quantite ,(cout * quantite ) as TOTAL FROM articles WHERE id_session = :num AND numeros=:numeros AND typ='bonachat' ) T ";
@@ -362,34 +363,34 @@ include('php/menu_header_front.php'); ?>
                                         <hr>
                                     </div>
                                     <!-- product details table-->
-                                    <div class="invoice-product-details table-responsive mx-md-25">
-                                        <table class="table table-borderless mb-0">
-                                            <thead>
-                                                <tr class="border-0">
-                                                    <th scope="col">Article</th>
-                                                    <th scope="col">Référence</th>
-                                                    <th scope="col">Prix U</th>
-                                                    <th scope="col">Quantite</th>
-                                                    <th scope="col">Unite de mesure</th>
-                                                    <th scope="col">Remise</th>
-                                                    <th scope="col" class="text-right">Prix HT</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($articles as $articless) : ?>
-                                                    <tr>
-                                                        <td><?= $articless['article']; ?></td>
-                                                        <td><?= $articless['referencearticle']; ?></td>
-                                                        <td><?= $articless['cout']; ?></td>
-                                                        <td><?= $articless['quantite']; ?></td>
-                                                        <td><?= $articless['umesure']; ?></td>
-                                                        <td><?= $articless['remise']; ?></td>
-                                                        <td class="text-primary text-right font-weight-bold"><?= $articless['cout'] * $articless['quantite'] ?> <?= $bonss['monnaie']; ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                      <div class="invoice-product-details table-responsive mx-md-25">
+                                          <table class="table table-borderless mb-0">
+                                              <thead>
+                                                  <tr class="border-0">
+                                                      <th scope="col">Article</th>
+                                                      <th scope="col">Référence</th>
+                                                      <th scope="col">Prix U</th>
+                                                      <th scope="col">Quantite</th>
+                                                      <th scope="col">Unite de mesure</th>
+                                                      <th scope="col">Remise</th>
+                                                      <th scope="col" class="text-right">Prix HT</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  <?php foreach ($articles as $articless) : ?>
+                                                      <tr>
+                                                          <td><?= $articless['article']; ?></td>
+                                                          <td><?= $articless['referencearticle']; ?></td>
+                                                          <td><?= $articless['cout']; ?></td>
+                                                          <td><?= $articless['quantite']; ?></td>
+                                                          <td><?= $articless['umesure']; ?></td>
+                                                          <td><?= $articless['remise']; ?></td>
+                                                          <td class="text-primary text-right font-weight-bold"><?= $articless['cout'] * $articless['quantite'] ?> <?= $bonss['monnaie']; ?></td>
+                                                      </tr>
+                                                  <?php endforeach; ?>
+                                              </tbody>
+                                          </table>
+                                      </div>
 
                                     <style>
                                         .tvadis {
