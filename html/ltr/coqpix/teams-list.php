@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include 'php/verif_session_connect.php';
 error_reporting(E_ALL);
@@ -6,19 +6,36 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 require_once 'php/config.php';
 
-    $pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
-    $pdoS->bindValue(':numentreprise',$_SESSION['id']);
-    $pdoS->execute();
-    $entreprise = $pdoS->fetch();
+// Fonctions pour generer une couleur en hexadecimal de facon aleatoire
+function random_color_part()
+{
+    return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+}
 
-    $pdoS = $bdd->prepare('SELECT * FROM teams WHERE id_session = :num');
-    $pdoS->bindValue(':num',$_SESSION['id']);
-    $pdoS->execute();
-    $team = $pdoS->fetchAll();
+function random_color()
+{
+    return random_color_part() . random_color_part() . random_color_part();
+}
 
-    // Supression des notifications
-    $pdoS = $bdd->prepare('DELETE FROM notif_front WHERE id_session = ? AND type_demande = ?');
-    $pdoS->execute(array($_SESSION['id_session'],'teams_membres'));
+$pdoS = $bdd->prepare('SELECT * FROM entreprise WHERE id = :numentreprise');
+$pdoS->bindValue(':numentreprise', $_SESSION['id']);
+$pdoS->execute();
+$entreprise = $pdoS->fetch();
+
+$pdoS = $bdd->prepare('SELECT * FROM teams WHERE id_session = :num');
+$pdoS->bindValue(':num', $_SESSION['id']);
+$pdoS->execute();
+$team = $pdoS->fetchAll();
+
+//On recupere tous les membres.
+$pdoS = $bdd->prepare('SELECT * FROM membres WHERE id_session = :num');
+$pdoS->bindValue(':num', $_SESSION['id_session']);
+$pdoS->execute();
+$membres = $pdoS->fetchAll();
+
+// Supression des notifications
+$pdoS = $bdd->prepare('DELETE FROM notif_front WHERE id_session = ? AND type_demande = ?');
+$pdoS->execute(array($_SESSION['id_session'], 'teams_membres'));
 
 ?>
 
@@ -67,7 +84,11 @@ require_once 'php/config.php';
 
 <!-- BEGIN: Body-->
 
-<body class="vertical-layout vertical-menu-modern <?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout content-left-sidebar todo-application navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="content-left-sidebar" data-layout="<?php if($entreprise['theme_web'] == "light"){echo "semi-";} ?>dark-layout">
+<body class="vertical-layout vertical-menu-modern <?php if ($entreprise['theme_web'] == "light") {
+                                                        echo "semi-";
+                                                    } ?>dark-layout content-left-sidebar todo-application navbar-sticky footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="content-left-sidebar" data-layout="<?php if ($entreprise['theme_web'] == "light") {
+                                                                                                                                                                                                                                                echo "semi-";
+                                                                                                                                                                                                                                            } ?>dark-layout">
 
     <!-- BEGIN: Header-->
     <?php $btnreturn = false;
@@ -104,32 +125,91 @@ require_once 'php/config.php';
                                             <thead class="thead-dark">
                                                 <tr class="text-center">
                                                     <th>Nom</th>
+                                                    <th>Photo</th>
                                                     <th>Nombre de membre</th>
+                                                    <th>Membres</th>
                                                     <th>Date de création</th>
                                                     <th>Options</th>
                                                 </tr>
                                             </thead>
-                                            <?php foreach($team as $teams): 
+                                            <tbody>
+                                                <?php foreach ($team as $teams) :
 
-                                                $pdoS = $bdd->prepare('SELECT * FROM teams_membres WHERE id_session = :num AND team_num=:team_num ');
-                                                $pdoS->bindValue(':num',$_SESSION['id']);
-                                                $pdoS->bindValue(':team_num', $teams['id']);
-                                                $pdoS->execute();
-                                                $team_membre = $pdoS->fetchAll();
-                                                $count_membre = count($team_membre);
+                                                    $pdoS = $bdd->prepare('SELECT * FROM teams_membres WHERE id_session = :num AND team_num=:team_num ');
+                                                    $pdoS->bindValue(':num', $_SESSION['id']);
+                                                    $pdoS->bindValue(':team_num', $teams['id']);
+                                                    $pdoS->execute();
+                                                    $team_membre = $pdoS->fetchAll();
+                                                    $count_membre = count($team_membre);
 
-                                            ?>
-                                            
-                                                <tbody>
+                                                ?>
                                                     <tr class="text-center">
                                                         <td><?= $teams['name_team'] ?></td>
+                                                        <td><?php if (!empty($teams['photo_team'])) { ?><img class="rounded-circle" src="../../../src/img/<?= $teams['photo_team'] ?>" alt="photo" width="60" height="60"><?php } else {
+                                                                                                                                                                                                        echo "Non définie";
+                                                                                                                                                                                                    } ?></td>
                                                         <td><?= $count_membre ?></td>
+                                                        <td>
+                                                            <?php
+                                                            if ($count_membre != 0) {
+                                                            ?>
+                                                                <ul class="list-unstyled users-list m-0 d-flex align-items-center">
+                                                                    <?php
+                                                                    $nb_membre = 0;
+                                                                    foreach ($membres as $membre) {
+                                                                        $name_membre = array_column($team_membre, 'name_membre');
+                                                                        $found_key = array_search($membre['nom'] . " " . $membre['prenom'], $name_membre);
+                                                                        if ($found_key !== false) {
+                                                                            if (empty($membre['img_membres'])) {
+                                                                                $acronyme = "";
+                                                                                $a = str_word_count($mission_task_membres[$i][$j][$k]['nom'] . ' ' . $mission_task_membres[$i][$j][$k]['prenom'], 1);
+                                                                                foreach ($a as $value) {
+                                                                                    $acronyme .= strtoupper(substr($value, 0, 1));
+                                                                                }
+                                                                                $membre['color'] = '#' . strtoupper(random_color());
+                                                                    ?>
+                                                                                <li class="kanban-badge avatar pull-up my-0">
+                                                                                    <div class="media-object rounded-circle badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: <?= $membre['color'] ?> ;">
+                                                                                        <?= $acronyme ?>
+                                                                                    </div>
+                                                                                </li>
+                                                                            <?php
+                                                                            } else {
+                                                                            ?>
+                                                                                <li class="avatar pull-up my-0">
+                                                                                    <img class="media-object rounded-circle" src="<?= "../../../src/img/" . $membre['img_membres'] ?>" alt="Avatar" height="40" width="40">
+                                                                                </li>
+                                                                    <?php
+                                                                            }
+                                                                            $nb_membre++;
+                                                                            if ($nb_membre > 5) {
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                    <?php
+                                                                    if ($nb_membre > 5) {
+                                                                    ?>
+                                                                        <li class="kanban-badge avatar pull-up my-0">
+                                                                            <div class="media-object rounded-circle badge-circle badge-circle-sm font-size-small font-weight-bold" style="background-color: #ffffff; color: #000000; height: 35px; width: 35px;">
+                                                                                ...
+                                                                            </div>
+                                                                        </li>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </ul>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </td>
                                                         <td><?= $teams['date_crea'] ?></td>
-                                                        
-                                                        <td><a href="teams-view.php?num=<?= $teams['id'] ?>"><i class='bx bx-search-alt'></i></a>&nbsp&nbsp&nbsp<a href="php/delete_team.php?num=<?= $teams['id'] ?>"><i style="cursor: pointer;" class="bx bx-trash-alt"></i></a></td>                            
+
+                                                        <td><a href="teams-view.php?num=<?= $teams['id'] ?>"><i class='bx bx-search-alt'></i></a>&nbsp&nbsp&nbsp<a href="php/delete_team.php?num=<?= $teams['id'] ?>"><i style="cursor: pointer;" class="bx bx-trash-alt"></i></a></td>
                                                     </tr>
-                                                </tbody>    
-                                            <?php endforeach; ?>
+                                                <?php endforeach; ?>
+                                            </tbody>
                                         </table>
                                     </div>
                                     <!-- datatable ends -->
@@ -167,7 +247,25 @@ require_once 'php/config.php';
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="../../../app-assets/js/scripts/pages/page-users.js"></script>
+    <!-- <script src="../../../app-assets/js/scripts/pages/page-users.js"></script> -->
+    <script>
+        $(document).ready(function() {
+            var table = $('#users-list-datatable').DataTable({
+                dom: 'Pfrtip',
+                columnDefs: [{
+                    orderable: false,
+                    width: "8%",
+                    targets: [1, 3, 5]
+                }, ]
+            });
+            $('#users-list-datatable_filter').children().children().on('keyup', function() {
+                table
+                    .columns(0)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    </script>
     <!-- END: Page JS-->
     <!-- TIMEOUT -->
     <?php include('timeout.php'); ?>

@@ -136,13 +136,36 @@ if (isset($_POST['id_mission'])) {
     }
 
     if (!empty($selected_membres) or !empty($selected_teams)) {
+        // Recuperation de la tache
+        try {
+            $insert = $bdd->prepare('SELECT * FROM task WHERE id = :id');
+            $insert->bindValue(':id', $id_task);
+            $insert->execute();
+            $tache_debut = $insert->fetchColumn(2);
+        } catch (Exception $e) {
+            $response_array['status'] = 'error';
+            $response_array['message'] = $e->getMessage();
+            echo json_encode($response_array);
+            exit();
+        }
+        echo $tache_debut;
+        $date_task = strtotime($date_task);
+        $date_task = date('Y-m-d', $date_task);
+        // Si la nouvelle date est superieure a celle dans la bdd le status est en attente sinon en cours
+        if ($tache_debut > $date_task) {
+            $status_task = 'En cours';
+        }
+        else{
+            $status_task = 'En attente';
+        }
         // Mise a jour des infos sur la taches
         try {
-            $insert = $bdd->prepare('UPDATE task SET name_task = ?, date_task = ?, dateecheance_task = ?, description_task = ?, etiquette_task = ?, color_etiq = ? WHERE id = ?');
+            $insert = $bdd->prepare('UPDATE task SET name_task = ?, date_task = ?, dateecheance_task = ?, status_task = ?, description_task = ?, etiquette_task = ?, color_etiq = ? WHERE id = ?');
             $insert->execute(array(
                 $name_task,
                 $date_task,
                 $dateecheance_task,
+                $status_task,
                 $description_task,
                 $new_etiq,
                 $new_etiq_color,

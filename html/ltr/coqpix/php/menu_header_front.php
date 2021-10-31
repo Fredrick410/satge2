@@ -49,3 +49,19 @@
             </div>
         </div>
     </nav>
+    <script>
+        function demarrerMission() {
+            $.ajax({
+                type: 'POST',
+                url: 'php/demarrer_mission.php',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status != 'success') {
+                        addAlert(data.message);
+                    }
+                }
+            });
+            setTimeout(demarrerMission, 5000); // you could choose not to continue on failure...
+        }
+        setTimeout(demarrerMission, 5000);
+    </script>
