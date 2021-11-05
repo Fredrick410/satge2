@@ -12,68 +12,74 @@ require_once 'php/verif_session_connect_admin.php';
     $pdoSta->execute();
     $societe = $pdoSta->fetch();
 
-    if(isset($_POST['date_begin'])){
-        $date_control_begin = htmlspecialchars($_POST['date_begin']);
-        if($date_control_begin !== ""){
-            $sql = $bdd->prepare('UPDATE fiscal SET date_control_begin=:date_control_begin WHERE id=:num LIMIT 1');
-            $sql->bindValue(':date_control_begin', $date_control_begin);
-            $sql->bindValue(':num', $_GET['num']);
-            $sql->execute();
-
-        }else{
-            $date_control_begin2 = substr($societe['date_control_begin'], 0, -5);        
-            $sql = $bdd->prepare('UPDATE fiscal SET date_control_begin=:date_control_begin WHERE id=:num LIMIT 1');
-            $sql->bindValue(':date_control_begin', $date_control_begin2);
-            $sql->bindValue(':num', $_GET['num']);
-            $sql->execute();
-            
-        }
-        
+// Update POST Value
+    function updateValue($pdo, $arg, $col){        
+        $sql = $pdo->prepare('UPDATE fiscal SET '.$col.'=:'.$col.' WHERE id=:num LIMIT 1');
+        $sql->bindValue(':'.$col.'', $arg);
+        $sql->bindValue(':num', $_GET['num']);
+        $sql->execute();
         header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
         exit();
     }
 
+// Check the presence of the file
+    function presentDoc($sql,$arg){
+        if($sql[$arg] !== "" AND is_null($sql[$arg])==false ){
+            $nbDoc = "1";
+        }else{
+            $nbDoc = "0";
+        }
+        return $nbDoc;
+    }
+
+// Display document acronym
+    function acronymDoc($sql,$arg){
+        if($sql[$arg] !== "" AND is_null($sql[$arg])==false ){
+            if(substr($sql[$arg], -3) == "pdf"){
+                $acronDoc = "pdf.png";
+            }
+            else{
+                $acronDoc = "doc.png";
+            }
+        }
+        else{
+            $acronDoc = "doc.png";
+        }
+        return $acronDoc; 
+    }
+
+
+    if(isset($_POST['date_begin'])){
+        $date_control_begin = htmlspecialchars($_POST['date_begin']);
+        
+        if($date_control_begin !== ""){
+            updateValue($bdd,$date_control_begin,'date_control_begin');
+        }else{
+            $date_control_begin2 = substr($societe['date_control_begin'], 0, -5);
+            updateValue($bdd,$date_control_begin2,'date_control_begin');
+        }
+    }
+
     if(isset($_POST['date_end'])){
         $date_control_end = htmlspecialchars($_POST['date_end']);
-        if($date_control_end !== ""){
-            $sql = $bdd->prepare('UPDATE fiscal SET date_control_end=:date_control_end WHERE id=:num LIMIT 1');
-            $sql->bindValue(':date_control_end', $date_control_end);
-            $sql->bindValue(':num', $_GET['num']);
-            $sql->execute();
 
+        if($date_control_end !== ""){
+            updateValue($bdd,$date_control_end,'date_control_end');
         }else{
             $date_control_end2 = substr($societe['date_control_end'], 0, -5);        
-            $sql = $bdd->prepare('UPDATE fiscal SET date_control_end=:date_control_end WHERE id=:num LIMIT 1');
-            $sql->bindValue(':date_control_end', $date_control_end2);
-            $sql->bindValue(':num', $_GET['num']);
-            $sql->execute();
-            
+            updateValue($bdd,$date_control_end2,'date_control_end');
         }
-        
-        header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
-        exit();
     }
 
     if(isset($_POST['control_obj'])){
         $object_control = htmlspecialchars($_POST['control_obj']);
 
         if($object_control !== ""){        
-            $sql = $bdd->prepare('UPDATE fiscal SET object_control=:object_control WHERE id=:num LIMIT 1');
-            $sql->bindValue(':object_control', $object_control);
-            $sql->bindValue(':num', $_GET['num']);
-            $sql->execute();
-        
+            updateValue($bdd,$object_control,'object_control');
         }else{
             $object_control2 = substr($societe['object_control'], 0, -5);        
-            $sql = $bdd->prepare('UPDATE fiscal SET object_control=:object_control WHERE id=:num LIMIT 1');
-            $sql->bindValue(':object_control', $object_control2);
-            $sql->bindValue(':num', $_GET['num']);
-            $sql->execute();
-
+            updateValue($bdd,$object_control2,'object_control');
         }
-                
-        header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
-        exit();
     }
         
 
@@ -207,42 +213,23 @@ require_once 'php/verif_session_connect_admin.php';
                                             <!--First Phase start-->
                                             <?php
                                                 //Nombre fichier phase1
-                                
-                                                if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
-                                                    $t_doc_mandat = "1";
-                                                }else{
-                                                    $t_doc_mandat = "0";
-                                                }
-                                        
-                                                if($societe['doc_cerfa27'] !== "" AND is_null($societe['doc_cerfa27'])==false ){
-                                                    $t_doc_cerfa27 = "1";
-                                                }else{
-                                                    $t_doc_cerfa27 = "0";
-                                                }
                                                 
-                                                if($societe['doc_cour'] !== "" AND is_null($societe['doc_cour'])==false ){
-                                                    $t_doc_cour = "1";
-                                                }else{
-                                                    $t_doc_cour = "0";
-                                                } 
-                                                
-                                                if($societe['doc_fec'] !== "" AND is_null($societe['doc_fec'])==false ){
-                                                    $t_doc_fec = "1";
-                                                }else{
-                                                    $t_doc_fec = "0";
-                                                }
-                                                
-                                                if($societe['doc_rdv'] !== "" AND is_null($societe['doc_rdv'])==false ){
-                                                    $t_doc_rdv = "1";
-                                                }else{
-                                                    $t_doc_rdv = "0";
-                                                }
+                                                $t_doc_mandat = presentDoc($societe,'doc_mandat');
+
+                                                $t_doc_cerfa27 = presentDoc($societe,'doc_cerfa27');
+
+                                                $t_doc_cour = presentDoc($societe,'doc_cour');
+
+                                                $t_doc_fec = presentDoc($societe,'doc_fec');
+
+                                                $t_doc_rdv = presentDoc($societe,'doc_rdv');
 
                                                 $t_phase1 = '' . ($t_doc_mandat + $t_doc_cerfa27 + $t_doc_cour + $t_doc_fec + $t_doc_rdv) . '/5';
 
                                 
                                                 //Mandat
-                                                if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
+                                                $societe_mandat = acronymDoc($societe,'doc_mandat');
+                                                /*if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
                                                     if(substr($societe['doc_mandat'], -3) == "pdf"){
                                                         $societe_mandat = "pdf.png";
                                                     }
@@ -252,59 +239,20 @@ require_once 'php/verif_session_connect_admin.php';
                                                 }
                                                 else{
                                                     $societe_mandat = "doc.png";
-                                                }
+                                                }*/
                             
-                                                //Cerfa
-                                                if($societe['doc_cerfa27'] !== "" AND is_null($societe['doc_cerfa27'])==false ){
-                                                    if(substr($societe['doc_cerfa27'], -3) == "pdf"){
-                                                        $societe_cerfa27 = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_cerfa27 = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_cerfa27 = "doc.png";
-                                                }
-
+                                                //Cerfa27
+                                                $societe_cerfa27 = acronymDoc($societe,'doc_cerfa27');
+                                                
                                                 //Courrier Annexe
-                                                if($societe['doc_cour'] !== "" AND is_null($societe['doc_cour'])==false ){
-                                                    if(substr($societe['doc_cour'], -3) == "pdf"){
-                                                        $societe_cour = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_cour = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_cour = "doc.png";
-                                                }
-
+                                                $societe_cour = acronymDoc($societe,'doc_cour');
+                                                
                                                 //FEC
-                                                if($societe['doc_fec'] !== "" AND is_null($societe['doc_fec'])==false ){
-                                                    if(substr($societe['doc_fec'], -3) == "pdf"){
-                                                        $societe_fec = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_fec = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_fec = "doc.png";
-                                                }
-
+                                                $societe_fec = acronymDoc($societe,'doc_fec');
+                                                
                                                 //Attestation RDV
-                                                if($societe['doc_rdv'] !== "" AND is_null($societe['doc_rdv'])==false ){
-                                                    if(substr($societe['doc_rdv'], -3) == "pdf"){
-                                                        $societe_rdv = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_rdv = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_rdv = "doc.png";
-                                                }
+                                                $societe_rdv = acronymDoc($societe,'doc_rdv');
+                                                
                                             ?>
                                             <div class="card collapse-header" role="tablist">                                                
                                                 <div id="headingCollapse1" class="card-header d-flex justify-content-between align-items-center" 
@@ -485,46 +433,16 @@ require_once 'php/verif_session_connect_admin.php';
                                             <!--Second Phase start-->
                                             <?php
                                                 //Nombre fichier phase2
-
-                                                if($societe['doc_mail'] !== "" AND is_null($societe['doc_mail'])==false ){
-                                                    $t_doc_mail = "1";
-                                                }else{
-                                                    $t_doc_mail = "0";
-                                                }
-
-                                                if($societe['doc_noteV'] !== "" AND is_null($societe['doc_noteV'])==false ){
-                                                    $t_doc_noteV = "1";
-                                                }else{
-                                                    $t_doc_noteV = "0";
-                                                }
-
+                                                $t_doc_mail = presentDoc($societe,'doc_mail');
+                                                $t_doc_noteV = presentDoc($societe,'doc_noteV');
+                                                
                                                 $t_phase2 = '' . ($t_doc_mail + $t_doc_noteV) . '/2';
 
                                                 //Courrier
-                                                if($societe['doc_mail'] !== "" AND is_null($societe['doc_mail'])==false ){
-                                                    if(substr($societe['doc_mail'], -3) == "pdf"){
-                                                        $societe_mail = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_mail = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_mail = "doc.png";
-                                                }
-                                                
+                                                $societe_mail = acronymDoc($societe,'doc_mail');
+
                                                 //Note interne (phase verification/contradictoire)
-                                                if($societe['doc_noteV'] !== "" AND is_null($societe['doc_noteV'])==false ){
-                                                    if(substr($societe['doc_noteV'], -3) == "pdf"){
-                                                        $societe_noteV = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_noteV = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_noteV = "doc.png";
-                                                }
+                                                $societe_noteV = acronymDoc($societe,'doc_noteV');                                                
                                                 
                                             ?>
                                             <div class="card collapse-header" role="tablist">
@@ -619,65 +537,22 @@ require_once 'php/verif_session_connect_admin.php';
                                             <!--Second Phase end-->
                                             <!--Third Phase start-->
                                             <?php
-                                                if($societe['doc_cerfa24'] !== "" AND is_null($societe['doc_cerfa24'])==false ){
-                                                    $t_doc_cerfa24 = "1";
-                                                }else{
-                                                    $t_doc_cerfa24 = "0";
-                                                }
-
-                                                if($societe['doc_cerfa26'] !== "" AND is_null($societe['doc_cerfa26'])==false ){
-                                                    $t_doc_cerfa26 = "1";
-                                                }else{
-                                                    $t_doc_cerfa26 = "0";
-                                                }
-
-                                                if($societe['doc_contest'] !== "" AND is_null($societe['doc_contest'])==false ){
-                                                    $t_doc_contest = "1";
-                                                }else{
-                                                    $t_doc_contest = "0";
-                                                }
-
+                                                //Nombre fichier phase3
+                                                $t_doc_cerfa24 = presentDoc($societe,'doc_cerfa24');
+                                                $t_doc_cerfa26 = presentDoc($societe,'doc_cerfa26');
+                                                $t_doc_contest = presentDoc($societe,'doc_contest');
+                                                
                                                 $t_phase3 = '' . ($t_doc_cerfa24 + $t_doc_cerfa26 + $t_doc_contest) . '/3';
 
                                                 //Cerfa 3924
-                                                if($societe['doc_cerfa24'] !== "" AND is_null($societe['doc_cerfa24'])==false ){
-                                                    if(substr($societe['doc_cerfa24'], -3) == "pdf"){
-                                                        $societe_cerfa24 = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_cerfa24 = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_cerfa24 = "doc.png";
-                                                }
-
+                                                $societe_cerfa24 = acronymDoc($societe,'doc_cerfa24');
+                                                
                                                 //Cerfa 3926
-                                                if($societe['doc_cerfa26'] !== "" AND is_null($societe['doc_cerfa26'])==false ){
-                                                    if(substr($societe['doc_cerfa26'], -3) == "pdf"){
-                                                        $societe_cerfa26 = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_cerfa26 = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_cerfa26 = "doc.png";
-                                                }
-
+                                                $societe_cerfa26 = acronymDoc($societe,'doc_cerfa26');
+                                                
                                                 //Courrier contestation
-                                                if($societe['doc_contest'] !== "" AND is_null($societe['doc_contest'])==false ){
-                                                    if(substr($societe['doc_contest'], -3) == "pdf"){
-                                                        $societe_contest = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_contest = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_contest = "doc.png";
-                                                }
-
+                                                $societe_contest = acronymDoc($societe,'doc_contest');                                                
+                                                
                                             ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse3" class="card-header d-flex justify-content-between align-items-center" 
@@ -799,47 +674,19 @@ require_once 'php/verif_session_connect_admin.php';
                                             <!--Third Phase end-->
                                             <!--Fourth Phase start-->
                                             <?php
-                                                if($societe['doc_saisine'] !== "" AND is_null($societe['doc_saisine'])==false ){
-                                                    $t_doc_saisine = "1";
-                                                }else{
-                                                    $t_doc_saisine = "0";
-                                                }
-
-                                                if($societe['doc_noteI'] !== "" AND is_null($societe['doc_noteI'])==false ){
-                                                    $t_doc_noteI = "1";
-                                                }else{
-                                                    $t_doc_noteI = "0";
-                                                }
-
+                                            
+                                                //Nombre fichier phase3
+                                                $t_doc_saisine = presentDoc($societe,'doc_saisine');
+                                                $t_doc_noteI = presentDoc($societe,'doc_noteI');
+                                                
                                                 $t_phase4 = '' . ($t_doc_saisine + $t_doc_noteI) . '/2';
 
                                                 //Saisine
-                                                if($societe['doc_saisine'] !== "" AND is_null($societe['doc_saisine'])==false ){
-                                                    if(substr($societe['doc_saisine'], -3) == "pdf"){
-                                                        $societe_saisine = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_saisine = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_saisine = "doc.png";
-                                                }
-
+                                                $societe_saisine = acronymDoc($societe,'doc_saisine');
+                                                
                                                 //Note Interne phase4
-                                                if($societe['doc_noteI'] !== "" AND is_null($societe['doc_noteI'])==false ){
-                                                    if(substr($societe['doc_noteI'], -3) == "pdf"){
-                                                        $societe_noteI = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_noteI = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_noteI = "doc.png";
-                                                }
- 
-                                            
+                                                $societe_noteI = acronymDoc($societe,'doc_noteI');
+                                                                                            
                                             ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse4" class="card-header d-flex justify-content-between align-items-center" 
@@ -1094,9 +941,10 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </label>
                                                                         
                                                                         <fieldset class="d-flex justify-content-end">
+                                                                            <!-- edit date begin-->
                                                                             <input name="date_begin" type="date" class="form-control mb-50 mb-sm-0 <?php if(strpos($societe['date_control_begin'], '!edit') === false){echo "none-validation";} ?>" placeholder="jj-mm-aa" style="margin: 5px; position: relative;">
                                                                             <button type="submit" class="btn btn-icon btn-light-success <?php if(strpos($societe['date_control_begin'], '!edit') === false){echo "none-validation";} ?>" style="position: relative; top: 3px;"><i class="bx bx-like"></i></button>
-
+                                                                            <!--/ edit date begin-->
                                                                             <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center <?php if(strpos($societe['date_control_begin'], '!edit') !== false){echo "none-validation";} ?>" style="margin-left: 10px ;position: relative; top: 20%;">
                                                                                 <p class="mb-0">Déposé</p>
                                                                                 <input onchange="dateD_depo()" type="checkbox" class="custom-control-input" id="customSwitch97" checked>

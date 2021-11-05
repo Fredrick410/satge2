@@ -28,6 +28,19 @@
 
 
         if($resultat = move_uploaded_file($target_file, $file_name)){
+            $pdoDel = $bdd->prepare('SELECT * FROM fiscal WHERE id = :num');
+            $pdoDel->bindValue(':num',$_GET['num']);
+            $pdoDel->execute();
+            $delfile = $pdoDel->fetch();
+    
+            //Vérification d'un fichier existant
+            if (isset($delfile['doc_'.$type.''])) {
+                $dirDel = '../../../../src/fiscal/'.$etape.'/'.$delfile['doc_'.$type.''].'';
+                if (file_exists($dirDel)) {
+                    unlink($dirDel);
+                }
+            }
+
             $update = $bdd->prepare('UPDATE fiscal SET doc_'.$type.' = ? WHERE id = ?');
             $update->execute(array( ($real_name . $date_now . $type_files), $num  ));
 

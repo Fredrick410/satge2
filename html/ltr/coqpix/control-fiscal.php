@@ -133,6 +133,23 @@ require_once 'php/verif_session_connect_admin.php';
                                         </div>   
                                     </div>
                                     <div class="card-body card-dashboard">
+                                        <?php
+                                            function request($pdo, $champ){
+                                                $champs_possible = array('statut NOT LIKE "%FINISH%" AND trash_statut LIKE ""',
+                                                'statut LIKE "%FINISH%" AND trash_statut LIKE ""');
+
+                                                if(isset($champ) AND in_array($champ,$champs_possible)){
+                                                    $condition = $champ;
+
+                                                    $pdoSt = $pdo->prepare('SELECT * FROM fiscal WHERE '.$condition.'');
+                                                    $pdoSt->execute(); 
+                                                    $data = $pdoSt->fetchAll();
+                                                    return($data);
+                                                    
+                                                } 
+                                            }
+                                        ?>
+                                                                        
                                         <!-- File Fiscal in Progress -->
                                         <div id="div_process" class="form-group">
                                             <div class="text-center">
@@ -149,10 +166,8 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php 
-                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut NOT LIKE "%FINISH%" AND trash_statut LIKE "" ');
-                                                            $pdoSt->execute(); 
-                                                            $donnee = $pdoSt->fetchAll();
+                                                        <?php                                                            
+                                                            $donnee = request($bdd,'statut NOT LIKE "%FINISH%" AND trash_statut LIKE ""');
                                                             foreach($donnee as $donnees):
                                                                 // Statut de la barre de suivi
                                                                 if($donnees['statut'] == "Phase de premier rendez-vous"){
@@ -178,8 +193,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 }
                                                                 if($donnees['object_control'] == "TVA"){
                                                                     $object_display="Taxe sur la valeur ajoutée (TVA)";
-                                                                }
-                                                                
+                                                                }                                                                
                                                         ?>
                                                         <tr>
                                                             <td class="text-center">
@@ -228,38 +242,36 @@ require_once 'php/verif_session_connect_admin.php';
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php 
-                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut LIKE "%FINISH%" AND trash_statut LIKE "" ');
-                                                            $pdoSt->execute(); 
-                                                            $donnee = $pdoSt->fetchAll();
-                                                            foreach($donnee as $donnees):
+                                                        <?php
+                                                            $donnee2 = request($bdd,'statut LIKE "%FINISH%" AND trash_statut LIKE ""');
+                                                            foreach($donnee2 as $donnees2):
                                                                 // Objet du controle
-                                                                if($donnees['object_control'] == "ISTVA"){
+                                                                if($donnees2['object_control'] == "ISTVA"){
                                                                     $object_display2="Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)";
                                                                 }
-                                                                if($donnees['object_control'] == "IRTVA"){
+                                                                if($donnees2['object_control'] == "IRTVA"){
                                                                     $object_display2="Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)";
                                                                 }
-                                                                if($donnees['object_control'] == "IR"){
+                                                                if($donnees2['object_control'] == "IR"){
                                                                     $object_display2="Impôt sur le revenu (IR)";
                                                                 }
-                                                                if($donnees['object_control'] == "TVA"){
+                                                                if($donnees2['object_control'] == "TVA"){
                                                                     $object_display2="Taxe sur la valeur ajoutée (TVA)";
                                                                 }
                                                         ?>
                                                         <tr>
                                                             <td class="text-center">
-                                                                <a href="control-fiscal-view.php?num=<?= $donnees['id'] ?>">
-                                                                    <?= $donnees['name_entreprise'] ?>
+                                                                <a href="control-fiscal-view.php?num=<?= $donnees2['id'] ?>">
+                                                                    <?= $donnees2['name_entreprise'] ?>
                                                                 </a>
                                                             </td>
                                                             <td class="text-center"><?= $object_display2 ?></td>
-                                                            <td class="text-center"><?= strftime("%d/%m/%Y", strtotime(substr($donnees['statut'], 7)));?></td>
+                                                            <td class="text-center"><?= strftime("%d/%m/%Y", strtotime(substr($donnees2['statut'], 7)));?></td>
                                                             <td class="text-center">
-                                                                <a href="control-fiscal-view.php?num=<?= $donnees['id'] ?>">
+                                                                <a href="control-fiscal-view.php?num=<?= $donnees2['id'] ?>">
                                                                     <button class='bx bxs-pencil'></button>
                                                                 </a>   
-                                                                <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees['id'] ?>)"></button>                                                                
+                                                                <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees2['id'] ?>)"></button>                                                                
                                                             </td>
                                                         </tr>
                                                         <?php endforeach; ?>
