@@ -176,7 +176,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                             </td>
                                                             <td class="text-center"><?= strftime("%d/%m/%Y", strtotime($donnees['trash_statut']));?></td>
                                                             <td class="text-center">
-                                                                <button class='bx bxs-send'onclick="reset_dossier(<?= $donnees['id'] ?>)"></button>
+                                                                <button class='bx bx-revision'onclick="reset_dossier(<?= $donnees['id'] ?>)"></button>
                                                                 <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees['id'] ?>)"></button>    
                                                             </td>                                                            
                                                         </tr>

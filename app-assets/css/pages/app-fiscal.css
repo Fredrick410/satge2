@@ -20,7 +20,7 @@
   top: 0;
   right: 0;
   transform: translateX(130%);
-  transition: all .5s ease;
+  transition: all .3s ease;
   z-index: 8;
   
 }
@@ -45,57 +45,3 @@
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
 }
-
-
-
-
-/*
-.fiscal-application .content-wrapper .overlay {
-  position: absolute;
-  width: 400px;
-  height: 100%;
-  border-radius: 0.267rem;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  background-color: #FFFFFF;
-  top: 0;
-  right: 0;
-  overflow: hidden;
-  transform: translateX(130%);
-  transition: all .5s ease;
-  z-index: 8;
-}
-
-.fiscal-application .content-wrapper:hover .overlay {
-  transform: translateX(0%);
-}
-
-.fiscal-application .content-wrapper:hover #basic-datatable {
-  opacity: 0.3;
-}
-
-/*
-.fiscal-application .content-wrapper:hover .overlay {
-  opacity: 1;
-}
-
-#basic-datatable {
-  transition: .5s ease;
-}
-
-.fiscal-application .content-wrapper .overlay {
-  
-  width: 400px;
-  border-radius: 0.267rem;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  background-color: #FFFFFF;
-  position: absolute;
-  top: 20%;
-  right: 5%;
-  border: 1px solid #000000;
-  opacity: 0;
-}
-
-
-*/

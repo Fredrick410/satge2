@@ -198,7 +198,9 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 </div>
                                                             </td>
                                                             <td class="text-center">
-                                                                <i class='bx bxs-pencil'></i>
+                                                                <a href="control-fiscal-view.php?num=<?= $donnees['id'] ?>">
+                                                                    <button class='bx bxs-pencil'></button>
+                                                                </a>
                                                                 <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees['id'] ?>)"></button>                                                                
                                                             </td>
                                                         </tr>
@@ -254,7 +256,9 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <td class="text-center"><?= $object_display2 ?></td>
                                                             <td class="text-center"><?= strftime("%d/%m/%Y", strtotime(substr($donnees['statut'], 7)));?></td>
                                                             <td class="text-center">
-                                                                <i class='bx bxs-pencil'></i>
+                                                                <a href="control-fiscal-view.php?num=<?= $donnees['id'] ?>">
+                                                                    <button class='bx bxs-pencil'></button>
+                                                                </a>   
                                                                 <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees['id'] ?>)"></button>                                                                
                                                             </td>
                                                         </tr>
