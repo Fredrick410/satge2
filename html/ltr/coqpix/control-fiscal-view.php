@@ -127,6 +127,7 @@ require_once 'php/verif_session_connect_admin.php';
     .icon{color: #727E8C;}
     .icon:hover{color: #00fbff; opacity: 0.5; cursor: pointer;}
     .none-validation{display: none;}
+    .nonedoc {display : none;}
     .sizeright{font-size: 12px;}
 
     .sizebar{margin: 10px auto; width: 500px; }
@@ -189,7 +190,7 @@ require_once 'php/verif_session_connect_admin.php';
                     .backk{font-size: 30px; color: black;}
                     .backk:hover{color: #727E8C;}
                 </style>
-                <a href="control-fiscal.php"><i class='bx bx-arrow-back backk'></i></a>
+                <a href="<?php if($societe['trash_statut'] != ""){echo "control-fiscal-corbeille.php";}else{echo "control-fiscal.php";} ?>" ><i class='bx bx-arrow-back backk'></i></a>
             </div>
            
             <div class="content-wrapper bouge" style="width: 100%;">
@@ -351,6 +352,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mandat'] == "" OR is_null($societe['doc_mandat'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase1/mandat&file=<?= $societe['doc_mandat'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -372,6 +379,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="col-md-1">
                                                                             <a class="<?php if($societe['doc_cerfa27'] == "" OR is_null($societe['doc_cerfa27'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/cerfa_27/<?= $societe['doc_cerfa27'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_cerfa27'] == "" OR is_null($societe['doc_cerfa27'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase1/cerfa_27&file=<?= $societe['doc_cerfa27'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -397,6 +410,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_cour'] == "" OR is_null($societe['doc_cour'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase1/courrier&file=<?= $societe['doc_cour'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -420,6 +439,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_fec'] == "" OR is_null($societe['doc_fec'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase1/fichier_FEC&file=<?= $societe['doc_fec'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -441,6 +466,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="col-md-1">
                                                                             <a class="<?php if($societe['doc_rdv'] == "" OR is_null($societe['doc_rdv'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase1/attestation_RDV/<?= $societe['doc_rdv'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_rdv'] == "" OR is_null($societe['doc_rdv'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase1/attestation_RDV&file=<?= $societe['doc_rdv'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -543,6 +574,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_mail'] == "" OR is_null($societe['doc_mail'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase2/mail&file=<?= $societe['doc_mail'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -564,6 +601,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="col-md-1">
                                                                             <a class="<?php if($societe['doc_noteV'] == "" OR is_null($societe['doc_noteV'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase2/note_int/<?= $societe['doc_noteV'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_noteV'] == "" OR is_null($societe['doc_noteV'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase2/note_int&file=<?= $societe['doc_noteV'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -682,6 +725,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_cerfa24'] == "" OR is_null($societe['doc_cerfa24'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase3/cerfa_24&file=<?= $societe['doc_cerfa24'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -705,6 +754,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+                                                                        
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_cerfa26'] == "" OR is_null($societe['doc_cerfa26'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase3/cerfa_26&file=<?= $societe['doc_cerfa26'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -726,6 +781,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         <div class="col-md-1">
                                                                             <a class="<?php if($societe['doc_contest'] == "" OR is_null($societe['doc_contest'])==true){echo "nonedoc";} ?>" href="../../../src/fiscal/Phase3/courrier_contest/<?= $societe['doc_contest'] ?>" target="_blank">
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_contest'] == "" OR is_null($societe['doc_contest'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase3/courrier_contest&file=<?= $societe['doc_contest'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -826,6 +887,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_saisine'] == "" OR is_null($societe['doc_saisine'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase4/saisine&file=<?= $societe['doc_saisine'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                                 <li class="cursor-pointer pb-25">
@@ -849,6 +916,12 @@ require_once 'php/verif_session_connect_admin.php';
                                                                                 <div class="livicon-evo" data-options=" name: morph-eye-open-close.svg; size: 25px "></div>
                                                                             </a>
                                                                         </div>
+
+                                                                        <div class="col-md-1">
+                                                                            <a class="<?php if($societe['doc_noteI'] == "" OR is_null($societe['doc_noteI'])==true){echo "nonedoc";} ?>" href="php/download_fiscal.php?destination=Phase4/note_int&file=<?= $societe['doc_noteI'] ?>&link=one">
+                                                                                <i class='bx bx-download'></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -858,28 +931,6 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                             <!--Fourth Phase end-->
                                             <!--Fifth Phase start-->
-                                            <?php
-                                                if($societe['doc_telecours'] !== "" AND is_null($societe['doc_telecours'])==false ){
-                                                    $t_doc_telecours = "1";
-                                                }else{
-                                                    $t_doc_telecours = "0";
-                                                }
-
-                                                $t_phase5 = '' . ($t_doc_telecours) . '/1';
-
-                                                //Saisine
-                                                if($societe['doc_telecours'] !== "" AND is_null($societe['doc_telecours'])==false ){
-                                                    if(substr($societe['doc_telecours'], -3) == "pdf"){
-                                                        $societe_telecours = "pdf.png";
-                                                    }
-                                                    else{
-                                                        $societe_telecours = "doc.png";
-                                                    }
-                                                }
-                                                else{
-                                                    $societe_telecours = "doc.png";
-                                                }
-                                            ?>
                                             <div class="card collapse-header" role="tablist">
                                                 <div id="headingCollapse5" class="card-header d-flex justify-content-between align-items-center" 
                                                 data-toggle="collapse" role="tab" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
@@ -898,7 +949,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle" id="fisrt-open-submenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>   
                                                         </div>
-                                                        <p class="sizeright <?php if($t_phase5 == "1/1"){echo "success";}else{echo "warning";} ?>"><?= $t_phase5 ?></p>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div id="collapse5" role="tabpanel" aria-labelledby="headingCollapse5" class="collapse">
@@ -909,15 +960,13 @@ require_once 'php/verif_session_connect_admin.php';
                                                                     <div class="row">
                                                                         <!-- REdirection + Log Telecours -->
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_telecours'] == ""){echo "warning";}else{echo "success";} ?>">addresse mail :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_telecours ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_telecours'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text">Adresse mail :</small>                                   
+                                                                            <small class="text-muted ml-1 attchement-text">oui</small>
                                                                         </div>
 
                                                                         <div class="col">
-                                                                            <small class="text-muted ml-1 attchement-text <?php if($societe['doc_telecours'] == ""){echo "warning";}else{echo "success";} ?>">mot de passe :</small>                                   
-                                                                            <img src="../../../app-assets/images/icon/<?= $societe_telecours ?>" height="30" alt="psd.png">
-                                                                            <small class="text-muted ml-1 attchement-text"><?= $societe['doc_telecours'] ?></small>
+                                                                            <small class="text-muted ml-1 attchement-text">Mot de passe :</small>
+                                                                            <small class="text-muted ml-1 attchement-text">oui</small>
                                                                         </div>
 
                                                                     </div>
@@ -925,7 +974,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
-                                                                            <a href="https://citoyens.telerecours.fr/#/authentication">
+                                                                            <a href="https://citoyens.telerecours.fr/#/authentication" target="_blank">
                                                                                 <button type="button" class="btn-send btn btn-primary">
                                                                                     <i class='bx mr-25'></i> 
                                                                                     <span class="d-sm-inline d-none">Télérecours citoyens</span>
@@ -956,36 +1005,51 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <?php
                                                     $num = $_GET['num'];
 
-                                                    if($t_phase1 == "5/5"){
-                                                        $nb_etape_valide=1;
-                                                        $etat_dossier="Phase de vérification et contradictoire";
-                                                        if($t_phase2 == "2/2"){
-                                                            $nb_etape_valide=2;
-                                                            $etat_dossier="Phase de proposition de rétification";
-                                                            if($t_phase3 == "3/3"){
-                                                                $nb_etape_valide=3;
-                                                                $etat_dossier="Phase Contentieuse / Impôt";
-                                                                if($t_phase4 == "2/2"){
-                                                                    $nb_etape_valide=4;
-                                                                    $etat_dossier="Phase Conctentieuse Administrative";
+                                                    if(strpos($societe['statut'],'FINISH') === false ){
+                                                        if($t_phase1 == "5/5"){
+                                                            $nb_etape_valide=1;
+                                                            $etat_dossier="Phase de vérification et contradictoire";
+                                                            if($t_phase2 == "2/2"){
+                                                                $nb_etape_valide=2;
+                                                                $etat_dossier="Phase de proposition de rétification";
+                                                                if($t_phase3 == "3/3"){
+                                                                    $nb_etape_valide=3;
+                                                                    $etat_dossier="Phase Contentieuse / Impôt";
+                                                                    if($t_phase4 == "2/2"){
+                                                                        $nb_etape_valide=4;
+                                                                        $etat_dossier="Phase Conctentieuse Administrative";
+                                                                    }
                                                                 }
                                                             }
+                                                        }else{
+                                                            $nb_etape_valide=0;
+                                                            $etat_dossier="Phase de premier rendez-vous";
                                                         }
+                                                    
+                                                        $update = $bdd->prepare('UPDATE fiscal SET statut = ? WHERE id = ?');                                                    
+                                                        $update->execute(array( $etat_dossier, $num ));
                                                     }else{
-                                                        $nb_etape_valide=0;
-                                                        $etat_dossier="Phase de premier rendez-vous";
-                                                    }
+                                                        $nb_etape_valide=5;
+                                                        
+                                                        setlocale(LC_TIME, "fr_FR");
 
-                                                    $update = $bdd->prepare('UPDATE fiscal SET statut = ? WHERE id = ?');                                                    
-                                                    $update->execute(array( $etat_dossier, $num ));
-                            
+                                                        $date_statut = strftime("%d/%m/%Y", strtotime(substr($societe['statut'], 7)));
+                                                        //$date_statut=substr($societe['statut'], 7);
+                                                        $etat_dossier='Ce dossier a été terminé, le '.$date_statut.'';
+                                                    }
                                                 ?>                                               
                                                 <div class="activity-progress sizebar">
                                                     <p class="text-muted d-inline-block mb-50">Etat du dossier : <?= $etat_dossier ?></p>
                                                     <p class="float-right"><?= $nb_etape_valide ?> / 5</p>
                                                     <div class="progress progress-bar-yellow progress-sm">
-                                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $nb_etape_valide/5 ?>" style="width:<?= 100*$nb_etape_valide/5 ?>%"></div>
+                                                        <div class="progress-bar <?php if (strpos($societe['statut'],'FINISH') !== false) {echo "bg-success";}?>" role="progressbar" aria-valuenow="<?= $nb_etape_valide/5 ?>" style="width:<?= 100*$nb_etape_valide/5 ?>%"></div>
                                                     </div>
+                                                </div>
+
+                                                <div class="download-files" >
+                                                    <a href="php/download_fiscal.php?num=<?= $_GET['num'] ?>&link=all">
+                                                        <p class="text-muted d-inline-block mb-50">Télécharger tout le dossier</p>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="card-content">
@@ -1107,6 +1171,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <!-- Form Validation end -->
                                                 </div>
                                                 <div class="card-footer ">
+                                                        
                                                         <button onclick="fermer_dossier()" type="submit" class="btn-send btn btn-light-secondary">
                                                             <i class='bx bx-send mr-25'></i> 
                                                             <span class="d-sm-inline d-none">Clotûrer le dossier</span>
@@ -1149,13 +1214,16 @@ require_once 'php/verif_session_connect_admin.php';
             //
             var spge = <?php echo json_encode($societe['statut']); ?>;
             //
-            if (spge !== "Phase Conctentieuse Administrative") {
-                alert('Pour clôturer ce dossier, il faut compléter la phase: '+spge+'');
-            } else {                
-                var res = confirm("Êtes-vous sûr de vouloir clôturer ce dossier ?");
-                if(res){
-                    // Mettez ici la logique de suppression
-                }              
+            if (spge.includes("FINISH") === false) {
+                if (spge !== "Phase Conctentieuse Administrative"){
+                    alert('Pour clôturer ce dossier, il faut compléter la phase: '+spge+'');
+                }else{                
+                    var res = confirm("Êtes-vous sûr de vouloir clôturer ce dossier ?");
+                    if(res){
+                        // Mettez ici la logique de clotûre du dossier
+                        document.location.href="php/change_statut_fiscal.php?num=<?= $_GET['num'] ?>";
+                    }              
+                }
             }
             //alert("Afficher msg erreur");
             /*var res = confirm("Êtes-vous sûr de vouloir supprimer?");
@@ -1166,9 +1234,10 @@ require_once 'php/verif_session_connect_admin.php';
         }
 
         function supr_dossier(){
-            var res = confirm("Êtes-vous sûr de vouloir supprimer ?");
+            var res = confirm("Êtes-vous sûr de vouloir supprimer ce dossier ?");
             if(res){
                 // Mettez ici la logique de suppression
+                document.location.href="php/corbeille_fiscal.php?num=<?= $_GET['num'] ?>&link=files";
             }
         }
     </script>

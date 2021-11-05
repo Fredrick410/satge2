@@ -39,6 +39,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/app-fiscal.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -51,7 +52,7 @@ require_once 'php/verif_session_connect_admin.php';
 
 <!-- BEGIN: Body-->
 
-<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
+<body class="horizontal-layout horizontal-menu navbar-sticky 2-columns fiscal-application   footer-static  " data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 <style>
     .icon{color: #727E8C;}
     .icon:hover{color: #00fbff; opacity: 0.5; cursor: pointer;}
@@ -102,12 +103,12 @@ require_once 'php/verif_session_connect_admin.php';
                                     <div class="card-header">
                                         <div class="card-footer d-flex justify-content-start pt-0">
                                             <!-- Bouton à script-->
-                                            <button class="btn btn-primary glow mr-1 mb-1">
+                                            <button class="fiscal-toggle-btn btn btn-primary glow mr-1 mb-1">
                                                 <i class="bx bx-plus"></i> 
                                                 <span class="d-sm-inline d-none">Nouveau Dossier</span>
                                             </button>
                                             <div class="form-group" style="height: 108px;">
-                                                <div onclick="action_switch();" class="toggle dog-rollover">
+                                                <div onclick="action_switch()" class="toggle dog-rollover">
                                                     <input class="bt_input" id="doggo2" type="checkbox"/>
                                                     <label class="toggle-item" for="doggo2">
                                                         <div class="dog">
@@ -124,6 +125,11 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <label style="color: orange;">En Cours</label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<label style="color: green;">Terminé</label>
                                                 </div>
                                             </div>
+                                            <div class="form-group ml-auto">
+                                                <a class="btn btn-primary " href="control-fiscal-corbeille.php">
+                                                    <i class="bx bx-trash"></i>                                                
+                                                </a>
+                                            </div>
                                         </div>   
                                     </div>
                                     <div class="card-body card-dashboard">
@@ -133,12 +139,10 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <h5>Dossier en cours</h5>
                                             </div>
                                             <div class="table-responsive">
-                                                <table class="table zero-configuration" style='overflow: hidden;'>
+                                                <table class="table zero-configuration">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">
-                                                                Nom société                                                                
-                                                            </th>
+                                                            <th class="text-center">Nom société</th>
                                                             <th class="text-center">Objet du control</th>
                                                             <th class="text-center">Etat dossier</th>
                                                             <th class="text-center">Action</th>                                                        
@@ -146,7 +150,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                     </thead>
                                                     <tbody>
                                                         <?php 
-                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut != "FINISH" ');
+                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut NOT LIKE "%FINISH%" AND trash_statut LIKE "" ');
                                                             $pdoSt->execute(); 
                                                             $donnee = $pdoSt->fetchAll();
                                                             foreach($donnee as $donnees):
@@ -162,7 +166,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                                             }else if($donnees['statut'] ==  "Phase Conctentieuse Administrative"){
                                                                                 $nb_etape_valide = 4;
                                                                             }
-                                                                //
+                                                                // Objet du controle
                                                                 if($donnees['object_control'] == "ISTVA"){
                                                                     $object_display="Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)";
                                                                 }
@@ -195,9 +199,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                             </td>
                                                             <td class="text-center">
                                                                 <i class='bx bxs-pencil'></i>
-                                                                <i class='bx bxs-trash'></i>
-                                                                <i class='bx bxs-user-check icon_verif' ></i>
-                                                                <i class='bx bx-x icon_x'></i>
+                                                                <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees['id'] ?>)"></button>                                                                
                                                             </td>
                                                         </tr>
                                                         <?php endforeach; ?>
@@ -212,35 +214,48 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <h5>Dossier Terminé</h5>
                                             </div>
                                             <div class="table-responsive">
-                                                <table class="table zero-configuration" style='overflow: hidden;'>
+                                                <table class="table zero-configuration">
                                                     <thead>
                                                         <tr>
                                                             <th class="text-center">
                                                                 Nom société                                                                
                                                             </th>
-                                                            <th class="text-center">Objet control dossier</th>
-                                                            <th class="text-center">Etat dossier</th>
+                                                            <th class="text-center">Objet du control</th>
+                                                            <th class="text-center">Date de cloture</th>
                                                             <th class="text-center">Action</th>                                                        
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php 
-                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut = "FINISH" ');
+                                                            $pdoSt = $bdd->prepare('SELECT * FROM fiscal WHERE statut LIKE "%FINISH%" AND trash_statut LIKE "" ');
                                                             $pdoSt->execute(); 
                                                             $donnee = $pdoSt->fetchAll();
                                                             foreach($donnee as $donnees):
+                                                                // Objet du controle
+                                                                if($donnees['object_control'] == "ISTVA"){
+                                                                    $object_display2="Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)";
+                                                                }
+                                                                if($donnees['object_control'] == "IRTVA"){
+                                                                    $object_display2="Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)";
+                                                                }
+                                                                if($donnees['object_control'] == "IR"){
+                                                                    $object_display2="Impôt sur le revenu (IR)";
+                                                                }
+                                                                if($donnees['object_control'] == "TVA"){
+                                                                    $object_display2="Taxe sur la valeur ajoutée (TVA)";
+                                                                }
                                                         ?>
                                                         <tr>
                                                             <td class="text-center">
-                                                                <?= $donnees['name_entreprise'] ?>
+                                                                <a href="control-fiscal-view.php?num=<?= $donnees['id'] ?>">
+                                                                    <?= $donnees['name_entreprise'] ?>
+                                                                </a>
                                                             </td>
-                                                            <td class="text-center">Objet</td>
-                                                            <td class="text-center">Etat</td>
+                                                            <td class="text-center"><?= $object_display2 ?></td>
+                                                            <td class="text-center"><?= strftime("%d/%m/%Y", strtotime(substr($donnees['statut'], 7)));?></td>
                                                             <td class="text-center">
                                                                 <i class='bx bxs-pencil'></i>
-                                                                <i class='bx bxs-trash'></i>
-                                                                <i class='bx bxs-user-check icon_verif' ></i>
-                                                                <i class='bx bx-x icon_x'></i>
+                                                                <button class='bx bxs-trash' onclick="supr_dossier(<?= $donnees['id'] ?>)"></button>                                                                
                                                             </td>
                                                         </tr>
                                                         <?php endforeach; ?>
@@ -249,69 +264,74 @@ require_once 'php/verif_session_connect_admin.php';
                                             </div>
                                         </div>
                                         <!-- /File Fiscal Finish -->
+                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-
-                
                 <!--/ Zero configuration table -->
-                <!--/ User new tax file -->
-                <div class="compose-new-file-sidebar">
-                    <div class="card shadow-none quill-wrapper p-0">
-                        <div class="card-header">
-                            <h3 class="card-title" id="emailCompose">Création du Dossier</h3>
-                            <button type="button" class="close close-icon">
-                                <i class="bx bx-x"></i>
-                            </button>
-                        </div>
-                        <!-- form start -->
-                        <form action="php/insert_create_files_fiscal.php" id="compose-form" method="POST">
-                            <div class="card-content">
-                                <div class="card-body pt-0">
-                                    <div class="form-group">
-                                        <label>Nom de la société</label>
-                                        <input type="text" name="crea_societe" class="form-control" placeholder="Nom de l'entreprise" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Période de contrôle :</label>
-                                        <div>
-                                            <label for="">Date début contrôle :</label> 
-                                            <input type="date" name="date_control_begin" required>
-                                        
-                                            <label for="">Date fin contrôle :</label> 
-                                            <input type="date" name="date_control_end" value="">
+
+                <div class="app-overlay "></div>
+
+                <!-- User new fiscal file -->
+                <div class="overlay">
+                    <div class="compose-new-file-sidebar ">
+                        <div class="card shadow-none quill-wrapper p-0">
+                            <div class="card-header">
+                                <h3 class="card-title" id="fiscalCompose">Création du Dossier</h3>
+                                <button type="button" class="close close-icon ">
+                                    <i class="bx bx-x"></i>
+                                </button>
+                            </div>
+                            <!-- form start -->
+                            <form action="php/insert_create_files_fiscal.php" id="compose-form" method="POST">
+                                <div class="card-content">
+                                    <div class="card-body pt-0">
+                                        <div class="form-group">
+                                            <label>Nom de la société</label>
+                                            <input type="text" name="crea_societe" class="form-control" placeholder="Nom de l'entreprise" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label>Période de contrôle :</label>
+                                            <div>
+                                                <label for="">Date début contrôle :</label> 
+                                                <input type="date" name="date_control_begin" required>
+                                        
+                                                <label for="">Date fin contrôle :</label> 
+                                                <input type="date" name="date_control_end" value="">
+                                            </div>
+                                        </div>
+                                        <fieldset class="form-group">
+                                            <label>Objet du contrôle</label>
+                                            <select name="object_control" class="form-control invoice-item-select" required>
+                                                <option value="" selected disable hidden>Choisir l'objet du contrôle</option>
+                                                <option value="ISTVA">Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)</option>
+                                                <option value="IRTVA">Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)</option>
+                                                <option value="IR">Impôt sur le revenu (IR)</option>
+                                                <option value="TVA">Taxe sur la valeur ajoutée (TVA)</option>
+                                            </select>
+                                        </fieldset>
                                     </div>
-                                    <fieldset class="form-group">
-                                        <label>Objet du contrôle</label>
-                                        <select name="object_control" class="form-control invoice-item-select" required>
-                                            <option value="" selected disable hidden>Choisir l'objet du contrôle</option>
-                                            <option value="ISTVA">Impôt sur les sociétés + Taxe sur la valeur ajoutée (IS+TVA*)</option>
-                                            <option value="IRTVA">Impôt sur le revenu + Taxe sur la valeur ajoutée (IR+TVA)</option>
-                                            <option value="IR">Impôt sur le revenu (IR)</option>
-                                            <option value="TVA">Taxe sur la valeur ajoutée (TVA)</option>
-                                        </select>
-                                    </fieldset>
                                 </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-end pt-0">
-                                <button type="reset" class="btn btn-light-secondary cancel-btn mr-1">
-                                    <i class='bx bx-x mr-25'></i>
-                                    <span class="d-sm-inline d-none">Annuler</span>
-                                </button>
-                                <button type="submit" class="btn-send btn btn-primary">
-                                    <i class='bx bx-send mr-25'></i> 
-                                    <span class="d-sm-inline d-none">Créer</span>
-                                </button>
-                            </div>
-                        </form>
-                        <!-- form start end-->
+                                <div class="card-footer d-flex justify-content-end pt-0">
+                                    <button type="reset" class="btn btn-light-secondary cancel-btn close-icon mr-1">
+                                        <i class='bx bx-x mr-25'></i>
+                                        <span class="d-sm-inline d-none">Annuler</span>
+                                    </button>
+                                    <button type="submit" class="btn-send btn btn-primary">
+                                        <i class='bx bx-send mr-25'></i> 
+                                        <span class="d-sm-inline d-none">Créer</span>
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- form start end-->
+                        </div>
                     </div>
                 </div>
-                <!--/ User new tax file -->
+                <!--/ User new fiscal file -->
+
             </div>
         </div>
     </div>
@@ -319,16 +339,27 @@ require_once 'php/verif_session_connect_admin.php';
 
 
     <script>
+        
         function action_switch(){
             let switchK = document.getElementById('doggo2');
             if(switchK.checked){
                 document.getElementById('div_process').style.display = "none";
                 document.getElementById('div_finish').style.display = "block";
+                
             } else {
                 document.getElementById('div_process').style.display = "block";
                 document.getElementById('div_finish').style.display = "none";
+                
             }
         }
+
+        function supr_dossier(numId){            
+            var res = confirm("Êtes-vous sûr de vouloir supprimer ce dossier ?");
+            if(res){
+                document.location.href='php/corbeille_fiscal.php?num='+numId+'&link=files';
+            }
+        }
+
     </script>
     
     <!-- BEGIN: Vendor JS-->
@@ -360,6 +391,7 @@ require_once 'php/verif_session_connect_admin.php';
 
     <!-- BEGIN: Page JS-->
     <script src="../../../app-assets/js/scripts/datatables/datatable.js"></script>
+    <script src="../../../app-assets/js/scripts/pages/app-fiscal.js"></script>
     <!-- END: Page JS-->
 
     <!-- TIMEOUT -->
