@@ -153,7 +153,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <!-- File Fiscal in Progress -->
                                         <div id="div_process" class="form-group">
                                             <div class="text-center">
-                                                <h5>Dossier en cours</h5>
+                                                <h4>Dossier en cours</h4>
                                             </div>
                                             <div class="table-responsive">
                                                 <table class="table zero-configuration">
@@ -227,7 +227,7 @@ require_once 'php/verif_session_connect_admin.php';
                                         <!-- File Fiscal Finish -->
                                         <div id="div_finish" class="form-group none-validation">
                                             <div class="text-center">
-                                                <h5>Dossier Terminé</h5>
+                                                <h4>Dossier Terminé</h4>
                                             </div>
                                             <div class="table-responsive">
                                                 <table class="table zero-configuration">
