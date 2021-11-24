@@ -181,3 +181,11 @@ branche de oscar :
 branche de Leo :
 	tache réalisée le 09/08/2021 :
 		- passage de la table "crea_societe" à "portefeuille" quand le contrat est signé
+
+branche de karl:
+	tache réalisée le 12/11/2021 :
+		- ajout des onglets "Controle fiscal" et "Dossier fiscal"
+		- ajout du gestionnaire de fichiers pour fiscal: upload, download, display
+		- pull request
+	tache réalisée le 24/11/2021 :
+		- correctif de la page fiscal v1

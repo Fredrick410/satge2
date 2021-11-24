@@ -233,7 +233,18 @@ require_once 'php/verif_session_connect_admin.php';
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=statut_task&categorie=fisca&statut_categorie=<?= $tasks['statut_task'] ?>" class="icon_check ml-75"><i class='bx bx-badge-check'></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=favo&categorie=fisca&favo=<?= $tasks['favo_task'] ?>" class='icon_fav ml-75 <?php if($tasks['favo_task'] == "yes"){echo "warning";} ?>'><i class="bx bx-star <?php if($tasks['favo_task'] == "yes"){echo "bxs-star";} ?>"></i></a>
                                                             <a href="php/change_task_back.php?num=<?= $tasks['id'] ?>&type=delete&categorie=fisca" class='icon_trash ml-75'><i class="bx bx-trash"></i></a>
-
+                                                            
+                                                            <div class="btn-group ml-2">
+                                                                <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="bx bx-comment"></i></a>
+                                                                </div>
+                                                                
+                                                                <div class="dropdown-menu dropdown-menu-right pt-1 px-1" style="min-width: 250px;">
+                                                                    <label>Commentaire</label>                                                                                                                      
+                                                                    <textarea cols="32" rows="7" style="resize:vertical;"><?= $tasks['commentaire'] ?></textarea>
+                                                                </div>
+                                                            </div>
+                                                            
                                                             <div class="btn-group ml-2">
                                                                 <div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#C0C0C0" class="bi bi-pencil-square" viewBox="0 0 16 16">

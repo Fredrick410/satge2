@@ -8,13 +8,16 @@
     $link= htmlspecialchars($_GET['link']);
 
     if ($link === "one") {
+        // Verification des valeurs GET non null
         if (!empty($_GET['file'])&&!empty($_GET['destination'])) {
             $filename = basename($_GET['file']);
             $dir = '../../../../src/fiscal/'.$_GET['destination'].'/';
             $filepath = $dir.$filename;
+            // Verification de l'existance du fichier et de son chemin
             if (!empty($filename) && file_exists($filepath)) {
                 echo "This file exist." ;
-            
+                
+                // Téléchagement du fichier en PDF
                 header("Cache-Control: public");
                 header("Content-Description: File Transfer");
                 header("Content-Disposition: attachment; filename=$filename");
@@ -43,96 +46,49 @@
         $pdoStat->bindValue(':num',$_GET['num']);
         $pdoStat->execute();
         $societe = $pdoStat->fetch();
-
+        
+        // Insertion des fichiers dans le fichier ZIP
+        function insertZip($doc,$phase,$type,$filezip){
+            if($doc !== "" AND is_null($doc)==false ){
+                $doc_dir = '../../../../src/fiscal/'.$phase.'/'.$type.'/'.$doc.'';
+                if (file_exists($doc_dir)) {
+                    $filezip->addFile($doc_dir,$doc);
+                }
+            }
+        }
+        /*    
+            if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
+                $doc_mandat = '../../../../src/fiscal/Phase1/mandat/'.$societe['doc_mandat'].'';
+                if (file_exists($doc_mandat)) {
+                    $zip->addFile($doc_mandat,$societe['doc_mandat']);
+                }
+            }
+        */
+        
         // Phase 1
-        if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
-            $doc_mandat = '../../../../src/fiscal/Phase1/mandat/'.$societe['doc_mandat'].'';
-            if (file_exists($doc_mandat)) {
-                $zip->addFile($doc_mandat,$societe['doc_mandat']);
-            }
-        }
+        insertZip($societe['doc_mandat'],"Phase1","mandat",$zip);
+        insertZip($societe['doc_cerfa27'],"Phase1","cerfa_27",$zip);        
+        insertZip($societe['doc_cour'],"Phase1","courrier",$zip);        
+        insertZip($societe['doc_fec'],"Phase1","fichier_FEC",$zip);        
+        insertZip($societe['doc_rdv'],"Phase1","attestation_RDV",$zip);
 
-        if($societe['doc_cerfa27'] !== "" AND is_null($societe['doc_cerfa27'])==false ){
-            $doc_cerfa27 = '../../../../src/fiscal/Phase1/cerfa_27/'.$societe['doc_cerfa27'].'';
-            if (file_exists($doc_cerfa27)) {
-                $zip->addFile($doc_cerfa27,$societe['doc_cerfa27']);
-            }
-        }
+        // Phase 2
+        insertZip($societe['doc_mail'],"Phase2","mail",$zip);
+        insertZip($societe['doc_noteV'],"Phase2","note_int",$zip);
 
-        if($societe['doc_cour'] !== "" AND is_null($societe['doc_cour'])==false ){
-            $doc_cour = '../../../../src/fiscal/Phase1/courrier/'.$societe['doc_cour'].'';
-            if (file_exists($doc_cour)) {
-                $zip->addFile($doc_cour,$societe['doc_cour']);
-            }
-        }
+        // Phase 3
+        insertZip($societe['doc_cerfa24'],"Phase3","cerfa_24",$zip);
+        insertZip($societe['doc_cerfa26'],"Phase3","cerfa_26",$zip);
+        insertZip($societe['doc_contest'],"Phase3","courrier_contest",$zip);
 
-        if($societe['doc_fec'] !== "" AND is_null($societe['doc_fec'])==false ){
-            $doc_fec = '../../../../src/fiscal/Phase1/fichier_FEC/'.$societe['doc_fec'].'';
-            if (file_exists($doc_fec)) {
-                $zip->addFile($doc_fec,$societe['doc_fec']);
-            }
-        }
-
-        if($societe['doc_rdv'] !== "" AND is_null($societe['doc_rdv'])==false ){
-            $doc_rdv = '../../../../src/fiscal/Phase1/attestation_RDV/'.$societe['doc_rdv'].'';
-            if (file_exists($doc_rdv)) {
-                $zip->addFile($doc_rdv,$societe['doc_rdv']);
-            }
-        }
-
-        //Phase 2
-        if($societe['doc_mail'] !== "" AND is_null($societe['doc_mail'])==false ){
-            $doc_mail = '../../../../src/fiscal/Phase2/mail/'.$societe['doc_mail'].'';
-            if (file_exists($doc_mail)) {
-                $zip->addFile($doc_mail,$societe['doc_mail']);
-            }
-        }
-
-        if($societe['doc_noteV'] !== "" AND is_null($societe['doc_noteV'])==false ){
-            $doc_noteV = '../../../../src/fiscal/Phase2/note_int/'.$societe['doc_noteV'].'';
-            if (file_exists($doc_noteV)) {
-                $zip->addFile($doc_noteV,$societe['doc_noteV']);
-            }
-        }
-
-        //Phase 3
-        if($societe['doc_cerfa24'] !== "" AND is_null($societe['doc_cerfa24'])==false ){
-            $doc_cerfa24 = '../../../../src/fiscal/Phase3/cerfa_24/'.$societe['doc_cerfa24'].'';
-            if (file_exists($doc_cerfa24)) {
-                $zip->addFile($doc_cerfa24,$societe['doc_cerfa24']);
-            }
-        }
-
-        if($societe['doc_cerfa26'] !== "" AND is_null($societe['doc_cerfa26'])==false ){
-            $doc_cerfa26 = '../../../../src/fiscal/Phase3/cerfa_26/'.$societe['doc_cerfa26'].'';
-            if (file_exists($doc_cerfa26)) {
-                $zip->addFile($doc_cerfa26,$societe['doc_cerfa26']);
-            }
-        }
-
-        if($societe['doc_contest'] !== "" AND is_null($societe['doc_contest'])==false ){
-            $doc_contest = '../../../../src/fiscal/Phase3/courrier_contest/'.$societe['doc_contest'].'';
-            if (file_exists($doc_contest)) {
-                $zip->addFile($doc_contest,$societe['doc_contest']);
-            }
-        }
-    
-        //Phase 4
-        if($societe['doc_saisine'] !== "" AND is_null($societe['doc_saisine'])==false ){
-            $doc_saisine = '../../../../src/fiscal/Phase4/saisine/'.$societe['doc_saisine'].'';
-            if (file_exists($doc_saisine)) {
-                $zip->addFile($doc_saisine,$societe['doc_saisine']);
-            }
-        }
-
-        if($societe['doc_noteI'] !== "" AND is_null($societe['doc_noteI'])==false ){
-            $doc_noteI = '../../../../src/fiscal/Phase4/note_int/'.$societe['doc_noteI'].'';
-            if (file_exists($doc_noteI)) {
-                $zip->addFile($doc_noteI,$societe['doc_noteI']);
-            }
-        }
-
+        // Phase 4
+        insertZip($societe['doc_saisine'],"Phase4","saisine",$zip);
+        insertZip($societe['doc_noteI'],"Phase4","note_int",$zip);
+        
+        // Fermeture ZIP
         $zip->close();
+        
+        // Entête ZIP
         header("Content-type: application/zip"); 
         header("Content-Disposition: attachment; filename=$archive_file_name");
         header("Content-length: " . filesize($archive_file_name));
