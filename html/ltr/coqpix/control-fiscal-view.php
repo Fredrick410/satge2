@@ -948,6 +948,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                 <div class="download-files" >
                                                     <a href="php/download_fiscal.php?num=<?= $_GET['num'] ?>&link=all">
                                                         <p class="text-muted d-inline-block mb-50">Télécharger tout le dossier</p>
+                                                        <i class='bx bx-download'></i>
                                                     </a>
                                                 </div>
                                             </div>
