@@ -87,7 +87,32 @@
                     <a href="creation-list-domiciliation.php?id=<?= $result['id_session'] ?>">
                         <?php
 
-		}
+        // si c'est un nouveau dossier fiscal
+    } else if ($result['type_demande'] === "dossier_fiscal"){
+        
+        $notif = "Vous avez un nouveau dossier fiscal de " .$result['name_entreprise']. " en attente de traitement";
+        
+        ?>
+                <a href="control-fiscal-view.php?num=<?= $result['id_session'] ?>">
+                    <?php
+    // si c'est un ajout fichier fiscal
+    }else if ($result['type_demande'] === "ajout_doc_fiscal"){
+    
+        $notif = "Vous avez ajouter un nouveau ficher fiscal dans ".$result['name_entreprise']. "";
+        
+        ?>
+                <a href="control-fiscal-view.php?num=<?= $result['id_session'] ?>">
+                    <?php
+
+    // si c'est une phase fiscal est terminé
+    }else if ($result['type_demande'] === "task_fisca"){
+    
+        $notif = "Une nouvelle tâche fiscal a été ajouté";
+    
+        ?>
+                <a href="task-fisca.php">
+                    <?php
+    }
         
 		// affichage de la notification
     

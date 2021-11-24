@@ -48,6 +48,30 @@ require_once 'php/verif_session_connect_admin.php';
         return $acronDoc; 
     }
 
+    // Se déclenche quand  on fait une requête POST sur le formulaire du Frais
+    if(isset($_POST['frais'])){
+
+        if(!empty($_POST['frais_check'])){
+            if($_POST['frais_check'] == "on"){
+                $frais = ''.$_POST['frais'].'!yes';
+            }else{
+                $frais = ''.$_POST['frais'].'!no';
+            }
+        }else{
+            $frais = ''.$_POST['frais'].'!no';
+        }
+        //dd($frais);
+        //var_dump($frais);
+        //var_dump($_GET['num']);
+        $sql = $bdd->prepare('UPDATE fiscal SET frais=:frais WHERE id=:num LIMIT 1');
+        $sql->bindValue(':frais', $frais);
+        $sql->bindValue(':num', $_GET['num']);
+        $sql->execute();
+
+        // Retourner sur la page ou rafraichir la page actuelle
+        header('Location: control-fiscal-view.php?num='.$_GET['num'].'');
+        exit();
+    }
 
     if(isset($_POST['date_begin'])){
         $date_control_begin = htmlspecialchars($_POST['date_begin']);
@@ -225,9 +249,24 @@ require_once 'php/verif_session_connect_admin.php';
                                                 $t_doc_rdv = presentDoc($societe,'doc_rdv');
 
                                                 $t_phase1 = '' . ($t_doc_mandat + $t_doc_cerfa27 + $t_doc_cour + $t_doc_fec + $t_doc_rdv) . '/5';
+/*
+                                                if ($t_phase1=="5/5") {
+                                                    $notif = $bdd->prepare('INSERT INTO notif_back (name_entreprise, date_demande, type_demande, id_session) VALUES(?,?,?,?)');
+                                                    $notif->execute(array(
+                                                        htmlspecialchars($societe['name_entreprise']),
+                                                        htmlspecialchars(date('Y-m-d')),
+                                                        htmlspecialchars("phase_fisca"),
+                                                        htmlspecialchars($_GET['num'])
+                                                    ));
+                                                                                                }
 
-                                
-                                                //Mandat
+                                                $search_notifs=$bdd->prepare('SELECT type_demande FROM notif_back WHERE id_session=:id LIMIT 1');
+                                                $search_notifs->bindValue(':id',$_GET['num']);
+                                                $search_notifs->execute();
+                                                $result_notifs=$search_notifs->fetch(PDO::FETCH_ASSOC);
+                                                */
+                                                
+                                                                                     //Mandat
                                                 $societe_mandat = acronymDoc($societe,'doc_mandat');
                                                 /*if($societe['doc_mandat'] !== "" AND is_null($societe['doc_mandat'])==false ){
                                                     if(substr($societe['doc_mandat'], -3) == "pdf"){
@@ -608,6 +647,19 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </div>
                                                                     </div>
                                                                 </li>
+                                                                <!--
+                                                                    <li class="cursor-pointer pb-25 <?php if($societe['doc_cerfa24'] == "" OR is_null($societe['doc_cerfa24']) == true){echo "none-validation";} ?>">
+                                                                        <label for="">date reception (délai 25 jours) de la notification auto</label>
+                                                                        
+                                                                        <form action="php/notification_fisca.php?" action="POST">
+                                                                            <input name="date" type="date"/>
+                                                                            <button class="btn btn-icon btn-light-success" type="submit" style="position: relative; top: 3px;">
+                                                                                <i class="bx bx-like"></i>
+                                                                            </button>
+                                                                        </form>
+                                                                        
+                                                                    </li>
+                                                                -->
                                                                 <li class="cursor-pointer pb-25">
                                                                     <div class="row">
                                                                         <div class="col">
@@ -881,7 +933,7 @@ require_once 'php/verif_session_connect_admin.php';
                                                         setlocale(LC_TIME, "fr_FR");
 
                                                         $date_statut = strftime("%d/%m/%Y", strtotime(substr($societe['statut'], 7)));
-                                                        //$date_statut=substr($societe['statut'], 7);
+                                                        
                                                         $etat_dossier='Ce dossier a été terminé, le '.$date_statut.'';
                                                     }
                                                 ?>                                               
@@ -923,6 +975,34 @@ require_once 'php/verif_session_connect_admin.php';
                                                     <!-- Form Validation start -->
                                                     <div class="row">
                                                         <div class="col" style="border-right: 1px solid #A3AFBD;">
+                                                            <form action="" method="POST">
+                                                                <input type="hidden" name="num_societe" value="<?= $_GET['num'] ?>">
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                        <label for="valid-state">Frais</label>
+                                                                            <input type="number" min="0" name="frais" class="form-control <?php  if($societe['frais'] == ""){echo "is-invalid";}else{echo "is-valid";} ?>" id="valid-state" placeholder="Frais en €" value="<?php $value_frais = explode('!',$societe['frais']); echo $value_frais[0]; ?>" required>
+                                                                            <div class="valid-feedback">
+                                                                                <i class="bx bx-radio-circle"></i>
+                                                                            Frais de paiement enregisté <?php $value_frais = explode('!',$societe['frais']); echo $value_frais[0]; ?> € 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col col-lg-2">
+                                                                            <div class="custom-control custom-switch custom-switch-success mr-2 mb-1 text-center" style="position: relative; top: 20%;">
+                                                                                <p class="mb-0">Payé</p>
+                                                                                <input onchange="paiement_frais_check()" name="frais_check" type="checkbox" class="custom-control-input" id="customSwitch1" <?php if(substr($societe['frais'], -3) == "yes"){echo "checked";} ?>>
+                                                                                <label class="custom-control-label" for="customSwitch1">
+                                                                                    <span class="switch-icon-left"><i class="bx bx-check"></i></span>
+                                                                                    <span class="switch-icon-right"><i class="bx bx-x"></i></span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-outline-<?php if($societe['frais'] == ""){echo "secondary";}else{echo "success";} ?> col-12"><i class="bx bx-check"></i><span class="align-middle ml-25"><?php if($societe['frais'] == ""){echo "Enregister les montants";}else{echo "Modifier les montants";} ?></span></button>
+                                                                </div>                                                               
+                                                            </form>
                                                             <div class="form-group">
                                                                 <label for="">Periode de controle :</label>
                                                                 <!--<div>
@@ -1013,12 +1093,35 @@ require_once 'php/verif_session_connect_admin.php';
                                                                         </label>
                                                                     </div>
                                                                 </fieldset>
+                                                            </form>
+
+                                                            <form action="php/notification_fisca.php?num=<?= $_GET['num'] ?>&mode=manual" method="POST">
+                                                                <label>Notification Manuelle</label>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label class="mr-75">Zone de texte sujet</label> 
+                                                                        <br/>                                                               
+                                                                        <input type="text" name="sujet" size="50"></input>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label class="mr-75">Zone de texte commentaire</label>
+                                                                        <br/>                                                   
+                                                                        <textarea name="textfield" cols="50" rows="7"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-primary"> Envoyer</button>
+                                                                    </div>
+                                                                </div>
                                                             </form>                                                            
                                                         </div>
                                                     </div>                                                    
                                                     <!-- Form Validation end -->
                                                 </div>
-                                                <div class="card-footer ">
+                                                <div class="card-footer">
                                                         
                                                         <button onclick="fermer_dossier()" type="submit" class="btn-send btn btn-light-secondary">
                                                             <i class='bx bx-send mr-25'></i> 
@@ -1046,6 +1149,13 @@ require_once 'php/verif_session_connect_admin.php';
 
 
     <script>
+        function paiement_frais_check(){
+            var notification_societe = document.getElementById("num_societe").value;
+            alert(notification_societe);
+            const requeteAjax = new XMLHttpRequest();
+            requeteAjax.open('POST', 'php/change_statut_paiement_frais_fiscal?num=<?= $_GET['num'] ?>&result=<?= $societe['frais'] ?>');
+            requeteAjax.send(notification_societe);
+        }
         function object_depo(){
             document.location.href="php/change_depo_fiscal.php?num=<?= $_GET['num'] ?>&style=object";
         }
