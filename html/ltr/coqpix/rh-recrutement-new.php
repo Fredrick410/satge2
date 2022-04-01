@@ -152,7 +152,7 @@ $qcms_front = $pdoS->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="col-sm-12">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label for="tel_annonce">Téléphone de contact</label>
+                                                    <label for="tel_annonce">Téléphoneeeeeeeeeeeeeee de contact</label>
                                                     <input id="tel_annonce" type="tel" name="tel_annonce" class="form-control" placeholder="+33600000000" required>
                                                     <small class="text-muted form-text">Veuillez entrer votre numéro de téléphone.</small>
                                                 </div>
